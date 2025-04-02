@@ -10,7 +10,7 @@ const Pollygon = (props) => {
         highlight={`${props?.id}`}
       />
       <div
-        className="relative bg-gray-100 w-52 h-52 flex flex-col items-center gap-2 justify-center text-center shadow-[0px_0px_6px_1px_rgba(0,0,0,0.75)]"
+        className="relative bg-gray-100 w-48 h-48 flex flex-col items-center gap-2 justify-center text-center shadow-[0px_0px_6px_1px_rgba(0,0,0,0.75)]"
         style={{
           clipPath:
             "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)",

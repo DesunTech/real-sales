@@ -45,62 +45,73 @@ const PersonaFeatures = () => {
   ];
 
   return (
-    <div className="page-container mx-auto container px-4 flex justify-between">
-      <div className="flex flex-col items-center gap-4 w-full py-12">
-        <Highlighter highlight={"Persona Features"} />
-        <p className="text-[30px] text-[#060606E5] m-plus-rounded-1c-regular">
-          Sales approach with data-driven insights
-        </p>
-        <h1 className="text-7xl text-[#060606E5] m-plus-rounded-1c-regular">
-          Our Platform Features
-        </h1>
-        <div className="flex flex-col items-center gap-2">
-          <p className="text-[16px] text-[#060606E5] sora-regular">
-            Our Session mode:
+    <div className="bg-[url(../../public/assets/images/RealSales-backgrounds/bg-3.png)] bg-cover bg-center bg-no-repeat">
+      <div className="page-container mx-auto container px-4 flex justify-between">
+        <div className="flex flex-col items-center gap-4 w-full py-12">
+          <Highlighter highlight={"Persona Features"} />
+          <p className="text-[30px] text-center text-[#060606E5] m-plus-rounded-1c-regular">
+            Sales approach with data-driven insights
           </p>
-          <div className="flex items-center gap-4">
-            <div className="flex flex-col items-center gap-1">
-              <div className="p-2 rounded-[10px] bg-[#060606] w-fit">
-                <Image src={cil_audio} alt="cil_audio" />
+          <h1 className="lg:text-7xl text-2xl text-[#060606E5] m-plus-rounded-1c-regular text-center">
+            Our Platform Features
+          </h1>
+          <div className="flex flex-col items-center gap-2">
+            <p className="text-[16px] text-[#060606E5] sora-regular">
+              Our Session mode:
+            </p>
+            <div className="flex items-center gap-4">
+              <div className="flex flex-col items-center gap-1">
+                <div className="p-2 rounded-[10px] bg-[#060606] w-fit">
+                  <Image src={cil_audio} alt="cil_audio" />
+                </div>
+                <p className="text-[14px] text-[#060606E5] sora-regular">
+                  Audio
+                  <br />
+                  Mode
+                </p>
               </div>
-              <p className="text-[14px] text-[#060606E5] sora-regular">
-                Audio
-                <br />
-                Mode
-              </p>
-            </div>
-            <div className="flex flex-col items-center gap-1">
-              <div className="p-2 rounded-[10px] bg-[#060606] w-fit">
-                <Image src={mdi_video} alt="mdi_video" />
+              <div className="flex flex-col items-center gap-1">
+                <div className="p-2 rounded-[10px] bg-[#060606] w-fit">
+                  <Image src={mdi_video} alt="mdi_video" />
+                </div>
+                <p className="text-[14px] text-[#060606E5] sora-regular">
+                  Video
+                  <br />
+                  Mode
+                </p>
               </div>
-              <p className="text-[14px] text-[#060606E5] sora-regular">
-                Video
-                <br />
-                Mode
-              </p>
             </div>
           </div>
-        </div>
 
-        <div className="flex w-full">
-          {FeaturesArr.map((val, idx) => (
-            <div
-              key={idx}
-              className="w-1/4 p-6 flex flex-col items-start gap-2 odd:bg-[linear-gradient(180deg,rgba(255,255,255,0.85)_0%,rgba(227,227,227,0.85)_100%)] even:bg-[linear-gradient(180deg,rgba(255,255,255,0.3)_0%,rgba(99,229,255,0.3)_100%)]"
-            >
-              <div className="border border-solid border-[#0606064D] rounded-[5px] w-fit py-2 px-3">
-                <Image src={val?.icon} alt={val?.heading_p1} className="w-12 h-12"/>
+          <div className="flex w-full flex-wrap lg:gap-0 gap-2">
+            {FeaturesArr.map((val, idx) => (
+              <div
+                key={idx}
+                className="lg:w-1/4 w-full p-6 flex flex-col items-start gap-2 odd:bg-[linear-gradient(180deg,rgba(255,255,255,0.85)_0%,rgba(227,227,227,0.85)_100%)] even:bg-[linear-gradient(180deg,rgba(255,255,255,0.3)_0%,rgba(99,229,255,0.3)_100%)]"
+              >
+                <div className="border border-solid border-[#0606064D] rounded-[5px] w-fit py-2 px-3">
+                  <Image
+                    src={val?.icon}
+                    alt={val?.heading_p1}
+                    className="w-12 h-12"
+                  />
+                </div>
+                <h1 className="text-[22px] text-[#060606E5] m-plus-rounded-1c-regular">
+                  {val?.heading_p1}
+                  <br />
+                  <span className="text-[130%]">{val?.heading_p2}</span>
+                </h1>
+                <p className="text-[15px] text-[#060606] sora-regular">
+                  {val?.about}
+                </p>
+                <div className="border-l-2 border-solid border-[#060606B2] bg-gradient-to-r from-[rgba(255,222,90,0.3)] to-[rgba(255,222,90,0)] to-64% py-2 px-3">
+                  <p className="text-[11px] text-[#060606] sora-regular">
+                    {val?.content}
+                  </p>
+                </div>
               </div>
-              <h1 className="text-[22px] text-[#060606E5] m-plus-rounded-1c-regular">
-                {val?.heading_p1}<br />
-                <span className="text-[130%]">{val?.heading_p2}</span>
-              </h1>
-              <p className="text-[15px] text-[#060606] sora-regular">{val?.about}</p>
-              <div className="border-l-2 border-solid border-[#060606B2] bg-gradient-to-r from-[rgba(255,222,90,0.3)] to-[rgba(255,222,90,0)] to-64% py-2 px-3">
-                <p className="text-[11px] text-[#060606] sora-regular">{val?.content}</p>
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </div>
