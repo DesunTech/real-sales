@@ -11,7 +11,7 @@ const HomePage = () => {
   return (
     <>
       <Banner />
-      <About />
+      {/* <About /> */} {/* working on this component */}
       <AboutUs />
       <PersonaFeatures />
       <QuickSearch />

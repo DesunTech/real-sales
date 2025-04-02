@@ -50,22 +50,10 @@ const HowItWorks = () => {
       label: "Loan Processing",
       document: "Lorem is simply dummy text of the printing ....",
     },
-    {
-      id: 7,
-      icon: LoanProcessing,
-      label: "Loan Processing",
-      document: "Lorem is simply dummy text of the printing ....",
-    },
-    {
-      id: 8,
-      icon: LoanProcessing,
-      label: "Loan Processing",
-      document: "Lorem is simply dummy text of the printing ....",
-    },
   ];
   return (
     <div className="page-container mx-auto container px-4 py-8 flex flex-col gap-8 items-center">
-      <h1 className="text-7xl text-[#060606E5] m-plus-rounded-1c-regular">
+      <h1 className="lg:text-7xl text-2xl text-[#060606E5] m-plus-rounded-1c-regular">
         How It Works
       </h1>
       <div className="flex flex-wrap items-center justify-center gap-x-4">
@@ -80,7 +68,7 @@ const HowItWorks = () => {
         ))}
       </div>
       <hr className="border-[#06060626] w-[70%]" />
-      <div className="flex flex-col items-center gap-4">
+      <div className="lg:flex hidden flex-col items-center gap-4">
         <div className="flex items-center gap-4">
           <StepCard
             steps={`1`}
@@ -129,16 +117,110 @@ system, highlighting. areas for improvement in your sales approach and overall e
           />
         </div>
       </div>
+      <div className="lg:hidden md:flex hidden items-center gap-4 flex-wrap">
+        <StepCard
+          width={"48%"}
+          steps={`1`}
+          heading={`Select an AI`}
+          title={`Buyer Personas`}
+          description={`Choose from a variety of customizable Al buyer personas that represent your target customers, each with unique needs, pain points, and decision- making processes.`}
+        />
+        <StepCard
+          width={"48%"}
+          steps={`2`}
+          heading={`Engaged in Real-time`}
+          title={`AI Powered Sales`}
+          description={`Participate in realistic sales dialogues with the Al personas, practicing your communication, value selling and ability in identifying needs.`}
+        />
+        <StepCard
+          width={"48%"}
+          steps={`3`}
+          heading={`Handle Objections &`}
+          title={`Complex Sales`}
+          description={`Participate in realistic sales dialogues with the Al personas, practicing your communication, value selling and ability in identifying needs.`}
+        />
+        <StepCard
+          width={"48%"}
+          steps={`4`}
+          heading={`Receiving and track`}
+          title={`Performance`}
+          description={`Monitoring usage, performance, sales capability and accelerate development of top performer.(As a solo user or for your team as manager)`}
+        />
+        <StepCard
+          width={"48%"}
+          steps={`5`}
+          heading={`Integrate Co.  Product`}
+          title={`Knowledges`}
+          description={`Leverage the Al's understanding of your company's
+products, services and case studies to validate value
+selling and cross-selling approach.`}
+        />
+        <StepCard
+          width={"48%"}
+          steps={`6`}
+          heading={`Receive Instant Feed`}
+          title={`Communication`}
+          description={`Get immediate feedback and coaching from the All
+system, highlighting. areas for improvement in your sales approach and overall effectiveness.`}
+        />
+      </div>
+      <div className="md:hidden flex items-center gap-4 flex-wrap">
+        <StepCard
+          width={"100%"}
+          steps={`1`}
+          heading={`Select an AI`}
+          title={`Buyer Personas`}
+          description={`Choose from a variety of customizable Al buyer personas that represent your target customers, each with unique needs, pain points, and decision- making processes.`}
+        />
+        <StepCard
+          width={"100%"}
+          steps={`2`}
+          heading={`Engaged in Real-time`}
+          title={`AI Powered Sales`}
+          description={`Participate in realistic sales dialogues with the Al personas, practicing your communication, value selling and ability in identifying needs.`}
+        />
+        <StepCard
+          width={"100%"}
+          steps={`3`}
+          heading={`Handle Objections &`}
+          title={`Complex Sales`}
+          description={`Participate in realistic sales dialogues with the Al personas, practicing your communication, value selling and ability in identifying needs.`}
+        />
+        <StepCard
+          width={"100%"}
+          steps={`4`}
+          heading={`Receiving and track`}
+          title={`Performance`}
+          description={`Monitoring usage, performance, sales capability and accelerate development of top performer.(As a solo user or for your team as manager)`}
+        />
+        <StepCard
+          width={"100%"}
+          steps={`5`}
+          heading={`Integrate Co.  Product`}
+          title={`Knowledges`}
+          description={`Leverage the Al's understanding of your company's
+products, services and case studies to validate value
+selling and cross-selling approach.`}
+        />
+        <StepCard
+          width={"100%"}
+          steps={`6`}
+          heading={`Receive Instant Feed`}
+          title={`Communication`}
+          description={`Get immediate feedback and coaching from the All
+system, highlighting. areas for improvement in your sales approach and overall effectiveness.`}
+        />
+      </div>
       <hr className="border-[#06060626] w-full" />
       <div className="flex flex-col gap-5">
         <h1 className="text-[28px] text-[#060606] m-plus-rounded-1c-regular text-center">
           At Glance: How we Different from our Competitors Landscapes
         </h1>
-        <div className="relative flex items-center">
-          <div className="absolute left-[25%] border-r border-solid border-[#0606064D] h-full" />
-          <div className="relative flex flex-wrap w-1/2 h-full">
+        <div className="relative flex items-center lg:flex-row flex-col">
+          <div className="absolute lg:flex hidden left-[25%] border-r border-solid border-[#0606064D] h-full" />
+          <div className="relative lg:w-1/2 w-full h-full flex flex-wrap">
             <div className="absolute top-[50%] border-b border-solid border-[#0606064D] w-full" />
-            <div className="w-1/2 h-full flex flex-col gap-5 p-5">
+            <div className="w-1/2 h-full flex flex-col gap-5 lg:p-5 p-2.5">
               <Image
                 src={secoundNature}
                 alt="secoundNature"
@@ -149,7 +231,7 @@ system, highlighting. areas for improvement in your sales approach and overall e
                 focused on tech and SaaS sales.
               </p>
             </div>
-            <div className="w-1/2 h-full flex flex-col gap-5 p-5">
+            <div className="w-1/2 h-full flex flex-col gap-5 lg:p-5 p-2.5">
               <Image
                 src={pitchMonster}
                 alt="pitchMonster"
@@ -160,14 +242,14 @@ system, highlighting. areas for improvement in your sales approach and overall e
                 focused on tech and SaaS sales.
               </p>
             </div>
-            <div className="w-1/2 h-full flex flex-col gap-5 p-5">
+            <div className="w-1/2 h-full flex flex-col gap-5 lg:p-5 p-2.5">
               <Image src={luster} alt="luster" className="h-10 w-auto" />
               <p className="text-[#060606B2] text-[12px] sora-regular text-center">
                 Generic Al personas not built on real industry data; primarily
                 focused on tech and SaaS sales.
               </p>
             </div>
-            <div className="w-1/2 h-full flex flex-col gap-5 p-5 ">
+            <div className="w-1/2 h-full flex flex-col gap-5 lg:p-5 p-2.5">
               <Image
                 src={quantifiedCommunications}
                 alt="quantifiedCommunications"
@@ -180,7 +262,7 @@ system, highlighting. areas for improvement in your sales approach and overall e
             </div>
           </div>
 
-          <div className="w-1/2 h-full flex flex-col px-8 border-l-2 border-dashed border-[#0606064D]">
+          <div className="lg:w-1/2 w-full h-full flex flex-col lg:px-8 px-0 lg:border-l-2 border-l-0 lg:border-t-0 border-t-2 border-dashed border-[#0606064D]">
             <div className="my-4 w-full flex items-center justify-center">
               <Image
                 src={blackLogoNoBackground}
@@ -188,7 +270,7 @@ system, highlighting. areas for improvement in your sales approach and overall e
                 className="h-auto w-[200px]"
               />
             </div>
-            <div className="flex">
+            <div className="flex lg:flex-row flex-col">
               <SimpleCard
                 className={`w-full flex flex-col gap-2 mx-[1%] mb-[1%]`}
               >
@@ -212,7 +294,7 @@ system, highlighting. areas for improvement in your sales approach and overall e
                 </p>
               </SimpleCard>
             </div>
-            <div className="flex">
+            <div className="flex lg:flex-row flex-col">
               <SimpleCard
                 className={`w-full flex flex-col gap-2 mx-[1%] my-[1%]`}
               >

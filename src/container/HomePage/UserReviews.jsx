@@ -70,34 +70,34 @@ const UserReviews = () => {
   return (
     <div className="page-container mx-auto container px-4 py-8 flex flex-col gap-4 items-center">
       <Highlighter highlight={"User Reviews"} />
-      <p className="text-[30px] text-[#060606E5] m-plus-rounded-1c-regular">
+      <p className="text-[30px] text-[#060606E5] m-plus-rounded-1c-regular text-center">
         User Reviews & Ratings
       </p>
-      <h1 className="text-7xl text-[#060606E5] m-plus-rounded-1c-regular">
+      <h1 className="lg:text-7xl text-2xl text-[#060606E5] m-plus-rounded-1c-regular">
         Our Testimonials
       </h1>
-      <div className="absolute right-[30%] mt-[10%]">
+      <div className="absolute lg:right-[30%] mt-[10%]">
         <Image
           src={testi_bg_abstract}
           alt="testi_bg_abstract"
-          className="opacity-[10%] w-[450px] h-auto"
+          className="opacity-[10%] lg:w-[450px] w-full h-auto"
         />
       </div>
-      <div className="w-full h-full z-10 flex items-center justify-between">
+      <div className="w-full h-full z-10 lg:flex-row flex-col flex items-center justify-between lg:gap-4 gap-8">
         {eviewsArr
           .filter((v, i) => i === value)
           .map((val, idx) => (
             <div
               key={idx}
-              className="rounded-[20px] bg-white shadow-[10px_10px_30px_0px_#0000004D] p-8 w-[45%] h-fit"
+              className="rounded-[20px] bg-white shadow-[10px_10px_30px_0px_#0000004D] p-8 lg:w-[45%] w-full h-fit"
             >
-              <div className="flex items-start flex-col gap-2">
-                <div className="flex items-center gap-2">
+              <div className="flex lg:items-start items-center flex-col gap-2">
+                <div className="flex lg:flex-row flex-col items-center gap-2">
                   <Highlighter
                     highlight={"Reviews"}
                     className={`!rounded-full`}
                   />
-                  <div className="flex items-center gap-2">
+                  <div className="lg:flex hidden items-center gap-2">
                     <hr className="w-12 border border-[#060606]" />
                     <div className="h-3 w-3 bg-[#060606] rotate-45"></div>
                   </div>
@@ -119,11 +119,11 @@ const UserReviews = () => {
                     {val?.name}
                   </span>
                 </h1>
-                <div className="flex items-start gap-4 mt-5">
+                <div className="flex items-start gap-4 lg:mt-5 mt-0">
                   <Image
                     src={invertedComa}
                     alt="invertedComa"
-                    className="-mt-5 w-16 h-16"
+                    className="-mt-5 w-16 h-16 lg:flex hidden"
                   />
                   <p className="m-plus-rounded-1c-regular text-[#060606] text-[15px]">
                     {val?.review}
@@ -132,7 +132,7 @@ const UserReviews = () => {
               </div>
             </div>
           ))}
-        <div className="w-1/2">
+        <div className="lg:w-1/2 w-full">
           <Tabs
             className="items-center"
             variant="scrollable"

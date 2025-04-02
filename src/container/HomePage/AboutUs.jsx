@@ -2,6 +2,9 @@ import React from "react";
 import trade from "../../../public/assets/images/aboutus/trade.png";
 import sales from "../../../public/assets/images/aboutus/sales.png";
 import selectloc from "../../../public/assets/images/aboutus/selectloc.png";
+import aiGirl from "../../../public/assets/images/aboutus/aiGirl.png";
+import aiPen from "../../../public/assets/images/aboutus/aiPen.png";
+import calculating from "../../../public/assets/images/aboutus/calculating.png";
 import Image from "next/image";
 import { Rating } from "@mui/material";
 import Highlighter from "../../common/highlighter";
@@ -12,12 +15,12 @@ const AboutUs = () => {
   return (
     <div className="bg-[linear-gradient(180deg,#11182B_0%,#060606_112.58%)]">
       <div className="page-container mx-auto container px-4 flex justify-between flex-col">
-        <div className="flex justify-between items-center py-12">
-          <div className="w-[45%]">
-            <div className="flex flex-col gap-5">
+        <div className="flex justify-between items-center lg:gap-4 gap-8 lg:flex-row flex-col-reverse py-12">
+          <div className="lg:w-[45%] w-full">
+            <div className="flex flex-col lg:items-start items-center gap-5">
               <Highlighter />
               <div className="flex items-center gap-4">
-                <div className="flex items-center gap-4">
+                <div className="lg:flex hidden items-center gap-4">
                   <hr className="w-16 border border-white" />
                   <div className="h-3.5 w-3.5 bg-white rotate-45"></div>
                 </div>
@@ -36,7 +39,7 @@ const AboutUs = () => {
                 <br />
                 Train faster with
               </p>
-              <h1 className="text-5xl text-[#ffffff] m-plus-rounded-1c-regular">
+              <h1 className="lg:text-5xl text-3xl text-[#ffffff] m-plus-rounded-1c-regular">
                 Real Buyer Personas
               </h1>
               <p className="text-[15px] text-[#ffffff] sora-regular w-[95%]">
@@ -51,21 +54,22 @@ const AboutUs = () => {
               </p>
             </div>
           </div>
-          <div className="w-1/2 flex justify-end">
-            <Image src={trade} alt="trade" className="w-[70%] h-full" />
+          <div className="lg:w-1/2 w-full flex lg:justify-end justify-center">
+            <Image src={aiGirl} alt="aiGirl" className="w-[70%] h-full" />
           </div>
         </div>
+
         <div className="flex items-center justify-between">
-          <div></div>
-          <hr className="border-[#FFFFFF33] border-1 w-1/2" />
+          <div className="lg:flex none"></div>
+          <hr className="border-[#FFFFFF33] border-1 lg:w-1/2 w-full" />
         </div>
 
-        <div className="flex justify-between items-center flex-row-reverse py-12">
-          <div className="w-[45%]">
-            <div className="flex flex-col items-end gap-5">
+        <div className="flex justify-between items-center lg:gap-4 gap-8 lg:flex-row-reverse flex-col-reverse py-12">
+          <div className="lg:w-[45%] w-full">
+            <div className="flex flex-col lg:items-end items-center gap-5">
               <Highlighter />
               <div className="flex items-center gap-4">
-                <div className="flex items-center gap-4">
+                <div className="lg:flex hidden items-center gap-4">
                   <hr className="w-16 border border-white" />
                   <div className="h-3.5 w-3.5 bg-white rotate-45"></div>
                 </div>
@@ -84,10 +88,10 @@ const AboutUs = () => {
                 <br />
                 sales teams into
               </p>
-              <h1 className="text-5xl text-[#ffffff] m-plus-rounded-1c-regular">
+              <h1 className="lg:text-5xl text-3xl text-[#ffffff] m-plus-rounded-1c-regular">
                 Top Performers
               </h1>
-              <p className="text-[15px] text-[#ffffff] text-end sora-regular w-[95%]">
+              <p className="text-[15px] text-[#ffffff] lg:text-end items-start sora-regular w-[95%]">
                 Our Al-powered interactive platform helps sales teams to
                 <span className="sora-semibold">go beyond the pitch</span>
                 &nbsp;and master the art of connection, cross-selling, and deal-
@@ -106,21 +110,22 @@ const AboutUs = () => {
               </p>
             </div>
           </div>
-          <div className="w-1/2 flex justify-start">
-            <Image src={sales} alt="sales" className="w-[70%] h-full" />
+          <div className="lg:w-1/2 w-full flex lg:justify-start justify-center">
+            <Image src={aiPen} alt="aiPen" className="w-[70%] h-full" />
           </div>
         </div>
+
         <div className="flex items-center justify-between">
-          <hr className="border-[#FFFFFF33] border-1 w-1/2" />
-          <div></div>
+          <div className="lg:flex none"></div>
+          <hr className="border-[#FFFFFF33] border-1 lg:w-1/2 w-full" />
         </div>
 
-        <div className="flex justify-between items-center py-12">
-          <div className="w-[50%]">
-            <div className="flex flex-col gap-5">
+        <div className="flex justify-between items-center lg:gap-4 gap-8 lg:flex-row flex-col-reverse py-12">
+          <div className="lg:w-1/2 w-full">
+            <div className="flex lg:items-start items-center flex-col gap-5">
               <Highlighter />
               <div className="flex items-center gap-4">
-                <div className="flex items-center gap-4">
+                <div className="lg:flex hidden items-center gap-4">
                   <hr className="w-16 border border-white" />
                   <div className="h-3.5 w-3.5 bg-white rotate-45"></div>
                 </div>
@@ -139,7 +144,7 @@ const AboutUs = () => {
                 <br />
                 Common problem is Sales team Impacting
               </p>
-              <h1 className="text-5xl text-[#ffffff] m-plus-rounded-1c-regular">
+              <h1 className="lg:text-5xl text-3xl text-[#ffffff] m-plus-rounded-1c-regular">
                 Performance
               </h1>
               <div className="flex flex-col gap-5">
@@ -199,8 +204,12 @@ const AboutUs = () => {
               </div>
             </div>
           </div>
-          <div className="w-1/2 flex justify-end">
-            <Image src={selectloc} alt="selectloc" className="w-[70%] h-full" />
+          <div className="lg:w-1/2 w-full flex lg:justify-end justify-center">
+            <Image
+              src={calculating}
+              alt="calculating"
+              className="w-[70%] h-full"
+            />
           </div>
         </div>
       </div>
