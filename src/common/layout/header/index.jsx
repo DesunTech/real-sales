@@ -47,7 +47,7 @@ const Header = () => {
 
           {/* Call to Action Buttons */}
           <div className="header-btn hidden md:flex items-center space-x-4">
-            <BookAdemo icon={<AddIcCallIcon style={{fontSize: "16px"}}/>}/>
+            <BookAdemo link={`/pricing`} icon={<AddIcCallIcon style={{fontSize: "16px"}}/>}/>
           </div>
 
           {/* Mobile Menu Toggle */}
@@ -75,7 +75,7 @@ const Header = () => {
                 <li className="py-2 border-b text-white"><Link href="/industries">Industries</Link></li>
                 <li className="py-2 border-b text-white"><Link href="/faq">FAQ</Link></li>
                 <li className="py-4">
-                  <BookAdemo icon={<AddIcCallIcon style={{fontSize: "16px"}}/>}/>
+                  <BookAdemo link={`/pricing`} icon={<AddIcCallIcon style={{fontSize: "16px"}}/>}/>
                 </li>
               </ul>
             </div>
