@@ -1,4 +1,4 @@
-import Image from "next/image";
+ import Image from "next/image";
 import aboutBanner from "../../../public/assets/images/banner/about-banner.png";
 
 const Banner = () => {
