@@ -5,7 +5,7 @@ import BookAdemo from "./bookAdemo";
 const PersonaCard = (props) => {
   return (
     <div className="bg-[url(../../public/assets/images/aboutus/PersonaCardImg.png)] shadow-md bg-cover bg-center bg-no-repeat w-full rounded-[10px]">
-      <div className="bg-gradient-to-r from-white/50 to-white/0 py-4 px-8  w-full flex items-center justify-between">
+      <div className="bg-gradient-to-r from-white/50 to-white/0 py-4 px-8 w-full flex flex-col items-start justify-between gap-4">
         <div className='flex flex-col items-start'>
           <h2 className="lg:text-[12px] text-[10px] sora-regular text-[#060606]">Choose:</h2>
           <h1 className="lg:text-[18px] text-[14px] m-plus-rounded-1c-regular text-[#060606]">Select your Real-AI</h1>

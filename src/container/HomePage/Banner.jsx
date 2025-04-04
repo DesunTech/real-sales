@@ -1,6 +1,7 @@
 import Image from "next/image";
 import attachment7 from "../../../public/assets/images/banner/attachment7.png";
 import bannerImg from "../../../public/assets/images/banner/BANNER-IMG.png";
+import bannersub_img from ".././../../public/assets/images/banner/bannersub-img.png"
 import BookAdemo from "../../common/bookAdemo";
 import AddIcCallIcon from "@mui/icons-material/AddIcCall";
 import CommonButton from "../../common/commonButton";
@@ -52,8 +53,8 @@ const Banner = () => {
         <div className="flex lg:flex-row flex-col items-center justify-between gap-8">
           <div className="lg:w-[40%] w-full flex items-center justify-center">
             <Image
-              src={attachment7}
-              alt="attachment7"
+              src={bannersub_img}
+              alt="bannersub_img"
               width={1920}
               height={1080}
               className="w-full h-full"
