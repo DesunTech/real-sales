@@ -26,7 +26,7 @@ const CommonModal = (props) => {
         <div onClick={props?.onClose} className="z-10 cursor-pointer bg-red-500 rounded-full h-6 w-6 flex items-center justify-center absolute -top-3 -right-3">
           <CloseOutlinedIcon className="!text-[16px] text-white" />
         </div>
-        <div className="overflow-y-auto overflow-x-hidden h-full max-h-[70vh] px-2">
+        <div className="overflow-y-auto overflow-x-hidden h-full max-h-[80vh] px-2">
           {props?.children}
         </div>
       </Box>

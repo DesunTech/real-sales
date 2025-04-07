@@ -6,11 +6,20 @@ import AddIcCallIcon from "@mui/icons-material/AddIcCall";
 import BookAdemo from "../../../common/bookAdemo";
 import { useRouter } from "next/router";
 import persona_plant from "../../../../public/assets/images/RealSales-user-images/persona-plant.png";
+import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined";
+import DemoMeeting from "../../modals/DemoMeeting";
+import { useDispatch } from "react-redux";
+import { DemoMeetingValue } from "../../../redux/OpenModal";
+import TryRealsales from "../../modals/TryRealsales";
 
 const Header = () => {
   const router = useRouter();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const dispatch = useDispatch();
 
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [openIndustry, setOpenIndustry] = useState(false);
+
+  console.log(openIndustry, "openIndustry");
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
   };
@@ -52,23 +61,42 @@ const Header = () => {
                   About
                 </Link>
               </div>
-              <div className="relative group">
-                <Link href="#" className={`text-white leading-1`}>
-                  Industries
-                </Link>
-                {/* <div className="absolute hidden group-hover:flex items-center top-12 bg-[#FFFFFFCC] shadow-lg p-4">
-                  <Image
-                    src={persona_plant}
-                    alt="persona_plant"
-                    width={96}
-                    className="w-24 h-auto !max-w-auto"
+              <div className="relative">
+                <Link
+                  href="#"
+                  onClick={() => setOpenIndustry(!openIndustry)}
+                  className={`text-white leading-1`}
+                >
+                  Industries&nbsp;
+                  <ArrowDropDownOutlinedIcon
+                    className={`${
+                      openIndustry ? `rotate-0` : `rotate-180`
+                    } transform duration-300`}
                   />
-                  <div>
-                    <Link href="#" className="">
-                      Food & Beverages
-                    </Link>
-                  </div>
-                </div> */}
+                </Link>
+                {openIndustry ? (
+                  <Link
+                    href={`#`}
+                    className="absolute flex items-start justify-between top-12 bg-[#FFFFFFCC] shadow-lg p-4 w-[280%]"
+                  >
+                    <Image
+                      src={persona_plant}
+                      alt="persona_plant"
+                      width={96}
+                      className="w-24 h-auto !max-w-auto"
+                    />
+                    <div className="flex flex-col items-start gap-4">
+                      <div>
+                        <p>Industry</p>
+                        <div class="flex items-center gap-2.5">
+                          <hr class="w-16 border border-black" />
+                          <div class="h-2.5 w-2.5 bg-black rotate-45" />
+                        </div>
+                      </div>
+                      <p>Food & Beverage</p>
+                    </div>
+                  </Link>
+                ) : null}
               </div>
               <div>
                 <Link
@@ -86,7 +114,7 @@ const Header = () => {
           {/* Call to Action Buttons */}
           <div className="header-btn hidden md:flex items-center space-x-4">
             <BookAdemo
-              link={`/pricing`}
+              onClick={() => dispatch(DemoMeetingValue(true))}
               icon={<AddIcCallIcon style={{ fontSize: "16px" }} />}
             />
           </div>
@@ -130,7 +158,8 @@ const Header = () => {
                 </li>
                 <li className="py-4">
                   <BookAdemo
-                    link={`/pricing`}
+                    link={`#`}
+                    onClick={() => dispatch(DemoMeetingValue(true))}
                     icon={<AddIcCallIcon style={{ fontSize: "16px" }} />}
                   />
                 </li>
@@ -139,6 +168,8 @@ const Header = () => {
           )}
         </nav>
       </div>
+      <DemoMeeting />
+      <TryRealsales />
     </header>
   );
 };
