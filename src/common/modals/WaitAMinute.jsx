@@ -70,6 +70,7 @@ const WaitAMinute = () => {
 
                         <button
                             className="flex-1 bg-[#FFDE59] text-black py-3 rounded-md flex items-center justify-center gap-2 shadow-md mb-2 cursor-pointer"
+                        onClick={()=> { dispatch(WaitAMinuteValue({ open: false, type: waitAMinuteValue?.type })); router.push(`/chat/${waitAMinuteValue?.type}`)  }}
                         >
                             PROCEED TO SESSION
                             <DoneIcon />

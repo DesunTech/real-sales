@@ -1,4 +1,5 @@
 import React from 'react'
+import { useRouter } from 'next/router'
 import Header from './header'
 import Footer from './footer'
 import SessionModes from '../modals/SessionModes'
@@ -7,11 +8,14 @@ import TryRealsales from '../modals/TryRealsales'
 import WaitAMinute from '../modals/WaitAMinute'
 
 const Layout = ({children}) => {
+  const router = useRouter()
+  const isChatPage = router.pathname.startsWith('/chat')
+
   return (
     <>
-      <Header />
+      {!isChatPage && <Header />}
       {children}
-      <Footer />
+      {!isChatPage && <Footer />}
       <SessionModes />
       <DemoMeeting />
       <TryRealsales />
