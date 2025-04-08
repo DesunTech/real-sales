@@ -107,7 +107,7 @@ const Pricing = () => {
       <p className="lg:text-2xl text-[16px] text-center m-plus-rounded-1c-regular text-[#060606] w-full flex items-center justify-center gap-2">
         Get fully reliable Price for every session.
         <Link
-          href={`#`}
+          href={`/pricing/free-trial`}
           className="underline sora-regular flex items-center gap-2"
         >
           Free Trial available
@@ -150,7 +150,7 @@ const Pricing = () => {
                 <PricingCard
                   key={i}
                   footerCls={`bg-none`}
-                  hideExtPricing={true}
+                  // ExtPricing={true}
                   headingCls={`lg:flex-row flex-col`}
                   cardValue={v}
                   // crdExtraCls={`flex lg:flex-col md:flex-row flex-col item-center justify-between`}
@@ -163,6 +163,7 @@ const Pricing = () => {
               <PricingCard
                 key={i}
                 hidePricing={true}
+                ExtPricing={true}
                 headingCls={`flex-col-reverse items-start`}
                 pricingFetSls={`lg:w-[33%] w-full`}
                 footerCls={`bg-none lg:w-[33%] w-full flex flex-col items-center justify-center gap-4`}

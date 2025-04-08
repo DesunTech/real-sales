@@ -30,6 +30,12 @@ const PricingCard = (props) => {
             <br />
             {props?.cardValue?.descriptionSub}
           </p>
+          {!props?.freePricing ? null : (
+            <p className="m-plus-rounded-1c-regular text-[#060606aa] lg:text-5xl text-2xl mt-4">
+              FREE&nbsp;
+              <span className="text-[48%]">{`(Only Audio)`}</span>
+            </p>
+          )}
         </div>
       </div>
       <div className={`flex flex-col gap-4 p-4 ${props?.pricingFetSls}`}>
@@ -74,13 +80,15 @@ const PricingCard = (props) => {
           props?.footerCls || `lg:bg-gradient-to-b md:bg-none bg-gradient-to-b`
         } from-[#ddd]/0 to-[#ddd]/70 p-4 rounded-b-[10px]`}
       >
-        {props?.hideExtPricing ? null : (
+        {!props?.ExtPricing ? null : (
           <p className="m-plus-rounded-1c-regular text-[#060606aa] text-[34px]">
             $Talk to Sales&nbsp;
             <span className="text-[48%]">{`(for Details)`}</span>
           </p>
         )}
         <BookAdemo
+          link={props?.link}
+          onClick={props?.onClick}
           className={`!border-[#FFDE5A] !bg-[#060606] !text-[#FFDE5A] !px-5 !py-2.5 h-fit w-full`}
           BookaDemo={"CHOOSE PLAN"}
           icon={<ArrowRight stroke={`#FFDE5A`} width={19} height={13} />}

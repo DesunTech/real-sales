@@ -1,15 +1,19 @@
 import Image from "next/image";
 import attachment7 from "../../../public/assets/images/banner/attachment7.png";
 import bannerImg from "../../../public/assets/images/banner/BANNER-IMG.png";
+import bannersub_img from ".././../../public/assets/images/banner/bannersub-img.png";
 import BookAdemo from "../../common/bookAdemo";
 import AddIcCallIcon from "@mui/icons-material/AddIcCall";
 import CommonButton from "../../common/commonButton";
 import ArrowRight from "../../../public/assets/icons/arrowRight";
+import { useDispatch } from "react-redux";
+import { DemoMeetingValue, TryRealsalesValue } from "../../redux/OpenModal";
 
 const Banner = () => {
+  const dispatch = useDispatch();
+
   return (
     <div className="relative h-full bg-[url(../../public/assets/images/RealSales-backgrounds/bg-3.png)] bg-cover bg-center bg-no-repeat">
-    
       <div className="page-container mx-auto px-4 py-8 container flex flex-col gap-16 w-full h-full">
         <div className="flex lg:flex-row flex-col-reverse items-center justify-between gap-8">
           <div className="lg:w-1/2 w-full flex flex-col lg:items-start items-center justify-between gap-4">
@@ -34,11 +38,13 @@ const Banner = () => {
 
             <div className="flex lg:flex-row flex-col items-center gap-4">
               <BookAdemo
+                onClick={() => dispatch(DemoMeetingValue(true))}
                 className={`!border-[#FFDE5A] !bg-[#060606] !text-[#FFDE5A] !px-5 !py-1 h-fit`}
                 icon={<AddIcCallIcon style={{ fontSize: "16px" }} />}
               />
               <div className="lg:flex hidden border-r-[2px] border-dashed border-[#000000] h-15" />
               <CommonButton
+                onClick={() => dispatch(TryRealsalesValue(true))}
                 className={`!border-[2px] !border-[#060606] !text-[#060606] !lg:px-5 !px-3 !lg:py-1 !py-0.5 !text-[15px] flex !items-center gap-2 h-fit`}
                 buttontext={"TRY REALSALES"}
                 icon={<ArrowRight width={19} height={13} />}
@@ -52,8 +58,8 @@ const Banner = () => {
         <div className="flex lg:flex-row flex-col items-center justify-between gap-8">
           <div className="lg:w-[40%] w-full flex items-center justify-center">
             <Image
-              src={attachment7}
-              alt="attachment7"
+              src={bannersub_img}
+              alt="bannersub_img"
               width={1920}
               height={1080}
               className="w-full h-full"
