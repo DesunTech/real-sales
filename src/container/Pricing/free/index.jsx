@@ -1,8 +1,11 @@
 import React from "react";
 import PricingCard from "../../../common/pricingCard";
 import MeetPerfectPersona from "../../About/MeetPerfectPersona";
+import { useDispatch } from "react-redux";
+import { SessionModesValue } from "../../../redux/OpenModal";
 
 const Free = () => {
+  const dispatch = useDispatch();
   const freePricing = [
     {
       name: "Starter",
@@ -48,6 +51,8 @@ const Free = () => {
                 footerCls={`bg-none lg:w-[33%] w-full flex flex-col items-center justify-center gap-4`}
                 crdExtraCls={`flex lg:flex-row flex-col item-center justify-between`}
                 cardValue={v}
+                link={`#`}
+                onClick={() => dispatch(SessionModesValue(true))}
               />
             ))
           : null}

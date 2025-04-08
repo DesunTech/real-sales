@@ -87,6 +87,8 @@ const PricingCard = (props) => {
           </p>
         )}
         <BookAdemo
+          link={props?.link}
+          onClick={props?.onClick}
           className={`!border-[#FFDE5A] !bg-[#060606] !text-[#FFDE5A] !px-5 !py-2.5 h-fit w-full`}
           BookaDemo={"CHOOSE PLAN"}
           icon={<ArrowRight stroke={`#FFDE5A`} width={19} height={13} />}

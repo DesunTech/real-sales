@@ -168,8 +168,6 @@ const Header = () => {
           )}
         </nav>
       </div>
-      <DemoMeeting />
-      <TryRealsales />
     </header>
   );
 };
