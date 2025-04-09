@@ -145,16 +145,24 @@ const Header = () => {
               </div>
               <ul className="px-4">
                 <li className="py-2 border-b text-white">
-                  <Link href="/">Home</Link>
+                  <Link href="/" onClick={() => setMobileMenuOpen(false)}>
+                    Home
+                  </Link>
                 </li>
                 <li className="py-2 border-b text-white">
-                  <Link href="/about">About</Link>
+                  <Link href="/about" onClick={() => setMobileMenuOpen(false)}>
+                    About
+                  </Link>
                 </li>
                 <li className="py-2 border-b text-white">
-                  <Link href="#">Industries</Link>
+                  <Link href="#" onClick={() => setMobileMenuOpen(false)}>
+                    Industries
+                  </Link>
                 </li>
                 <li className="py-2 border-b text-white">
-                  <Link href="/faq">FAQ</Link>
+                  <Link href="/faq" onClick={() => setMobileMenuOpen(false)}>
+                    FAQ
+                  </Link>
                 </li>
                 <li className="py-4">
                   <BookAdemo

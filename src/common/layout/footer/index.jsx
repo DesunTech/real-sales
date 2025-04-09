@@ -17,8 +17,8 @@ const Footer = () => {
     {
       heading: "Get Started",
       links: [
-        { name: "Home", link: "/home" },
-        { name: "About Us", link: "/about-us" },
+        { name: "Home", link: "/" },
+        { name: "About Us", link: "/about" },
         { name: "Our Services", link: "/our-services" },
         { name: "Chatbot Services", link: "/chatbot-services" },
         { name: "Resources", link: "/resources" },

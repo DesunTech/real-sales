@@ -17,7 +17,7 @@ const Banner = () => {
       <div className="page-container mx-auto px-4 py-8 container flex flex-col gap-16 w-full h-full">
         <div className="flex lg:flex-row flex-col-reverse items-center justify-between gap-8">
           <div className="lg:w-1/2 w-full flex flex-col lg:items-start items-center justify-between gap-4">
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col lg:gap-4 gap-2 w-full">
               <p className="text-[16px] text-[#060606] sora-regular">
                 RealSales accelerate
                 <br />
@@ -28,7 +28,7 @@ const Banner = () => {
                 <br />
                 <span className="lg:text-[200%] text-[150%]">REALSALES AI</span>
               </h1>
-              <hr className="border-[#06060640] mr-[8%] mb-1 mt-2" />
+              <hr className="border-[#06060640] mr-[8%] lg:mb-1 mb-0 lg:mt-2 mt-0" />
               <p className="lg:text-[40px] text-[20px] text-[#060606E5] m-plus-rounded-1c-regular">
                 Supercharging your sales
                 <br />
@@ -36,16 +36,16 @@ const Banner = () => {
               </p>
             </div>
 
-            <div className="flex lg:flex-row flex-col items-center gap-4">
+            <div className="flex lg:flex-row flex-col items-center gap-4 w-full">
               <BookAdemo
                 onClick={() => dispatch(DemoMeetingValue(true))}
-                className={`!border-[#FFDE5A] !bg-[#060606] !text-[#FFDE5A] !px-5 !py-1 h-fit`}
+                className={`!border-[#FFDE5A] !bg-[#060606] !text-[#FFDE5A] !px-5 !py-1 h-fit lg:w-fit w-full`}
                 icon={<AddIcCallIcon style={{ fontSize: "16px" }} />}
               />
               <div className="lg:flex hidden border-r-[2px] border-dashed border-[#000000] h-15" />
               <CommonButton
                 onClick={() => dispatch(TryRealsalesValue(true))}
-                className={`!border-[2px] !border-[#060606] !text-[#060606] !lg:px-5 !px-3 !lg:py-1 !py-0.5 !text-[15px] flex !items-center gap-2 h-fit`}
+                className={`!border-[2px] !border-[#060606] !text-[#060606] !lg:px-5 !px-3 !lg:py-1 !py-0.5 !text-[15px] flex !items-center gap-2 h-fit lg:w-fit w-full`}
                 buttontext={"TRY REALSALES"}
                 icon={<ArrowRight width={19} height={13} />}
               />
