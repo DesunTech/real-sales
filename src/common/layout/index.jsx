@@ -18,7 +18,7 @@ const Layout = ({children}) => {
       {!isChatPage && <Footer />}
       <SessionModes />
       <DemoMeeting />
-      <TryRealsales />
+      <TryRealsales /> 
       <WaitAMinute />
     </>
   )
