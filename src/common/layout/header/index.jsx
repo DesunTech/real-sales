@@ -88,9 +88,9 @@ const Header = () => {
                     <div className="flex flex-col items-start gap-4">
                       <div>
                         <p>Industry</p>
-                        <div class="flex items-center gap-2.5">
-                          <hr class="w-16 border border-black" />
-                          <div class="h-2.5 w-2.5 bg-black rotate-45" />
+                        <div className="flex items-center gap-2.5">
+                          <hr className="w-16 border border-black" />
+                          <div className="h-2.5 w-2.5 bg-black rotate-45" />
                         </div>
                       </div>
                       <p>Food & Beverage</p>

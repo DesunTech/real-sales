@@ -53,11 +53,11 @@ const SessionModes = () => {
         width={width > 720 ? "50%" : "90%"}
       >
         <div className="flex flex-col gap-4 items-start">
-          <div class="flex flex-col items-start">
-            <h2 class="lg:text-[22px] text-[16px] m-plus-rounded-1c-regular text-[#060606] w-full flex items-center justify-start">
+          <div className="flex flex-col items-start">
+            <h2 className="lg:text-[22px] text-[16px] m-plus-rounded-1c-regular text-[#060606] w-full flex items-center justify-start">
               Choose your Dream Session Modes
             </h2>
-            <p class="lg:text-[30px] text-[16px] m-plus-rounded-1c-regular text-[#060606E5]">
+            <p className="lg:text-[30px] text-[16px] m-plus-rounded-1c-regular text-[#060606E5]">
               (Choose any one):
             </p>
           </div>

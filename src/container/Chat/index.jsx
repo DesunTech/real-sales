@@ -24,7 +24,7 @@ const Chat = () => {
         className={`w-auto rounded-[25px] bg-[url(../../public/assets/images/RealSales-backgrounds/bg-4.png)] bg-cover bg-center bg-blend-multiply overflow-hidden relative`}
       >
         {/* <Image src={glow_light} alt='glow_light' className='absolute w-full h-full' /> */}
-        <div class="w-full h-[calc(100vh_-_32px)] overflow-y-auto bg-[linear-gradient(180deg,rgba(6,6,6,0.9)_0%,rgba(17,24,43,0.9)_62.58%)] px-8 py-4">
+        <div className="w-full h-[calc(100vh_-_32px)] overflow-y-auto bg-[linear-gradient(180deg,rgba(6,6,6,0.9)_0%,rgba(17,24,43,0.9)_62.58%)] px-8 py-4">
           {/* header */}
           <div className="flex items-center justify-between">
             <div className="w-10 h-10 bg-[#FFFFFF1A] rounded-full flex items-center justify-center cursor-pointer">
@@ -161,9 +161,9 @@ const Chat = () => {
                 {/* top left */}
                 <div className="w-[60%]">
                   {/* <Image src={glow_light} alt="glow_light" className="opacity-[0px]"/> */}
-                  <div class="relative w-full h-[80vh] overflow-hidden">
-                    <div class="absolute inset-0 bg-[url('../../public/assets/images/RealSales-abstracts/glow-light-1.png')] bg-cover bg-center bg-no-repeat opacity-40"></div>
-                    <div class="relative z-10"></div>
+                  <div className="relative w-full h-[80vh] overflow-hidden">
+                    <div className="absolute inset-0 bg-[url('../../public/assets/images/RealSales-abstracts/glow-light-1.png')] bg-cover bg-center bg-no-repeat opacity-40"></div>
+                    <div className="relative z-10"></div>
                   </div>
                 </div>
               </div>

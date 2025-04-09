@@ -76,8 +76,8 @@ const TryRealsales = (props) => {
           </div>
           <div className="w-full">
             <div className="flex items-start gap-2 mt-4">
-              <div class="rounded-full border border-solid border-[#060606] p-1">
-                <div class="w-2.5 h-2.5 rounded-full bg-[#060606]" />
+              <div className="rounded-full border border-solid border-[#060606] p-1">
+                <div className="w-2.5 h-2.5 rounded-full bg-[#060606]" />
               </div>
               <p className="text-[16px] text-[#060606] sora-regular text-start">
                 Fill the details for Demo Session:
