@@ -1,9 +1,10 @@
 import React from 'react'
+import About from '../../container/about'
 
 const AboutPage = () => {
   return (
     <div>
-        {/* <About /> */}
+        <About />
     </div>
   )
 }

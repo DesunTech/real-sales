@@ -1,8 +1,8 @@
 import React from "react";
 import PricingCard from "../../../common/pricingCard";
-import MeetPerfectPersona from "../../About/MeetPerfectPersona";
 import { useDispatch } from "react-redux";
 import { SessionModesValue } from "../../../redux/OpenModal";
+import MeetPerfectPersona from "../../about/MeetPerfectPersona";
 
 const Free = () => {
   const dispatch = useDispatch();
