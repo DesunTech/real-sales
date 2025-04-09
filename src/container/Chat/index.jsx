@@ -3,7 +3,6 @@ import Image from "next/image";
 import whiteLogoNoBackground from "../../../public/assets/images/RealSales-official-logo/For Web/png/White logo - no background.png";
 import userDummy from "../../../public/assets/images/RealSales-user-images/user-3.png";
 import menueIcon from "../../../public/assets/icons/menueIcon.svg";
-import glow_light from "../../../public/assets/images/RealSales-abstracts/glow-light-1.png";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
@@ -16,6 +15,8 @@ import AddCircleOutlineSharpIcon from "@mui/icons-material/AddCircleOutlineSharp
 import cil_audio from "../../../public/assets/icons/cil_audio.svg";
 import BookAdemo from "../../common/bookAdemo";
 import ArrowRight from "../../../public/assets/icons/arrowRight";
+import MicNoneOutlinedIcon from "@mui/icons-material/MicNoneOutlined";
+import callVibration from "../../../public/assets/images/RealSales-abstracts/call-vibration.png";
 
 const Chat = () => {
   return (
@@ -67,7 +68,7 @@ const Chat = () => {
 
           {/* bordy */}
           <div className="flex flex-row gap-4">
-            <div className="w-[70%] h-[calc(100vh_-_8rem)] flex flex-col justify-between gap-4">
+            <div className="relative w-[70%] h-[calc(100vh_-_8rem)] flex flex-col justify-between gap-4">
               {/* top */}
               <div className="w-full flex flex-row items-start">
                 {/* top right */}
@@ -159,16 +160,44 @@ const Chat = () => {
                   </div>
                 </div>
                 {/* top left */}
-                <div className="w-[60%]">
-                  {/* <Image src={glow_light} alt="glow_light" className="opacity-[0px]"/> */}
-                  <div className="relative w-full h-[80vh] overflow-hidden">
-                    <div className="absolute inset-0 bg-[url('../../public/assets/images/RealSales-abstracts/glow-light-1.png')] bg-cover bg-center bg-no-repeat opacity-40"></div>
-                    <div className="relative z-10"></div>
+                <div className="w-[60%] flex flex-col items-center gap-2">
+                  <div>
+                    <p className="sora-regular text-white text-base">
+                      Audio-Chat Session:
+                    </p>
+                    <div className="flex flex-col gap-0.25 w-fit">
+                      <p className="m-plus-rounded-1c-light text-white text-2xl">
+                        Your Session id:&nbsp;
+                        <span className="text-[#FFDE5A]">049ZF-83Mo0K</span>
+                      </p>
+                      <hr className="border-[#FFFFFF33] " />
+                    </div>
+                  </div>
+                  <div className="relative w-full h-[calc(80vh)] overflow-hidden">
+                    <div className="absolute inset-0 bg-[url('../../public/assets/images/RealSales-abstracts/glow-light-1.png')] bg-cover bg-center bg-no-repeat opacity-20"></div>
+                    <div className="absolute inset-0 p-5 w-full h-full flex flex-col items-center">
+                      <div className="flex items-center gap-1.5">
+                        <div className="w-10 h-10 bg-[#FFFFFF1A] rounded-full flex items-center justify-center cursor-pointer">
+                          <MicNoneOutlinedIcon className="text-white !text-[20px]" />
+                        </div>
+                        <Image
+                          src={callVibration}
+                          alt="callVibration"
+                          className="w-6 h-10"
+                        />
+                        <p className="text-white text-base sora-regular">
+                          <span className="text-[#FFDE5A] sora-semibold">
+                            Hello!
+                          </span>
+                          &nbsp;how are you !!
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
               {/* bottom */}
-              <div className="w-full flex flex-col items-start gap-2">
+              <div className="sticky bottom-0 w-full flex flex-col items-start gap-2">
                 <div>
                   <p className="sora-regular text-white text-sm">
                     To proceed your dream chat:
@@ -210,8 +239,9 @@ const Chat = () => {
                   </div>
                 </div>
               </div>
+              <div className="h-[20vh] w-full text-transparent"></div>
             </div>
-            <div className="w-[30%]">ss</div>
+            <div className="w-[30%]"></div>
           </div>
         </div>
       </div>
