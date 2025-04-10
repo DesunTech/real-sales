@@ -6,6 +6,8 @@ import SessionModes from '../modals/SessionModes'
 import DemoMeeting from '../modals/DemoMeeting'
 import TryRealsales from '../modals/TryRealsales'
 import WaitAMinute from '../modals/WaitAMinute'
+import ChatEndModal from '../modals/ChatEndModal'
+import UploadYourDocModal from '../modals/UploadYourDocModal'
 
 const Layout = ({children}) => {
   const router = useRouter()
@@ -20,6 +22,8 @@ const Layout = ({children}) => {
       <DemoMeeting />
       <TryRealsales /> 
       <WaitAMinute />
+      <ChatEndModal />
+      <UploadYourDocModal />
     </>
   )
 }

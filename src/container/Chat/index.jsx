@@ -27,10 +27,14 @@ import callVibration from "../../../public/assets/images/RealSales-abstracts/cal
 import personaExtra from "../../../public/assets/images/RealSales-user-images/persona-extra.png";
 import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
 import ideaIcon from "../../../public/assets/icons/ideaIcon.svg";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
+import { EndChatValue } from "../../redux/OpenModal";
 
 const Chat = ({ slug }) => {
+
+  const dispatch = useDispatch();
+
   const [checked, setChecked] = useState(false);
   const [openAnswer, setOpenAnswer] = useState(0);
 
@@ -313,7 +317,12 @@ const Chat = ({ slug }) => {
                     />
                   </div>
                   <CustomTooltip title={"End Call"} placement="top" arrow>
-                    <div className="w-10 h-10 bg-[#FE0000] rounded-full flex items-center justify-center cursor-pointer">
+                    <div
+                      className="w-10 h-10 bg-[#FE0000] rounded-full flex items-center justify-center cursor-pointer"
+                      onClick={() => {
+                        dispatch(EndChatValue({ open: true, type: "audio" }))
+                      }}
+                    >
                       <CallEndSharpIcon className="text-white" />
                     </div>
                   </CustomTooltip>

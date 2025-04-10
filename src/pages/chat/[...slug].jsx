@@ -8,7 +8,7 @@ const ChatPage = () => {
 
     return (
         <>
-            <Chat slug={slug[0]} />
+            <Chat slug={slug?.length ? slug[0] : null} />
         </>
     )
 }
