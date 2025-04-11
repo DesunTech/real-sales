@@ -3,6 +3,10 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   demoMeetingValue: false,
   tryRealsalesValue: false,
+  personaTypeValue: false,
+  interactionValue: false,
+  idealPersonaValue: false,
+  shortlistedPersonaValue: false,
   sessionModesValue: false,
   waitAMinuteValue: { open: false, type: "" },
   endChatValue: false,
@@ -18,6 +22,18 @@ const OpenModalSlice = createSlice({
     },
     TryRealsalesValue: (state, action) => {
       state.tryRealsalesValue = action.payload || false;
+    },
+    PersonaTypeValue: (state, action) => {
+      state.personaTypeValue = action.payload || false;
+    },
+    InteractionValue: (state, action) => {
+      state.interactionValue = action.payload || false;
+    },
+    IdealPersonaValue: (state, action) => {
+      state.idealPersonaValue = action.payload || false;
+    },
+    ShortlistedPersonaValue: (state, action) => {
+      state.shortlistedPersonaValue = action.payload || false;
     },
     SessionModesValue: (state, action) => {
       state.sessionModesValue = action.payload || false;
@@ -37,6 +53,10 @@ const OpenModalSlice = createSlice({
 export const {
   DemoMeetingValue,
   TryRealsalesValue,
+  PersonaTypeValue,
+  InteractionValue,
+  IdealPersonaValue,
+  ShortlistedPersonaValue,
   SessionModesValue,
   WaitAMinuteValue,
   EndChatValue,
