@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import CommonModal from "../commonModal";
-import { DemoMeetingValue } from "../../redux/OpenModal";
+import { DemoMeetingValue, SessionModesValue } from "../../redux/OpenModal";
 import { useDispatch, useSelector } from "react-redux";
 import {
   FormControl,
@@ -27,6 +27,7 @@ const DemoMeeting = (props) => {
   const dispatch = useDispatch();
   const [idc, setIdc] = useState(91);
   const [fromData, setFromData] = useState(initialFormData);
+  const [fromDataErr, setFromDataErr] = useState(initialFormData);
   const [width, setWidth] = useState(1366);
 
   useEffect(() => {
@@ -37,25 +38,78 @@ const DemoMeeting = (props) => {
 
   const handleChange = (e) => {
     let { value, name } = e.target;
-    setFromData((pre)=> ({...pre, [name]: value }));
+    setFromData((pre) => ({ ...pre, [name]: value }));
+    // Clear error for the field being typed in
+    setFromDataErr((pre) => ({ ...pre, [name]: "" }));
+  };
+
+  const submitScheduleMeeting = () => {
+    let valid = true;
+    const errors = { ...initialFormData };
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phoneRegex = /^\d{10}$/;
+
+    // Name validation
+    if (!fromData.name.trim()) {
+      valid = false;
+      errors.name = "Name is required";
+    }
+
+    // Email validation
+    if (!fromData.email.trim()) {
+      valid = false;
+      errors.email = "Email is required";
+    } else if (!emailRegex.test(fromData.email)) {
+      valid = false;
+      errors.email = "Please enter a valid email address";
+    }
+
+    // Phone validation
+    if (!fromData.phone.trim()) {
+      valid = false;
+      errors.phone = "Phone number is required";
+    } else if (!phoneRegex.test(fromData.phone)) {
+      valid = false;
+      errors.phone = "Please enter a valid 10-digit phone number";
+    }
+
+    // Industry validation
+    if (!fromData.industry.trim()) {
+      valid = false;
+      errors.industry = "Industry is required";
+    }
+
+    setFromDataErr(errors);
+
+    if (valid) {
+      try {
+        setFromDataErr(initialFormData);
+        dispatch(DemoMeetingValue(false));
+        dispatch(SessionModesValue(true));
+      } catch (error) {
+        console.log(error, "error");
+      }
+    }
   };
 
   useEffect(() => {
-    setFromData((pre)=> ({...pre, idc: idc }));
-  },[idc])
+    setFromData((pre) => ({ ...pre, idc: idc }));
+  }, [idc]);
 
-  console.log(fromData, "fromData")
+  console.log(fromData, "fromData");
 
   const demoMeetingValue = useSelector(
     (state) => state.openModal.demoMeetingValue
   );
 
-  console.log(demoMeetingValue, "demoMeetingValue");
   return (
     <>
       <CommonModal
         open={demoMeetingValue}
-        onClose={() => dispatch(DemoMeetingValue(false))}
+        onClose={() => {
+          setFromDataErr(initialFormData);
+          dispatch(DemoMeetingValue(false));
+        }}
         width={width > 720 ? "60%" : "90%"}
       >
         <div className="w-full flex flex-col items-center gap-4">
@@ -80,7 +134,6 @@ const DemoMeeting = (props) => {
             </div>
 
             <div className="flex flex-col gap-4">
-
               <div className="flex lg:flex-row flex-col gap-2">
                 <TextField
                   label="Your full name"
@@ -89,15 +142,23 @@ const DemoMeeting = (props) => {
                   name="name"
                   color="#000000"
                   onChange={(e) => handleChange(e)}
+                  value={fromData?.name}
+                  error={!!fromDataErr?.name}
+                  helperText={fromDataErr?.name}
+                  required
                 />
                 <TextField
-                type="email"
+                  type="email"
                   label="Your email address"
                   variant="standard"
                   className="w-full outline-[#000000]"
                   name="email"
                   color="#000000"
                   onChange={(e) => handleChange(e)}
+                  value={fromData?.email}
+                  error={!!fromDataErr?.email}
+                  helperText={fromDataErr?.email}
+                  required
                 />
               </div>
 
@@ -109,6 +170,7 @@ const DemoMeeting = (props) => {
                   name="companyName"
                   color="#000000"
                   onChange={(e) => handleChange(e)}
+                  value={fromData?.companyName}
                 />
                 <TextField
                   label="Your job title (optional)"
@@ -117,6 +179,7 @@ const DemoMeeting = (props) => {
                   name="jobTitle"
                   color="#000000"
                   onChange={(e) => handleChange(e)}
+                  value={fromData?.jobTitle}
                 />
               </div>
 
@@ -133,19 +196,23 @@ const DemoMeeting = (props) => {
                     label="idc"
                     color="#000000"
                   >
-                    <MenuItem value={91}>Eg. +91</MenuItem>
-                    <MenuItem value={92}>Eg. +92</MenuItem>
-                    <MenuItem value={93}>Eg. +93</MenuItem>
+                    <MenuItem value={91}>+91</MenuItem>
+                    <MenuItem value={92}>+92</MenuItem>
+                    <MenuItem value={93}>+93</MenuItem>
                   </Select>
                 </FormControl>
                 <TextField
-                type="number"
+                  type="number"
                   label="Your phone number"
                   variant="standard"
                   className="w-[85%] outline-[#000000]"
                   name="phone"
                   color="#000000"
                   onChange={(e) => handleChange(e)}
+                  value={fromData?.phone}
+                  error={!!fromDataErr?.phone}
+                  helperText={fromDataErr?.phone}
+                  required
                 />
               </div>
 
@@ -157,6 +224,10 @@ const DemoMeeting = (props) => {
                   name="industry"
                   color="#000000"
                   onChange={(e) => handleChange(e)}
+                  value={fromData?.industry}
+                  error={!!fromDataErr?.industry}
+                  helperText={fromDataErr?.industry}
+                  required
                 />
                 <TextField
                   label="Your specific needs (optional)"
@@ -165,6 +236,7 @@ const DemoMeeting = (props) => {
                   name="specificNeeds"
                   color="#000000"
                   onChange={(e) => handleChange(e)}
+                  value={fromData?.specificNeeds}
                 />
               </div>
             </div>
@@ -172,6 +244,7 @@ const DemoMeeting = (props) => {
           <CommonButton
             className={`w-full !border-0 !outline-0 !bg-[#FFDE5A] shadow-md !text-[#060606] text-[20px]`}
             buttontext={`Schedule Meeting`}
+            onClick={() => submitScheduleMeeting()}
             icon={
               <DoneOutlinedIcon className="text-[#060606] !font-normal !text-[20px]" />
             }

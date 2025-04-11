@@ -19,7 +19,6 @@ const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openIndustry, setOpenIndustry] = useState(false);
 
-  console.log(openIndustry, "openIndustry");
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
   };

@@ -31,6 +31,7 @@ const TryRealsales = (props) => {
 
   const [idc, setIdc] = useState(91);
   const [fromData, setFromData] = useState(initialFormData);
+  const [fromDataErr, setFromDataErr] = useState(initialFormData);
   const [width, setWidth] = useState(1366);
 
   useEffect(() => {
@@ -42,6 +43,57 @@ const TryRealsales = (props) => {
   const handleChange = (e) => {
     let { value, name } = e.target;
     setFromData((pre) => ({ ...pre, [name]: value }));
+    // Clear error for the field being typed in
+    setFromDataErr((pre) => ({ ...pre, [name]: "" }));
+  };
+
+  const submitTryRealsales = () => {
+    let valid = true;
+    const errors = { ...initialFormData };
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phoneRegex = /^\d{10}$/;
+
+    // Name validation
+    if (!fromData.name.trim()) {
+      valid = false;
+      errors.name = "Name is required";
+    }
+
+    // Email validation
+    if (!fromData.email.trim()) {
+      valid = false;
+      errors.email = "Email is required";
+    } else if (!emailRegex.test(fromData.email)) {
+      valid = false;
+      errors.email = "Please enter a valid email address";
+    }
+
+    // Phone validation
+    if (!fromData.phone.trim()) {
+      valid = false;
+      errors.phone = "Phone number is required";
+    } else if (!phoneRegex.test(fromData.phone)) {
+      valid = false;
+      errors.phone = "Please enter a valid 10-digit phone number";
+    }
+
+    // Coupon Code validation
+    if (!fromData.couponCode.trim()) {
+      valid = false;
+      errors.couponCode = "Coupon code is required";
+    }
+
+    setFromDataErr(errors);
+
+    if (valid) {
+      try {
+        setFromDataErr(initialFormData);
+        dispatch(TryRealsalesValue(false));
+        router.push("/pricing/free-trial");
+      } catch (error) {
+        console.log(error, "error");
+      }
+    }
   };
 
   useEffect(() => {
@@ -58,7 +110,10 @@ const TryRealsales = (props) => {
     <>
       <CommonModal
         open={tryRealsalesValue}
-        onClose={() => dispatch(TryRealsalesValue(false))}
+        onClose={() => {
+          setFromDataErr(initialFormData);
+          dispatch(TryRealsalesValue(false));
+        }}
         width={width > 720 ? "60%" : "90%"}
       >
         <div className="w-full flex flex-col items-center gap-4">
@@ -93,6 +148,10 @@ const TryRealsales = (props) => {
                   name="name"
                   color="#000000"
                   onChange={(e) => handleChange(e)}
+                  value={fromData?.name}
+                  error={!!fromDataErr?.name}
+                  helperText={fromDataErr?.name}
+                  required
                 />
                 <TextField
                   type="email"
@@ -102,6 +161,10 @@ const TryRealsales = (props) => {
                   name="email"
                   color="#000000"
                   onChange={(e) => handleChange(e)}
+                  value={fromData?.email}
+                  error={!!fromDataErr?.email}
+                  helperText={fromDataErr?.email}
+                  required
                 />
               </div>
 
@@ -118,9 +181,9 @@ const TryRealsales = (props) => {
                     label="idc"
                     color="#000000"
                   >
-                    <MenuItem value={91}>Eg. +91</MenuItem>
-                    <MenuItem value={92}>Eg. +92</MenuItem>
-                    <MenuItem value={93}>Eg. +93</MenuItem>
+                    <MenuItem value={91}>+91</MenuItem>
+                    <MenuItem value={92}>+92</MenuItem>
+                    <MenuItem value={93}>+93</MenuItem>
                   </Select>
                 </FormControl>
                 <TextField
@@ -131,6 +194,10 @@ const TryRealsales = (props) => {
                   name="phone"
                   color="#000000"
                   onChange={(e) => handleChange(e)}
+                  value={fromData?.phone}
+                  error={!!fromDataErr?.phone}
+                  helperText={fromDataErr?.phone}
+                  required
                 />
               </div>
 
@@ -145,6 +212,10 @@ const TryRealsales = (props) => {
                     sx: { paddingRight: "150px" },
                   }}
                   onChange={(e) => handleChange(e)}
+                  value={fromData?.couponCode}
+                  error={!!fromDataErr?.couponCode}
+                  helperText={fromDataErr?.couponCode}
+                  required
                 />
                 <Image
                   src={textFieldEnd}
@@ -157,10 +228,7 @@ const TryRealsales = (props) => {
           <CommonButton
             className={`w-full !border-0 !outline-0 !bg-[#FFDE5A] shadow-md !text-[#060606] text-[20px]`}
             buttontext={`START session`}
-            onClick={() => {
-              dispatch(TryRealsalesValue(false));
-              router.push("/pricing/free-trial");
-            }}
+            onClick={() => submitTryRealsales()}
             icon={
               <DoneOutlinedIcon className="text-[#060606] !font-normal !text-[20px]" />
             }

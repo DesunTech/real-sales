@@ -11,8 +11,12 @@ import whatsapp from "../../../../public/assets/icons/whatsapp.svg";
 import facebook from "../../../../public/assets/icons/facebook.svg";
 import instagram from "../../../../public/assets/icons/instagram.svg";
 import copyright from "../../../../public/assets/icons/copyright.svg";
+import { DemoMeetingValue } from "../../../redux/OpenModal";
+import { useDispatch } from "react-redux";
 
 const Footer = () => {
+  const dispatch = useDispatch();
+
   const LinksArr = [
     {
       heading: "Get Started",
@@ -94,8 +98,11 @@ const Footer = () => {
                 text ever since the 1500s.
               </p>
               <CommonButton
+                onClick={() => dispatch(DemoMeetingValue(true))}
                 className={`!border-[2px] !border-[#FFDE5A] !text-[#FFDE5A] !px-5 !py-1 !text-[15px] flex !items-center gap-2 h-fit`}
-                buttontext={<p className="m-plus-rounded-1c-light">Book a Demo</p>}
+                buttontext={
+                  <p className="m-plus-rounded-1c-light">Book a Demo</p>
+                }
                 icon={<ArrowRight stroke={`#FFDE5A`} width={19} height={13} />}
               />
             </div>
