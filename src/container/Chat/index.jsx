@@ -30,13 +30,16 @@ import ideaIcon from "../../../public/assets/icons/ideaIcon.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import { EndChatValue } from "../../redux/OpenModal";
+import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
+import MicOffSharpIcon from "@mui/icons-material/MicOffSharp";
 
 const Chat = ({ slug }) => {
-
   const dispatch = useDispatch();
 
   const [checked, setChecked] = useState(false);
   const [openAnswer, setOpenAnswer] = useState(0);
+  const [micUser, setMicUser] = useState(true);
+  const [micAi, setMicAi] = useState(true);
 
   const CustomTooltip = styled(({ className, ...props }) => (
     <Tooltip {...props} arrow classes={{ popper: className }} />
@@ -47,6 +50,7 @@ const Chat = ({ slug }) => {
     [`& .${tooltipClasses.tooltip}`]: {
       backgroundColor: theme.palette.common.white,
       color: "#fe0000",
+      fontSize: "10px",
     },
   }));
 
@@ -75,15 +79,26 @@ const Chat = ({ slug }) => {
         <div className="w-full flex flex-col gap-8 bg-[linear-gradient(180deg,rgba(6,6,6,0.9)_0%,rgba(17,24,43,0.9)_62.58%)] px-8 py-4">
           {/* header */}
           <div className="flex items-center justify-between">
-            <div className="w-10 h-10 bg-[#FFFFFF1A] rounded-full flex items-center justify-center cursor-pointer">
-              <ArrowBackIcon className="text-white" />
+            <div className="flex items-center w-[55%]">
+              <div className="w-[40%]">
+                <div
+                  onClick={() => {
+                    dispatch(EndChatValue({ open: true, type: "audio" }));
+                  }}
+                  className="w-10 h-10 bg-[#FFFFFF1A] rounded-full flex items-center justify-center cursor-pointer"
+                >
+                  <ArrowBackIcon className="text-white" />
+                </div>
+              </div>
+              <div className="w-[60%] flex items-center justify-end">
+                <Image
+                  src={whiteLogoNoBackground}
+                  alt="whiteLogoNoBackground"
+                  className="h-10 w-auto"
+                />
+              </div>
             </div>
-            <Image
-              src={whiteLogoNoBackground}
-              alt="whiteLogoNoBackground"
-              className="h-10 w-auto"
-            />
-            <div className="flex items-center gap-2">
+            <div className="flex items-center justify-end gap-2 w-[45%]">
               <div className="w-10 h-10 bg-[#FFFFFF1A] rounded-full flex items-center justify-center cursor-pointer">
                 <MailIcon className="text-white" />
               </div>
@@ -193,7 +208,13 @@ const Chat = ({ slug }) => {
                     </div>
                   </div>
 
-                  <div className="bg-[linear-gradient(180deg,rgba(17,24,43,0.3)_0%,rgba(255,255,255,0.09)_100%)] rounded-[10px] p-4 flex flex-col items-start gap-2">
+                  <div className="relative bg-[linear-gradient(180deg,rgba(17,24,43,0.3)_0%,rgba(255,255,255,0.09)_100%)] rounded-[10px] p-4 flex flex-col items-start gap-2">
+                    <div
+                      // onClick={props?.onClose}
+                      className="z-10 cursor-pointer bg-red-500 rounded-full h-6 w-6 flex items-center justify-center absolute -top-2.5 -right-2.5"
+                    >
+                      <CloseOutlinedIcon className="!text-[16px] text-white" />
+                    </div>
                     <div>
                       <p className="text-white m-plus-rounded-1c-medium text-lg">
                         Upgrade
@@ -213,8 +234,8 @@ const Chat = ({ slug }) => {
                 {/* top left */}
                 <div className="w-[60%] flex flex-col items-center gap-2">
                   <div>
-                    <p className="sora-regular text-white text-base">
-                      Audio-Chat Session:
+                    <p className="sora-regular text-white text-base capitalize">
+                      {slug}-Chat Session:
                     </p>
                     <div className="flex flex-col gap-0.25 w-fit">
                       <p className="m-plus-rounded-1c-light text-white text-2xl">
@@ -293,7 +314,101 @@ const Chat = ({ slug }) => {
                         </div>
                       </div>
                     ) : (
-                      `${slug}`
+                      <div className="absolute inset-0 p-5 w-full h-full flex flex-col items-center gap-2.5">
+                        {/* AI */}
+                        <div className="relative backdrop-blur-[5px] shadow-[0px_10px_30px_0px_#00000033] bg-[#FFFFFF05] overflow-hidden rounded-[10px] p-2.5">
+                          <div className="bg-[url(../../public/assets/images/RealSales-user-images/persona-plant.png)] w-80 h-44 bg-cover bg-no-repeat rounded-[10px]" />
+                          <div class="bg-[linear-gradient(0deg,rgba(0,0,0,0)_0%,rgba(0,0,0,0.4)_70%)] absolute top-2.5 left-2.5 right-2.5 rounded-t-[10px] z-10 px-4 py-2 flex gap-2">
+                            <CustomTooltip
+                              title={micAi ? "Mute" : "Muted"}
+                              placement="right"
+                              arrow
+                            >
+                              <div
+                                className="w-9 h-9 bg-[#FFFFFF1A] rounded-full flex items-center justify-center cursor-pointer"
+                                onClick={() => setMicAi(!micAi)}
+                              >
+                                {micAi ? (
+                                  <MicNoneOutlinedIcon className="text-white !text-[20px]" />
+                                ) : (
+                                  <MicOffSharpIcon className="text-white !text-[20px]" />
+                                )}
+                              </div>
+                            </CustomTooltip>
+                            {micAi ? (
+                              <Image
+                                src={callVibration}
+                                alt="callVibration"
+                                className="w-8 h-10"
+                              />
+                            ) : null}
+                          </div>
+                          <div class="bg-[linear-gradient(180deg,rgba(0,0,0,0)_0%,rgba(0,0,0,0.4)_70%)] absolute bottom-2.5 left-2.5 right-2.5 rounded-t-[10px] z-10 px-4 py-2 flex gap-2">
+                            <div className="backdrop-blur-[10px] py-2 px-4 w-full rounded-[10px] flex items-center gap-4 overflow-hidden">
+                              <div className="border border-solid border-white rounded-full w-10 h-10 p-0.5">
+                                <Image
+                                  src={persona_plant}
+                                  alt={"persona_plant"}
+                                  className="rounded-full w-full h-full"
+                                />
+                              </div>
+                              <p className="z-10 m-plus-rounded-1c-medium text-white text-[15px] w-[75%] truncate">
+                                <span className="text-[#FFDE5A]">
+                                  Hlw dear!
+                                </span>
+                                &nbsp;are you excited?
+                              </p>
+                              <div className="bg-[url(../../public/assets/images/RealSales-abstracts/call-vibration.png)] bg-cover bg-center bg-no-repeat w-[80%] h-[200%] absolute -bottom-[70%] right-0 opacity-40" />
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* user */}
+                        <div className="relative backdrop-blur-[5px] shadow-[0px_10px_30px_0px_#00000033] bg-[#FFFFFF05] overflow-hidden rounded-[10px] p-2.5">
+                          <div className="bg-[url(../../public/assets/images/RealSales-user-images/persona-plant.png)] w-80 h-44 bg-cover bg-no-repeat rounded-[10px]" />
+                          <div class="bg-[linear-gradient(0deg,rgba(0,0,0,0)_0%,rgba(0,0,0,0.4)_70%)] absolute top-2.5 left-2.5 right-2.5 rounded-t-[10px] z-10 px-4 py-2 flex gap-2">
+                            <CustomTooltip
+                              title={micUser ? "Mute" : "Muted"}
+                              placement="right"
+                              arrow
+                            >
+                              <div
+                                className="w-9 h-9 bg-[#FFFFFF1A] rounded-full flex items-center justify-center cursor-pointer"
+                                onClick={() => setMicUser(!micUser)}
+                              >
+                                {micUser ? (
+                                  <MicNoneOutlinedIcon className="text-white !text-[20px]" />
+                                ) : (
+                                  <MicOffSharpIcon className="text-white !text-[20px]" />
+                                )}
+                              </div>
+                            </CustomTooltip>
+                            {micUser ? (
+                              <Image
+                                src={callVibration}
+                                alt="callVibration"
+                                className="w-8 h-10"
+                              />
+                            ) : null}
+                          </div>
+                          <div class="bg-[linear-gradient(180deg,rgba(0,0,0,0)_0%,rgba(0,0,0,0.4)_70%)] absolute bottom-2.5 left-2.5 right-2.5 rounded-t-[10px] z-10 px-4 py-2 flex gap-2">
+                            <div className="backdrop-blur-[10px] py-2 px-4 w-full rounded-[10px] flex items-center gap-4 overflow-hidden">
+                              <div className="border border-solid border-white rounded-full w-10 h-10 p-0.5">
+                                <Image
+                                  src={persona_plant}
+                                  alt={"persona_plant"}
+                                  className="rounded-full w-full h-full"
+                                />
+                              </div>
+                              <p className="z-10 m-plus-rounded-1c-medium text-white text-[15px] w-[75%] truncate">
+                                <span className="text-[#FFDE5A]">Yes,</span>
+                                &nbsp;I'm feel very nice ...
+                              </p>
+                              <div className="bg-[url(../../public/assets/images/RealSales-abstracts/call-vibration.png)] bg-cover bg-center bg-no-repeat w-[80%] h-[200%] absolute -bottom-[70%] right-0 opacity-40" />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     )}
                   </div>
                 </div>
@@ -320,7 +435,7 @@ const Chat = ({ slug }) => {
                     <div
                       className="w-10 h-10 bg-[#FE0000] rounded-full flex items-center justify-center cursor-pointer"
                       onClick={() => {
-                        dispatch(EndChatValue({ open: true, type: "audio" }))
+                        dispatch(EndChatValue({ open: true, type: "audio" }));
                       }}
                     >
                       <CallEndSharpIcon className="text-white" />
