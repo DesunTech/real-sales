@@ -99,11 +99,13 @@ const Chat = ({ slug }) => {
               </div>
             </div>
             <div className="flex items-center justify-end gap-2 w-[45%]">
-              <div className="w-10 h-10 bg-[#FFFFFF1A] rounded-full flex items-center justify-center cursor-pointer">
+              <div className="relative w-10 h-10 bg-[#FFFFFF1A] rounded-full flex items-center justify-center cursor-pointer">
                 <MailIcon className="text-white" />
+                <p className="flex items-center justify-center absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-[#CF2427] text-white text-[10px]">{99}</p>
               </div>
-              <div className="w-10 h-10 bg-[#FFFFFF1A] rounded-full flex items-center justify-center cursor-pointer">
+              <div className="relative w-10 h-10 bg-[#FFFFFF1A] rounded-full flex items-center justify-center cursor-pointer">
                 <NotificationsIcon className="text-white" />
+                <p className="flex items-center justify-center absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-[#CF2427] text-white text-[10px]">{4}</p>
               </div>
               <div className="flex items-center gap-2 pl-4">
                 <div className="flex flex-col items-end">
