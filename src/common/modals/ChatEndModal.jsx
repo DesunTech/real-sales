@@ -88,6 +88,7 @@ const ChatEndModal = () => {
                     type: endChatValue?.type,
                   })
                 );
+                router.push("/feedback")
               }}
             >
               quit session anyway
