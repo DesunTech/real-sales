@@ -235,3 +235,15 @@ input::-webkit-inner-spin-button {
   background-color: #060606;
   box-shadow: 0px 0px 10px 0px #0000004D;
 }
+
+.MuiSlider-thumb {
+  color: #FFDE5A !important;
+  width: 20px !important;
+  height: 20px !important;
+}
+
+.MuiSlider-thumb::after {
+  border: 1px solid #FFDE5A;
+  width: 30px !important;
+  height: 30px !important;
+}
