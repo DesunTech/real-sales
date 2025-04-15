@@ -36,7 +36,7 @@ import MicOffSharpIcon from "@mui/icons-material/MicOffSharp";
 const Chat = ({ slug, children }) => {
   const dispatch = useDispatch();
   const router = useRouter();
-  
+
   const [checked, setChecked] = useState(false);
   const [openAnswer, setOpenAnswer] = useState(0);
   const [micUser, setMicUser] = useState(true);
@@ -140,7 +140,7 @@ const Chat = ({ slug, children }) => {
           {/* bordy */}
           {children ? (
             children
-          ) : (
+          ) : slug === "audio" || slug === "video" ? (
             <div className="flex flex-row gap-2">
               {/* left */}
               <div className="relative w-[70%] h-[calc(100vh_-_8rem)] flex flex-col justify-between gap-4">
@@ -325,7 +325,7 @@ const Chat = ({ slug, children }) => {
                             </div>
                           </div>
                         </div>
-                      ) : (
+                      ) : slug === "video" ? (
                         <div className="absolute inset-0 p-5 w-full h-full flex flex-col items-center gap-2.5">
                           {/* AI */}
                           <div className="relative backdrop-blur-[5px] shadow-[0px_10px_30px_0px_#00000033] bg-[#FFFFFF05] overflow-hidden rounded-[10px] p-2.5">
@@ -421,7 +421,7 @@ const Chat = ({ slug, children }) => {
                             </div>
                           </div>
                         </div>
-                      )}
+                      ) : null}
                     </div>
                   </div>
                 </div>
@@ -677,7 +677,7 @@ const Chat = ({ slug, children }) => {
                 </div>
               </div>
             </div>
-          )}
+          ) : null}
         </div>
       </div>
     </div>

@@ -236,14 +236,18 @@ input::-webkit-inner-spin-button {
   box-shadow: 0px 0px 10px 0px #0000004D;
 }
 
-.MuiSlider-thumb {
+.rating .MuiSlider-thumb {
   color: #FFDE5A !important;
   width: 20px !important;
   height: 20px !important;
 }
 
-.MuiSlider-thumb::after {
+.rating .MuiSlider-thumb::after {
   border: 1px solid #FFDE5A;
   width: 30px !important;
   height: 30px !important;
+}
+
+.rating .MuiRating-icon {
+  color: rgba(255, 255, 255, 0.834);
 }
