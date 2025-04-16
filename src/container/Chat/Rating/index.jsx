@@ -1,12 +1,18 @@
 import { FormControlLabel, Radio, Rating, Slider, styled } from "@mui/material";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import selJoye from "../../../../public/assets/icons/selJoye.svg";
 import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp";
 import happy from "../../../../public/assets/icons/happy.svg";
 import angry from "../../../../public/assets/icons/angry.svg";
 import solar_pen_bold from "../../../../public/assets/icons/solar_pen_bold.svg";
 import StarIcon from "@mui/icons-material/Star";
+import BookAdemo from "../../../common/bookAdemo";
+import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
+import ArrowRight from "../../../../public/assets/icons/arrowRight";
+import cil_audio from "../../../../public/assets/icons/cil_audio.svg";
+import pdfIcon from "../../../../public/assets/icons/pdfIcon.svg";
+import { useRouter } from "next/router";
 
 const RatingContainer = () => {
   const [rating, setRating] = useState(3.5);
@@ -28,14 +34,32 @@ const RatingContainer = () => {
     },
   ];
 
+  const ChatHistoryArr = [
+    {
+      chat1: "Good Morning ! How ar",
+      chat2: "Lorem Ipsum is the simply dummy text of t ...",
+      rating: 5,
+    },
+    {
+      chat1: "Hello.. ! Nice to hear you",
+      chat2: "Lorem Ipsum is the simply dummy text of t ...",
+      rating: 5,
+    },
+    {
+      chat1: "Congrats, you receive th",
+      chat2: "Lorem Ipsum is the simply dummy text of t ...",
+      rating: 5,
+    },
+  ];
+
   const SalesStrategy = [
     { title: "User confidence was good, but a slightly slower pace." },
     { title: "My Customer provided solid product knowledge today." },
   ];
 
   return (
-    <div className="w-full flex items-start justify-center gap-8 px-[8%]">
-      <div className="w-[70%] flex flex-col gap-4">
+    <div className="w-full flex lg:flex-row flex-col items-start justify-center gap-8 px-[8%]">
+      <div className="lg:w-[65%] w-full flex flex-col gap-4">
         <div className="flex flex-col items-start">
           <h1 className="m-plus-rounded-1c-semilight text-[#FFFFFF] text-[50px] text-center">
             Thank you for your&nbsp;
@@ -150,7 +174,7 @@ const RatingContainer = () => {
           </div>
         </div>
       </div>
-      <div className="w-[30%]">
+      <div className="lg:w-[35%] w-full flex flex-col items-start gap-4">
         <FormControlLabel
           value="end"
           control={
@@ -166,37 +190,121 @@ const RatingContainer = () => {
               }}
             />
           }
-          label={<p className="sora-regular text-lg">Your Chat History:</p>}
+          label={<p className="sora-semithin text-lg">Your Chat History:</p>}
           sx={{
             cursor: "default",
             color: "#FFFFFF", // label text color
           }}
         />
-        <div>
-          <div className="flex items-start gap-2.5">
-            <div className="bg-[#14558C] px-5 py-2.5 rounded-full flex items-center justify-center sora-semibold text-xl text-white">
-              1
+        <div className="flex flex-col gap-4">
+          {ChatHistoryArr?.length
+            ? ChatHistoryArr.map((v, i) => (
+                <div className="flex items-start gap-2.5">
+                  <p
+                    key={i}
+                    className="bg-[#14558C] p-4 w-10 h-10 leading-0 rounded-full flex items-center justify-center sora-semibold text-base text-white"
+                  >
+                    {i + 1}
+                  </p>
+                  <div className="bg-[linear-gradient(-90deg,rgba(20,85,140,0.3)_0%,rgba(20,85,140,0)_63.5%)] border-r-4 border-solid border-[#14558CB2]">
+                    <h1 className="text-white m-plus-rounded-1c-regular text-[22px] truncate w-60">
+                      {v?.chat1}
+                    </h1>
+                    <div className="flex items-center gap-2">
+                      <hr className="border-white w-8" />
+                      <div className="bg-white w-2.5 h-2.5 rotate-45" />
+                      <Rating
+                        size="small"
+                        value={v?.rating}
+                        precision={0.5}
+                        emptyIcon={
+                          <StarIcon
+                            style={{ opacity: 0.55 }}
+                            fontSize="inherit"
+                          />
+                        }
+                      />
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <Image src={solar_pen_bold} alt="solar_pen_bold" />
+                      <p className="sora-semilight text-white text-[14px]">
+                        {v?.chat2}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))
+            : null}
+          <p className="sora-regular text-white underline text-[14px] text-right cursor-pointer">
+            View all
+          </p>
+
+          <div className="relative bg-[linear-gradient(180deg,rgba(17,24,43,0.3)_0%,rgba(255,255,255,0.09)_100%)] rounded-[10px] p-4 flex flex-col items-start gap-4">
+            <div
+              // onClick={props?.onClose}
+              className="z-10 cursor-pointer bg-red-500 rounded-full h-6 w-6 flex items-center justify-center absolute -top-2.5 -right-2.5"
+            >
+              <CloseOutlinedIcon className="!text-[16px] text-white" />
             </div>
-            <div>
-              <h1 className="text-white m-plus-rounded-1c-regular text-[22px] truncate w-60">
-                Good Morning ! How ar
-              </h1>
-              <div className="flex items-center gap-2">
-                <hr className="border-white w-8" />
-                <div className="bg-white w-2.5 h-2.5 rotate-45" />
-                <Rating
-                  size="small"
-                  value={5}
-                  precision={0.5}
-                  emptyIcon={
-                    <StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />
-                  }
-                />
-              </div>
+            <div className="flex flex-col gap-4">
+              <p className="text-white m-plus-rounded-1c-medium text-lg">
+                Upgrade
+              </p>
               <div className="flex items-start">
-                <Image src={solar_pen_bold} alt="solar_pen_bold" />
-                <p className="sora-light">Lorem Ipsum is the simply dummy text of t ...</p>
+                <p className="text-white m-plus-rounded-1c-semilight text-[22px]">
+                  Get Access upto 3 Personas
+                </p>
+                <div className="p-2 rounded-[10px] bg-[#060606] w-fit">
+                  <Image src={cil_audio} alt="cil_audio" />
+                </div>
               </div>
+              <p className="text-white sora-regular text-[15px]">
+                Lorem Ipsum is simply dummy text of the printing and typesetting
+                industry. Lorem Ipsum has been the industry's.
+              </p>
+            </div>
+            <BookAdemo
+              BookaDemo={`upgrade your plan`}
+              link={`#`}
+              className={`!border-[#FFDE5A] !bg-[#060606] !text-[#FFDE5A] !px-5 !py-1 h-fit`}
+              icon={<ArrowRight stroke={`#FFDE5A`} />}
+            />
+            <p className="text-white m-plus-rounded-1c-regular text-[12px]">
+              *Note: Lorem Ipsum is simply dummy text of printing.
+            </p>
+          </div>
+
+          <FormControlLabel
+            value="end"
+            control={
+              <Radio
+                size="small"
+                checked={true}
+                sx={{
+                  cursor: "default",
+                  color: "#FFDE5A",
+                  "&.Mui-checked": {
+                    color: "#FFDE5A", // checked color
+                  },
+                }}
+              />
+            }
+            label={
+              <p className="sora-semithin text-lg">
+                Download your Feedback Report:
+              </p>
+            }
+            sx={{
+              cursor: "default",
+              color: "#FFFFFF", // label text color
+            }}
+          />
+          <div className="w-full flex items-center justify-center">
+            <div className="bg-[#CF2427] rounded-[5px] px-4 py-2 flex items-center gap-2 w-fit cursor-pointer">
+              <Image src={pdfIcon} alt="pdfIcon" className="w-8 h-10" />
+              <p className="m-plus-rounded-1c-regular text-white text-xl">
+                Download PDF
+              </p>
             </div>
           </div>
         </div>
