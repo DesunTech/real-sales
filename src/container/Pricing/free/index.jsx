@@ -51,7 +51,7 @@ const Free = () => {
                 footerCls={`bg-none lg:w-[33%] w-full flex flex-col items-center justify-center gap-4`}
                 crdExtraCls={`flex lg:flex-row flex-col item-center justify-between`}
                 cardValue={v}
-                link={`#`}
+                link={`/payment-details`}
                 onClick={() => dispatch(SessionModesValue(true))}
               />
             ))

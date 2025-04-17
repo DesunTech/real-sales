@@ -11,6 +11,7 @@ const initialState = {
   waitAMinuteValue: { open: false, type: "" },
   endChatValue: false,
   uploadYourDocValue: false,
+  paymentConfirm: false
 };
 
 const OpenModalSlice = createSlice({
@@ -47,6 +48,10 @@ const OpenModalSlice = createSlice({
     UploadYourDocValue: (state, action) => {
       state.uploadYourDocValue = action.payload || false;
     },
+    PaymentConfirm: (state, action) => {
+      state.paymentConfirm = action.payload || false;
+    },
+    
   },
 });
 
@@ -60,7 +65,8 @@ export const {
   SessionModesValue,
   WaitAMinuteValue,
   EndChatValue,
-  UploadYourDocValue
+  UploadYourDocValue,
+  PaymentConfirm
 } = OpenModalSlice.actions;
 
 export default OpenModalSlice.reducer;

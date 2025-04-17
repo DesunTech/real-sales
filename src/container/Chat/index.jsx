@@ -237,7 +237,7 @@ const Chat = ({ slug, children }) => {
                       </div>
                       <BookAdemo
                         BookaDemo={`upgrade your plan`}
-                        link={`#`}
+                        link={`/pricing`}
                         className={`!border-[#FFDE5A] !bg-[#060606] !text-[#FFDE5A] !px-5 !py-1 h-fit`}
                         icon={<ArrowRight stroke={`#FFDE5A`} />}
                       />
