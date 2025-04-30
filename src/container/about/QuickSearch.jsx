@@ -31,7 +31,7 @@ const QuickSearch = () => {
                   placeholder="Search personas by their name, id, score etc.."
                   className="border-0 outline-0 !py-1.5 !px-4 w-full text-white m-plus-rounded-1c-regular"
                 />
-                <div className="flex items-center gap-2 !text-[#060606] !bg-[#FFE942] m-plus-rounded-1c-medium !capitalize !py-1.5 !px-4 !rounded-full">
+                <div className="flex items-center gap-2 !text-[#060606] !bg-[#FFE942] m-plus-rounded-1c-medium !capitalize !py-1.5 !px-4 !rounded-full cursor-pointer">
                   Proceed&nbsp;Now <ArrowRight width={19} height={13} />
                 </div>
               </div>

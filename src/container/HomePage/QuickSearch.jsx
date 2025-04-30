@@ -31,14 +31,14 @@ const QuickSearch = () => {
                   placeholder="Search personas by their name, id, score etc.."
                   className="border-0 outline-0 !py-1.5 !px-4 w-full text-white m-plus-rounded-1c-regular"
                 />
-                <div className="flex items-center gap-2 !text-[#060606] !bg-[#FFE942] m-plus-rounded-1c-medium !capitalize !py-1.5 !px-4 !rounded-full">
+                <div className="flex items-center gap-2 !text-[#060606] !bg-[#FFE942] m-plus-rounded-1c-medium !capitalize !py-1.5 !px-4 !rounded-full cursor-pointer">
                   Proceed&nbsp;Now <ArrowRight width={19} height={13} />
                 </div>
               </div>
             </div>
 
             <div className="flex items-center justify-center flex-wrap lg:flex-nowrap lg:gap-0 gap-2">
-              <div className="relative lg:h-[290px] h-[200px] w-[200px] lg:perspective-[200px] rounded-[20px]">
+              <div className="relative lg:h-[290px] lg:hover:h-[290px] h-[200px] hover:h-[210px] w-[200px] hover:w-[210px] duration-300 cursor-pointer lg:perspective-[200px] rounded-[20px]">
                 <Image
                   src={persona_engg}
                   alt="persona-plant-new"
@@ -59,7 +59,7 @@ const QuickSearch = () => {
                 </div>
               </div>
 
-              <div className="z-10 relative lg:h-[250px] h-[200px] w-[200px] lg:perspective-[200px] rounded-[20px]">
+              <div className="z-10 relative lg:h-[250px] lg:hover:h-[260px] h-[200px] hover:h-[210px] w-[200px] hover:w-[210px] duration-300 cursor-pointer lg:perspective-[200px] rounded-[20px]">
                 <Image
                   src={persona_plant_new}
                   alt="persona-plant-new"
@@ -80,7 +80,7 @@ const QuickSearch = () => {
                 </div>
               </div>
 
-              <div className="relative lg:h-[230px] h-[200px] lg:w-[220px] w-[200px] lg:perspective-[200px] rounded-[20px]">
+              <div className="relative lg:h-[230px] lg:hover:h-[240px] h-[200px] hover:h-[210px] lg:w-[220px] lg:hover:w-[230px] w-[200px] hover:w-[210px] duration-300 cursor-pointer lg:perspective-[200px] rounded-[20px]">
                 <Image
                   src={persona_plant}
                   alt="persona-plant-new"
@@ -99,7 +99,7 @@ const QuickSearch = () => {
                 </div>
               </div>
 
-              <div className="z-10 relative lg:h-[250px] h-[200px] w-[200px] lg:perspective-[200px] rounded-[20px]">
+              <div className="z-10 relative lg:h-[250px] lg:hover:h-[260px] h-[200px] hover:h-[210px] w-[200px] hover:w-[210px] duration-300 cursor-pointer lg:perspective-[200px] rounded-[20px]">
                 <Image
                   src={persona_food}
                   alt="persona-plant-new"
@@ -120,7 +120,7 @@ const QuickSearch = () => {
                 </div>
               </div>
 
-              <div className="relative lg:h-[290px] h-[200px] w-[200px] lg:perspective-[200px] rounded-[20px]">
+              <div className="relative lg:h-[290px] lg:hover:h-[290px] h-[200px] hover:h-[210px] w-[200px] hover:w-[210px] duration-300 cursor-pointer lg:perspective-[200px] rounded-[20px]">
                 <Image
                   src={persona_food_mgmt}
                   alt="persona-plant-new"

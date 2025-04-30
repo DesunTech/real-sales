@@ -179,7 +179,12 @@
   background-repeat: no-repeat;
   z-index: -1;
 }
-
+.home-bg {
+  background-image: url(../../public/assets/images/RealSales-backgrounds/bg-3.png);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
 .bg_image {
   background-image: url(../../public/assets/images/RealSales-backgrounds/bg-5.png);
   background-size: cover;
