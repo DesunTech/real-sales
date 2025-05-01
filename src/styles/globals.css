@@ -186,7 +186,9 @@
   background-repeat: no-repeat;
 }
 .bg_image {
-  background-image: url(../../public/assets/images/RealSales-backgrounds/bg-5.png);
+ 
+  background-image: url(../../public/assets/images/RealSales-backgrounds/bg-9.png);
+  /* background-image: url(../../public/assets/images/RealSales-backgrounds/bg-5.png); */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
