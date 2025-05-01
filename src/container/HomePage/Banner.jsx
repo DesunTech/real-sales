@@ -8,9 +8,19 @@ import CommonButton from "../../common/commonButton";
 import ArrowRight from "../../../public/assets/icons/arrowRight";
 import { useDispatch } from "react-redux";
 import { DemoMeetingValue, TryRealsalesValue } from "../../redux/OpenModal";
+import bannerBottom1 from "../../../public/assets/images/banner/bannerBottom1.png";
+import bannerBottom2 from "../../../public/assets/images/banner/bannerBottom2.png";
+import bannerBottom3 from "../../../public/assets/images/banner/bannerBottom3.png";
+import bannerBottom4 from "../../../public/assets/images/banner/bannerBottom4.png";
 
 const Banner = () => {
   const dispatch = useDispatch();
+
+  const bannerBottomCardRoot = "w-full flex gap-4 p-4 rounded-[20px] bg-[url(../../public/assets/images/banner/bannerBottomBg.png)] bg-cover bg-center bg-no-repeat"
+  const bannerBottomCardp1 = "m-plus-rounded-1c-light text-white text-[18px]"
+  const bannerBottomCardp2 = "m-plus-rounded-1c-regular text-[#FFFFFFE5] text-[22px]"
+  const bannerBottomCardp3 = "sora-regular text-white text-[14px]"
+  const bannerBottomCardImage = "w-[80px] h-[110px]"
 
   return (
     <div className="relative h-full bg-[url(../../public/assets/images/RealSales-backgrounds/bg-3.png)] bg-cover bg-center bg-no-repeat">
@@ -55,17 +65,77 @@ const Banner = () => {
             <Image src={bannerImg} alt="bannerImg" />
           </div>
         </div>
-        <div className="flex lg:flex-row flex-col items-center justify-between gap-8">
-          <div className="lg:w-[40%] w-full flex items-center justify-center">
-            <Image
-              src={bannersub_img}
-              alt="bannersub_img"
-              width={1920}
-              height={1080}
-              className="w-full h-full"
-            />
+        <div className="flex lg:flex-row flex-col items-center justify-between gap-10">
+          <div className="lg:w-[55%] w-full flex items-start justify-center gap-4">
+            <div className="flex flex-col gap-4">
+              <div className={`${bannerBottomCardRoot}`}>
+                <Image
+                  src={bannerBottom1}
+                  alt="bannersub_img"
+                  width={1920}
+                  height={1080}
+                  className={`${bannerBottomCardImage}`}
+                />
+                <div>
+                  <p className={`${bannerBottomCardp1}`}>Track Sales</p>
+                  <p className={`${bannerBottomCardp2}`}>Access & Track Maturity</p>
+                  <p className={`${bannerBottomCardp3}`}>Of Sales Team/ Sales Org.</p>
+                </div>
+              </div>
+              <div className={`${bannerBottomCardRoot}`}>
+                <Image
+                  src={bannerBottom2}
+                  alt="bannersub_img"
+                  width={1920}
+                  height={1080}
+                  className={`${bannerBottomCardImage}`}
+                />
+                <div>
+                  <p className={`${bannerBottomCardp1}`}>Make Performance</p>
+                  <p className={`${bannerBottomCardp2}`}>Best Practices
+                    & Easy Win</p>
+                  {/* <p className={`${bannerBottomCardp3}`}>Of Sales Team/ Sales Org.</p> */}
+                </div>
+              </div>
+            </div>
+            <div className="flex flex-col gap-4">
+              <div className="flex flex-col items-center">
+                <h1 className="text-[#060606CC] text-6xl m-plus-rounded-1c-medium">RealSales</h1>
+                <p className="text-[#060606CC] text-[28px] sora-regular text-center">Comprehensive Solution</p>
+              </div>
+              <div className={`${bannerBottomCardRoot}`}>
+                <Image
+                  src={bannerBottom3}
+                  alt="bannersub_img"
+                  width={1920}
+                  height={1080}
+                  className={`${bannerBottomCardImage}`}
+                />
+                <div>
+                  <p className={`${bannerBottomCardp1}`}>Sales Accelerator</p>
+                  <p className={`${bannerBottomCardp2}`}>Accelerate
+                    Onboarding</p>
+                  {/* <p className={`${bannerBottomCardp3}`}>Of Sales Team/ Sales Org.</p> */}
+                </div>
+              </div>
+              <div className={`${bannerBottomCardRoot}`}>
+                <Image
+                  src={bannerBottom4}
+                  alt="bannersub_img"
+                  width={1920}
+                  height={1080}
+                  className={`${bannerBottomCardImage}`}
+                />
+                <div>
+                  <p className={`${bannerBottomCardp1}`}>Real Coaching Trainer</p>
+                  <p className={`${bannerBottomCardp2}`}>Effective
+                    Coaching</p>
+                  {/* <p className={`${bannerBottomCardp3}`}>Of Sales Team/ Sales Org.</p> */}
+                </div>
+              </div>
+            </div>
           </div>
-          <div className="lg:w-[50%] w-full">
+          <div className="lg:w-[45%] w-full">
             <div className="flex flex-col items-start gap-4">
               <h1 className="lg:text-4xl text-2xl text-[#060606] m-plus-rounded-1c-regular">
                 What
@@ -93,7 +163,7 @@ const Banner = () => {
           </div>
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 export default Banner;
