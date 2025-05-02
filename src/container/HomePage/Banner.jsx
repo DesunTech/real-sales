@@ -73,7 +73,7 @@ const Banner = () => {
         </div>
         <div className="bg-[url(../../public/assets/images/RealSales-backgrounds/bg-3o.png)] bg-cover bg-center bg-no-repeat">
           <div className="page-container mx-auto px-4 container flex lg:flex-row flex-col items-center justify-between gap-10">
-            <div className="lg:w-[55%] w-full flex items-start justify-center gap-4">
+            <div className="lg:w-[55%] w-full flex md:flex-row flex-col-reverse md:items-start items-center justify-center gap-4">
               <div className="flex flex-col gap-4">
                 <div className={`${bannerBottomCardRoot}`}>
                   <Image

@@ -23,31 +23,31 @@ const HowItWorks = () => {
     {
       id: 2,
       icon: LoanProcessing,
-      label: "Loan Processing",
+      label: "Underwriting",
       document: "Lorem is simply dummy text of the printing ....",
     },
     {
       id: 3,
       icon: LoanProcessing,
-      label: "Loan Processing",
+      label: "Conditionally Approved",
       document: "Lorem is simply dummy text of the printing ....",
     },
     {
       id: 4,
       icon: LoanProcessing,
-      label: "Loan Processing",
+      label: "Clear to Close",
       document: "Lorem is simply dummy text of the printing ....",
     },
     {
       id: 5,
       icon: LoanProcessing,
-      label: "Loan Processing",
+      label: "Closing",
       document: "Lorem is simply dummy text of the printing ....",
     },
     {
       id: 6,
       icon: LoanProcessing,
-      label: "Loan Processing",
+      label: "Loan Founded",
       document: "Lorem is simply dummy text of the printing ....",
     },
   ];
@@ -58,7 +58,7 @@ const HowItWorks = () => {
           <h1 className="lg:text-7xl text-2xl text-[#060606E5] m-plus-rounded-1c-regular">
             How It Works
           </h1>
-          <div className="flex flex-wrap items-center justify-center gap-x-4">
+          <div className="flex flex-wrap items-center justify-center">
             {HowItWorksArr.map((v, i) => (
               <Pollygon
                 key={i}
