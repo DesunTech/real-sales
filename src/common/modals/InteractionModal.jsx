@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CommonModal from "../commonModal";
 import Image from "next/image";
@@ -14,10 +14,11 @@ import { InteractionValue } from "../../redux/OpenModal";
 const InteractionModal = ({ onNext }) => {
   const dispatch = useDispatch();
   const open = useSelector((state) => state.openModal.interactionValue);
+  const [choosePersona, setChoosePersona] = useState("");
 
   return (
-    <CommonModal 
-      open={open} 
+    <CommonModal
+      open={open}
       onClose={() => dispatch(InteractionValue(false))}
       width={"60%"}
     >
@@ -34,7 +35,13 @@ const InteractionModal = ({ onNext }) => {
           <div className="w-full flex flex-col items-start justify-start gap-y-5 gap-x-10">
             <div className="w-full flex lg:flex-row flex-col items-center justify-between gap-y-10 gap-x-5">
               <div className="bg-[url(../../public/assets/images/aboutus/PersonaCardImg.png)] shadow-md bg-cover bg-center bg-no-repeat w-full rounded-[10px]">
-                <div className="relative bg-gradient-to-r from-white/50 to-white/0 py-6 px-8 w-full flex items-center justify-between flex-col">
+                <div
+                  className={`relative ${
+                    choosePersona === "Prospective"
+                      ? `bg-gradient-to-r from-orange-200/50 to-white/0`
+                      : `bg-gradient-to-r from-white/50 to-white/0`
+                  } py-6 px-8 w-full flex items-center justify-between flex-col`}
+                >
                   <div className="flex flex-col items-start justify-between gap-2">
                     <div className="lg:w-28 w-20 lg:h-28 h-20 rounded-full overflow-hidden bg-gray-100">
                       <Image src={persona_plant} alt={"Prospective"} />
@@ -52,13 +59,22 @@ const InteractionModal = ({ onNext }) => {
                   </div>
                   <BookAdemo
                     BookaDemo={"CHOOSE IT"}
+                    onClick={() => {
+                      setChoosePersona("Prospective");
+                    }}
                     className={`!border-[#FFDE5A] !bg-[#060606] !text-[#FFDE5A] !px-5 !py-1 h-fit uppercase absolute -bottom-4 left-[30%]`}
                   />
                 </div>
               </div>
 
               <div className="bg-[url(../../public/assets/images/aboutus/PersonaCardImg.png)] shadow-md bg-cover bg-center bg-no-repeat w-full rounded-[10px]">
-                <div className="relative bg-gradient-to-r from-white/50 to-white/0 py-6 px-8 w-full flex items-center justify-between flex-col">
+                <div
+                  className={`relative ${
+                    choosePersona === "Sales"
+                      ? `bg-gradient-to-r from-orange-200/50 to-white/0`
+                      : `bg-gradient-to-r from-white/50 to-white/0`
+                  } py-6 px-8 w-full flex items-center justify-between flex-col`}
+                >
                   <div className="flex flex-col items-start justify-between gap-2">
                     <div className="lg:w-28 w-20 lg:h-28 h-20 rounded-full overflow-hidden bg-gray-100">
                       <Image src={persona_food} alt={"Sales"} />
@@ -76,6 +92,9 @@ const InteractionModal = ({ onNext }) => {
                   </div>
                   <BookAdemo
                     BookaDemo={"CHOOSE IT"}
+                    onClick={() => {
+                      setChoosePersona("Sales");
+                    }}
                     className={`!border-[#FFDE5A] !bg-[#060606] !text-[#FFDE5A] !px-5 !py-1 h-fit uppercase absolute -bottom-4 left-[30%]`}
                   />
                 </div>
@@ -83,7 +102,13 @@ const InteractionModal = ({ onNext }) => {
             </div>
 
             <div className="bg-[url(../../public/assets/images/aboutus/PersonaCardImg.png)] shadow-md bg-cover bg-center bg-no-repeat w-full rounded-[10px]">
-              <div className="relative bg-gradient-to-r from-white/50 to-white/0 py-6 px-8 w-full flex items-center justify-between flex-col">
+              <div
+                className={`relative ${
+                  choosePersona === "Close"
+                    ? `bg-gradient-to-r from-orange-200/50 to-white/0`
+                    : `bg-gradient-to-r from-white/50 to-white/0`
+                } py-6 px-8 w-full flex items-center justify-between flex-col`}
+              >
                 <div className="flex flex-col items-start justify-between gap-2">
                   <div className="w-full">
                     <div className="lg:w-28 w-20 lg:h-28 h-20 rounded-full overflow-hidden bg-gray-100">
@@ -131,6 +156,9 @@ const InteractionModal = ({ onNext }) => {
                 </div>
                 <BookAdemo
                   BookaDemo={"CHOOSE IT"}
+                  onClick={() => {
+                    setChoosePersona("Close");
+                  }}
                   className={`!border-[#FFDE5A] !bg-[#060606] !text-[#FFDE5A] !px-5 !py-1 h-fit uppercase absolute -bottom-4 left-[18%]`}
                 />
               </div>
@@ -139,7 +167,8 @@ const InteractionModal = ({ onNext }) => {
           <CommonButton
             className={`!mt-8 !border-[2px] !border-[#060606] !text-[#060606] !font-[500] !px-6 !py-1] !text-[16px] !capitalize flex !items-center gap-2 w-fit h-fit`}
             icon={<ArrowRight stroke={`#060606`} width={19} height={13} />}
-            onClick={onNext}
+            disabled={choosePersona === "" ? true : false}
+            onClick={choosePersona === "" ? undefined : onNext}
             buttontext={"Proceed"}
           />
         </div>
@@ -148,4 +177,4 @@ const InteractionModal = ({ onNext }) => {
   );
 };
 
-export default InteractionModal; 
+export default InteractionModal;

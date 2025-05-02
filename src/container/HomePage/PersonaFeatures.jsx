@@ -87,7 +87,7 @@ const PersonaFeatures = () => {
             {FeaturesArr.map((val, idx) => (
               <div
                 key={idx}
-                className="lg:w-1/4 w-full p-6 flex flex-col items-start gap-2 odd:bg-[linear-gradient(180deg,rgba(255,255,255,0.85)_0%,rgba(227,227,227,0.85)_100%)] even:bg-[linear-gradient(180deg,rgba(255,255,255,0.3)_0%,rgba(99,229,255,0.3)_100%)]"
+                className="lg:w-1/4 w-full odd:bg-[url(../../public/assets/images/RealSales-backgrounds/bg-13.png)] even:bg-[url(../../public/assets/images/RealSales-backgrounds/bg-14.png)] bg-cover bg-center bg-no-repeat flex flex-col items-start gap-2 p-6"
               >
                 <div className="border border-solid border-[#0606064D] rounded-[5px] w-fit py-2 px-3">
                   <Image

@@ -10,13 +10,16 @@ import { Rating } from "@mui/material";
 import Highlighter from "../../common/highlighter";
 import StarIcon from "@mui/icons-material/Star";
 import RightPointer from "../../../public/assets/icons/rightPointer";
+import bg_11 from "../../../public/assets/images/RealSales-backgrounds/bg-11.png";
+import bg_12 from "../../../public/assets/images/RealSales-backgrounds/bg-12.png";
 
 const AboutUs = () => {
+  // bg-[url(../../public/assets/images/RealSales-backgrounds/bg-11.png)] bg-cover bg-center bg-no-repeat
   return (
-    <div className="bg-[linear-gradient(180deg,#11182B_0%,#060606_112.58%)]">
-      <div className="page-container mx-auto container px-4 flex justify-between flex-col">
-        <div className="flex justify-between items-center lg:gap-4 gap-8 lg:flex-row flex-col-reverse py-12">
-          <div className="lg:w-[45%] w-full">
+    <div className="bg-gradient-to-b from-[#11182B]/90 to-[#060606]/90">
+      <div className="flex justify-between flex-col">
+        <div className="z-10 page-container mx-auto container px-4 flex justify-between items-center lg:gap-4 gap-8 lg:flex-row flex-col-reverse py-12">
+          <div className="lg:w-1/2 w-full">
             <div className="flex flex-col lg:items-start items-center gap-5">
               <Highlighter />
               <div className="flex items-center gap-4">
@@ -34,15 +37,15 @@ const AboutUs = () => {
                   }
                 />
               </div>
-              <p className="text-[18px] text-[#ffffff] m-plus-rounded-1c-regular">
+              <p className="text-[35px] text-[#ffffff] m-plus-rounded-1c-regular">
                 No more Generic AI
                 <br />
                 Train faster with
               </p>
-              <h1 className="lg:text-5xl text-3xl text-[#ffffff] m-plus-rounded-1c-regular">
+              <h1 className="lg:text-[65px] text-3xl text-[#ffffff] m-plus-rounded-1c-regular">
                 Real Buyer Personas
               </h1>
-              <p className="text-[15px] text-[#ffffff] sora-regular w-[95%]">
+              <p className="text-[15px] text-[#ffffff] sora-regular w-[90%]">
                 Unlike generic Al models, our platform is powered by Al personas
                 modeled after{" "}
                 <span className="sora-semibold">
@@ -59,13 +62,18 @@ const AboutUs = () => {
           </div>
         </div>
 
-        <div className="flex items-center justify-between">
+        <div className="relative flex items-center justify-between">
+          <Image
+            src={bg_11}
+            alt="bg_11"
+            className="absolute right-0 -top-[563px] max-w-[664px]"
+          />
           <div className="lg:flex none"></div>
           <hr className="border-[#FFFFFF33] border-1 lg:w-1/2 w-full" />
         </div>
 
-        <div className="flex justify-between items-center lg:gap-4 gap-8 lg:flex-row-reverse flex-col-reverse py-12">
-          <div className="lg:w-[45%] w-full">
+        <div className="z-10 page-container mx-auto container px-4 flex justify-between items-center lg:gap-4 gap-8 lg:flex-row-reverse flex-col-reverse py-12">
+          <div className="lg:w-1/2 w-full">
             <div className="flex flex-col lg:items-end items-center gap-5">
               <Highlighter />
               <div className="flex items-center gap-4">
@@ -83,15 +91,15 @@ const AboutUs = () => {
                   }
                 />
               </div>
-              <p className="text-[18px] text-[#ffffff] m-plus-rounded-1c-regular">
-                RealSales turns
+              <p className="text-[35px] text-[#ffffff] m-plus-rounded-1c-regular">
+              <span className="m-plus-rounded-1c-extrabold">RealSales</span>&nbsp;turns
                 <br />
                 sales teams into
               </p>
-              <h1 className="lg:text-5xl text-3xl text-[#ffffff] m-plus-rounded-1c-regular">
+              <h1 className="lg:text-[65px] text-3xl text-[#ffffff] m-plus-rounded-1c-regular">
                 Top Performers
               </h1>
-              <p className="text-[15px] text-[#ffffff] lg:text-end items-start sora-regular w-[95%]">
+              <p className="text-[15px] text-[#ffffff] lg:text-end items-start sora-regular w-[90%]">
                 Our Al-powered interactive platform helps sales teams to
                 <span className="sora-semibold">go beyond the pitch</span>
                 &nbsp;and master the art of connection, cross-selling, and deal-
@@ -115,12 +123,17 @@ const AboutUs = () => {
           </div>
         </div>
 
-        <div className="flex items-center justify-between">
+        <div className="relative flex items-center justify-between lg:flex-row-reverse flex-col-reverse">
+          <Image
+            src={bg_12}
+            alt="bg_11"
+            className="absolute left-0 -top-[563px] max-w-[664px]"
+          />
           <div className="lg:flex none"></div>
           <hr className="border-[#FFFFFF33] border-1 lg:w-1/2 w-full" />
         </div>
 
-        <div className="flex justify-between items-center lg:gap-4 gap-8 lg:flex-row flex-col-reverse py-12">
+        <div className="z-10 page-container mx-auto container px-4 flex justify-between items-center lg:gap-4 gap-8 lg:flex-row flex-col-reverse py-12">
           <div className="lg:w-1/2 w-full">
             <div className="flex lg:items-start items-center flex-col gap-5">
               <Highlighter />
@@ -139,12 +152,12 @@ const AboutUs = () => {
                   }
                 />
               </div>
-              <p className="text-[18px] text-[#ffffff] m-plus-rounded-1c-regular">
-                RealSales is the answer to
+              <p className="text-[32px] text-[#ffffff] m-plus-rounded-1c-regular">
+                <span className="m-plus-rounded-1c-extrabold">RealSales</span>&nbsp;is the answer to
                 <br />
                 Common problem is Sales team Impacting
               </p>
-              <h1 className="lg:text-5xl text-3xl text-[#ffffff] m-plus-rounded-1c-regular">
+              <h1 className="lg:text-[65px] text-3xl text-[#ffffff] m-plus-rounded-1c-regular">
                 Performance
               </h1>
               <div className="flex flex-col gap-5">
@@ -211,6 +224,15 @@ const AboutUs = () => {
               className="w-[70%] h-full"
             />
           </div>
+        </div>
+        <div className="relative flex items-center justify-between">
+          <Image
+            src={bg_11}
+            alt="bg_11"
+            className="absolute right-0 -top-[563px] max-w-[664px]"
+          />
+          <div className="lg:flex none"></div>
+          {/* <hr className="border-[#FFFFFF33] border-1 lg:w-1/2 w-full" /> */}
         </div>
       </div>
     </div>

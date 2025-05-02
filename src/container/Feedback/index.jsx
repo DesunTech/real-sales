@@ -69,7 +69,7 @@ const Feedback = () => {
                 </div>
               ))}
               <Button
-                className="shadow-[0px_4px_4px_0px_#00000040] !text-white !bg-[#CF2427]"
+                className="shadow-[0px_4px_4px_0px_#00000040] !text-white !bg-[#CF2427] uppercase"
                 onClick={() => router.push("/chat/rating")}
               >
                 SUBMIT A REPORT

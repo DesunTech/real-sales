@@ -32,6 +32,7 @@ import { useRouter } from "next/router";
 import { EndChatValue } from "../../redux/OpenModal";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import MicOffSharpIcon from "@mui/icons-material/MicOffSharp";
+import Link from "next/link";
 
 const Chat = ({ slug, children }) => {
   const dispatch = useDispatch();
@@ -93,13 +94,13 @@ const Chat = ({ slug, children }) => {
                   <ArrowBackIcon className="text-white" />
                 </div>
               </div>
-              <div className="w-[60%] flex items-center justify-end">
+              <Link href={slug === "rating" ? "/" : "#"} className="w-[60%] flex items-center justify-end">
                 <Image
                   src={whiteLogoNoBackground}
                   alt="whiteLogoNoBackground"
                   className="h-10 w-auto"
                 />
-              </div>
+              </Link>
             </div>
             <div className="flex items-center justify-end gap-2 w-[45%]">
               <div className="relative w-10 h-10 bg-[#FFFFFF1A] rounded-full flex items-center justify-center cursor-pointer">

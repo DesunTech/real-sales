@@ -24,9 +24,9 @@ const Header = () => {
   };
 
   return (
-    <header className="main-header sticky top-0 z-50 bg-[#060606] h-[70px]">
+    <header className="main-header sticky top-0 z-50 bg-[#060606] h-[60px] flex items-center justify-center">
       <div className="page-container mx-auto px-4 container">
-        <nav className="main-nav flex justify-between items-center py-4">
+        <nav className="main-nav flex justify-between items-center ">
           <Link href="/" className="logo">
             <Image
               src={Colorlogonobackground}
@@ -39,7 +39,7 @@ const Header = () => {
 
           {/* Desktop Navigation */}
           <div className="header-links hidden md:block">
-            <ul className="flex space-x-6">
+            <ul className="flex gap-16">
               <div>
                 <Link
                   href="/"
@@ -113,6 +113,7 @@ const Header = () => {
           {/* Call to Action Buttons */}
           <div className="header-btn hidden md:flex items-center space-x-4">
             <BookAdemo
+              className={`!text-[14px]`}
               onClick={() => dispatch(DemoMeetingValue(true))}
               icon={<AddIcCallIcon style={{ fontSize: "16px" }} />}
             />

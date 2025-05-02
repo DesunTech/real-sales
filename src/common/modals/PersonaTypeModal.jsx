@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CommonModal from "../commonModal";
 import PersonaCard from "../PersonaCard";
@@ -9,10 +9,11 @@ import { PersonaTypeValue } from "../../redux/OpenModal";
 const PersonaTypeModal = ({ onNext }) => {
   const dispatch = useDispatch();
   const open = useSelector((state) => state.openModal.personaTypeValue);
+  const [persona, setPersona] = useState("");
 
   return (
-    <CommonModal 
-      open={open} 
+    <CommonModal
+      open={open}
       onClose={() => dispatch(PersonaTypeValue(false))}
       width={"60%"}
     >
@@ -31,22 +32,43 @@ const PersonaTypeModal = ({ onNext }) => {
         <div className="w-full flex items-center justify-center flex-col">
           <div className="lg:w-[100%] w-full flex flex-col items-start justify-start gap-y-5 gap-x-10">
             <div className="w-full flex lg:flex-row flex-col items-center justify-between gap-y-5 gap-x-10">
-              <PersonaCard title={"Persona by Industry"} />
-              <PersonaCard title={"Persona by Role"} />
+              <PersonaCard
+                persona={persona === "Industry" ? true : false}
+                onClick={() => setPersona("Industry")}
+                title={"Persona by Industry"}
+              />
+              <PersonaCard
+                persona={persona === "Role" ? true : false}
+                onClick={() => setPersona("Role")}
+                title={"Persona by Role"}
+              />
             </div>
             <div className="w-full flex lg:flex-row flex-col items-center justify-between gap-y-5 gap-x-10">
-              <PersonaCard title={"Persona by Experience"} />
-              <PersonaCard title={"Persona by Geography"} />
+              <PersonaCard
+                persona={persona === "Experience" ? true : false}
+                onClick={() => setPersona("Experience")}
+                title={"Persona by Experience"}
+              />
+              <PersonaCard
+                persona={persona === "Geography" ? true : false}
+                onClick={() => setPersona("Geography")}
+                title={"Persona by Geography"}
+              />
             </div>
             <div className="w-full flex lg:flex-row flex-col items-center justify-between gap-y-5 gap-x-10">
-              <PersonaCard title={"Persona by Manufacture"} />
+              <PersonaCard
+                persona={persona === "Manufacture" ? true : false}
+                onClick={() => setPersona("Manufacture")}
+                title={"Persona by Manufacture"}
+              />
               <div className="w-full">{/* fake */}</div>
             </div>
           </div>
           <CommonButton
             className={`!mt-8 !border-[2px] !border-[#060606] !text-[#060606] !font-[500] !px-6 !py-1] !text-[16px] !capitalize flex !items-center gap-2 w-fit h-fit`}
             icon={<ArrowRight stroke={`#060606`} width={19} height={13} />}
-            onClick={onNext}
+            disabled={persona === "" ? true : false}
+            onClick={persona === "" ? undefined : onNext}
             buttontext={"Proceed to Next step"}
           />
         </div>
@@ -55,4 +77,4 @@ const PersonaTypeModal = ({ onNext }) => {
   );
 };
 
-export default PersonaTypeModal; 
+export default PersonaTypeModal;

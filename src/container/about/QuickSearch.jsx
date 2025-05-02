@@ -6,9 +6,13 @@ import persona_plant from "../../../public/assets/images/RealSales-user-images/p
 import persona_plant_new from "../../../public/assets/images/RealSales-user-images/persona-plant-new.png";
 import persona_food from "../../../public/assets/images/RealSales-user-images/persona-food.png";
 import persona_food_mgmt from "../../../public/assets/images/RealSales-user-images/persona-food-mgmt.png";
+import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
 import CommonButton from "../../common/commonButton";
+import { useRouter } from "next/router";
 
 const QuickSearch = () => {
+  const router = useRouter();
+
   return (
     <div className="relative">
       <div className="w-full h-full bg_image">
@@ -36,6 +40,13 @@ const QuickSearch = () => {
                 </div>
               </div>
             </div>
+            <CommonButton
+              className={`!border-[2px] !border-[#ffffff00] !text-[#ffffff] !px-5 !py-1 lg:!text-[16px] !text-[12px] !capitalize flex !items-center gap-2 h-fit`}
+              onClick={()=> router.push(`#custom`)}
+
+              buttontext={"Or you can also Use Custom Filters"}
+              icon={<KeyboardDoubleArrowRightIcon />}
+            />
           </div>
         </div>
       </div>

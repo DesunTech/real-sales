@@ -6,16 +6,17 @@ const Pollygon = (props) => {
   return (
     <div key={props?.key} className="flex flex-col items-center justify-center relative">
       <Highlighter
-        className={`absolute top-5 !z-10 !px-3 !py-1.5`}
+        className={`absolute top-5 !z-10 !px-4 !py-2`}
         highlight={`${props?.id}`}
       />
       <div
-        className="relative bg-gray-100 w-48 h-48 flex flex-col items-center gap-2 justify-center text-center shadow-[0px_0px_6px_1px_rgba(0,0,0,0.75)]"
+        className="relative bg-gray-100 w-48 h-48 flex flex-col items-center gap-2 justify-center text-center shadow-[0px_0px_10px_0px_#00000033]"
         style={{
           clipPath:
             "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)",
         }}
       >
+        <div class="absolute inset-0 hexagon-shadow z-0"></div>
         <h2 className="text-[18px] text-[#060606E5] sora-semibold w-[60%]">
           {props?.label}
         </h2>
