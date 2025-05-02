@@ -32,11 +32,12 @@ import { useRouter } from "next/router";
 import { EndChatValue } from "../../redux/OpenModal";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import MicOffSharpIcon from "@mui/icons-material/MicOffSharp";
+import Link from "next/link";
 
 const Chat = ({ slug, children }) => {
   const dispatch = useDispatch();
   const router = useRouter();
-  
+
   const [checked, setChecked] = useState(false);
   const [openAnswer, setOpenAnswer] = useState(0);
   const [micUser, setMicUser] = useState(true);
@@ -93,13 +94,13 @@ const Chat = ({ slug, children }) => {
                   <ArrowBackIcon className="text-white" />
                 </div>
               </div>
-              <div className="w-[60%] flex items-center justify-end">
+              <Link href={slug === "rating" ? "/" : "#"} className="w-[60%] flex items-center justify-end">
                 <Image
                   src={whiteLogoNoBackground}
                   alt="whiteLogoNoBackground"
                   className="h-10 w-auto"
                 />
-              </div>
+              </Link>
             </div>
             <div className="flex items-center justify-end gap-2 w-[45%]">
               <div className="relative w-10 h-10 bg-[#FFFFFF1A] rounded-full flex items-center justify-center cursor-pointer">
@@ -140,7 +141,7 @@ const Chat = ({ slug, children }) => {
           {/* bordy */}
           {children ? (
             children
-          ) : (
+          ) : slug === "audio" || slug === "video" ? (
             <div className="flex flex-row gap-2">
               {/* left */}
               <div className="relative w-[70%] h-[calc(100vh_-_8rem)] flex flex-col justify-between gap-4">
@@ -237,7 +238,7 @@ const Chat = ({ slug, children }) => {
                       </div>
                       <BookAdemo
                         BookaDemo={`upgrade your plan`}
-                        link={`#`}
+                        link={`/pricing`}
                         className={`!border-[#FFDE5A] !bg-[#060606] !text-[#FFDE5A] !px-5 !py-1 h-fit`}
                         icon={<ArrowRight stroke={`#FFDE5A`} />}
                       />
@@ -325,7 +326,7 @@ const Chat = ({ slug, children }) => {
                             </div>
                           </div>
                         </div>
-                      ) : (
+                      ) : slug === "video" ? (
                         <div className="absolute inset-0 p-5 w-full h-full flex flex-col items-center gap-2.5">
                           {/* AI */}
                           <div className="relative backdrop-blur-[5px] shadow-[0px_10px_30px_0px_#00000033] bg-[#FFFFFF05] overflow-hidden rounded-[10px] p-2.5">
@@ -421,7 +422,7 @@ const Chat = ({ slug, children }) => {
                             </div>
                           </div>
                         </div>
-                      )}
+                      ) : null}
                     </div>
                   </div>
                 </div>
@@ -677,7 +678,7 @@ const Chat = ({ slug, children }) => {
                 </div>
               </div>
             </div>
-          )}
+          ) : null}
         </div>
       </div>
     </div>

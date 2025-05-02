@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CommonModal from "../commonModal";
 import Image from "next/image";
@@ -12,15 +12,26 @@ import { IdealPersonaValue } from "../../redux/OpenModal";
 const IdealPersonaModal = ({ onNext }) => {
   const dispatch = useDispatch();
   const open = useSelector((state) => state.openModal.idealPersonaValue);
+  const [industryType, setIndustryType] = useState("");
 
   const idealPersonaArr = [
     { image: persona_food_new, type: "Industry", title: "Food" },
     { image: persona_food_old, type: "Industry", title: "Beverage" },
   ];
 
+  const onSetIndustryType = (type) => {
+    {
+      if (industryType !== type) {
+        setIndustryType(type);
+      } else {
+        setIndustryType("");
+      }
+    }
+  };
+
   return (
-    <CommonModal 
-      open={open} 
+    <CommonModal
+      open={open}
       onClose={() => dispatch(IdealPersonaValue(false))}
       width={"70%"}
     >
@@ -39,10 +50,15 @@ const IdealPersonaModal = ({ onNext }) => {
               ? idealPersonaArr.map((v, i) => (
                   <div
                     key={i}
-                    className="relative lg:w-[48%] w-full flex items-center gap-4 rounded-[20px] shadow-[0px_0px_50px_0px_#00000033] p-4"
+                    className="relative lg:w-[48%] w-full flex items-center gap-4 rounded-[20px] shadow-[0px_0px_50px_0px_#00000033] p-4 cursor-pointer"
+                    onClick={() => onSetIndustryType(v?.title)}
                   >
                     <div className="absolute right-2 top-2 cursor-pointer bg-[#0606061A] w-fit h-fit p-2 rounded-full">
-                      <div className="h-5 w-5 rounded-full border-2 border-solid border-[#060606E5]" />
+                      <div className="h-5 w-5 rounded-full border-2 border-solid border-[#060606E5] flex items-center justify-center">
+                        {industryType === v?.title ? (
+                          <div className="h-3 w-3 rounded-full bg-[#060606E5]" />
+                        ) : null}
+                      </div>
                     </div>
                     <div className="w-32 h-auto rounded-[20px] overflow-hidden">
                       <Image src={v?.image} alt={v?.title} />
@@ -69,7 +85,8 @@ const IdealPersonaModal = ({ onNext }) => {
           <CommonButton
             className={`!mt-8 !border-[2px] !border-[#060606] !text-[#060606] !font-[500] !px-6 !py-1] !text-[16px] !capitalize flex !items-center gap-2 w-fit h-fit`}
             icon={<ArrowRight stroke={`#060606`} width={19} height={13} />}
-            onClick={onNext}
+            disabled={industryType === "" ? true : false}
+            onClick={industryType === "" ? undefined : onNext}
             buttontext={"Save & Proceed"}
           />
         </div>
@@ -78,4 +95,4 @@ const IdealPersonaModal = ({ onNext }) => {
   );
 };
 
-export default IdealPersonaModal; 
+export default IdealPersonaModal;

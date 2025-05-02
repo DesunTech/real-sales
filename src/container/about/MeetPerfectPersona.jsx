@@ -6,11 +6,11 @@ import PersonaTypeModal from "../../common/modals/PersonaTypeModal";
 import InteractionModal from "../../common/modals/InteractionModal";
 import IdealPersonaModal from "../../common/modals/IdealPersonaModal";
 import ShortlistedPersonaModal from "../../common/modals/ShortlistedPersonaModal";
-import { 
-  PersonaTypeValue, 
-  InteractionValue, 
-  IdealPersonaValue, 
-  ShortlistedPersonaValue 
+import {
+  PersonaTypeValue,
+  InteractionValue,
+  IdealPersonaValue,
+  ShortlistedPersonaValue,
 } from "../../redux/OpenModal";
 
 const MeetPerfectPersona = () => {
@@ -38,7 +38,10 @@ const MeetPerfectPersona = () => {
   };
 
   return (
-    <div className="page-container mx-auto px-4 py-8 container flex items-center justify-center flex-col lg:gap-4 gap-2">
+    <div
+      id="custom"
+      className="page-container mx-auto px-4 py-8 container flex items-center justify-center flex-col lg:gap-4 gap-2"
+    >
       <p className="lg:text-2xl text-[16px] text-center sora-light text-[#060606] w-full">
         Want to meet with Perfect Persona?
       </p>

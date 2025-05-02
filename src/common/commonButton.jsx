@@ -3,14 +3,17 @@ import React from "react";
 
 const CommonButton = (props) => {
   return (
-      <Button
-        className={`m-plus-rounded-1c-regular ${props?.className}`}
-        onClick={props?.onClick}
-        variant={props?.variant || "outlined"}
-      >
-        {props?.buttontext || ""}
-        {props?.icon}
-      </Button>
+    <Button
+      className={`m-plus-rounded-1c-regular ${
+        props?.disabled ? "opacity-60" : ""
+      } ${props?.className}`}
+      onClick={props?.onClick}
+      variant={props?.variant || "outlined"}
+      disabled={props?.disabled}
+    >
+      {props?.buttontext || ""}
+      {props?.icon}
+    </Button>
   );
 };
 

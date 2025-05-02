@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from "react";
 import CommonModal from "../commonModal";
-import { EndChatValue, UploadYourDocValue } from "../../redux/OpenModal";
+import { PaymentConfirm, UploadYourDocValue } from "../../redux/OpenModal";
 import { useDispatch, useSelector } from "react-redux";
 import DoneIcon from "@mui/icons-material/Done";
 import { useRouter } from "next/router";
 import lets_icons_back_2 from "../../../public/assets/icons/lets_icons_back_2.svg";
 import Image from "next/image";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
-const ChatEndModal = () => {
+import DoneSharpIcon from "@mui/icons-material/DoneSharp";
+
+const PaymentConfirmation = () => {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  const endChatValue = useSelector((state) => state.openModal.endChatValue);
+  const paymentConfirm = useSelector((state) => state.openModal.paymentConfirm);
 
   const [width, setWidth] = useState(1366);
 
@@ -24,8 +26,8 @@ const ChatEndModal = () => {
   return (
     <>
       <CommonModal
-        open={endChatValue?.open}
-        onClose={() => dispatch(EndChatValue({ open: false, type: "" }))}
+        open={paymentConfirm}
+        onClose={() => dispatch(PaymentConfirm(false))}
         width={width > 720 ? "50%" : "90%"}
       >
         <div className="flex flex-col gap-4 items-center">
@@ -36,23 +38,22 @@ const ChatEndModal = () => {
               </div>
             </div>
             <h3 className="m-plus-rounded-1c-regular lg:text-2xl text-xl">
-              Hey! Wait a minute !
+              Payment Confirmation
             </h3>
           </div>
 
           <div className="w-full bg-white p-6 rounded-lg text-center [box-shadow:0_0_5px_0_rgba(0,0,0,0.3)] flex flex-col gap-4">
             <h2 className="m-plus-rounded-1c-regular lg:text-3xl text-xl">
-              Are you sure want to
+              Are you sure want to Make
               <br />
-              End your&nbsp;
               <span className="m-plus-rounded-1c-medium capitalize">
-                {endChatValue?.type}
+                Payment
               </span>
-              &nbsp;Session now ?
+              &nbsp;to proceed next step ?
             </h2>
 
             <p className="sora-regular lg:text-lg text-base">
-              Before ending your session, Few things you need to Know !
+              Before start your session, Few things you need to Know !
             </p>
 
             <p className="sora-regular lg:text-base text-sm">
@@ -62,7 +63,7 @@ const ChatEndModal = () => {
             </p>
 
             <p className="sora-regular lg:text-lg text-base font-bold">
-              <span className="sora-semibold">Thank you!</span>&nbsp;for your
+              <span className="sora-semibold">Good Luck!</span>&nbsp;for your
               Session
             </p>
           </div>
@@ -71,28 +72,23 @@ const ChatEndModal = () => {
             <button
               className="flex-1 bg-[#FFDE59] text-black py-3 rounded-md flex items-center justify-center gap-2 shadow-md mb-2 cursor-pointer uppercase"
               onClick={() => {
-                dispatch(EndChatValue({ open: false, type: endChatValue?.type }));
-                dispatch(UploadYourDocValue(true))
+                dispatch(PaymentConfirm(false));
+                router.push("/pricing");
               }}
             >
               <Image src={lets_icons_back_2} alt="lets_icons_back_2" />
-              BACK TO Session
+              Cancel Payment
             </button>
 
             <button
               className="flex-1 bg-[#D9272E] text-white py-3 rounded-md flex items-center justify-center gap-2 shadow-md mb-2 cursor-pointer uppercase"
               onClick={() => {
-                dispatch(
-                  EndChatValue({
-                    open: false,
-                    type: endChatValue?.type,
-                  })
-                );
-                router.push("/feedback")
+                dispatch(PaymentConfirm(false));
+                router.push("/thankyou");
               }}
             >
-              quit session anyway
-              <CloseOutlinedIcon className="!text-lg" />
+              Confirm Payment
+              <DoneSharpIcon className="!text-lg" />
             </button>
           </div>
         </div>
@@ -101,4 +97,4 @@ const ChatEndModal = () => {
   );
 };
 
-export default ChatEndModal;
+export default PaymentConfirmation;

@@ -19,6 +19,7 @@ import {
   IdealPersonaValue, 
   ShortlistedPersonaValue 
 } from '../../redux/OpenModal'
+import PaymentConfirmation from '../modals/PaymentConfirmation'
 
 const Layout = ({children}) => {
   const router = useRouter()
@@ -57,6 +58,7 @@ const Layout = ({children}) => {
       <WaitAMinute />
       <ChatEndModal />
       <UploadYourDocModal />
+      <PaymentConfirmation />
       
       {/* Persona Flow Modals */}
       <PersonaTypeModal onNext={handlePersonaTypeNext} />

@@ -153,6 +153,7 @@ const Pricing = () => {
                   // ExtPricing={true}
                   headingCls={`lg:flex-row flex-col`}
                   cardValue={v}
+                  link={`/payment-details`}
                   // crdExtraCls={`flex lg:flex-col md:flex-row flex-col item-center justify-between`}
                 />
               ))
@@ -169,6 +170,7 @@ const Pricing = () => {
                 footerCls={`bg-none lg:w-[33%] w-full flex flex-col items-center justify-center gap-4`}
                 crdExtraCls={`flex lg:flex-row flex-col item-center justify-between`}
                 cardValue={v}
+                link={`/payment-details`}
               />
             ))
           : null}
