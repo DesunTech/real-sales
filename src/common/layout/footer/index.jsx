@@ -13,6 +13,7 @@ import instagram from "../../../../public/assets/icons/instagram.svg";
 import copyright from "../../../../public/assets/icons/copyright.svg";
 import { DemoMeetingValue } from "../../../redux/OpenModal";
 import { useDispatch } from "react-redux";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 
 const Footer = () => {
   const dispatch = useDispatch();
@@ -166,19 +167,32 @@ const Footer = () => {
                     </p>
                   </Link>
                 </div>
-                <div className="flex flex-col items-center gap-4">
-                  <h1 className="text-white m-plus-rounded-1c-medium text-[15px]">
-                    Follow Us on:
-                  </h1>
-                  <div className="flex items-center gap-4">
-                    <Image src={facebook} alt="facebook" className="h-9 w-9" />
-                    <Image
-                      src={instagram}
-                      alt="instagram"
-                      className="h-9 w-9"
-                    />
-                    <Image src={whatsapp} alt="whatsapp" className="h-9 w-9" />
+                <div className="h-full flex md:flex-col flex-row items-center justify-between gap-15">
+                  <div className="flex flex-col items-center gap-4">
+                    <h1 className="text-white m-plus-rounded-1c-medium text-[15px]">
+                      Follow Us on:
+                    </h1>
+                    <div className="flex items-center gap-4">
+                      <Image
+                        src={facebook}
+                        alt="facebook"
+                        className="h-9 w-9"
+                      />
+                      <Image
+                        src={instagram}
+                        alt="instagram"
+                        className="h-9 w-9"
+                      />
+                      <Image
+                        src={whatsapp}
+                        alt="whatsapp"
+                        className="h-9 w-9"
+                      />
+                    </div>
                   </div>
+                  <Link href={"#"} className="bg-[#FFDE5A] rounded-[5px] px-2.5 pb-1.5 pt-4">
+                    <ArrowBackIosIcon className="rotate-90" />
+                  </Link>
                 </div>
               </div>
             </div>
