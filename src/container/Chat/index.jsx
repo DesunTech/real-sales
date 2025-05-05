@@ -94,7 +94,10 @@ const Chat = ({ slug, children }) => {
                   <ArrowBackIcon className="text-white" />
                 </div>
               </div>
-              <Link href={slug === "rating" ? "/" : "#"} className="w-[60%] flex items-center justify-end">
+              <Link
+                href={slug === "rating" ? "/" : "#"}
+                className="w-[60%] flex items-center justify-end"
+              >
                 <Image
                   src={whiteLogoNoBackground}
                   alt="whiteLogoNoBackground"
@@ -224,7 +227,7 @@ const Chat = ({ slug, children }) => {
                     <div className="relative bg-[linear-gradient(180deg,rgba(17,24,43,0.3)_0%,rgba(255,255,255,0.09)_100%)] rounded-[10px] p-4 flex flex-col items-start gap-2">
                       <div
                         // onClick={props?.onClose}
-                        className="z-10 cursor-pointer bg-red-500 rounded-full h-6 w-6 flex items-center justify-center absolute -top-2.5 -right-2.5"
+                        className="z-10 cursor-pointer bg-red-500 rounded-full h-6 w-6 flex items-center justify-center absolute -top-2.5 -right-1.5"
                       >
                         <CloseOutlinedIcon className="!text-[16px] text-white" />
                       </div>
@@ -262,9 +265,16 @@ const Chat = ({ slug, children }) => {
                       <div className="absolute inset-0 bg-[url('../../public/assets/images/RealSales-abstracts/glow-light-1.png')] bg-cover bg-center bg-no-repeat opacity-20"></div>
                       {slug === "audio" ? (
                         <div className="absolute inset-0 p-5 w-full h-full flex flex-col items-center">
-                          <div className="flex items-center gap-1.5">
-                            <div className="w-10 h-10 bg-[#FFFFFF1A] rounded-full flex items-center justify-center cursor-pointer">
-                              <MicNoneOutlinedIcon className="text-white !text-[20px]" />
+                          <div className="flex items-center gap-1.5 z-10">
+                            <div
+                              onClick={() => setMicAi(!micAi)}
+                              className="w-10 h-10 bg-[#FFFFFF1A] rounded-full flex items-center justify-center cursor-pointer"
+                            >
+                              {micAi ? (
+                                <MicNoneOutlinedIcon className="text-white !text-[20px]" />
+                              ) : (
+                                <MicOffSharpIcon className="text-white !text-[20px]" />
+                              )}
                             </div>
                             <Image
                               src={callVibration}
@@ -292,10 +302,17 @@ const Chat = ({ slug, children }) => {
                               />
                             </div>
                           </div>
-                          <div className="w-[90%] flex items-start gap-1.5">
+                          <div className="w-[90%] flex items-start gap-1.5 z-10">
                             <div className="flex items-center gap-1.5 -mt-2">
-                              <div className="w-10 h-10 bg-[#FFFFFF1A] rounded-full flex items-center justify-center cursor-pointer">
-                                <MicNoneOutlinedIcon className="text-white !text-[20px]" />
+                              <div
+                                onClick={() => setMicUser(!micUser)}
+                                className="w-10 h-10 bg-[#FFFFFF1A] rounded-full flex items-center justify-center cursor-pointer"
+                              >
+                                {micUser ? (
+                                  <MicNoneOutlinedIcon className="text-white !text-[20px]" />
+                                ) : (
+                                  <MicOffSharpIcon className="text-white !text-[20px]" />
+                                )}
                               </div>
                               <Image
                                 src={callVibration}

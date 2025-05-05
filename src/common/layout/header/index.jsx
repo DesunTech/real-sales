@@ -39,7 +39,7 @@ const Header = () => {
 
           {/* Desktop Navigation */}
           <div className="header-links hidden md:block">
-            <ul className="flex gap-16">
+            <ul className="flex lg:gap-16 gap-8">
               <div>
                 <Link
                   href="/"

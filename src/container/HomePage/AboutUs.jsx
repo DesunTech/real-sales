@@ -127,7 +127,7 @@ const AboutUs = () => {
           <Image
             src={bg_12}
             alt="bg_11"
-            className="absolute left-0 -top-[563px] max-w-[664px]"
+            className="absolute left-0 -top-[563px] lg:max-w-[664px] w-full"
           />
           <div className="lg:flex none"></div>
           <hr className="border-[#FFFFFF33] border-1 lg:w-1/2 w-full" />

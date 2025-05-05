@@ -242,7 +242,7 @@ const RatingContainer = () => {
           <div className="relative bg-[linear-gradient(180deg,rgba(17,24,43,0.3)_0%,rgba(255,255,255,0.09)_100%)] rounded-[10px] p-4 flex flex-col items-start gap-4">
             <div
               // onClick={props?.onClose}
-              className="z-10 cursor-pointer bg-red-500 rounded-full h-6 w-6 flex items-center justify-center absolute -top-2.5 -right-2.5"
+              className="z-10 cursor-pointer bg-red-500 rounded-full h-6 w-6 flex items-center justify-center absolute -top-2.5 -right-1.5"
             >
               <CloseOutlinedIcon className="!text-[16px] text-white" />
             </div>

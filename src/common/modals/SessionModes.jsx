@@ -68,7 +68,7 @@ const SessionModes = () => {
                 ? shortlistedPersonaArr.map((v, i) => (
                   <div
                     key={i}
-                    className={`relative lg:w-[48%] md:w-[70%] w-full h-[300px] rounded-[20px] overflow-hidden cursor-pointer`}
+                    className={`relative lg:w-[48%] w-full h-[300px] rounded-[20px] overflow-hidden cursor-pointer`}
                     onClick={()=> setType(v?.type)}
                   >
                     <Image

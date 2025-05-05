@@ -2,7 +2,6 @@ import React from "react";
 import Image from "next/image";
 import Pollygon from "../../common/pollygon";
 import StepCard from "../../common/stepCard";
-import LoanProcessing from "../../../public/assets/icons/LoanProcessing.svg";
 import rightRoundArrow from "../../../public/assets/icons/rightRoundArrow.svg";
 import leftRoundArrow from "../../../public/assets/icons/leftRoundArrow.svg";
 import secoundNature from "../../../public/assets/icons/secoundNature.svg";
@@ -11,6 +10,12 @@ import luster from "../../../public/assets/icons/luster.svg";
 import quantifiedCommunications from "../../../public/assets/icons/quantifiedCommunications.svg";
 import SimpleCard from "../../common/simpleCard";
 import blackLogoNoBackground from "../../../public/assets/images/RealSales-official-logo/For Web/png/Black logo - no background.png";
+import LoanProcessing from "../../../public/assets/icons/LoanProcessing.svg";
+import bi_cash_coin from "../../../public/assets/icons/bi_cash-coin.svg";
+import game_icons_face_to_face from "../../../public/assets/icons/game-icons_face-to-face.svg";
+import lets_icons_done_ring_round from "../../../public/assets/icons/lets-icons_done-ring-round.svg";
+import material_symbols_light_order_approve_outline_sharp from "../../../public/assets/icons/material-symbols-light_order-approve-outline-sharp.svg";
+import ph_note_light from "../../../public/assets/icons/ph_note-light.svg";
 
 const HowItWorks = () => {
   const HowItWorksArr = [
@@ -22,31 +27,31 @@ const HowItWorks = () => {
     },
     {
       id: 2,
-      icon: LoanProcessing,
+      icon: ph_note_light,
       label: "Underwriting",
       document: "Lorem is simply dummy text of the printing ....",
     },
     {
       id: 3,
-      icon: LoanProcessing,
+      icon: material_symbols_light_order_approve_outline_sharp,
       label: "Conditionally Approved",
       document: "Lorem is simply dummy text of the printing ....",
     },
     {
       id: 4,
-      icon: LoanProcessing,
+      icon: lets_icons_done_ring_round,
       label: "Clear to Close",
       document: "Lorem is simply dummy text of the printing ....",
     },
     {
       id: 5,
-      icon: LoanProcessing,
+      icon: game_icons_face_to_face,
       label: "Closing",
       document: "Lorem is simply dummy text of the printing ....",
     },
     {
       id: 6,
-      icon: LoanProcessing,
+      icon: bi_cash_coin,
       label: "Loan Founded",
       document: "Lorem is simply dummy text of the printing ....",
     },

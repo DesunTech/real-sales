@@ -39,8 +39,8 @@ const FaqPage = () => {
       </div>
       <div className="bg-[url(../../public/assets/images/RealSales-backgrounds/bg-4.png)] bg-cover bg-center bg-no-repeat">
         <div className="bg-[#ffffffcb]">
-          <div className="page-container mx-auto p-16 container flex flex-col items-center gap-10">
-            <h1 className="lg:text-[40px] text-3xl text-[#2d2d2d] m-plus-rounded-1c-semibold capitalize">
+          <div className="page-container mx-auto lg:p-16 p-8 container flex flex-col items-center lg:gap-10 gap-5">
+            <h1 className="lg:text-[40px] text-3xl text-[#2d2d2d] m-plus-rounded-1c-semibold capitalize text-center">
               Frequently asked question
             </h1>
             <div className="w-full flex flex-col items-center gap-4">

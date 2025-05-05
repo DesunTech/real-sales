@@ -53,7 +53,7 @@ const Footer = () => {
       links: [
         { name: "Privacy Policy", link: "/privacy-policy" },
         { name: "Terms & Conditions", link: "/terms-conditions" },
-        { name: "FAQ's", link: "/faqs" },
+        { name: "FAQ's", link: "/faq" },
         { name: "Contact Us", link: "/contact-us" },
         { name: "Register", link: "/register" },
       ],
@@ -167,30 +167,39 @@ const Footer = () => {
                     </p>
                   </Link>
                 </div>
-                <div className="h-full flex md:flex-col flex-row items-center justify-between gap-15">
+                <div className="h-full flex md:flex-col flex-row items-end justify-between gap-15">
                   <div className="flex flex-col items-center gap-4">
                     <h1 className="text-white m-plus-rounded-1c-medium text-[15px]">
                       Follow Us on:
                     </h1>
                     <div className="flex items-center gap-4">
-                      <Image
-                        src={facebook}
-                        alt="facebook"
-                        className="h-9 w-9"
-                      />
-                      <Image
-                        src={instagram}
-                        alt="instagram"
-                        className="h-9 w-9"
-                      />
-                      <Image
-                        src={whatsapp}
-                        alt="whatsapp"
-                        className="h-9 w-9"
-                      />
+                      <Link href={`#`}>
+                        <Image
+                          src={facebook}
+                          alt="facebook"
+                          className="h-9 w-9"
+                        />
+                      </Link>
+                      <Link href={`#`}>
+                        <Image
+                          src={instagram}
+                          alt="instagram"
+                          className="h-9 w-9"
+                        />
+                      </Link>
+                      <Link href={`#`}>
+                        <Image
+                          src={whatsapp}
+                          alt="whatsapp"
+                          className="h-9 w-9"
+                        />
+                      </Link>
                     </div>
                   </div>
-                  <Link href={"#"} className="bg-[#FFDE5A] rounded-[5px] px-2.5 pb-1.5 pt-4">
+                  <Link
+                    href={"#"}
+                    className="bg-[#FFDE5A] rounded-[5px] px-2.5 pb-1.5 pt-4"
+                  >
                     <ArrowBackIosIcon className="rotate-90" />
                   </Link>
                 </div>
