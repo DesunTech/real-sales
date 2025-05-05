@@ -15,14 +15,14 @@ const FaqPage = () => {
   };
 
   let faqArr = [
-    { question: "Question?", answer: "Answer" },
-    { question: "Question?", answer: "Answer" },
-    { question: "Question?", answer: "Answer" },
-    { question: "Question?", answer: "Answer" },
-    { question: "Question?", answer: "Answer" },
-    { question: "Question?", answer: "Answer" },
-    { question: "Question?", answer: "Answer" },
-    { question: "Question?", answer: "Answer" },
+    { question: "What is your return policy?", answer: "You can return any item within 30 days of purchase." },
+    { question: "How do I track my order?", answer: "You can track your order using the tracking link sent to your email." },
+    { question: "Do you ship internationally?", answer: "Yes, we ship to over 100 countries worldwide." },
+    { question: "What payment methods do you accept?", answer: "We accept credit cards, PayPal, and bank transfers." },
+    { question: "How can I contact customer support?", answer: "You can contact us via email or through our contact form." },
+    { question: "Do you offer gift cards?", answer: "Yes, we offer gift cards in various denominations." },
+    { question: "Can I change my order after it has been placed?", answer: "You can change your order within 1 hour of placing it." },
+    { question: "What should I do if I receive a damaged item?", answer: "Please contact us immediately, and we will assist you with a replacement." },
   ];
 
   return (
