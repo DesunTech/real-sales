@@ -15,6 +15,7 @@
     "@mui/material": "^7.0.1",
     "@mui/styled-engine-sc": "^7.0.1",
     "@reduxjs/toolkit": "^2.6.1",
+    "aos": "^2.3.4",
     "next": "15.2.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

@@ -16,7 +16,7 @@ const style = {
 
 const CommonModal = (props) => {
   return (
-    <Modal open={props?.open} onClose={props?.onClose} className="outline-none">
+    <Modal data-aos="fade-down" open={props?.open} onClose={props?.onClose} className="outline-none">
       <Box
         sx={{
           ...style,

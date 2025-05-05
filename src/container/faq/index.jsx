@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-// import AddIcon from "@mui/icons-material/Add";
-// import RemoveIcon from "@mui/icons-material/Remove";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+
 
 const FaqPage = () => {
   const [openQuestion, setOpenQuestion] = useState();
@@ -23,6 +22,8 @@ const FaqPage = () => {
     { question: "Do you offer gift cards?", answer: "Yes, we offer gift cards in various denominations." },
     { question: "Can I change my order after it has been placed?", answer: "You can change your order within 1 hour of placing it." },
     { question: "What should I do if I receive a damaged item?", answer: "Please contact us immediately, and we will assist you with a replacement." },
+    { question: "What are the shipping costs?", answer: "Shipping costs vary based on location and order size." },
+    { question: "How long does delivery take?", answer: "Delivery typically takes 3-5 business days, depending on your location." },
   ];
 
   return (
@@ -48,6 +49,7 @@ const FaqPage = () => {
                 ? faqArr.map((v, i) => (
                     <div
                       key={i}
+                      data-aos="zoom-in"
                       className={`w-full h-fit flex flex-col items-start overflow-hidden ${
                         openQuestion === i ? "gap-2" : ""
                       } px-4 py-2 rounded-[6px] shadow-lg border border-solid border-[#00000010] bg-[url(../../public/assets/images/RealSales-backgrounds/bg-1.png)] bg-cover bg-center bg-no-repeat`}
