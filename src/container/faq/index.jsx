@@ -49,7 +49,7 @@ const FaqPage = () => {
                 ? faqArr.map((v, i) => (
                     <div
                       key={i}
-                      data-aos="zoom-in"
+                      // data-aos="zoom-in"
                       className={`w-full h-fit flex flex-col items-start overflow-hidden ${
                         openQuestion === i ? "gap-2" : ""
                       } px-4 py-2 rounded-[6px] shadow-lg border border-solid border-[#00000010] bg-[url(../../public/assets/images/RealSales-backgrounds/bg-1.png)] bg-cover bg-center bg-no-repeat`}
