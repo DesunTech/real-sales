@@ -4,7 +4,7 @@ import Highlighter from "./highlighter";
 
 const Pollygon = (props) => {
   return (
-    <div key={props?.key} className="flex flex-col items-center justify-center relative">
+    <div data-aos="zoom-out-down" key={props?.key} className="flex flex-col items-center justify-center relative">
       <Highlighter
         className={`absolute top-5 !z-10 !px-4 !py-2`}
         highlight={`${props?.id}`}

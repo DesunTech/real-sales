@@ -86,6 +86,7 @@ const PersonaFeatures = () => {
           <div className="flex w-full flex-wrap lg:gap-0 gap-2">
             {FeaturesArr.map((val, idx) => (
               <div
+                data-aos="zoom-out"
                 key={idx}
                 className="lg:w-1/4 w-full odd:bg-[url(../../public/assets/images/RealSales-backgrounds/bg-13.png)] even:bg-[url(../../public/assets/images/RealSales-backgrounds/bg-14.png)] bg-cover bg-center bg-no-repeat flex flex-col items-start gap-2 p-6"
               >

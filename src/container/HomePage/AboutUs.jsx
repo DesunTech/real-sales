@@ -19,7 +19,7 @@ const AboutUs = () => {
     <div className="bg-gradient-to-b from-[#11182B]/90 to-[#060606]/90">
       <div className="flex justify-between flex-col">
         <div className="z-10 page-container mx-auto container px-4 flex justify-between items-center lg:gap-4 gap-8 lg:flex-row flex-col-reverse py-12">
-          <div className="lg:w-1/2 w-full">
+          <div data-aos="fade-right" className="lg:w-1/2 w-full">
             <div className="flex flex-col lg:items-start items-center gap-5">
               <Highlighter />
               <div className="flex items-center gap-4">
@@ -57,7 +57,7 @@ const AboutUs = () => {
               </p>
             </div>
           </div>
-          <div className="lg:w-1/2 w-full flex lg:justify-end justify-center">
+          <div data-aos="fade-up" className="lg:w-1/2 w-full flex lg:justify-end justify-center">
             <Image src={aiGirl} alt="aiGirl" className="w-[70%] h-full" />
           </div>
         </div>
@@ -73,7 +73,7 @@ const AboutUs = () => {
         </div>
 
         <div className="z-10 page-container mx-auto container px-4 flex justify-between items-center lg:gap-4 gap-8 lg:flex-row-reverse flex-col-reverse py-12">
-          <div className="lg:w-1/2 w-full">
+          <div data-aos="fade-left" className="lg:w-1/2 w-full">
             <div className="flex flex-col lg:items-end items-center gap-5">
               <Highlighter />
               <div className="flex items-center gap-4">
@@ -118,7 +118,7 @@ const AboutUs = () => {
               </p>
             </div>
           </div>
-          <div className="lg:w-1/2 w-full flex lg:justify-start justify-center">
+          <div data-aos="fade-up" className="lg:w-1/2 w-full flex lg:justify-start justify-center">
             <Image src={aiPen} alt="aiPen" className="w-[70%] h-full" />
           </div>
         </div>
@@ -134,7 +134,7 @@ const AboutUs = () => {
         </div>
 
         <div className="z-10 page-container mx-auto container px-4 flex justify-between items-center lg:gap-4 gap-8 lg:flex-row flex-col-reverse py-12">
-          <div className="lg:w-1/2 w-full">
+          <div data-aos="fade-right" className="lg:w-1/2 w-full">
             <div className="flex lg:items-start items-center flex-col gap-5">
               <Highlighter />
               <div className="flex items-center gap-4">
@@ -217,7 +217,7 @@ const AboutUs = () => {
               </div>
             </div>
           </div>
-          <div className="lg:w-1/2 w-full flex lg:justify-end justify-center">
+          <div data-aos="fade-up" className="lg:w-1/2 w-full flex lg:justify-end justify-center">
             <Image
               src={calculating}
               alt="calculating"

@@ -35,6 +35,7 @@
 
 body {
   scroll-behavior: smooth !important;
+  overflow-x: hidden !important;
 }
 
 .m-plus-rounded-1c-thin {

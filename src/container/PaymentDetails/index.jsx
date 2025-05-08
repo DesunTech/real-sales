@@ -12,12 +12,13 @@ import {
   Radio,
   Select,
   TextField,
+  Tooltip,
 } from "@mui/material";
 import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp";
 import paymentMe from "../../../public/assets/images/common/paymentMe.png";
 import BookAdemo from "../../common/bookAdemo";
 import ArrowRight from "../../../public/assets/icons/arrowRight";
-import InfoOutlineSharpIcon from '@mui/icons-material/InfoOutlineSharp';
+import InfoOutlineSharpIcon from "@mui/icons-material/InfoOutlineSharp";
 import { PaymentConfirm } from "../../redux/OpenModal";
 import { useDispatch } from "react-redux";
 
@@ -25,11 +26,11 @@ const PaymentDetails = () => {
   const dispatch = useDispatch();
   const [method, setMethod] = useState("card");
   const [formData, setFormData] = useState({
-    cardNumber: '',
-    expiryDate: '',
-    cvv: '',
-    zipCode: '',
-    country: '',
+    cardNumber: "",
+    expiryDate: "",
+    cvv: "",
+    zipCode: "",
+    country: "",
   });
   const [errors, setErrors] = useState({});
 
@@ -38,15 +39,21 @@ const PaymentDetails = () => {
     if (!formData.cardNumber) {
       newErrors.cardNumber = "Card number is required.";
     } else if (!/^\d{4} \d{4} \d{4} \d{4}$/.test(formData.cardNumber)) {
-      newErrors.cardNumber = "Card number must be in the format: 1234 5678 9012 3456";
+      newErrors.cardNumber =
+        "Card number must be in the format: 1234 5678 9012 3456";
     }
     if (!formData.expiryDate) {
       newErrors.expiryDate = "Expiry date is required.";
+    } else if (
+      !/^(0[1-9]|1[0-2])\/?([0-9]{2}|[0-9]{4})$/.test(formData.expiryDate)
+    ) {
+      newErrors.expiryDate =
+        "Expiry date must be in the format: MM/YY or MM/YYYY";
     }
     if (!formData.cvv) {
       newErrors.cvv = "CVV is required.";
-    } else if (!/^\d{3}$/.test(formData.cvv)) {
-      newErrors.cvv = "CVV must be 3 digits.";
+    } else if (!/^\d{3,4}$/.test(formData.cvv)) {
+      newErrors.cvv = "CVV must be 3 or 4 digits.";
     }
     if (!formData.zipCode) {
       newErrors.zipCode = "ZIP code is required.";
@@ -62,7 +69,7 @@ const PaymentDetails = () => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
     // Clear the corresponding error message
-    setErrors((prevErrors) => ({ ...prevErrors, [name]: '' }));
+    setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
   };
 
   const handleSubmit = (e) => {
@@ -102,7 +109,10 @@ const PaymentDetails = () => {
           <h1 className="lg:text-6xl text-3xl text-[#060606E5] m-plus-rounded-1c-regular text-center">
             Payment Details
           </h1>
-          <form className="w-full flex flex-col gap-4 p-8" onSubmit={handleSubmit}>
+          <form
+            className="w-full flex flex-col gap-4 p-8"
+            onSubmit={handleSubmit}
+          >
             <div className="flex items-center gap-2">
               <div className="border border-solid border-[#060606E5] p-1 w-fit h-fit rounded-full">
                 <div className="bg-[#060606E5] w-3 h-3 rounded-full" />
@@ -228,7 +238,12 @@ const PaymentDetails = () => {
                     helperText={errors.cvv}
                     required
                   />
-                  <InfoOutlineSharpIcon className="absolute right-2 bottom-2 !text-lg !text-[#06060699]"/>
+                  <Tooltip
+                    // placement="top-end"
+                    title={`A CVV is a 3- or 4-digit security code printed on payment cards, used to verify that the user has the physical card during transactions.`}
+                  >
+                    <InfoOutlineSharpIcon className={`absolute right-2 top-[35%] !text-lg !text-[#06060699]`} />
+                  </Tooltip>
                 </div>
               </div>
 
@@ -250,18 +265,25 @@ const PaymentDetails = () => {
                 >
                   <InputLabel id="">Select your Country</InputLabel>
                   <Select
+                    name="country"
                     value={formData.country}
                     onChange={(e) => {
+                      console.log(e, "eval");
                       handleChange(e);
                     }}
                     label="Country"
                     error={!!errors.country}
+                    required
                   >
                     <MenuItem value={"IN"}>India</MenuItem>
                     <MenuItem value={"US"}>USA</MenuItem>
                     <MenuItem value={"CA"}>Canada</MenuItem>
                   </Select>
-                  {errors.country && <p className="text-red-500">{errors.country}</p>}
+                  {errors.country && (
+                    <p className="text-[#d80000] text-[0.8rem]">
+                      {errors.country}
+                    </p>
+                  )}
                 </FormControl>
               </div>
               <BookAdemo

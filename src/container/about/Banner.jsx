@@ -1,4 +1,4 @@
- import Image from "next/image";
+import Image from "next/image";
 import aboutBanner from "../../../public/assets/images/banner/about-banner.png";
 
 const Banner = () => {
@@ -6,7 +6,7 @@ const Banner = () => {
     <div className="relative h-full bg-[url(../../public/assets/images/RealSales-backgrounds/bg-3.png)] bg-cover bg-center bg-no-repeat">
       <div className="page-container mx-auto px-4 py-8 container flex flex-col gap-16 w-full h-full">
         <div className="flex lg:flex-row flex-col items-center justify-between gap-8">
-          <div className="lg:w-[50%] w-full">
+          <div data-aos="fade-right" className="lg:w-[50%] w-full">
             <div className="flex flex-col items-start gap-4">
               <h1 className="lg:text-4xl text-2xl text-[#060606] m-plus-rounded-1c-regular">
                 What
@@ -32,7 +32,10 @@ const Banner = () => {
               </div>
             </div>
           </div>
-          <div className="lg:w-[50%] w-full flex items-center justify-center">
+          <div
+            data-aos="fade-left"
+            className="lg:w-[50%] w-full flex items-center justify-center"
+          >
             <Image
               src={aboutBanner}
               alt="aboutBanner"

@@ -196,12 +196,12 @@ const Footer = () => {
                       </Link>
                     </div>
                   </div>
-                  <Link
-                    href={"#"}
-                    className="bg-[#FFDE5A] rounded-[5px] px-2.5 pb-1.5 pt-4"
+                  <div
+                    onClick={()=> window.scrollTo(0, 0)}
+                    className="bg-[#FFDE5A] rounded-[5px] px-2.5 pb-1.5 pt-4 cursor-pointer"
                   >
                     <ArrowBackIosIcon className="rotate-90" />
-                  </Link>
+                  </div>
                 </div>
               </div>
             </div>

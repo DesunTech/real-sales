@@ -27,10 +27,11 @@ const Banner = () => {
   return (
     <div className="relative h-full">
       <div className="flex flex-col w-full h-full">
+        {/* top section */}
         <div className="py-8 bg-[url(../../public/assets/images/RealSales-backgrounds/bg-3.png)] bg-cover bg-center bg-no-repeat">
           <div className="page-container mx-auto px-4 container flex lg:flex-row flex-col-reverse items-center justify-between gap-8">
             <div className="lg:w-1/2 w-full flex flex-col lg:items-start items-center justify-between gap-4">
-              <div className="flex flex-col lg:gap-4 gap-2 w-full">
+              <div data-aos="fade-right" className="flex flex-col lg:gap-4 gap-2 w-full">
                 <p className="text-[16px] text-[#060606] sora-regular">
                   RealSales accelerate
                   <br />
@@ -51,7 +52,7 @@ const Banner = () => {
                 </p>
               </div>
 
-              <div className="flex lg:flex-row flex-col items-center gap-4 w-full">
+              <div data-aos="fade-left" className="flex lg:flex-row flex-col items-center gap-4 w-full">
                 <BookAdemo
                   onClick={() => dispatch(DemoMeetingValue(true))}
                   className={`!border-[#FFDE5A] !bg-[#060606] !text-[#FFDE5A] !px-5 !py-1 h-fit lg:w-fit w-full`}
@@ -66,14 +67,16 @@ const Banner = () => {
                 />
               </div>
             </div>
-            <div className="lg:w-[45%] w-full">
+            <div data-aos="fade-down" className="lg:w-[45%] w-full">
               <Image src={bannerImg} alt="bannerImg" />
             </div>
           </div>
         </div>
+        
+        {/* bottom section */}
         <div className="bg-[url(../../public/assets/images/RealSales-backgrounds/bg-3o.png)] bg-cover bg-center bg-no-repeat">
           <div className="page-container mx-auto px-4 container flex lg:flex-row flex-col items-center justify-between gap-10">
-            <div className="lg:w-[55%] w-full flex md:flex-row flex-col-reverse md:items-start items-center justify-center gap-4">
+            <div data-aos="fade-right" className="lg:w-[55%] w-full flex md:flex-row flex-col-reverse md:items-start items-center justify-center gap-4">
               <div className="flex flex-col gap-4">
                 <div className={`${bannerBottomCardRoot}`}>
                   <Image
@@ -155,7 +158,7 @@ const Banner = () => {
                 </div>
               </div>
             </div>
-            <div className="p-8 lg:w-[45%] w-full bg-[url(../../public/assets/images/RealSales-abstracts/about-net.png)] bg-cover bg-center bg-no-repeat">
+            <div data-aos="fade-left" className="p-8 lg:w-[45%] w-full bg-[url(../../public/assets/images/RealSales-abstracts/about-net.png)] bg-cover bg-center bg-no-repeat">
               <div className="flex flex-col items-start gap-4">
                 <h1 className="lg:text-4xl text-2xl text-[#060606] m-plus-rounded-1c-regular">
                   What

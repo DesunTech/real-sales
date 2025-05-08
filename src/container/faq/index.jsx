@@ -44,12 +44,11 @@ const FaqPage = () => {
             <h1 className="lg:text-[40px] text-3xl text-[#2d2d2d] m-plus-rounded-1c-semibold capitalize text-center">
               Frequently asked question
             </h1>
-            <div className="w-full flex flex-col items-center gap-4">
+            <div data-aos="zoom-in" className="w-full flex flex-col items-center gap-4">
               {faqArr?.length
                 ? faqArr.map((v, i) => (
                     <div
                       key={i}
-                      // data-aos="zoom-in"
                       className={`w-full h-fit flex flex-col items-start overflow-hidden ${
                         openQuestion === i ? "gap-2" : ""
                       } px-4 py-2 rounded-[6px] shadow-lg border border-solid border-[#00000010] bg-[url(../../public/assets/images/RealSales-backgrounds/bg-1.png)] bg-cover bg-center bg-no-repeat`}

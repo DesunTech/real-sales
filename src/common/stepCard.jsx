@@ -3,7 +3,7 @@ import Highlighter from "./highlighter";
 
 const StepCard = (props) => {
   return (
-    <div className={`${props?.width ? `w-[${props?.width}]` : `w-[33.33%]`} h-full`}>
+    <div data-aos="zoom-in" className={`${props?.width ? `w-[${props?.width}]` : `w-[33.33%]`} h-full`}>
       <Highlighter
         highlight={`Step ${props?.steps}`}
       />
