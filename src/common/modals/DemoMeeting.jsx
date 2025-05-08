@@ -11,8 +11,11 @@ import {
 } from "@mui/material";
 import CommonButton from "../commonButton";
 import DoneOutlinedIcon from "@mui/icons-material/DoneOutlined";
+import axios from "axios";
+import { useApi } from "../../hooks/useApi";
 
 const DemoMeeting = (props) => {
+  const { Post } = useApi();
   const initialFormData = {
     name: "",
     email: "",
@@ -43,7 +46,7 @@ const DemoMeeting = (props) => {
     setFromDataErr((pre) => ({ ...pre, [name]: "" }));
   };
 
-  const submitScheduleMeeting = () => {
+  const submitScheduleMeeting = async () => {
     let valid = true;
     const errors = { ...initialFormData };
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -83,9 +86,14 @@ const DemoMeeting = (props) => {
 
     if (valid) {
       try {
-        setFromDataErr(initialFormData);
-        dispatch(DemoMeetingValue(false));
-        dispatch(SessionModesValue(true));
+        const data = await Post(``, fromData);
+        if (data) {
+          setFromDataErr(initialFormData);
+          dispatch(DemoMeetingValue(false));
+          dispatch(SessionModesValue(true));
+        } else {
+          console.log("error");
+        }
       } catch (error) {
         console.log(error, "error");
       }
