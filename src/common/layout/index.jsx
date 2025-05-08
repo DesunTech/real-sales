@@ -22,12 +22,16 @@ import {
 import PaymentConfirmation from "../modals/PaymentConfirmation";
 import { useApi } from "../../hooks/useApi";
 import { AddAuth } from "../../redux/AuthReducer";
+import { apis } from "../../utils/apis";
 
 const Layout = ({ children }) => {
   const { Get } = useApi();
   const router = useRouter();
   const dispatch = useDispatch();
+  const { get_auth } = apis;
+
   const isChatPage = router.pathname.startsWith("/chat");
+
 
   // Modal state handlers
   const handlePersonaTypeNext = () => {
@@ -52,7 +56,7 @@ const Layout = ({ children }) => {
 
   useEffect(() => {
     const getAuth = async () => {
-      const data = await Get(``);
+      const data = await Get(get_auth);
       if (data) {
         dispatch(AddAuth(data));
       } else {
