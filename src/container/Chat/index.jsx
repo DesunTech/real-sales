@@ -128,7 +128,7 @@ const Chat = ({ slug, children }) => {
     if (isMicClicked) {
       silenceCheckInterval = setInterval(() => {
         if (lastSpeechTimeRef.current && Date.now() - lastSpeechTimeRef.current >= 3000) {
-          // If no speech detected for 4 seconds
+          // If no speech detected for 3 seconds
           isSilenceTimeoutRef.current = true;
           if (recognitionRef.current) {
             try {
