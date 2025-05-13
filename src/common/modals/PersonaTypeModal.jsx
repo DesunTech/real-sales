@@ -1,15 +1,30 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CommonModal from "../commonModal";
 import PersonaCard from "../PersonaCard";
 import CommonButton from "../commonButton";
 import ArrowRight from "../../../public/assets/icons/arrowRight";
 import { PersonaTypeValue } from "../../redux/OpenModal";
+import { useApi } from "../../hooks/useApi";
+import { apis } from "../../utils/apis";
 
 const PersonaTypeModal = ({ onNext }) => {
   const dispatch = useDispatch();
+  const { ai_personas } = apis;
+  const { Get } = useApi();
   const open = useSelector((state) => state.openModal.personaTypeValue);
   const [persona, setPersona] = useState("");
+  useEffect(() => {
+    const getRealAIPersona = async () => {
+      try {
+        let data = await Get(ai_personas);
+        console.log(data, "aip_data");
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getRealAIPersona();
+  }, [open]);
 
   return (
     <CommonModal

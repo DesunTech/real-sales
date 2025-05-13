@@ -1,30 +1,46 @@
 import axiosInstance from "../utils/axiosInstance";
 
 const Get = async (url) => {
-  const data = await axiosInstance.get(url);
-  if (data?.data) {
-    return data?.data;
+  try {
+    const data = await axiosInstance.get(url);
+    if (data?.data) {
+      return data?.data;
+    }
+  } catch (error) {
+    console.log(error, "error")
   }
 };
 
 const Post = async (url, meta) => {
-  const data = await axiosInstance.post(url, meta);
-  if (data?.data) {
-    return data?.data;
+  try {
+    const data = await axiosInstance.post(url, meta);
+    if (data?.data) {
+      return data?.data;
+    }
+  } catch (error) {
+    console.log(error, "error")
   }
 };
 
 const Put = async (url, meta) => {
-  const data = await axiosInstance.put(url, meta);
-  if (data?.data) {
-    return data?.data;
+  try {
+    const data = await axiosInstance.put(url, meta);
+    if (data?.data) {
+      return data?.data;
+    }
+  } catch (error) {
+    console.log(error, "error")
   }
 };
 
 const Delete = async (url, meta) => {
-  const data = await axiosInstance.delete(url, meta);
-  if (data?.data) {
-    return data?.data;
+  try {
+    const data = await axiosInstance.delete(url, meta);
+    if (data?.data) {
+      return data?.data;
+    }
+  } catch (error) {
+    console.log(error, "error")
   }
 };
 

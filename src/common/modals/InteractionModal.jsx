@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CommonModal from "../commonModal";
 import Image from "next/image";
@@ -10,16 +10,31 @@ import persona_plant from "../../../public/assets/images/RealSales-user-images/p
 import persona_food from "../../../public/assets/images/RealSales-user-images/persona-food-mgmt.png";
 import persona_food_new from "../../../public/assets/images/RealSales-user-images/persona-food-new.png";
 import { InteractionValue } from "../../redux/OpenModal";
+import { apis } from "../../utils/apis";
+import { useApi } from "../../hooks/useApi";
 
 const InteractionModal = ({ onNext }) => {
   const dispatch = useDispatch();
+  const { ai_personas } = apis;
+  const { Get } = useApi();
   const open = useSelector((state) => state.openModal.interactionValue);
   const [choosePersona, setChoosePersona] = useState("");
+  useEffect(() => {
+    const getRealAIPersona = async () => {
+      try {
+        let data = await Get(`${ai_personas}/${open?.id}`);
+        console.log(data, "aip_data");
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getRealAIPersona();
+  }, [open?.id]);
 
   return (
     <CommonModal
-      open={open}
-      onClose={() => dispatch(InteractionValue(false))}
+      open={open?.open}
+      onClose={() => dispatch(InteractionValue({open: false, id: ""}))}
       width={"60%"}
     >
       <div className="flex flex-col gap-4 items-start">

@@ -16,14 +16,20 @@ import DoneOutlinedIcon from "@mui/icons-material/DoneOutlined";
 import textFieldEnd from "../../../public/assets/images/aboutus/textFieldEnd.png";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import { useApi } from "../../hooks/useApi";
+import { apis } from "../../utils/apis";
 
 const TryRealsales = (props) => {
+  const { Post } = useApi();
+  const { signup } = apis;
   const initialFormData = {
-    name: "",
+    first_name: "",
+    last_name: "",
     email: "",
-    phone: "",
-    idc: "",
-    couponCode: "",
+    phone_number: "",
+    // idc: "",
+    // couponCode: "",
+    password: "",
   };
 
   const dispatch = useDispatch();
@@ -47,16 +53,21 @@ const TryRealsales = (props) => {
     setFromDataErr((pre) => ({ ...pre, [name]: "" }));
   };
 
-  const submitTryRealsales = () => {
+  const submitTryRealsales = async () => {
     let valid = true;
     const errors = { ...initialFormData };
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const phoneRegex = /^\d{10}$/;
 
     // Name validation
-    if (!fromData.name.trim()) {
+    if (!fromData.first_name.trim()) {
       valid = false;
-      errors.name = "Name is required";
+      errors.first_name = "First Name is required";
+    }
+
+    if (!fromData.last_name.trim()) {
+      valid = false;
+      errors.last_name = "Last Name is required";
     }
 
     // Email validation
@@ -69,24 +80,38 @@ const TryRealsales = (props) => {
     }
 
     // Phone validation
-    if (!fromData.phone.trim()) {
+    if (!fromData.phone_number.trim()) {
       valid = false;
-      errors.phone = "Phone number is required";
-    } else if (!phoneRegex.test(fromData.phone)) {
+      errors.phone_number = "Phone number is required";
+    } else if (!phoneRegex.test(fromData.phone_number)) {
       valid = false;
-      errors.phone = "Please enter a valid 10-digit phone number";
+      errors.phone_number = "Please enter a valid 10-digit phone number";
     }
 
     // Coupon Code validation
-    if (!fromData.couponCode.trim()) {
+    // if (!fromData.couponCode.trim()) {
+    //   valid = false;
+    //   errors.couponCode = "Coupon code is required";
+    // }
+
+    // Password validation
+    if (!fromData.password.trim()) {
       valid = false;
-      errors.couponCode = "Coupon code is required";
+      errors.password = "Password is required";
+    } else if (fromData.password.length < 6) {
+      valid = false;
+      errors.password = "Password must be at least 6 characters long";
     }
 
     setFromDataErr(errors);
 
     if (valid) {
       try {
+        const data = await Post(signup, {
+          ...fromData,
+          phone_number: `${idc}${fromData?.phone_number}`,
+        });
+        console.log(data, "__data");
         setFromDataErr(initialFormData);
         dispatch(TryRealsalesValue(false));
         router.push("/pricing/free-trial");
@@ -96,9 +121,9 @@ const TryRealsales = (props) => {
     }
   };
 
-  useEffect(() => {
-    setFromData((pre) => ({ ...pre, idc: idc }));
-  }, [idc]);
+  // useEffect(() => {
+  //   setFromData((pre) => ({ ...pre, idc: idc }));
+  // }, [idc]);
 
   console.log(fromData, "fromData");
 
@@ -142,17 +167,32 @@ const TryRealsales = (props) => {
             <div className="flex flex-col gap-4">
               <div className="flex lg:flex-row flex-col gap-2">
                 <TextField
-                  label="Your full name"
+                  label="First Name"
                   variant="standard"
                   className="w-full"
-                  name="name"
+                  name="first_name"
                   color="#000000"
                   onChange={(e) => handleChange(e)}
-                  value={fromData?.name}
-                  error={!!fromDataErr?.name}
-                  helperText={fromDataErr?.name}
+                  value={fromData?.first_name}
+                  error={!!fromDataErr?.first_name}
+                  helperText={fromDataErr?.first_name}
                   required
                 />
+                <TextField
+                  label="Last Name"
+                  variant="standard"
+                  className="w-full"
+                  name="last_name"
+                  color="#000000"
+                  onChange={(e) => handleChange(e)}
+                  value={fromData?.last_name}
+                  error={!!fromDataErr?.last_name}
+                  helperText={fromDataErr?.last_name}
+                  required
+                />
+              </div>
+
+              <div className="flex lg:flex-row flex-col gap-2">
                 <TextField
                   type="email"
                   label="Your email address"
@@ -166,39 +206,38 @@ const TryRealsales = (props) => {
                   helperText={fromDataErr?.email}
                   required
                 />
-              </div>
-
-              <div className="flex gap-2">
-                <FormControl
-                  variant="standard"
-                  className="w-[15%]"
-                  color="#000000"
-                >
-                  <InputLabel id=""></InputLabel>
-                  <Select
-                    value={idc}
-                    onChange={(e) => setIdc(e.target.value)}
-                    label="idc"
+                <div className="flex gap-2">
+                  <FormControl
+                    variant="standard"
+                    className="w-[15%]"
                     color="#000000"
                   >
-                    <MenuItem value={91}>+91</MenuItem>
-                    <MenuItem value={92}>+92</MenuItem>
-                    <MenuItem value={93}>+93</MenuItem>
-                  </Select>
-                </FormControl>
-                <TextField
-                  type="number"
-                  label="Your phone number"
-                  variant="standard"
-                  className="w-[85%] outline-[#000000]"
-                  name="phone"
-                  color="#000000"
-                  onChange={(e) => handleChange(e)}
-                  value={fromData?.phone}
-                  error={!!fromDataErr?.phone}
-                  helperText={fromDataErr?.phone}
-                  required
-                />
+                    <InputLabel id=""></InputLabel>
+                    <Select
+                      value={idc}
+                      onChange={(e) => setIdc(e.target.value)}
+                      label="idc"
+                      color="#000000"
+                    >
+                      <MenuItem value={91}>+91</MenuItem>
+                      <MenuItem value={92}>+92</MenuItem>
+                      <MenuItem value={93}>+93</MenuItem>
+                    </Select>
+                  </FormControl>
+                  <TextField
+                    type="number"
+                    label="Your phone number"
+                    variant="standard"
+                    className="w-[85%] outline-[#000000]"
+                    name="phone_number"
+                    color="#000000"
+                    onChange={(e) => handleChange(e)}
+                    value={fromData?.phone_number}
+                    error={!!fromDataErr?.phone_number}
+                    helperText={fromDataErr?.phone_number}
+                    required
+                  />
+                </div>
               </div>
 
               <div className="flex gap-2 relative">
@@ -221,6 +260,22 @@ const TryRealsales = (props) => {
                   src={textFieldEnd}
                   alt="textFieldEnd"
                   className="absolute right-0"
+                />
+              </div>
+
+              <div className="flex gap-2 relative">
+                <TextField
+                  type="password"
+                  label="Your Password"
+                  variant="standard"
+                  className="w-full outline-[#000000]"
+                  name="password"
+                  color="#000000"
+                  onChange={(e) => handleChange(e)}
+                  value={fromData?.password}
+                  error={!!fromDataErr?.password}
+                  helperText={fromDataErr?.password}
+                  required
                 />
               </div>
             </div>

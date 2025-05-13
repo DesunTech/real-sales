@@ -19,11 +19,11 @@ const MeetPerfectPersona = () => {
 
   const handlePersonaTypeNext = () => {
     dispatch(PersonaTypeValue(false));
-    dispatch(InteractionValue(true));
+    dispatch(InteractionValue({open: true, id: ""}));
   };
 
   const handleInteractionNext = () => {
-    dispatch(InteractionValue(false));
+    dispatch(InteractionValue({open: false, id: ""}));
     dispatch(IdealPersonaValue(true));
   };
 
