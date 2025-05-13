@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import whiteLogoNoBackground from "../../../public/assets/images/RealSales-official-logo/For Web/png/White logo - no background.png";
 import userDummy from "../../../public/assets/images/RealSales-user-images/user-3.png";
@@ -42,6 +42,143 @@ const Chat = ({ slug, children }) => {
   const [openAnswer, setOpenAnswer] = useState(0);
   const [micUser, setMicUser] = useState(true);
   const [micAi, setMicAi] = useState(true);
+  const [isMicClicked, setIsMicClicked] = useState(false);
+  const [transcript, setTranscript] = useState('');
+  const [chatMessages, setChatMessages] = useState([]);
+  const recognitionRef = useRef(null);
+  const silenceTimeoutRef = useRef(null);
+  const isSilenceTimeoutRef = useRef(false);
+  const lastSpeechTimeRef = useRef(null);
+
+  useEffect(() => {
+    let recognition = null;
+
+    if (typeof window !== 'undefined' && 'webkitSpeechRecognition' in window) {
+      try {
+        const SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
+        recognition = new SpeechRecognition();
+        recognition.continuous = true;
+        recognition.interimResults = true;
+        recognition.lang = 'en-US';
+
+        recognition.onstart = () => {
+          console.log('Speech recognition started');
+          isSilenceTimeoutRef.current = false;
+          lastSpeechTimeRef.current = Date.now();
+        };
+
+        recognition.onresult = (event) => {
+          const current = event.resultIndex;
+          const transcript = event.results[current][0].transcript;
+          setTranscript(transcript);
+          lastSpeechTimeRef.current = Date.now();
+          
+          if (event.results[current].isFinal) {
+            setChatMessages(prev => [...prev, {
+              text: transcript,
+              isUser: true,
+              timestamp: new Date().toISOString()
+            }]);
+            setTranscript('');
+          }
+        };
+
+        recognition.onerror = (event) => {
+          console.error('Speech recognition error:', event.error);
+          if (event.error === 'no-speech') {
+            return;
+          }
+          setIsMicClicked(false);
+          isSilenceTimeoutRef.current = false;
+          lastSpeechTimeRef.current = null;
+        };
+
+        recognition.onend = () => {
+          console.log('Speech recognition ended');
+          if (isMicClicked && !isSilenceTimeoutRef.current) {
+            try {
+              recognition.start();
+            } catch (error) {
+              console.error('Error restarting recognition:', error);
+            }
+          }
+        };
+
+        recognitionRef.current = recognition;
+      } catch (error) {
+        console.error('Failed to initialize speech recognition:', error);
+      }
+    }
+
+    return () => {
+      if (recognition) {
+        try {
+          recognition.stop();
+        } catch (error) {
+          console.error('Error stopping recognition:', error);
+        }
+      }
+    };
+  }, []);
+
+  // Add a new effect to check for silence
+  useEffect(() => {
+    let silenceCheckInterval;
+
+    if (isMicClicked) {
+      silenceCheckInterval = setInterval(() => {
+        if (lastSpeechTimeRef.current && Date.now() - lastSpeechTimeRef.current >= 3000) {
+          // If no speech detected for 3 seconds
+          isSilenceTimeoutRef.current = true;
+          if (recognitionRef.current) {
+            try {
+              recognitionRef.current.stop();
+            } catch (error) {
+              console.error('Error stopping recognition:', error);
+            }
+          }
+          setIsMicClicked(false);
+          setTranscript('');
+          lastSpeechTimeRef.current = null;
+        }
+      }, 1000); // Check every second
+    }
+
+    return () => {
+      if (silenceCheckInterval) {
+        clearInterval(silenceCheckInterval);
+      }
+    };
+  }, [isMicClicked]);
+
+  const toggleSpeechRecognition = () => {
+    if (recognitionRef.current) {
+      try {
+        if (!isMicClicked) {
+          isSilenceTimeoutRef.current = false;
+          lastSpeechTimeRef.current = Date.now();
+          recognitionRef.current.start();
+          setIsMicClicked(true);
+        } else {
+          isSilenceTimeoutRef.current = true;
+          lastSpeechTimeRef.current = null;
+          recognitionRef.current.stop();
+          setIsMicClicked(false);
+          setTranscript('');
+        }
+      } catch (error) {
+        console.error('Error toggling speech recognition:', error);
+        setIsMicClicked(false);
+        lastSpeechTimeRef.current = null;
+      }
+    } else {
+      console.error('Speech recognition not supported in this browser');
+    }
+  };
+
+  const clearTranscript = () => {
+    setTranscript('');
+  };
 
   const CustomTooltip = styled(({ className, ...props }) => (
     <Tooltip {...props} arrow classes={{ popper: className }} />
@@ -265,17 +402,13 @@ const Chat = ({ slug, children }) => {
                       <div className="absolute inset-0 bg-[url('../../public/assets/images/RealSales-abstracts/glow-light-1.png')] bg-cover bg-center bg-no-repeat opacity-20"></div>
                       {slug === "audio" ? (
                         <div className="absolute inset-0 p-5 w-full h-full flex flex-col items-center">
-                          <div className="flex items-center gap-1.5 z-10">
-                            <div
-                              onClick={() => setMicAi(!micAi)}
-                              className="w-10 h-10 bg-[#FFFFFF1A] rounded-full flex items-center justify-center cursor-pointer"
+                          <div className="flex items-center gap-1.5">
+                            <button 
+                              className={`w-10 h-10 ${isMicClicked ? 'bg-[#26AD35] hover:bg-[#26AD35]' : 'bg-[#FFFFFF1A] hover:bg-[#FFFFFF33]'} rounded-full flex items-center justify-center cursor-pointer transition-colors`}
+                              onClick={toggleSpeechRecognition}
                             >
-                              {micAi ? (
-                                <MicNoneOutlinedIcon className="text-white !text-[20px]" />
-                              ) : (
-                                <MicOffSharpIcon className="text-white !text-[20px]" />
-                              )}
-                            </div>
+                              <MicNoneOutlinedIcon className={`${isMicClicked ? 'text-white' : 'text-[#FFFFFF80]'} !text-[20px]`} />
+                            </button>
                             <Image
                               src={callVibration}
                               alt="callVibration"
@@ -304,16 +437,12 @@ const Chat = ({ slug, children }) => {
                           </div>
                           <div className="w-[90%] flex items-start gap-1.5 z-10">
                             <div className="flex items-center gap-1.5 -mt-2">
-                              <div
-                                onClick={() => setMicUser(!micUser)}
-                                className="w-10 h-10 bg-[#FFFFFF1A] rounded-full flex items-center justify-center cursor-pointer"
+                              <button 
+                                className={`w-10 h-10 ${isMicClicked ? 'bg-[#26AD35] hover:bg-[#26AD35]' : 'bg-[#FFFFFF1A] hover:bg-[#FFFFFF33]'} rounded-full flex items-center justify-center cursor-pointer transition-colors`}
+                                onClick={toggleSpeechRecognition}
                               >
-                                {micUser ? (
-                                  <MicNoneOutlinedIcon className="text-white !text-[20px]" />
-                                ) : (
-                                  <MicOffSharpIcon className="text-white !text-[20px]" />
-                                )}
-                              </div>
+                                <MicNoneOutlinedIcon className={`${isMicClicked ? 'text-white' : 'text-[#FFFFFF80]'} !text-[20px]`} />
+                              </button>
                               <Image
                                 src={callVibration}
                                 alt="callVibration"
@@ -321,25 +450,22 @@ const Chat = ({ slug, children }) => {
                               />
                             </div>
                             <div className="flex flex-col items-start gap-1 w-[80%]">
-                              <p className="text-white text-[14px] sora-regular">
-                                <span className="text-[#FFDE5A] sora-semibold">
-                                  Lorem ipsum!
-                                </span>
-                                &nbsp;is simply dummy text of the printing and
-                                typesetting industry, lorem has been therefore
-                                industry's standard ....
-                              </p>
-                              <p className="text-white text-[14px] sora-regular w-[80%] opacity-70">
-                                <span className="text-[#FFDE5A] sora-semibold">
-                                  Lorem
-                                </span>
-                                &nbsp;I am fine !!
-                              </p>
-                              <p className="text-white text-[14px] sora-regular w-[80%] opacity-50">
-                                <span className="text-[#FFDE5A] sora-semibold">
-                                  Hey!! gd m9
-                                </span>
-                              </p>
+                              {chatMessages.map((message, index) => (
+                                <p key={index} className="text-white text-[14px] sora-regular w-[80%] opacity-70">
+                                  <span className="text-[#FFDE5A] sora-semibold">
+                                    {message.isUser ? 'You' : 'AI'}
+                                  </span>
+                                  &nbsp;{message.text}
+                                </p>
+                              ))}
+                              {isMicClicked && transcript && (
+                                <p className="text-white text-[14px] sora-regular w-[80%] opacity-100">
+                                  <span className="text-[#FFDE5A] sora-semibold">
+                                    You
+                                  </span>
+                                  &nbsp;{transcript}
+                                </p>
+                              )}
                             </div>
                           </div>
                         </div>
@@ -450,7 +576,7 @@ const Chat = ({ slug, children }) => {
                       To proceed your dream chat:
                     </p>
                     <p className="sora-thin text-white text-lg">
-                      Say “Hi” to your Persona !!
+                      Say "Hi" to your Persona !!
                     </p>
                   </div>
                   <div className="w-full flex items-center gap-2">
