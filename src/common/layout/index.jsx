@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import Header from "./header";
@@ -32,22 +32,35 @@ const Layout = ({ children }) => {
 
   const isChatPage = router.pathname.startsWith("/chat");
 
+  const [personaData, setPersonaData] = useState([]);
 
   // Modal state handlers
   const handlePersonaTypeNext = () => {
     dispatch(PersonaTypeValue(false));
-    dispatch(InteractionValue({open: true, id: ""}));
+    dispatch(InteractionValue({ open: true, id: "" }));
   };
 
   const handleInteractionNext = () => {
-    dispatch(InteractionValue({open: false, id: ""}));
-    dispatch(IdealPersonaValue(true));
-  };
-
-  const handleIdealPersonaNext = () => {
-    dispatch(IdealPersonaValue(false));
+    dispatch(InteractionValue({ open: false, id: "" }));
+    // dispatch(IdealPersonaValue(true));
     dispatch(ShortlistedPersonaValue(true));
   };
+
+  const handleIdealPersonaNext = (industryType, type) => {
+    dispatch(IdealPersonaValue({ open: false, type: "" }));
+    // dispatch(ShortlistedPersonaValue(true));
+    setPersonaData((pre) => [...pre, { type: industryType, persona: type }]);
+  };
+
+  const newKeys = ['industry', 'role', 'experience_level', 'geography', 'manufacturing_model'];
+
+  let trimedPersona = personaData.reduce((acc, v, index) => {
+    if (v?.persona && index < newKeys.length) {
+      acc[newKeys[index]] = v.type; // Assign type to the new key
+    }
+    return acc;
+  }, {});
+  console.log(trimedPersona, "personaData_");
 
   const handleShortlistedPersonaNext = () => {
     dispatch(ShortlistedPersonaValue(false));
@@ -80,7 +93,10 @@ const Layout = ({ children }) => {
       <PaymentConfirmation />
 
       {/* Persona Flow Modals */}
-      <PersonaTypeModal onNext={handlePersonaTypeNext} />
+      <PersonaTypeModal
+        personaData={personaData}
+        onNext={handlePersonaTypeNext}
+      />
       <InteractionModal onNext={handleInteractionNext} />
       <IdealPersonaModal onNext={handleIdealPersonaNext} />
       <ShortlistedPersonaModal onNext={handleShortlistedPersonaNext} />

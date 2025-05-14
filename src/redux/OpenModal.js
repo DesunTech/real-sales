@@ -5,7 +5,7 @@ const initialState = {
   tryRealsalesValue: false,
   personaTypeValue: false,
   interactionValue: { open: false, id: "" },
-  idealPersonaValue: false,
+  idealPersonaValue: {open: false, type: ""},
   shortlistedPersonaValue: false,
   sessionModesValue: false,
   waitAMinuteValue: { open: false, type: "" },

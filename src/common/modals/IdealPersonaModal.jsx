@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CommonModal from "../commonModal";
 import Image from "next/image";
@@ -8,16 +8,56 @@ import blackLogo from "../../../public/assets/images/RealSales-official-logo/For
 import persona_food_new from "../../../public/assets/images/RealSales-user-images/persona-food-new.png";
 import persona_food_old from "../../../public/assets/images/RealSales-user-images/persona-food.png";
 import { IdealPersonaValue } from "../../redux/OpenModal";
+import selfimage from "../../../public/assets/images/personas/self.png"
+import contractimage from "../../../public/assets/images/personas/contract.png"
+import stateimage from "../../../public/assets/images/personas/state.png"
+import countryimage from "../../../public/assets/images/personas/country.png"
+import juniorimage from "../../../public/assets/images/personas/junior.png"
+import seniorimage from "../../../public/assets/images/personas/senior.png"
+import midimage from "../../../public/assets/images/personas/mid.png"
+import plantManagerimage from "../../../public/assets/images/personas/plantManager.png"
+import maintenanceimage from "../../../public/assets/images/personas/maintenance.png"
+import procecurementimage from "../../../public/assets/images/personas/procecurement.png"
+
 
 const IdealPersonaModal = ({ onNext }) => {
   const dispatch = useDispatch();
   const open = useSelector((state) => state.openModal.idealPersonaValue);
   const [industryType, setIndustryType] = useState("");
+  const [idealPersonaArr, setIdealPersonaArr] = useState([]);
 
-  const idealPersonaArr = [
-    { image: persona_food_new, type: "Industry", title: "Food" },
-    { image: persona_food_old, type: "Industry", title: "Beverage" },
-  ];
+  useEffect(() => {
+    if (open?.type === "Industry") {
+      setIdealPersonaArr([
+        { image: persona_food_new, type: "Industry", title: "Food & Beverage" },
+        { image: persona_food_old, type: "Industry", title: "Beverage" },
+      ]);
+    } else if (open?.type === "Role") {
+      setIdealPersonaArr([
+        { image: plantManagerimage, type: "Role", title: "Plant Manager" },
+        { image: procecurementimage, type: "Role", title: "Procurement" },
+        { image: maintenanceimage, type: "Role", title: "Maintenance" },
+      ]);
+    } else if (open?.type === "Experience") {
+      setIdealPersonaArr([
+        { image: juniorimage, type: "Experience", title: "Junior" },
+        { image: seniorimage, type: "Experience", title: "Mid" },
+        { image: midimage, type: "Experience", title: "Senior" },
+      ]);
+    } else if (open?.type === "Geography") {
+      setIdealPersonaArr([
+        { image: countryimage, type: "Geography", title: "India" },
+        { image: countryimage, type: "Geography", title: "US" },
+      ]);
+    } else if (open?.type === "Manufacture") {
+      setIdealPersonaArr([
+        { image: selfimage, type: "Manufacture", title: "Self Manufacturing" },
+        { image: contractimage, type: "Manufacture", title: "Contract Manufacturing" },
+      ]);
+    } else {
+      setIdealPersonaArr([]);
+    }
+  }, [open?.type]);
 
   const onSetIndustryType = (type) => {
     {
@@ -31,8 +71,8 @@ const IdealPersonaModal = ({ onNext }) => {
 
   return (
     <CommonModal
-      open={open}
-      onClose={() => dispatch(IdealPersonaValue(false))}
+      open={open?.open}
+      onClose={() => dispatch(IdealPersonaValue({ open: false, type: "" }))}
       width={"70%"}
     >
       <div className="flex flex-col gap-4 items-start">
@@ -61,7 +101,7 @@ const IdealPersonaModal = ({ onNext }) => {
                       </div>
                     </div>
                     <div className="w-32 h-auto rounded-[20px] overflow-hidden">
-                      <Image src={v?.image} alt={v?.title} />
+                      <Image src={v?.image} alt={v?.title} className="h-[8rem]" />
                     </div>
                     <div className="flex flex-col items-start gap-2">
                       <Image
@@ -86,7 +126,9 @@ const IdealPersonaModal = ({ onNext }) => {
             className={`!mt-8 !border-[2px] !border-[#060606] !text-[#060606] !font-[500] !px-6 !py-1] !text-[16px] !capitalize flex !items-center gap-2 w-fit h-fit`}
             icon={<ArrowRight stroke={`#060606`} width={19} height={13} />}
             disabled={industryType === "" ? true : false}
-            onClick={industryType === "" ? undefined : onNext}
+            onClick={() =>
+              industryType === "" ? undefined : onNext(industryType, open.type)
+            }
             buttontext={"Save & Proceed"}
           />
         </div>

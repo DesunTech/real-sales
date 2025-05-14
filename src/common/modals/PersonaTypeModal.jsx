@@ -4,11 +4,11 @@ import CommonModal from "../commonModal";
 import PersonaCard from "../PersonaCard";
 import CommonButton from "../commonButton";
 import ArrowRight from "../../../public/assets/icons/arrowRight";
-import { PersonaTypeValue } from "../../redux/OpenModal";
+import { IdealPersonaValue, PersonaTypeValue } from "../../redux/OpenModal";
 import { useApi } from "../../hooks/useApi";
 import { apis } from "../../utils/apis";
 
-const PersonaTypeModal = ({ onNext }) => {
+const PersonaTypeModal = ({ onNext, personaData }) => {
   const dispatch = useDispatch();
   const { ai_personas } = apis;
   const { Get } = useApi();
@@ -25,6 +25,34 @@ const PersonaTypeModal = ({ onNext }) => {
     };
     getRealAIPersona();
   }, [open]);
+
+  let Industry = personaData?.length
+    ? personaData
+        .filter((v) => v?.persona === "Industry")
+        .map((val) => val?.type)
+    : false;
+
+  let Role = personaData?.length
+    ? personaData.filter((v) => v?.persona === "Role").map((val) => val?.type)
+    : false;
+
+  let Experience = personaData?.length
+    ? personaData
+        .filter((v) => v?.persona === "Experience")
+        .map((val) => val?.type)
+    : false;
+
+  let Geography = personaData?.length
+    ? personaData
+        .filter((v) => v?.persona === "Geography")
+        .map((val) => val?.type)
+    : false;
+
+  let Manufacture = personaData?.length
+    ? personaData
+        .filter((v) => v?.persona === "Manufacture")
+        .map((val) => val?.type)
+    : false;
 
   return (
     <CommonModal
@@ -49,32 +77,56 @@ const PersonaTypeModal = ({ onNext }) => {
             <div className="w-full flex lg:flex-row flex-col items-center justify-between gap-y-5 gap-x-10">
               <PersonaCard
                 persona={persona === "Industry" ? true : false}
-                onClick={() => setPersona("Industry")}
+                // onClick={() => setPersona("Industry")}
+                onClick={() =>
+                  dispatch(IdealPersonaValue({ open: true, type: "Industry" }))
+                }
                 title={"Persona by Industry"}
+                type={Industry[0]}
               />
               <PersonaCard
                 persona={persona === "Role" ? true : false}
-                onClick={() => setPersona("Role")}
+                // onClick={() => setPersona("Role")}
+                onClick={() =>
+                  dispatch(IdealPersonaValue({ open: true, type: "Role" }))
+                }
                 title={"Persona by Role"}
+                type={Role[0]}
               />
             </div>
             <div className="w-full flex lg:flex-row flex-col items-center justify-between gap-y-5 gap-x-10">
               <PersonaCard
                 persona={persona === "Experience" ? true : false}
-                onClick={() => setPersona("Experience")}
+                // onClick={() => setPersona("Experience")}
+                onClick={() =>
+                  dispatch(
+                    IdealPersonaValue({ open: true, type: "Experience" })
+                  )
+                }
                 title={"Persona by Experience"}
+                type={Experience[0]}
               />
               <PersonaCard
                 persona={persona === "Geography" ? true : false}
-                onClick={() => setPersona("Geography")}
+                // onClick={() => setPersona("Geography")}
+                onClick={() =>
+                  dispatch(IdealPersonaValue({ open: true, type: "Geography" }))
+                }
                 title={"Persona by Geography"}
+                type={Geography[0]}
               />
             </div>
             <div className="w-full flex lg:flex-row flex-col items-center justify-between gap-y-5 gap-x-10">
               <PersonaCard
                 persona={persona === "Manufacture" ? true : false}
-                onClick={() => setPersona("Manufacture")}
+                // onClick={() => setPersona("Manufacture")}
+                onClick={() =>
+                  dispatch(
+                    IdealPersonaValue({ open: true, type: "Manufacture" })
+                  )
+                }
                 title={"Persona by Manufacture"}
+                type={Manufacture[0]}
               />
               <div className="w-full">{/* fake */}</div>
             </div>
@@ -82,8 +134,8 @@ const PersonaTypeModal = ({ onNext }) => {
           <CommonButton
             className={`!mt-8 !border-[2px] !border-[#060606] !text-[#060606] !font-[500] !px-6 !py-1] !text-[16px] !capitalize flex !items-center gap-2 w-fit h-fit`}
             icon={<ArrowRight stroke={`#060606`} width={19} height={13} />}
-            disabled={persona === "" ? true : false}
-            onClick={persona === "" ? undefined : onNext}
+            disabled={personaData?.length < 5 ? true : false}
+            onClick={personaData?.length < 5 ? undefined : onNext}
             buttontext={"Proceed to Next step"}
           />
         </div>

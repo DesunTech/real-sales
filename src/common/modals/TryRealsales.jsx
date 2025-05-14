@@ -3,7 +3,10 @@ import CommonModal from "../commonModal";
 import { TryRealsalesValue } from "../../redux/OpenModal";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  Checkbox,
   FormControl,
+  FormControlLabel,
+  FormGroup,
   IconButton,
   InputAdornment,
   InputLabel,
@@ -18,10 +21,12 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { useApi } from "../../hooks/useApi";
 import { apis } from "../../utils/apis";
+import google_logo from "../../../public/assets/icons/google-logo.svg";
+import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 
 const TryRealsales = (props) => {
   const { Post } = useApi();
-  const { signup } = apis;
+  const { signup, sign_in, google } = apis;
   const initialFormData = {
     first_name: "",
     last_name: "",
@@ -31,6 +36,11 @@ const TryRealsales = (props) => {
     // couponCode: "",
     password: "",
   };
+  const initialLoginFormData = {
+    email: "",
+    password: "",
+    remember_me: true,
+  };
 
   const dispatch = useDispatch();
   const router = useRouter();
@@ -38,7 +48,11 @@ const TryRealsales = (props) => {
   const [idc, setIdc] = useState(91);
   const [fromData, setFromData] = useState(initialFormData);
   const [fromDataErr, setFromDataErr] = useState(initialFormData);
+  const [loginfromData, setLoginfromData] = useState(initialLoginFormData);
+  const [loginfromDataErr, setLoginFromDataErr] =
+    useState(initialLoginFormData);
   const [width, setWidth] = useState(1366);
+  const [openLogin, setOpenLogin] = useState(false);
 
   useEffect(() => {
     const handleResize = () => setWidth(window.innerWidth);
@@ -51,6 +65,13 @@ const TryRealsales = (props) => {
     setFromData((pre) => ({ ...pre, [name]: value }));
     // Clear error for the field being typed in
     setFromDataErr((pre) => ({ ...pre, [name]: "" }));
+  };
+
+  const loginhandleChange = (e) => {
+    let { value, name } = e.target;
+    setLoginfromData((pre) => ({ ...pre, [name]: value }));
+    // Clear error for the field being typed in
+    setLoginFromDataErr((pre) => ({ ...pre, [name]: "" }));
   };
 
   const submitTryRealsales = async () => {
@@ -111,19 +132,79 @@ const TryRealsales = (props) => {
           ...fromData,
           phone_number: `${idc}${fromData?.phone_number}`,
         });
-        console.log(data, "__data");
-        setFromDataErr(initialFormData);
-        dispatch(TryRealsalesValue(false));
-        router.push("/pricing/free-trial");
+        if (data?.token) {
+          setFromDataErr(initialFormData);
+          dispatch(TryRealsalesValue(false));
+          router.push("/pricing/free-trial");
+        }
       } catch (error) {
         console.log(error, "error");
       }
     }
   };
 
-  // useEffect(() => {
-  //   setFromData((pre) => ({ ...pre, idc: idc }));
-  // }, [idc]);
+  const loginUser = async () => {
+    let valid = true;
+    const errors = { ...initialLoginFormData };
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    // Email validation
+    if (!loginfromData.email.trim()) {
+      valid = false;
+      errors.email = "Email is required";
+    } else if (!emailRegex.test(loginfromData.email)) {
+      valid = false;
+      errors.email = "Please enter a valid email address";
+    }
+
+    // Password validation
+    if (!loginfromData.password.trim()) {
+      valid = false;
+      errors.password = "Password is required";
+    } else if (loginfromData.password.length < 6) {
+      valid = false;
+      errors.password = "Password must be at least 6 characters long";
+    }
+
+    setLoginFromDataErr(errors);
+
+    if (valid) {
+      try {
+        let data = await Post(sign_in, loginfromData);
+        if (data?.token) {
+          setLoginFromDataErr(initialLoginFormData);
+          dispatch(TryRealsalesValue(false));
+          router.push("/pricing/free-trial");
+        } else {
+          setLoginFromDataErr((prev) => ({
+            ...prev,
+            general: "Invalid email or password",
+          }));
+        }
+      } catch (error) {
+        console.log(error, "_error_");
+        setLoginFromDataErr((prev) => ({
+          ...prev,
+          general: "An error occurred. Please try again.",
+        }));
+      }
+    }
+  };
+
+  const handleGoogleLoginSuccess = async (credentialResponse) => {
+    const { credential } = credentialResponse;
+    try {
+      let data = await Post(google, { id_token: credential });
+      if (data?.token) {
+        dispatch(TryRealsalesValue(false));
+        router.push("/pricing/free-trial");
+      } else {
+        console.log("Login failed", data);
+      }
+    } catch (error) {
+      console.log(error, "_error_");
+    }
+  };
 
   console.log(fromData, "fromData");
 
@@ -132,15 +213,16 @@ const TryRealsales = (props) => {
   );
 
   return (
-    <>
-      <CommonModal
-        open={tryRealsalesValue}
-        onClose={() => {
-          setFromDataErr(initialFormData);
-          dispatch(TryRealsalesValue(false));
-        }}
-        width={width > 720 ? "60%" : "90%"}
-      >
+    <CommonModal
+      open={tryRealsalesValue}
+      onClose={() => {
+        setFromDataErr(initialFormData);
+        dispatch(TryRealsalesValue(false));
+        setOpenLogin(false);
+      }}
+      width={width > 720 ? "60%" : "90%"}
+    >
+      {!openLogin ? (
         <div className="w-full flex flex-col items-center gap-4">
           <div className="flex flex-col items-center lg:w-[80%] w-full gap-2">
             <h1 className="lg:text-4xl text-2xl text-[#060606E5] m-plus-rounded-1c-regular text-center">
@@ -206,7 +288,7 @@ const TryRealsales = (props) => {
                   helperText={fromDataErr?.email}
                   required
                 />
-                <div className="flex gap-2">
+                <div className="flex gap-2 w-full">
                   <FormControl
                     variant="standard"
                     className="w-[15%]"
@@ -288,6 +370,15 @@ const TryRealsales = (props) => {
               <DoneOutlinedIcon className="text-[#060606] !font-normal !text-[20px]" />
             }
           />
+          <div className="flex items-center">
+            You have already signed up. Please go to the&nbsp;
+            <div
+              onClick={() => setOpenLogin(true)}
+              className="cursor-pointer border border-solid border-gray-200 rounded px-3 py-0.5"
+            >
+              signin
+            </div>
+          </div>
           <hr className="border-[#060606CC] w-full" />
           <div className="flex items-center w-full">
             <div className="bg-[#26AD35] w-12 h-12 rounded-full lg:flex hidden" />
@@ -297,8 +388,91 @@ const TryRealsales = (props) => {
             </p>
           </div>
         </div>
-      </CommonModal>
-    </>
+      ) : (
+        <>
+          <GoogleOAuthProvider clientId="YOUR_GOOGLE_CLIENT_ID">
+            <div className="w-full flex flex-col gap-4">
+              <div className="w-full flex items-center justify-center">
+                <div className="flex flex-col justify-center items-center lg:w-[80%] w-full gap-2">
+                  <h1 className="lg:text-4xl text-2xl text-[#060606E5] m-plus-rounded-1c-regular text-center">
+                    <span className="m-plus-rounded-1c-medium">Signin</span>
+                    &nbsp;to the Session
+                    <br className="lg:flex hidden" />
+                    as&nbsp;
+                    <span className="m-plus-rounded-1c-medium">MVP User</span>
+                  </h1>
+                  <p className="text-[16px] text-[#060606] m-plus-rounded-1c-regular text-center">
+                    Discover how we can Transform your Sales team's Performance
+                  </p>
+                </div>
+              </div>
+              <TextField
+                type="email"
+                label="Your email address"
+                variant="standard"
+                className="w-full outline-[#000000]"
+                name="email"
+                color="#000000"
+                onChange={(e) => loginhandleChange(e)}
+                value={loginfromData?.email}
+                error={!!loginfromDataErr?.email}
+                helperText={loginfromDataErr?.email}
+                required
+              />
+              <TextField
+                type="password"
+                label="Your Password"
+                variant="standard"
+                className="w-full outline-[#000000]"
+                name="password"
+                color="#000000"
+                onChange={(e) => loginhandleChange(e)}
+                value={loginfromData?.password}
+                error={!!loginfromDataErr?.password}
+                helperText={loginfromDataErr?.password}
+                required
+              />
+              <FormGroup>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      color="success"
+                      onChange={(e) => {
+                        setLoginfromData((pre) => ({
+                          ...pre,
+                          remember_me: e.target.checked,
+                        }));
+                        console.log(e.target.checked, "tatarget_checked");
+                      }}
+                      checked={loginfromData?.remember_me}
+                    />
+                  }
+                  label={
+                    <p className="text-base m-plus-rounded-1c-regular text-[#000000de]">
+                      Remember me
+                    </p>
+                  }
+                />
+              </FormGroup>
+              <div className="flex items-center gap-4">
+                <CommonButton
+                  className={`w-full !border-0 !outline-0 !bg-[#FFDE5A] shadow-md !text-[#060606] text-[20px]`}
+                  buttontext={`START session`}
+                  onClick={() => loginUser()}
+                  icon={
+                    <DoneOutlinedIcon className="text-[#060606] !font-normal !text-[20px]" />
+                  }
+                />
+                <GoogleLogin
+                  onSuccess={handleGoogleLoginSuccess}
+                  onError={() => console.log("Login Failed")}
+                />
+              </div>
+            </div>
+          </GoogleOAuthProvider>
+        </>
+      )}
+    </CommonModal>
   );
 };
 

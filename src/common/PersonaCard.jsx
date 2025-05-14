@@ -3,6 +3,8 @@ import PersonaCardImg from "../../public/assets/images/aboutus/PersonaCardImg.pn
 import BookAdemo from "./bookAdemo";
 
 const PersonaCard = (props) => {
+  console.log(props?.type, "props_type");
+
   return (
     <div className="bg-[url(../../public/assets/images/aboutus/PersonaCardImg.png)] shadow-md bg-cover bg-center bg-no-repeat w-full rounded-[10px]">
       <div
@@ -23,11 +25,18 @@ const PersonaCard = (props) => {
             {props?.title}
           </p>
         </div>
-        <BookAdemo
-          onClick={props?.onClick}
-          BookaDemo={"SELECT"}
-          className={`!border-[#FFDE5A] !bg-[#060606] !text-[#FFDE5A] !px-5 !py-1 h-fit uppercase`}
-        />
+
+        {props?.type ? (
+          <p className="lg:text-[22px] text-[14px] m-plus-rounded-1c-medium text-[#060606CC]">
+            {props?.type}
+          </p>
+        ) : (
+          <BookAdemo
+            onClick={props?.onClick}
+            BookaDemo={"SELECT"}
+            className={`!border-[#FFDE5A] !bg-[#060606] !text-[#FFDE5A] !px-5 !py-1 h-fit uppercase`}
+          />
+        )}
       </div>
     </div>
   );
