@@ -34,10 +34,18 @@ const Layout = ({ children }) => {
 
   const [personaData, setPersonaData] = useState([]);
 
+  let trimedPersona = personaData.reduce((acc, v, index) => {
+    if (v?.persona && index < newKeys.length) {
+      acc[newKeys[index]] = v.type; // Assign type to the new key
+    }
+    return acc;
+  }, {});
+  console.log(trimedPersona, "personaData_");
+
   // Modal state handlers
   const handlePersonaTypeNext = () => {
     dispatch(PersonaTypeValue(false));
-    dispatch(InteractionValue({ open: true, id: "" }));
+    dispatch(InteractionValue({ open: true, fromData: trimedPersona }));
   };
 
   const handleInteractionNext = () => {
@@ -54,13 +62,6 @@ const Layout = ({ children }) => {
 
   const newKeys = ['industry', 'role', 'experience_level', 'geography', 'manufacturing_model'];
 
-  let trimedPersona = personaData.reduce((acc, v, index) => {
-    if (v?.persona && index < newKeys.length) {
-      acc[newKeys[index]] = v.type; // Assign type to the new key
-    }
-    return acc;
-  }, {});
-  console.log(trimedPersona, "personaData_");
 
   const handleShortlistedPersonaNext = () => {
     dispatch(ShortlistedPersonaValue(false));

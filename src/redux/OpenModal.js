@@ -4,7 +4,7 @@ const initialState = {
   demoMeetingValue: false,
   tryRealsalesValue: false,
   personaTypeValue: false,
-  interactionValue: { open: false, id: "" },
+  interactionValue: { open: false, fromData: "" },
   idealPersonaValue: {open: false, type: ""},
   shortlistedPersonaValue: false,
   sessionModesValue: false,
