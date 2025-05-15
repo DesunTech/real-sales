@@ -15,26 +15,36 @@ import { useApi } from "../../hooks/useApi";
 
 const InteractionModal = ({ onNext }) => {
   const dispatch = useDispatch();
-  const { ai_personas } = apis;
+  const { ai_personas, interaction_modes_by_name } = apis;
   const { Get } = useApi();
   const open = useSelector((state) => state.openModal.interactionValue);
   const [choosePersona, setChoosePersona] = useState("");
+  const [interactionModesData, setInteractionModesData] = useState({});
+
   useEffect(() => {
-    const getRealAIPersona = async () => {
+    const GetAiMode = async () => {
       try {
-        let data = await Get(`${ai_personas}/${open?.id}`);
+        let data = await Get(`${interaction_modes_by_name}/${choosePersona}`);
+        if (data?.mode_id) {
+          setInteractionModesData(data);
+        } else {
+          setInteractionModesData({});
+        }
         console.log(data, "aip_data");
       } catch (error) {
         console.log(error);
       }
     };
-    getRealAIPersona();
-  }, [open?.id]);
-console.log(open?.fromData, "_fromData__")
+    if (choosePersona !== "") {
+      GetAiMode();
+    }
+  }, [choosePersona]);
+
+  console.log(open?.fromData, "_fromData__");
   return (
     <CommonModal
       open={open?.open}
-      onClose={() => dispatch(InteractionValue({open: false, id: ""}))}
+      onClose={() => dispatch(InteractionValue({ open: false, fromData: "" }))}
       width={"60%"}
     >
       <div className="flex flex-col gap-4 items-start">
@@ -119,7 +129,7 @@ console.log(open?.fromData, "_fromData__")
             <div className="bg-[url(../../public/assets/images/aboutus/PersonaCardImg.png)] shadow-md bg-cover bg-center bg-no-repeat w-full rounded-[10px]">
               <div
                 className={`relative ${
-                  choosePersona === "Close"
+                  choosePersona === "closing"
                     ? `bg-gradient-to-r from-blue-200/50 to-white/0`
                     : `bg-gradient-to-r from-white/50 to-white/0`
                 } py-6 px-8 w-full flex items-center justify-between flex-col`}
@@ -127,13 +137,13 @@ console.log(open?.fromData, "_fromData__")
                 <div className="flex flex-col items-start justify-between gap-2">
                   <div className="w-full">
                     <div className="lg:w-28 w-20 lg:h-28 h-20 rounded-full overflow-hidden bg-gray-100">
-                      <Image src={persona_food_new} alt={"Close"} />
+                      <Image src={persona_food_new} alt={"closing"} />
                     </div>
                   </div>
                   <div className="w-full flex gap-4 lg:flex-row flex-col">
                     <div className="flex flex-col items-start lg:w-[40%] w-full">
-                      <h1 className="lg:text-[28px] text-[16px] m-plus-rounded-1c-medium text-[#060606B2]">
-                        Close
+                      <h1 className="lg:text-[28px] text-[16px] m-plus-rounded-1c-medium text-[#060606B2] capitalize">
+                        closing
                       </h1>
                       <p className="lg:text-[14px] text-[12px] m-plus-rounded-1c-regular text-[#060606CC]">
                         Lorem Ipsum is simply dummy text of the printing and
@@ -172,7 +182,7 @@ console.log(open?.fromData, "_fromData__")
                 <BookAdemo
                   BookaDemo={"CHOOSE IT"}
                   onClick={() => {
-                    setChoosePersona("Close");
+                    setChoosePersona("closing");
                   }}
                   className={`!border-[#FFDE5A] !bg-[#060606] !text-[#FFDE5A] !px-5 !py-1 h-fit uppercase absolute -bottom-4 left-[18%]`}
                 />
@@ -183,7 +193,14 @@ console.log(open?.fromData, "_fromData__")
             className={`!mt-8 !border-[2px] !border-[#060606] !text-[#060606] !font-[500] !px-6 !py-1] !text-[16px] !capitalize flex !items-center gap-2 w-fit h-fit`}
             icon={<ArrowRight stroke={`#060606`} width={19} height={13} />}
             disabled={choosePersona === "" ? true : false}
-            onClick={choosePersona === "" ? undefined : onNext}
+            onClick={() =>
+              choosePersona === ""
+                ? undefined
+                : onNext({
+                    ...open?.fromData,
+                    mode_id: interactionModesData?.mode_id,
+                  })
+            }
             buttontext={"Proceed"}
           />
         </div>

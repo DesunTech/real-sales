@@ -25,10 +25,10 @@ import { AddAuth } from "../../redux/AuthReducer";
 import { apis } from "../../utils/apis";
 
 const Layout = ({ children }) => {
-  const { Get } = useApi();
+  const { Get, Post } = useApi();
   const router = useRouter();
   const dispatch = useDispatch();
-  const { get_auth } = apis;
+  const { get_auth, ai_personas, sessions } = apis;
 
   const isChatPage = router.pathname.startsWith("/chat");
 
@@ -38,19 +38,56 @@ const Layout = ({ children }) => {
     acc[v.persona] = v.type; // Assign type to the persona key
     return acc;
   }, {});
-  
+
+  const CreateAiPersonas = async (personaName) => {
+    let user = "";
+    if (typeof window !== "undefined") {
+      user = localStorage.getItem("user");
+    }
+    try {
+      const data = await Post(ai_personas, {
+        ...trimedPersona,
+        name: personaName,
+        behavioral_traits: [
+          {
+            name: "test_p",
+            intensity: 1,
+            description: "test_p description",
+          },
+        ],
+      });
+      if (data?.persona_id) {
+        dispatch(PersonaTypeValue(false));
+        dispatch(
+          InteractionValue({
+            open: true,
+            fromData: {
+              user_id: user?.user_id,
+              persona_id: data?.persona_id,
+            },
+          })
+        );
+      }
+      console.log(data, "<___data");
+    } catch (error) {
+      console.log(error, "<___data-error");
+    }
+  };
+
   console.log(trimedPersona, "trimedPersona_");
 
   // Modal state handlers
-  const handlePersonaTypeNext = () => {
-    dispatch(PersonaTypeValue(false));
-    dispatch(InteractionValue({ open: true, fromData: trimedPersona }));
+  const handlePersonaTypeNext = (personaName) => {
+    CreateAiPersonas(personaName);
   };
 
-  const handleInteractionNext = () => {
-    dispatch(InteractionValue({ open: false, id: "" }));
-    // dispatch(IdealPersonaValue(true));
-    dispatch(ShortlistedPersonaValue(true));
+  const handleInteractionNext = async (fromData) => {
+    try {
+      let data = await Post(sessions, fromData)
+      dispatch(InteractionValue({ open: false, fromData: "" }));
+      // dispatch(IdealPersonaValue(true));
+      dispatch(ShortlistedPersonaValue(true));
+    } catch (error) {}
   };
 
   const handleIdealPersonaNext = (industryType, type) => {
@@ -64,17 +101,17 @@ const Layout = ({ children }) => {
     router?.push("/pricing");
   };
 
-  useEffect(() => {
-    const getAuth = async () => {
-      const data = await Get(get_auth);
-      if (data) {
-        dispatch(AddAuth(data));
-      } else {
-        console.error("data");
-      }
-    };
-    getAuth();
-  }, []);
+  // useEffect(() => {
+  //   const getAuth = async () => {
+  //     const data = await Get(get_auth);
+  //     if (data) {
+  //       dispatch(AddAuth(data));
+  //     } else {
+  //       console.error("data");
+  //     }
+  //   };
+  //   getAuth();
+  // }, []);
 
   return (
     <>

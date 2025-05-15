@@ -1,7 +1,9 @@
 export const apis = {
   get_auth: "/get-auth",
   signup: "/auth/sign-up",
+  sign_in: "/auth/sign-in",
   ai_personas: "/ai-personas",
-  sign_in: "/sign-in",
   google: "/google",
+  interaction_modes_by_name: "/interaction-modes/by-name",
+  sessions: "/sessions",
 };

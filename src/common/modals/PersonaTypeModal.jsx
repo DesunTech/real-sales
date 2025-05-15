@@ -7,6 +7,7 @@ import ArrowRight from "../../../public/assets/icons/arrowRight";
 import { IdealPersonaValue, PersonaTypeValue } from "../../redux/OpenModal";
 import { useApi } from "../../hooks/useApi";
 import { apis } from "../../utils/apis";
+import { TextField } from "@mui/material";
 
 const PersonaTypeModal = ({ onNext, personaData }) => {
   const dispatch = useDispatch();
@@ -14,17 +15,19 @@ const PersonaTypeModal = ({ onNext, personaData }) => {
   const { Get } = useApi();
   const open = useSelector((state) => state.openModal.personaTypeValue);
   const [persona, setPersona] = useState("");
-  useEffect(() => {
-    const getRealAIPersona = async () => {
-      try {
-        let data = await Get(ai_personas);
-        console.log(data, "aip_data");
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getRealAIPersona();
-  }, [open]);
+  const [personaName, setPersonaName] = useState("");
+  const [personaNameErr, setPersonaNameErr] = useState("");
+  // useEffect(() => {
+  //   const getRealAIPersona = async () => {
+  //     try {
+  //       let data = await Get(ai_personas);
+  //       console.log(data, "aip_data");
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+  //   getRealAIPersona();
+  // }, [open]);
 
   let Industry = personaData?.length
     ? personaData
@@ -74,6 +77,21 @@ const PersonaTypeModal = ({ onNext, personaData }) => {
         </div>
         <div className="w-full flex items-center justify-center flex-col">
           <div className="lg:w-[100%] w-full flex flex-col items-start justify-start gap-y-5 gap-x-10">
+            <TextField
+              label="First Name"
+              variant="standard"
+              className="w-full"
+              name="first_name"
+              color="#000000"
+              onChange={(e) => {
+                setPersonaName(e.target.value);
+                setPersonaNameErr("");
+              }}
+              value={personaName}
+              error={personaName === ""}
+              helperText={personaNameErr}
+              required
+            />
             <div className="w-full flex lg:flex-row flex-col items-center justify-between gap-y-5 gap-x-10">
               <PersonaCard
                 persona={persona === "Industry" ? true : false}
@@ -122,7 +140,10 @@ const PersonaTypeModal = ({ onNext, personaData }) => {
                 // onClick={() => setPersona("Manufacture")}
                 onClick={() =>
                   dispatch(
-                    IdealPersonaValue({ open: true, type: "manufacturing_model" })
+                    IdealPersonaValue({
+                      open: true,
+                      type: "manufacturing_model",
+                    })
                   )
                 }
                 title={"Persona by Manufacture"}
@@ -134,8 +155,14 @@ const PersonaTypeModal = ({ onNext, personaData }) => {
           <CommonButton
             className={`!mt-8 !border-[2px] !border-[#060606] !text-[#060606] !font-[500] !px-6 !py-1] !text-[16px] !capitalize flex !items-center gap-2 w-fit h-fit`}
             icon={<ArrowRight stroke={`#060606`} width={19} height={13} />}
-            disabled={personaData?.length < 5 ? true : false}
-            onClick={personaData?.length < 5 ? undefined : onNext}
+            disabled={personaData?.length < 5 || personaName === ""}
+            onClick={() => {
+              if (personaName.trim() === "") {
+                setPersonaNameErr("First Name is required.");
+              } else {
+                onNext(personaName);
+              }
+            }}
             buttontext={"Proceed to Next step"}
           />
         </div>

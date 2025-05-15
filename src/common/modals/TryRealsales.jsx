@@ -172,6 +172,8 @@ const TryRealsales = (props) => {
       try {
         let data = await Post(sign_in, loginfromData);
         if (data?.token) {
+          localStorage.setItem("user", data?.user);
+          localStorage.setItem("token", data?.token);
           setLoginFromDataErr(initialLoginFormData);
           dispatch(TryRealsalesValue(false));
           router.push("/pricing/free-trial");

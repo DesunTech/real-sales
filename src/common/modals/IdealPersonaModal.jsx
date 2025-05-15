@@ -29,30 +29,30 @@ const IdealPersonaModal = ({ onNext }) => {
   useEffect(() => {
     if (open?.type === "industry") {
       setIdealPersonaArr([
-        { image: persona_food_new, type: "Industry", title: "Food & Beverage" },
+        { image: persona_food_new, type: "Industry", title: "food-&-beverage" },
         { image: persona_food_old, type: "Industry", title: "Beverage" },
       ]);
     } else if (open?.type === "role") {
       setIdealPersonaArr([
-        { image: plantManagerimage, type: "Role", title: "Plant Manager" },
-        { image: procecurementimage, type: "Role", title: "Procurement" },
-        { image: maintenanceimage, type: "Role", title: "Maintenance" },
+        { image: plantManagerimage, type: "Role", title: "plant-manager" },
+        { image: procecurementimage, type: "Role", title: "procurement" },
+        { image: maintenanceimage, type: "Role", title: "maintenance" },
       ]);
     } else if (open?.type === "experience_level") {
       setIdealPersonaArr([
-        { image: juniorimage, type: "Experience", title: "Junior" },
-        { image: seniorimage, type: "Experience", title: "Mid" },
-        { image: midimage, type: "Experience", title: "Senior" },
+        { image: juniorimage, type: "Experience", title: "junior" },
+        { image: seniorimage, type: "Experience", title: "mid" },
+        { image: midimage, type: "Experience", title: "senior" },
       ]);
     } else if (open?.type === "geography") {
       setIdealPersonaArr([
-        { image: countryimage, type: "Geography", title: "India" },
-        { image: stateimage, type: "Geography", title: "US" },
+        { image: countryimage, type: "Geography", title: "india" },
+        { image: stateimage, type: "Geography", title: "us" },
       ]);
     } else if (open?.type === "manufacturing_model") {
       setIdealPersonaArr([
-        { image: selfimage, type: "Manufacture", title: "Self Manufacturing" },
-        { image: contractimage, type: "Manufacture", title: "Contract Manufacturing" },
+        { image: selfimage, type: "Manufacture", title: "self_manufacturing" },
+        { image: contractimage, type: "Manufacture", title: "contract_manufacturing" },
       ]);
     } else {
       setIdealPersonaArr([]);
