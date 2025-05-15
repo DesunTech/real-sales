@@ -28,29 +28,29 @@ const PersonaTypeModal = ({ onNext, personaData }) => {
 
   let Industry = personaData?.length
     ? personaData
-        .filter((v) => v?.persona === "Industry")
+        .filter((v) => v?.persona === "industry")
         .map((val) => val?.type)
     : false;
 
   let Role = personaData?.length
-    ? personaData.filter((v) => v?.persona === "Role").map((val) => val?.type)
+    ? personaData.filter((v) => v?.persona === "role").map((val) => val?.type)
     : false;
 
   let Experience = personaData?.length
     ? personaData
-        .filter((v) => v?.persona === "Experience")
+        .filter((v) => v?.persona === "experience_level")
         .map((val) => val?.type)
     : false;
 
   let Geography = personaData?.length
     ? personaData
-        .filter((v) => v?.persona === "Geography")
+        .filter((v) => v?.persona === "geography")
         .map((val) => val?.type)
     : false;
 
   let Manufacture = personaData?.length
     ? personaData
-        .filter((v) => v?.persona === "Manufacture")
+        .filter((v) => v?.persona === "manufacturing_model")
         .map((val) => val?.type)
     : false;
 
@@ -79,7 +79,7 @@ const PersonaTypeModal = ({ onNext, personaData }) => {
                 persona={persona === "Industry" ? true : false}
                 // onClick={() => setPersona("Industry")}
                 onClick={() =>
-                  dispatch(IdealPersonaValue({ open: true, type: "Industry" }))
+                  dispatch(IdealPersonaValue({ open: true, type: "industry" }))
                 }
                 title={"Persona by Industry"}
                 type={Industry[0]}
@@ -88,7 +88,7 @@ const PersonaTypeModal = ({ onNext, personaData }) => {
                 persona={persona === "Role" ? true : false}
                 // onClick={() => setPersona("Role")}
                 onClick={() =>
-                  dispatch(IdealPersonaValue({ open: true, type: "Role" }))
+                  dispatch(IdealPersonaValue({ open: true, type: "role" }))
                 }
                 title={"Persona by Role"}
                 type={Role[0]}
@@ -100,7 +100,7 @@ const PersonaTypeModal = ({ onNext, personaData }) => {
                 // onClick={() => setPersona("Experience")}
                 onClick={() =>
                   dispatch(
-                    IdealPersonaValue({ open: true, type: "Experience" })
+                    IdealPersonaValue({ open: true, type: "experience_level" })
                   )
                 }
                 title={"Persona by Experience"}
@@ -110,7 +110,7 @@ const PersonaTypeModal = ({ onNext, personaData }) => {
                 persona={persona === "Geography" ? true : false}
                 // onClick={() => setPersona("Geography")}
                 onClick={() =>
-                  dispatch(IdealPersonaValue({ open: true, type: "Geography" }))
+                  dispatch(IdealPersonaValue({ open: true, type: "geography" }))
                 }
                 title={"Persona by Geography"}
                 type={Geography[0]}
@@ -122,7 +122,7 @@ const PersonaTypeModal = ({ onNext, personaData }) => {
                 // onClick={() => setPersona("Manufacture")}
                 onClick={() =>
                   dispatch(
-                    IdealPersonaValue({ open: true, type: "Manufacture" })
+                    IdealPersonaValue({ open: true, type: "manufacturing_model" })
                   )
                 }
                 title={"Persona by Manufacture"}

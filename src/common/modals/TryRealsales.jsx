@@ -397,9 +397,9 @@ const TryRealsales = (props) => {
                   <h1 className="lg:text-4xl text-2xl text-[#060606E5] m-plus-rounded-1c-regular text-center">
                     <span className="m-plus-rounded-1c-medium">Signin</span>
                     &nbsp;to the Session
-                    <br className="lg:flex hidden" />
+                    {/* <br className="lg:flex hidden" />
                     as&nbsp;
-                    <span className="m-plus-rounded-1c-medium">MVP User</span>
+                    <span className="m-plus-rounded-1c-medium">MVP User</span> */}
                   </h1>
                   <p className="text-[16px] text-[#060606] m-plus-rounded-1c-regular text-center">
                     Discover how we can Transform your Sales team's Performance

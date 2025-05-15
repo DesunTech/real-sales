@@ -30,7 +30,7 @@ const InteractionModal = ({ onNext }) => {
     };
     getRealAIPersona();
   }, [open?.id]);
-
+console.log(open?.fromData, "_fromData__")
   return (
     <CommonModal
       open={open?.open}
@@ -53,7 +53,7 @@ const InteractionModal = ({ onNext }) => {
                 <div
                   className={`relative ${
                     choosePersona === "Prospective"
-                      ? `bg-gradient-to-r from-orange-200/50 to-white/0`
+                      ? `bg-gradient-to-r from-blue-200/50 to-white/0`
                       : `bg-gradient-to-r from-white/50 to-white/0`
                   } py-6 px-8 w-full flex items-center justify-between flex-col`}
                 >
@@ -86,7 +86,7 @@ const InteractionModal = ({ onNext }) => {
                 <div
                   className={`relative ${
                     choosePersona === "Sales"
-                      ? `bg-gradient-to-r from-orange-200/50 to-white/0`
+                      ? `bg-gradient-to-r from-blue-200/50 to-white/0`
                       : `bg-gradient-to-r from-white/50 to-white/0`
                   } py-6 px-8 w-full flex items-center justify-between flex-col`}
                 >
@@ -120,7 +120,7 @@ const InteractionModal = ({ onNext }) => {
               <div
                 className={`relative ${
                   choosePersona === "Close"
-                    ? `bg-gradient-to-r from-orange-200/50 to-white/0`
+                    ? `bg-gradient-to-r from-blue-200/50 to-white/0`
                     : `bg-gradient-to-r from-white/50 to-white/0`
                 } py-6 px-8 w-full flex items-center justify-between flex-col`}
               >

@@ -34,13 +34,12 @@ const Layout = ({ children }) => {
 
   const [personaData, setPersonaData] = useState([]);
 
-  let trimedPersona = personaData.reduce((acc, v, index) => {
-    if (v?.persona && index < newKeys.length) {
-      acc[newKeys[index]] = v.type; // Assign type to the new key
-    }
+  const trimedPersona = personaData.reduce((acc, v) => {
+    acc[v.persona] = v.type; // Assign type to the persona key
     return acc;
   }, {});
-  console.log(trimedPersona, "personaData_");
+  
+  console.log(trimedPersona, "trimedPersona_");
 
   // Modal state handlers
   const handlePersonaTypeNext = () => {
@@ -59,9 +58,6 @@ const Layout = ({ children }) => {
     // dispatch(ShortlistedPersonaValue(true));
     setPersonaData((pre) => [...pre, { type: industryType, persona: type }]);
   };
-
-  const newKeys = ['industry', 'role', 'experience_level', 'geography', 'manufacturing_model'];
-
 
   const handleShortlistedPersonaNext = () => {
     dispatch(ShortlistedPersonaValue(false));

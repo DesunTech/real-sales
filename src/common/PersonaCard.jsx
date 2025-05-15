@@ -9,8 +9,8 @@ const PersonaCard = (props) => {
     <div className="bg-[url(../../public/assets/images/aboutus/PersonaCardImg.png)] shadow-md bg-cover bg-center bg-no-repeat w-full rounded-[10px]">
       <div
         className={`${
-          props?.persona
-            ? `bg-gradient-to-r from-orange-200/50 to-white/0`
+          props?.type
+            ? `bg-gradient-to-r from-blue-200/50 to-white/0`
             : `bg-gradient-to-r from-white/50 to-white/0`
         } py-4 px-8 w-full flex flex-col items-start justify-between gap-4`}
       >

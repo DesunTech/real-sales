@@ -14,9 +14,9 @@ const ChatPage = () => {
     if (useAuth?.auth) {
       null;
     } else {
-      router.push(`/`);
+      // router.push(`/`);
     }
-  }, []);
+  }, [useAuth?.auth]);
 
   return (
     <>
