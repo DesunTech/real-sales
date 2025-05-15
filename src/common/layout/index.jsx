@@ -62,7 +62,7 @@ const Layout = ({ children }) => {
           InteractionValue({
             open: true,
             fromData: {
-              user_id: user?.user_id,
+              user_id: user,
               persona_id: data?.persona_id,
             },
           })
