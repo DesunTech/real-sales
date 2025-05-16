@@ -33,8 +33,12 @@ import { EndChatValue } from "../../redux/OpenModal";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import MicOffSharpIcon from "@mui/icons-material/MicOffSharp";
 import Link from "next/link";
+import { apis } from "../../utils/apis";
+import { useApi } from "../../hooks/useApi";
 
 const Chat = ({ slug, children }) => {
+  const { Post } = useApi();
+  const { chat_chat } = apis;
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -43,8 +47,9 @@ const Chat = ({ slug, children }) => {
   const [micUser, setMicUser] = useState(true);
   const [micAi, setMicAi] = useState(true);
   const [isMicClicked, setIsMicClicked] = useState(false);
-  const [transcript, setTranscript] = useState('');
+  const [transcript, setTranscript] = useState("");
   const [chatMessages, setChatMessages] = useState([]);
+  const [triggerSenChat, setTriggerSenChat] = useState(false);
   const recognitionRef = useRef(null);
   const silenceTimeoutRef = useRef(null);
   const isSilenceTimeoutRef = useRef(false);
@@ -53,16 +58,17 @@ const Chat = ({ slug, children }) => {
   useEffect(() => {
     let recognition = null;
 
-    if (typeof window !== 'undefined' && 'webkitSpeechRecognition' in window) {
+    if (typeof window !== "undefined" && "webkitSpeechRecognition" in window) {
       try {
-        const SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
+        const SpeechRecognition =
+          window.webkitSpeechRecognition || window.SpeechRecognition;
         recognition = new SpeechRecognition();
         recognition.continuous = true;
         recognition.interimResults = true;
-        recognition.lang = 'en-US';
+        recognition.lang = "en-US";
 
         recognition.onstart = () => {
-          console.log('Speech recognition started');
+          console.log("Speech recognition started");
           isSilenceTimeoutRef.current = false;
           lastSpeechTimeRef.current = Date.now();
         };
@@ -72,20 +78,23 @@ const Chat = ({ slug, children }) => {
           const transcript = event.results[current][0].transcript;
           setTranscript(transcript);
           lastSpeechTimeRef.current = Date.now();
-          
+
           if (event.results[current].isFinal) {
-            setChatMessages(prev => [...prev, {
-              text: transcript,
-              isUser: true,
-              timestamp: new Date().toISOString()
-            }]);
-            setTranscript('');
+            setChatMessages((prev) => [
+              ...prev,
+              {
+                text: transcript,
+                isUser: true,
+                timestamp: new Date().toISOString(),
+              },
+            ]);
+            // setTranscript("");
           }
         };
 
         recognition.onerror = (event) => {
-          console.error('Speech recognition error:', event.error);
-          if (event.error === 'no-speech') {
+          console.error("Speech recognition error:", event.error);
+          if (event.error === "no-speech") {
             return;
           }
           setIsMicClicked(false);
@@ -94,19 +103,19 @@ const Chat = ({ slug, children }) => {
         };
 
         recognition.onend = () => {
-          console.log('Speech recognition ended');
+          console.log("Speech recognition ended");
           if (isMicClicked && !isSilenceTimeoutRef.current) {
             try {
               recognition.start();
             } catch (error) {
-              console.error('Error restarting recognition:', error);
+              console.error("Error restarting recognition:", error);
             }
           }
         };
 
         recognitionRef.current = recognition;
       } catch (error) {
-        console.error('Failed to initialize speech recognition:', error);
+        console.error("Failed to initialize speech recognition:", error);
       }
     }
 
@@ -115,30 +124,44 @@ const Chat = ({ slug, children }) => {
         try {
           recognition.stop();
         } catch (error) {
-          console.error('Error stopping recognition:', error);
+          console.error("Error stopping recognition:", error);
         }
       }
     };
   }, []);
 
+  // Log transcript when mic is off
+  // useEffect(() => {
+
+  //   if (!isMicClicked) {
+  //     if (transcript !== "") {
+  //       console.log(transcript, "_micAi_");
+  //     }
+  //   }
+  // }, [!isMicClicked, transcript]);
+
+  // console.log(transcript,isMicClicked, "_micAi_");
   // Add a new effect to check for silence
   useEffect(() => {
     let silenceCheckInterval;
 
     if (isMicClicked) {
       silenceCheckInterval = setInterval(() => {
-        if (lastSpeechTimeRef.current && Date.now() - lastSpeechTimeRef.current >= 3000) {
+        if (
+          lastSpeechTimeRef.current &&
+          Date.now() - lastSpeechTimeRef.current >= 3000
+        ) {
           // If no speech detected for 3 seconds
           isSilenceTimeoutRef.current = true;
           if (recognitionRef.current) {
             try {
               recognitionRef.current.stop();
             } catch (error) {
-              console.error('Error stopping recognition:', error);
+              console.error("Error stopping recognition:", error);
             }
           }
-          setIsMicClicked(false);
-          setTranscript('');
+          setTriggerSenChat(true);
+
           lastSpeechTimeRef.current = null;
         }
       }, 1000); // Check every second
@@ -149,7 +172,7 @@ const Chat = ({ slug, children }) => {
         clearInterval(silenceCheckInterval);
       }
     };
-  }, [isMicClicked]);
+  }, [isMicClicked, transcript]);
 
   const toggleSpeechRecognition = () => {
     if (recognitionRef.current) {
@@ -164,20 +187,48 @@ const Chat = ({ slug, children }) => {
           lastSpeechTimeRef.current = null;
           recognitionRef.current.stop();
           setIsMicClicked(false);
-          setTranscript('');
+          setTranscript("");
         }
       } catch (error) {
-        console.error('Error toggling speech recognition:', error);
+        console.error("Error toggling speech recognition:", error);
         setIsMicClicked(false);
         lastSpeechTimeRef.current = null;
       }
     } else {
-      console.error('Speech recognition not supported in this browser');
+      console.error("Speech recognition not supported in this browser");
     }
   };
 
+  useEffect(() => {
+    const senChat = async () => {
+      const session_id = localStorage.getItem("session_id");
+      const persona_id = localStorage.getItem("persona_id");
+      console.log(session_id, persona_id, "session_id_persona_id");
+      setIsMicClicked(false);
+        setTranscript("");
+        setTriggerSenChat(false);
+      try {
+        let data = await Post(chat_chat, {
+          message: transcript,
+          session_id: session_id,
+          persona_id: persona_id,
+        });
+        // setIsMicClicked(false);
+        // setTranscript("");
+        // setTriggerSenChat(false);
+        // if (data) {
+        // }
+      } catch (error) {
+        console.log(error, "_error_");
+      }
+    };
+    if (triggerSenChat) {
+      senChat();
+    }
+  }, [triggerSenChat]);
+
   const clearTranscript = () => {
-    setTranscript('');
+    setTranscript("");
   };
 
   const CustomTooltip = styled(({ className, ...props }) => (
@@ -403,11 +454,21 @@ const Chat = ({ slug, children }) => {
                       {slug === "audio" ? (
                         <div className="absolute inset-0 p-5 w-full h-full flex flex-col items-center">
                           <div className="flex items-center gap-1.5">
-                            <button 
-                              className={`w-10 h-10 ${isMicClicked ? 'bg-[#26AD35] hover:bg-[#26AD35]' : 'bg-[#FFFFFF1A] hover:bg-[#FFFFFF33]'} rounded-full flex items-center justify-center cursor-pointer transition-colors`}
+                            <button
+                              className={`w-10 h-10 ${
+                                isMicClicked
+                                  ? "bg-[#26AD35] hover:bg-[#26AD35]"
+                                  : "bg-[#FFFFFF1A] hover:bg-[#FFFFFF33]"
+                              } rounded-full flex items-center justify-center cursor-pointer transition-colors`}
                               onClick={toggleSpeechRecognition}
                             >
-                              <MicNoneOutlinedIcon className={`${isMicClicked ? 'text-white' : 'text-[#FFFFFF80]'} !text-[20px]`} />
+                              <MicNoneOutlinedIcon
+                                className={`${
+                                  isMicClicked
+                                    ? "text-white"
+                                    : "text-[#FFFFFF80]"
+                                } !text-[20px]`}
+                              />
                             </button>
                             <Image
                               src={callVibration}
@@ -437,11 +498,21 @@ const Chat = ({ slug, children }) => {
                           </div>
                           <div className="w-[90%] flex items-start gap-1.5 z-10">
                             <div className="flex items-center gap-1.5 -mt-2">
-                              <button 
-                                className={`w-10 h-10 ${isMicClicked ? 'bg-[#26AD35] hover:bg-[#26AD35]' : 'bg-[#FFFFFF1A] hover:bg-[#FFFFFF33]'} rounded-full flex items-center justify-center cursor-pointer transition-colors`}
+                              <button
+                                className={`w-10 h-10 ${
+                                  isMicClicked
+                                    ? "bg-[#26AD35] hover:bg-[#26AD35]"
+                                    : "bg-[#FFFFFF1A] hover:bg-[#FFFFFF33]"
+                                } rounded-full flex items-center justify-center cursor-pointer transition-colors`}
                                 onClick={toggleSpeechRecognition}
                               >
-                                <MicNoneOutlinedIcon className={`${isMicClicked ? 'text-white' : 'text-[#FFFFFF80]'} !text-[20px]`} />
+                                <MicNoneOutlinedIcon
+                                  className={`${
+                                    isMicClicked
+                                      ? "text-white"
+                                      : "text-[#FFFFFF80]"
+                                  } !text-[20px]`}
+                                />
                               </button>
                               <Image
                                 src={callVibration}
@@ -451,9 +522,12 @@ const Chat = ({ slug, children }) => {
                             </div>
                             <div className="flex flex-col items-start gap-1 w-[80%]">
                               {chatMessages.map((message, index) => (
-                                <p key={index} className="text-white text-[14px] sora-regular w-[80%] opacity-70">
+                                <p
+                                  key={index}
+                                  className="text-white text-[14px] sora-regular w-[80%] opacity-70"
+                                >
                                   <span className="text-[#FFDE5A] sora-semibold">
-                                    {message.isUser ? 'You' : 'AI'}
+                                    {message.isUser ? "You" : "AI"}
                                   </span>
                                   &nbsp;{message.text}
                                 </p>

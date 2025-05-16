@@ -33,7 +33,7 @@ const Layout = ({ children }) => {
   const isChatPage = router.pathname.startsWith("/chat");
 
   const [personaData, setPersonaData] = useState([]);
-
+console.log(personaData, "personaData")
   const trimedPersona = personaData.reduce((acc, v) => {
     acc[v.persona] = v.type; // Assign type to the persona key
     return acc;
@@ -57,6 +57,7 @@ const Layout = ({ children }) => {
         ],
       });
       if (data?.persona_id) {
+        localStorage.setItem("persona_id", data?.persona_id);
         dispatch(PersonaTypeValue(false));
         dispatch(
           InteractionValue({
@@ -83,17 +84,23 @@ const Layout = ({ children }) => {
 
   const handleInteractionNext = async (fromData) => {
     try {
-      let data = await Post(sessions, fromData)
-      dispatch(InteractionValue({ open: false, fromData: "" }));
-      // dispatch(IdealPersonaValue(true));
-      dispatch(ShortlistedPersonaValue(true));
+      let data = await Post(sessions, fromData);
+      if (data?.session_id) {
+        localStorage.setItem("session_id", data?.session_id);
+        dispatch(InteractionValue({ open: false, fromData: "" }));
+        // dispatch(IdealPersonaValue(true));
+        dispatch(ShortlistedPersonaValue(true));
+      }
     } catch (error) {}
   };
 
-  const handleIdealPersonaNext = (industryType, type) => {
+  const handleIdealPersonaNext = (industryType, industryView, type) => {
     dispatch(IdealPersonaValue({ open: false, type: "" }));
     // dispatch(ShortlistedPersonaValue(true));
-    setPersonaData((pre) => [...pre, { type: industryType, persona: type }]);
+    setPersonaData((pre) => [
+      ...pre,
+      { type: industryType, persona: type, view: industryView },
+    ]);
   };
 
   const handleShortlistedPersonaNext = () => {

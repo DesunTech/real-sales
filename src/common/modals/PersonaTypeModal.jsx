@@ -32,30 +32,38 @@ const PersonaTypeModal = ({ onNext, personaData }) => {
   let Industry = personaData?.length
     ? personaData
         .filter((v) => v?.persona === "industry")
-        .map((val) => val?.type)
+        .map((val) => val?.view)
     : false;
 
   let Role = personaData?.length
-    ? personaData.filter((v) => v?.persona === "role").map((val) => val?.type)
+    ? personaData.filter((v) => v?.persona === "role").map((val) => val?.view)
     : false;
 
   let Experience = personaData?.length
     ? personaData
         .filter((v) => v?.persona === "experience_level")
-        .map((val) => val?.type)
+        .map((val) => val?.view)
     : false;
 
   let Geography = personaData?.length
     ? personaData
         .filter((v) => v?.persona === "geography")
-        .map((val) => val?.type)
+        .map((val) => val?.view)
     : false;
 
   let Manufacture = personaData?.length
     ? personaData
         .filter((v) => v?.persona === "manufacturing_model")
-        .map((val) => val?.type)
+        .map((val) => val?.view)
     : false;
+
+  let Plant_size_impact = personaData?.length
+    ? personaData
+        .filter((v) => v?.persona === "plant_size_impact")
+        .map((val) => val?.view)
+    : false;
+
+    console.log(personaData,Plant_size_impact, "Plant_size_impact")
 
   return (
     <CommonModal
@@ -149,13 +157,26 @@ const PersonaTypeModal = ({ onNext, personaData }) => {
                 title={"Persona by Manufacture"}
                 type={Manufacture[0]}
               />
-              <div className="w-full">{/* fake */}</div>
+              <PersonaCard
+                persona={persona === "Manufacture" ? true : false}
+                // onClick={() => setPersona("Manufacture")}
+                onClick={() =>
+                  dispatch(
+                    IdealPersonaValue({
+                      open: true,
+                      type: "plant_size_impact",
+                    })
+                  )
+                }
+                title={"Persona by Plant size"}
+                type={Plant_size_impact[0]}
+              />
             </div>
           </div>
           <CommonButton
             className={`!mt-8 !border-[2px] !border-[#060606] !text-[#060606] !font-[500] !px-6 !py-1] !text-[16px] !capitalize flex !items-center gap-2 w-fit h-fit`}
             icon={<ArrowRight stroke={`#060606`} width={19} height={13} />}
-            disabled={personaData?.length < 5 || personaName === ""}
+            disabled={personaData?.length < 6 || personaName === ""}
             onClick={() => {
               if (personaName.trim() === "") {
                 setPersonaNameErr("First Name is required.");
