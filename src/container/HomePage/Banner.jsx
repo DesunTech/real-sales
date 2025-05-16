@@ -12,9 +12,22 @@ import bannerBottom1 from "../../../public/assets/images/banner/bannerBottom1.pn
 import bannerBottom2 from "../../../public/assets/images/banner/bannerBottom2.png";
 import bannerBottom3 from "../../../public/assets/images/banner/bannerBottom3.png";
 import bannerBottom4 from "../../../public/assets/images/banner/bannerBottom4.png";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 const Banner = () => {
   const dispatch = useDispatch();
+  const router = useRouter();
+  const [user_id, setUser_id] = useState("");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      let useerId = localStorage.getItem("user");
+      if (useerId) {
+        setUser_id(useerId);
+      }
+    }
+  }, []);
 
   const bannerBottomCardRoot =
     "w-full flex gap-4 p-4 rounded-[20px] bg-[url(../../public/assets/images/banner/bannerBottomBg.png)] bg-cover bg-center bg-no-repeat";
@@ -31,7 +44,10 @@ const Banner = () => {
         <div className="py-8 bg-[url(../../public/assets/images/RealSales-backgrounds/bg-3.png)] bg-cover bg-center bg-no-repeat">
           <div className="page-container mx-auto px-4 container flex lg:flex-row flex-col-reverse items-center justify-between gap-8">
             <div className="lg:w-1/2 w-full flex flex-col lg:items-start items-center justify-between gap-4">
-              <div data-aos="fade-right" className="flex flex-col lg:gap-4 gap-2 w-full">
+              <div
+                data-aos="fade-right"
+                className="flex flex-col lg:gap-4 gap-2 w-full"
+              >
                 <p className="text-[16px] text-[#060606] sora-regular">
                   RealSales accelerate
                   <br />
@@ -52,7 +68,10 @@ const Banner = () => {
                 </p>
               </div>
 
-              <div data-aos="fade-left" className="flex lg:flex-row flex-col items-center gap-4 w-full">
+              <div
+                data-aos="fade-left"
+                className="flex lg:flex-row flex-col items-center gap-4 w-full"
+              >
                 <BookAdemo
                   onClick={() => dispatch(DemoMeetingValue(true))}
                   className={`!border-[#FFDE5A] !bg-[#060606] !text-[#FFDE5A] !px-5 !py-1 h-fit lg:w-fit w-full`}
@@ -60,7 +79,13 @@ const Banner = () => {
                 />
                 <div className="lg:flex hidden border-r-[2px] border-dashed border-[#000000] h-15" />
                 <CommonButton
-                  onClick={() => dispatch(TryRealsalesValue(true))}
+                  onClick={() => {
+                    if (user_id !== "") {
+                      router.push("/pricing");
+                    } else {
+                      dispatch(TryRealsalesValue(true));
+                    }
+                  }}
                   className={`!border-[2px] !border-[#060606] !text-[#060606] !lg:px-5 !px-3 !lg:py-1 !py-0.5 !text-[15px] flex !items-center gap-2 h-fit lg:w-fit w-full`}
                   buttontext={"TRY REALSALES"}
                   icon={<ArrowRight width={19} height={13} />}
@@ -72,11 +97,14 @@ const Banner = () => {
             </div>
           </div>
         </div>
-        
+
         {/* bottom section */}
         <div className="bg-[url(../../public/assets/images/RealSales-backgrounds/bg-3o.png)] bg-cover bg-center bg-no-repeat">
           <div className="page-container mx-auto px-4 container flex lg:flex-row flex-col items-center justify-between gap-10">
-            <div data-aos="fade-right" className="lg:w-[55%] w-full flex md:flex-row flex-col-reverse md:items-start items-center justify-center gap-4">
+            <div
+              data-aos="fade-right"
+              className="lg:w-[55%] w-full flex md:flex-row flex-col-reverse md:items-start items-center justify-center gap-4"
+            >
               <div className="flex flex-col gap-4">
                 <div className={`${bannerBottomCardRoot}`}>
                   <Image
@@ -158,7 +186,10 @@ const Banner = () => {
                 </div>
               </div>
             </div>
-            <div data-aos="fade-left" className="p-8 lg:w-[45%] w-full bg-[url(../../public/assets/images/RealSales-abstracts/about-net.png)] bg-cover bg-center bg-no-repeat">
+            <div
+              data-aos="fade-left"
+              className="p-8 lg:w-[45%] w-full bg-[url(../../public/assets/images/RealSales-abstracts/about-net.png)] bg-cover bg-center bg-no-repeat"
+            >
               <div className="flex flex-col items-start gap-4">
                 <h1 className="lg:text-4xl text-2xl text-[#060606] m-plus-rounded-1c-regular">
                   What

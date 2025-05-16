@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined";
@@ -11,31 +11,32 @@ import {
   InteractionValue,
   IdealPersonaValue,
   ShortlistedPersonaValue,
+  TryRealsalesValue,
 } from "../../redux/OpenModal";
 
 const MeetPerfectPersona = () => {
   const router = useRouter();
   const dispatch = useDispatch();
+  const [session_id, setSession_id] = useState("");
+  const [persona_id, setPersona_id] = useState("");
+  const [user_id, setUser_id] = useState("");
 
-  const handlePersonaTypeNext = () => {
-    dispatch(PersonaTypeValue(false));
-    dispatch(InteractionValue({open: true, id: ""}));
-  };
-
-  const handleInteractionNext = () => {
-    dispatch(InteractionValue({open: false, id: ""}));
-    dispatch(IdealPersonaValue(true));
-  };
-
-  const handleIdealPersonaNext = () => {
-    dispatch(IdealPersonaValue(false));
-    dispatch(ShortlistedPersonaValue(true));
-  };
-
-  const handleShortlistedPersonaNext = () => {
-    dispatch(ShortlistedPersonaValue(false));
-    router?.push("/pricing");
-  };
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      let sessionId = localStorage.getItem("session_id");
+      let personaId = localStorage.getItem("persona_id");
+      let useerId = localStorage.getItem("user");
+      if (sessionId) {
+        setSession_id(sessionId);
+      }
+      if (personaId) {
+        setPersona_id(personaId);
+      }
+      if (useerId) {
+        setUser_id(useerId);
+      }
+    }
+  }, []);
 
   return (
     <div
@@ -50,7 +51,25 @@ const MeetPerfectPersona = () => {
       </h1>
       <div className="w-full flex flex-col items-start gap-2">
         <h2
-          onClick={() => dispatch(PersonaTypeValue(true))}
+          onClick={() => {
+            if (user_id !== "") {
+              dispatch(PersonaTypeValue(true));
+            } else if (persona_id !== "") {
+              dispatch(
+                InteractionValue({
+                  open: true,
+                  fromData: {
+                    user_id: user_id,
+                    persona_id: persona_id,
+                  },
+                })
+              );
+            } else if (persona_id !== "" && session_id !== "") {
+              dispatch(ShortlistedPersonaValue(true));
+            } else {
+              dispatch(TryRealsalesValue(true));
+            }
+          }}
           className="cursor-pointer lg:text-[22px] text-[16px] m-plus-rounded-1c-regular text-[#060606] w-full flex items-center justify-start"
         >
           <span className="m-plus-rounded-1c-medium flex items-center gap-1">
@@ -76,23 +95,6 @@ const MeetPerfectPersona = () => {
           &nbsp; Mode of Real AI:
         </h2>
       </div>
-
-      {/* Modals */}
-      {/* <PersonaTypeModal 
-        onNext={handlePersonaTypeNext}
-      />
-
-      <InteractionModal
-        onNext={handleInteractionNext}
-      />
-
-      <IdealPersonaModal
-        onNext={handleIdealPersonaNext}
-      />
-
-      <ShortlistedPersonaModal
-        onNext={handleShortlistedPersonaNext}
-      /> */}
     </div>
   );
 };
