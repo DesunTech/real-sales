@@ -18,6 +18,7 @@ import {
   InteractionValue,
   IdealPersonaValue,
   ShortlistedPersonaValue,
+  SessionModesValue,
 } from "../../redux/OpenModal";
 import PaymentConfirmation from "../modals/PaymentConfirmation";
 import { useApi } from "../../hooks/useApi";
@@ -33,7 +34,7 @@ const Layout = ({ children }) => {
   const isChatPage = router.pathname.startsWith("/chat");
 
   const [personaData, setPersonaData] = useState([]);
-  
+
   const trimedPersona = personaData.reduce((acc, v) => {
     acc[v.persona] = v.type; // Assign type to the persona key
     return acc;
@@ -105,7 +106,8 @@ const Layout = ({ children }) => {
 
   const handleShortlistedPersonaNext = () => {
     dispatch(ShortlistedPersonaValue(false));
-    router?.push("/pricing");
+    dispatch(SessionModesValue(true));
+    // router?.push("/pricing");
   };
 
   // useEffect(() => {

@@ -546,19 +546,13 @@ const Chat = ({ slug, children }) => {
                           {/* ai chat */}
                           <div className="w-[90%] flex items-start gap-1.5 z-10">
                             <button
-                              className={`w-10 h-10 flex-s ${
-                                isMicClicked
-                                  ? "bg-[#26AD35] hover:bg-[#26AD35]"
-                                  : "bg-[#FFFFFF1A] hover:bg-[#FFFFFF33]"
-                              } rounded-full flex items-center justify-center cursor-pointer transition-colors`}
+                              className={`w-10 h-10 flex-s 
+                                bg-[#FFFFFF1A] hover:bg-[#FFFFFF33]
+                              rounded-full flex items-center justify-center cursor-pointer transition-colors`}
                               // onClick={toggleSpeechRecognition}
                             >
                               <VolumeUpIcon
-                                className={`${
-                                  isMicClicked
-                                    ? "text-white"
-                                    : "text-[#FFFFFF80]"
-                                } !text-[20px]`}
+                                className={`text-[#FFFFFF80] !text-[20px]`}
                               />
                             </button>
                             <Image
@@ -579,7 +573,9 @@ const Chat = ({ slug, children }) => {
                                     <p
                                       key={i}
                                       className="px-4 text-white text-base sora-regular"
-                                    >{`v?.response`}</p>
+                                    >
+                                      {v?.response}
+                                    </p>
                                   ))
                                 : null}
                             </div>

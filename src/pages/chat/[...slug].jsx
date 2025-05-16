@@ -10,13 +10,13 @@ const ChatPage = () => {
 
   const useAuth = useSelector((state) => state.auth.auth);
 
-  useEffect(() => {
-    if (useAuth?.auth) {
-      null;
-    } else {
-      // router.push(`/`);
-    }
-  }, [useAuth?.auth]);
+  // useEffect(() => {
+  //   if (useAuth?.auth) {
+  //     null;
+  //   } else {
+  //     // router.push(`/`);
+  //   }
+  // }, [useAuth?.auth]);
 
   return (
     <>
