@@ -60,6 +60,9 @@ const Chat = ({ slug, children }) => {
   const isSilenceTimeoutRef = useRef(false);
   const lastSpeechTimeRef = useRef(null);
   const containerRef = useRef(null);
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const [isAutoMode, setIsAutoMode] = useState(false);
+  const audioRef = useRef(null);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -218,31 +221,162 @@ const Chat = ({ slug, children }) => {
     }
   };
   console.log(transcriptDummy, "transcriptDummy");
-  useEffect(() => {
-    const senChat = async () => {
-      const persona_id = localStorage.getItem("persona_id");
-      console.log(session_id, persona_id, "session_id_persona_id");
-
-      try {
-        let data = await Post(chat_chat, {
-          message: transcriptDummy,
-          session_id: session_id,
-          persona_id: persona_id,
-        });
-        if (data?.response) {
-          setIsMicClicked(false);
-          setTranscriptDummy("");
-          setTriggerSenChat(false);
-          setResChat((pre) => [...pre, { response: data?.response }]);
-        }
-      } catch (error) {
-        console.log(error, "_error_");
+  const textToSpeech = async (text) => {
+    try {
+      if (!text) {
+        console.log("No text provided for text-to-speech");
+        return;
       }
+      
+      console.log("Starting text-to-speech conversion for:", text);
+      
+      // Add delay between requests to prevent rate limiting
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      const response = await fetch(
+        "https://api.elevenlabs.io/v1/text-to-speech/21m00Tcm4TlvDq8ikWAM",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "xi-api-key": process.env.NEXT_PUBLIC_ELEVENLABS_API_KEY,
+            "Accept": "audio/mpeg",
+          },
+          body: JSON.stringify({
+            text: text,
+            model_id: "eleven_monolingual_v1",
+            voice_settings: {
+              stability: 0.5,
+              similarity_boost: 0.5,
+            },
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        if (errorData.detail?.status === "detected_unusual_activity") {
+          console.error("ElevenLabs API rate limit or abuse detection triggered");
+          // Disable auto mode if abuse detected
+          setIsAutoMode(false);
+          return;
+        }
+        throw new Error(`Failed to convert text to speech: ${JSON.stringify(errorData)}`);
+      }
+
+      const audioBlob = await response.blob();
+      const audioUrl = URL.createObjectURL(audioBlob);
+      
+      if (audioRef.current) {
+        audioRef.current.src = audioUrl;
+        try {
+          await audioRef.current.play();
+          setIsSpeaking(true);
+          console.log("Audio playback started");
+        } catch (playError) {
+          console.error("Error playing audio:", playError);
+          setIsSpeaking(false);
+        }
+      } else {
+        console.error("Audio element not found");
+      }
+    } catch (error) {
+      console.error("Error in text to speech:", error);
+      setIsSpeaking(false);
+    }
+  };
+
+  // Effect to handle audio element and auto mode
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.onended = () => {
+        console.log("Audio playback ended");
+        setIsSpeaking(false);
+        
+        // Automatically start listening when speech ends
+        if (!isMicClicked) {
+          console.log("Starting microphone after speech ended");
+          toggleSpeechRecognition();
+        }
+      };
+      
+      audioRef.current.onerror = (error) => {
+        console.error("Audio playback error:", error);
+        setIsSpeaking(false);
+      };
+    }
+  }, []);
+
+  // Effect to handle new responses with rate limiting
+  useEffect(() => {
+    let timeoutId;
+    if (resChat.length > 0 && isVolClicked) {
+      const lastResponse = resChat[resChat.length - 1]?.response;
+      if (lastResponse && !isSpeaking) {
+        // Add delay before speaking to prevent rapid requests
+        timeoutId = setTimeout(() => {
+          console.log("New response received, speaking:", lastResponse);
+          textToSpeech(lastResponse);
+        }, 1000);
+      }
+    }
+    return () => {
+      if (timeoutId) clearTimeout(timeoutId);
     };
+  }, [resChat, isVolClicked]);
+
+  const senChat = async () => {
+    const persona_id = localStorage.getItem("persona_id");
+    console.log(session_id, persona_id, "session_id_persona_id");
+
+    try {
+      let data = await Post(chat_chat, {
+        message: transcriptDummy,
+        session_id: session_id,
+        persona_id: persona_id,
+      });
+      
+      if (data?.response) {
+        setIsMicClicked(false);
+        setTranscriptDummy("");
+        setTriggerSenChat(false);
+        setIsVolClicked(true);
+        
+        // Add the response to chat messages
+        const newResponse = { response: data.response };
+        setResChat((pre) => [...pre, newResponse]);
+      }
+    } catch (error) {
+      console.log(error, "_error_");
+    }
+  };
+
+  // Effect to handle triggerSenChat
+  useEffect(() => {
     if (triggerSenChat) {
       senChat();
     }
   }, [triggerSenChat]);
+
+  // Effect to handle volume button click
+  useEffect(() => {
+    if (isVolClicked && resChat.length > 0) {
+      const lastResponse = resChat[resChat.length - 1]?.response;
+      if (lastResponse && !isSpeaking) {
+        console.log("Volume clicked, speaking last response:", lastResponse);
+        textToSpeech(lastResponse);
+      }
+    }
+  }, [isVolClicked]);
+
+  // Add auto mode toggle button in the UI
+  const toggleAutoMode = () => {
+    setIsAutoMode(!isAutoMode);
+    if (!isAutoMode && !isSpeaking) {
+      // Start the conversation if enabling auto mode
+      toggleSpeechRecognition();
+    }
+  };
 
   const clearTranscript = () => {
     setTranscript("");
@@ -562,6 +696,7 @@ const Chat = ({ slug, children }) => {
                                   setIsVolClicked(true);
                                 } else {
                                   setIsVolClicked(false);
+                                  setIsMicClicked(true);
                                 }
                               }}
                             >
@@ -742,7 +877,12 @@ const Chat = ({ slug, children }) => {
                         <SendMessage />
                       </div>
                     </div>
-
+                    <div 
+                      className={`w-10 h-10 ${isAutoMode ? 'bg-[#26AD35]' : 'bg-[#FFFFFF1A]'} rounded-full flex items-center justify-center cursor-pointer`}
+                      onClick={toggleAutoMode}
+                    >
+                      <MicNoneOutlinedIcon className={`${isAutoMode ? 'text-white' : 'text-[#FFFFFF80]'} !text-[20px]`} />
+                    </div>
                     <div className="w-14 h-14 rounded-full p-1 border-2 border-solid border-white overflow-hidden">
                       <Image
                         src={userDummy}
@@ -957,6 +1097,7 @@ const Chat = ({ slug, children }) => {
           ) : null}
         </div>
       </div>
+      <audio ref={audioRef} style={{ display: "none" }} />
     </div>
   );
 };

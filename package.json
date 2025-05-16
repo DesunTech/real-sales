@@ -18,6 +18,8 @@
     "@reduxjs/toolkit": "^2.6.1",
     "aos": "^2.3.4",
     "axios": "^1.9.0",
+    "elevenlabs": "^1.59.0",
+    "elevenlabs-node": "^2.0.3",
     "next": "15.2.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
