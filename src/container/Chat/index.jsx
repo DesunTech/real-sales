@@ -35,6 +35,7 @@ import MicOffSharpIcon from "@mui/icons-material/MicOffSharp";
 import Link from "next/link";
 import { apis } from "../../utils/apis";
 import { useApi } from "../../hooks/useApi";
+import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 
 const Chat = ({ slug, children }) => {
   const { Post } = useApi();
@@ -48,12 +49,25 @@ const Chat = ({ slug, children }) => {
   const [micAi, setMicAi] = useState(true);
   const [isMicClicked, setIsMicClicked] = useState(false);
   const [transcript, setTranscript] = useState("");
+  const [transcriptDummy, setTranscriptDummy] = useState("");
   const [chatMessages, setChatMessages] = useState([]);
   const [triggerSenChat, setTriggerSenChat] = useState(false);
+  const [resChat, setResChat] = useState([]);
+  const [session_id, setSession_id] = useState("");
   const recognitionRef = useRef(null);
   const silenceTimeoutRef = useRef(null);
   const isSilenceTimeoutRef = useRef(false);
   const lastSpeechTimeRef = useRef(null);
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      let sessionId = localStorage.getItem("session_id");
+      if (sessionId) {
+        setSession_id(sessionId);
+      }
+    }
+  }, []);
 
   useEffect(() => {
     let recognition = null;
@@ -77,6 +91,7 @@ const Chat = ({ slug, children }) => {
           const current = event.resultIndex;
           const transcript = event.results[current][0].transcript;
           setTranscript(transcript);
+          setTranscriptDummy(transcript);
           lastSpeechTimeRef.current = Date.now();
 
           if (event.results[current].isFinal) {
@@ -88,7 +103,8 @@ const Chat = ({ slug, children }) => {
                 timestamp: new Date().toISOString(),
               },
             ]);
-            // setTranscript("");
+            setTranscript("");
+            // setTranscriptDummy("");
           }
         };
 
@@ -160,6 +176,7 @@ const Chat = ({ slug, children }) => {
               console.error("Error stopping recognition:", error);
             }
           }
+          setTranscript("");
           setTriggerSenChat(true);
 
           lastSpeechTimeRef.current = null;
@@ -188,6 +205,7 @@ const Chat = ({ slug, children }) => {
           recognitionRef.current.stop();
           setIsMicClicked(false);
           setTranscript("");
+          setTranscriptDummy("");
         }
       } catch (error) {
         console.error("Error toggling speech recognition:", error);
@@ -198,26 +216,24 @@ const Chat = ({ slug, children }) => {
       console.error("Speech recognition not supported in this browser");
     }
   };
-
+  console.log(transcriptDummy, "transcriptDummy");
   useEffect(() => {
     const senChat = async () => {
-      const session_id = localStorage.getItem("session_id");
       const persona_id = localStorage.getItem("persona_id");
       console.log(session_id, persona_id, "session_id_persona_id");
-      setIsMicClicked(false);
-        setTranscript("");
-        setTriggerSenChat(false);
+
       try {
         let data = await Post(chat_chat, {
-          message: transcript,
+          message: transcriptDummy,
           session_id: session_id,
           persona_id: persona_id,
         });
-        // setIsMicClicked(false);
-        // setTranscript("");
-        // setTriggerSenChat(false);
-        // if (data) {
-        // }
+        if (data?.response) {
+          setIsMicClicked(false);
+          setTranscriptDummy("");
+          setTriggerSenChat(false);
+          setResChat((pre) => [...pre, { response: data?.response }]);
+        }
       } catch (error) {
         console.log(error, "_error_");
       }
@@ -229,6 +245,7 @@ const Chat = ({ slug, children }) => {
 
   const clearTranscript = () => {
     setTranscript("");
+    setTranscriptDummy("");
   };
 
   const CustomTooltip = styled(({ className, ...props }) => (
@@ -243,6 +260,13 @@ const Chat = ({ slug, children }) => {
       fontSize: "10px",
     },
   }));
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (el) {
+      el.scrollTop = el.scrollHeight; // scroll to bottom on mount
+    }
+  }, [transcript]);
 
   const coachingArr = [{}, {}];
   const qnaArr = [
@@ -444,7 +468,7 @@ const Chat = ({ slug, children }) => {
                       <div className="flex flex-col gap-0.25 w-fit">
                         <p className="m-plus-rounded-1c-light text-white text-2xl">
                           Your Session id:&nbsp;
-                          <span className="text-[#FFDE5A]">049ZF-83Mo0K</span>
+                          <span className="text-[#FFDE5A]">{session_id}</span>
                         </p>
                         <hr className="border-[#FFFFFF33] " />
                       </div>
@@ -453,49 +477,7 @@ const Chat = ({ slug, children }) => {
                       <div className="absolute inset-0 bg-[url('../../public/assets/images/RealSales-abstracts/glow-light-1.png')] bg-cover bg-center bg-no-repeat opacity-20"></div>
                       {slug === "audio" ? (
                         <div className="absolute inset-0 p-5 w-full h-full flex flex-col items-center">
-                          <div className="flex items-center gap-1.5">
-                            <button
-                              className={`w-10 h-10 ${
-                                isMicClicked
-                                  ? "bg-[#26AD35] hover:bg-[#26AD35]"
-                                  : "bg-[#FFFFFF1A] hover:bg-[#FFFFFF33]"
-                              } rounded-full flex items-center justify-center cursor-pointer transition-colors`}
-                              onClick={toggleSpeechRecognition}
-                            >
-                              <MicNoneOutlinedIcon
-                                className={`${
-                                  isMicClicked
-                                    ? "text-white"
-                                    : "text-[#FFFFFF80]"
-                                } !text-[20px]`}
-                              />
-                            </button>
-                            <Image
-                              src={callVibration}
-                              alt="callVibration"
-                              className="w-6 h-10"
-                            />
-                            <p className="text-white text-base sora-regular">
-                              <span className="text-[#FFDE5A] sora-semibold">
-                                Hello!
-                              </span>
-                              &nbsp;how are you !!
-                            </p>
-                          </div>
-                          <div className="relative w-full h-[45%] flex items-center justify-center">
-                            <Image
-                              src={callVibration}
-                              alt="callVibration"
-                              className="w-[80%] h-auto absolute"
-                            />
-                            <div className="w-32 h-32 rounded-full p-1 border border-solid border-white z-10 absolute">
-                              <Image
-                                src={persona_plant}
-                                alt="persona_plant"
-                                className="w-full h-full rounded-full"
-                              />
-                            </div>
-                          </div>
+                          {/* ai mic */}
                           <div className="w-[90%] flex items-start gap-1.5 z-10">
                             <div className="flex items-center gap-1.5 -mt-2">
                               <button
@@ -520,7 +502,10 @@ const Chat = ({ slug, children }) => {
                                 className="w-6 h-10"
                               />
                             </div>
-                            <div className="flex flex-col items-start gap-1 w-[80%]">
+                            <div
+                              ref={containerRef}
+                              className="flex flex-col items-start gap-1 w-[80%] h-[20vh] overflow-y-auto"
+                            >
                               {chatMessages.map((message, index) => (
                                 <p
                                   key={index}
@@ -540,6 +525,63 @@ const Chat = ({ slug, children }) => {
                                   &nbsp;{transcript}
                                 </p>
                               )}
+                            </div>
+                          </div>
+
+                          <div className="relative w-full h-[45%] flex items-center justify-center">
+                            <Image
+                              src={callVibration}
+                              alt="callVibration"
+                              className="w-[80%] h-auto absolute"
+                            />
+                            <div className="w-32 h-32 rounded-full p-1 border border-solid border-white z-10 absolute">
+                              <Image
+                                src={persona_plant}
+                                alt="persona_plant"
+                                className="w-full h-full rounded-full"
+                              />
+                            </div>
+                          </div>
+
+                          {/* ai chat */}
+                          <div className="w-[90%] flex items-start gap-1.5 z-10">
+                            <button
+                              className={`w-10 h-10 flex-s ${
+                                isMicClicked
+                                  ? "bg-[#26AD35] hover:bg-[#26AD35]"
+                                  : "bg-[#FFFFFF1A] hover:bg-[#FFFFFF33]"
+                              } rounded-full flex items-center justify-center cursor-pointer transition-colors`}
+                              // onClick={toggleSpeechRecognition}
+                            >
+                              <VolumeUpIcon
+                                className={`${
+                                  isMicClicked
+                                    ? "text-white"
+                                    : "text-[#FFFFFF80]"
+                                } !text-[20px]`}
+                              />
+                            </button>
+                            <Image
+                              src={callVibration}
+                              alt="callVibration"
+                              className="w-6 h-10"
+                            />
+                            <div
+                              ref={containerRef}
+                              className="w-[80%] flex flex-col items-start h-[20vh] overflow-y-auto"
+                            >
+                              {/* <span className="text-[#FFDE5A] sora-semibold">
+                                Hello!
+                              </span>
+                              &nbsp;how are you !! */}
+                              {resChat?.length
+                                ? resChat.map((v, i) => (
+                                    <p
+                                      key={i}
+                                      className="px-4 text-white text-base sora-regular"
+                                    >{`v?.response`}</p>
+                                  ))
+                                : null}
                             </div>
                           </div>
                         </div>

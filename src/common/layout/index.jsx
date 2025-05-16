@@ -33,7 +33,7 @@ const Layout = ({ children }) => {
   const isChatPage = router.pathname.startsWith("/chat");
 
   const [personaData, setPersonaData] = useState([]);
-console.log(personaData, "personaData")
+  
   const trimedPersona = personaData.reduce((acc, v) => {
     acc[v.persona] = v.type; // Assign type to the persona key
     return acc;
