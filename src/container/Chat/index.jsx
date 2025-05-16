@@ -48,6 +48,7 @@ const Chat = ({ slug, children }) => {
   const [micUser, setMicUser] = useState(true);
   const [micAi, setMicAi] = useState(true);
   const [isMicClicked, setIsMicClicked] = useState(false);
+  const [isVolClicked, setIsVolClicked] = useState(false);
   const [transcript, setTranscript] = useState("");
   const [transcriptDummy, setTranscriptDummy] = useState("");
   const [chatMessages, setChatMessages] = useState([]);
@@ -486,7 +487,10 @@ const Chat = ({ slug, children }) => {
                                     ? "bg-[#26AD35] hover:bg-[#26AD35]"
                                     : "bg-[#FFFFFF1A] hover:bg-[#FFFFFF33]"
                                 } rounded-full flex items-center justify-center cursor-pointer transition-colors`}
-                                onClick={toggleSpeechRecognition}
+                                onClick={() => {
+                                  toggleSpeechRecognition();
+                                  setIsVolClicked(false);
+                                }}
                               >
                                 <MicNoneOutlinedIcon
                                   className={`${
@@ -547,12 +551,26 @@ const Chat = ({ slug, children }) => {
                           <div className="w-[90%] flex items-start gap-1.5 z-10">
                             <button
                               className={`w-10 h-10 flex-s 
-                                bg-[#FFFFFF1A] hover:bg-[#FFFFFF33]
+                                ${
+                                  isVolClicked
+                                    ? "bg-[#26AD35] hover:bg-[#26AD35]"
+                                    : "bg-[#FFFFFF1A] hover:bg-[#FFFFFF33]"
+                                }
                               rounded-full flex items-center justify-center cursor-pointer transition-colors`}
-                              // onClick={toggleSpeechRecognition}
+                              onClick={() => {
+                                if (!isVolClicked) {
+                                  setIsVolClicked(true);
+                                } else {
+                                  setIsVolClicked(false);
+                                }
+                              }}
                             >
                               <VolumeUpIcon
-                                className={`text-[#FFFFFF80] !text-[20px]`}
+                                className={`${
+                                  isVolClicked
+                                    ? "text-white"
+                                    : "text-[#FFFFFF80]"
+                                } !text-[20px]`}
                               />
                             </button>
                             <Image
@@ -562,7 +580,7 @@ const Chat = ({ slug, children }) => {
                             />
                             <div
                               ref={containerRef}
-                              className="w-[80%] flex flex-col items-start h-[20vh] overflow-y-auto"
+                              className="w-[80%] flex flex-col items-start h-[20vh] overflow-y-auto mt-1.5"
                             >
                               {/* <span className="text-[#FFDE5A] sora-semibold">
                                 Hello!
@@ -572,9 +590,12 @@ const Chat = ({ slug, children }) => {
                                 ? resChat.map((v, i) => (
                                     <p
                                       key={i}
-                                      className="px-4 text-white text-base sora-regular"
+                                      className="pr-4 text-white text-base sora-regular"
                                     >
-                                      {v?.response}
+                                      <span className="text-[#FFDE5A] sora-semibold">
+                                        AI Client
+                                      </span>
+                                      &nbsp;{v?.response}
                                     </p>
                                   ))
                                 : null}
