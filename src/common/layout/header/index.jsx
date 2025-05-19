@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Colorlogonobackground from "../../../../public/assets/images/RealSales-official-logo/For Web/png/Color logo - no background.png";
 import AddIcCallIcon from "@mui/icons-material/AddIcCall";
 import BookAdemo from "../../../common/bookAdemo";
@@ -11,6 +11,9 @@ import DemoMeeting from "../../modals/DemoMeeting";
 import { useDispatch } from "react-redux";
 import { DemoMeetingValue } from "../../../redux/OpenModal";
 import TryRealsales from "../../modals/TryRealsales";
+import LogoutIcon from '@mui/icons-material/Logout';
+import { useLogout } from "../../../hooks/useLogout";
+
 
 const Header = () => {
   const router = useRouter();
@@ -18,10 +21,20 @@ const Header = () => {
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openIndustry, setOpenIndustry] = useState(false);
+  const [token, setToken] = useState("");
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
   };
+
+  useEffect(() => {
+    if (window !== undefined) {
+      let getToken = localStorage.getItem("token");
+      if (getToken) {
+        setToken(getToken);
+      }
+    }
+  }, []);
 
   return (
     <header className="main-header sticky top-0 z-50 bg-[#060606] h-[60px] flex items-center justify-center">
@@ -109,9 +122,16 @@ const Header = () => {
               </div>
             </ul>
           </div>
-
           {/* Call to Action Buttons */}
           <div className="header-btn hidden md:flex items-center space-x-4">
+          {token !== "" && (
+        <div
+          onClick={() => useLogout()}
+          className="border border-solid border-white rounded p-0.5 px-4 cursor-pointer text-white"
+        >
+          <LogoutIcon className="text-white" />&nbsp;Logout
+        </div>
+      )}
             <BookAdemo
               className={`!text-[14px]`}
               onClick={() => dispatch(DemoMeetingValue(true))}

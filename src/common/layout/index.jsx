@@ -24,7 +24,6 @@ import PaymentConfirmation from "../modals/PaymentConfirmation";
 import { useApi } from "../../hooks/useApi";
 import { AddAuth } from "../../redux/AuthReducer";
 import { apis } from "../../utils/apis";
-import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
 import { Logout } from "@mui/icons-material";
 import { useLogout } from "../../hooks/useLogout";
 
@@ -45,7 +44,6 @@ const Layout = ({ children }) => {
   const isChatPage = router.pathname.startsWith("/chat");
 
   const [personaData, setPersonaData] = useState([]);
-  const [token, setToken] = useState("");
 
   /**
    * Trims the persona data to a key-value pair of persona and type.
@@ -152,26 +150,18 @@ const Layout = ({ children }) => {
     // router?.push("/pricing");
   };
 
-  useEffect(() => {
-    if (window !== undefined) {
-      let getToken = localStorage.getItem("token");
-      if (getToken) {
-        setToken(getToken);
-      }
-    }
-  }, []);
 
   return (
     <div className="">
       {/* Logout button */}
-      {token !== "" && (
+      {/* {token !== "" && (
         <div
           onClick={() => useLogout()}
           className="fixed top-[92vh] right-4 z-[100] bg-white shadow-[0px_0px_4px_0px_rgba(238,0,0,0.75)] border border-solid border-red-300 rounded-full p-1.5 hover:p-2 duration-300 cursor-pointer"
         >
           <PowerSettingsNewIcon className="text-red-600" />
         </div>
-      )}
+      )} */}
       {/* Conditional rendering of header and footer */}
       {!isChatPage && <Header />}
       {children}

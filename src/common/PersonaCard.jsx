@@ -32,9 +32,13 @@ const PersonaCard = (props) => {
           </p>
         ) : (
           <BookAdemo
-            onClick={props?.onClick}
+            onClick={() => {
+              props?.disabled ? null : props?.onClick();
+            }}
             BookaDemo={"SELECT"}
-            className={`!border-[#FFDE5A] !bg-[#060606] !text-[#FFDE5A] !px-5 !py-1 h-fit uppercase`}
+            className={`!border-[#FFDE5A] ${
+              props?.disabled ? "!bg-[#06060690]" : "!bg-[#060606]"
+            } !text-[#FFDE5A] !px-5 !py-1 h-fit uppercase`}
           />
         )}
       </div>

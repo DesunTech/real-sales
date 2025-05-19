@@ -104,6 +104,7 @@ const PersonaTypeModal = ({ onNext, personaData }) => {
               <PersonaCard
                 persona={persona === "Industry" ? true : false}
                 // onClick={() => setPersona("Industry")}
+                disabled={false}
                 onClick={() =>
                   dispatch(IdealPersonaValue({ open: true, type: "industry" }))
                 }
@@ -112,7 +113,7 @@ const PersonaTypeModal = ({ onNext, personaData }) => {
               />
               <PersonaCard
                 persona={persona === "Role" ? true : false}
-                // onClick={() => setPersona("Role")}
+                disabled={!Industry[0]}
                 onClick={() =>
                   dispatch(IdealPersonaValue({ open: true, type: "role" }))
                 }
@@ -123,6 +124,7 @@ const PersonaTypeModal = ({ onNext, personaData }) => {
             <div className="w-full flex lg:flex-row flex-col items-center justify-between gap-y-5 gap-x-10">
               <PersonaCard
                 persona={persona === "Experience" ? true : false}
+                disabled={!Role[0]}
                 // onClick={() => setPersona("Experience")}
                 onClick={() =>
                   dispatch(
@@ -134,6 +136,7 @@ const PersonaTypeModal = ({ onNext, personaData }) => {
               />
               <PersonaCard
                 persona={persona === "Geography" ? true : false}
+                disabled={!Experience[0]}
                 // onClick={() => setPersona("Geography")}
                 onClick={() =>
                   dispatch(IdealPersonaValue({ open: true, type: "geography" }))
@@ -145,6 +148,7 @@ const PersonaTypeModal = ({ onNext, personaData }) => {
             <div className="w-full flex lg:flex-row flex-col items-center justify-between gap-y-5 gap-x-10">
               <PersonaCard
                 persona={persona === "Manufacture" ? true : false}
+                disabled={!Geography[0]}
                 // onClick={() => setPersona("Manufacture")}
                 onClick={() =>
                   dispatch(
@@ -159,6 +163,7 @@ const PersonaTypeModal = ({ onNext, personaData }) => {
               />
               <PersonaCard
                 persona={persona === "Manufacture" ? true : false}
+                disabled={!Manufacture[0]}
                 // onClick={() => setPersona("Manufacture")}
                 onClick={() =>
                   dispatch(
