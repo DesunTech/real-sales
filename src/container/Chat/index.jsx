@@ -62,11 +62,19 @@ const Chat = ({ slug, children }) => {
   const containerRef = useRef(null);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isAutoMode, setIsAutoMode] = useState(false);
+  const [personaData, setPersonaData] = useState({});
   const audioRef = useRef(null);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       let sessionId = localStorage.getItem("session_id");
+      let persona_data = localStorage.getItem("persona_data");
+      if (persona_data) {
+        let parse_persona_data = JSON.parse(persona_data);
+        if (parse_persona_data?.industry) {
+          setPersonaData(parse_persona_data);
+        }
+      }
       if (sessionId) {
         setSession_id(sessionId);
       }
@@ -227,12 +235,12 @@ const Chat = ({ slug, children }) => {
         console.log("No text provided for text-to-speech");
         return;
       }
-      
+
       console.log("Starting text-to-speech conversion for:", text);
-      
+
       // Add delay between requests to prevent rate limiting
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
       const response = await fetch(
         "https://api.elevenlabs.io/v1/text-to-speech/21m00Tcm4TlvDq8ikWAM",
         {
@@ -240,7 +248,7 @@ const Chat = ({ slug, children }) => {
           headers: {
             "Content-Type": "application/json",
             "xi-api-key": process.env.NEXT_PUBLIC_ELEVENLABS_API_KEY,
-            "Accept": "audio/mpeg",
+            Accept: "audio/mpeg",
           },
           body: JSON.stringify({
             text: text,
@@ -256,17 +264,21 @@ const Chat = ({ slug, children }) => {
       if (!response.ok) {
         const errorData = await response.json();
         if (errorData.detail?.status === "detected_unusual_activity") {
-          console.error("ElevenLabs API rate limit or abuse detection triggered");
+          console.error(
+            "ElevenLabs API rate limit or abuse detection triggered"
+          );
           // Disable auto mode if abuse detected
           setIsAutoMode(false);
           return;
         }
-        throw new Error(`Failed to convert text to speech: ${JSON.stringify(errorData)}`);
+        throw new Error(
+          `Failed to convert text to speech: ${JSON.stringify(errorData)}`
+        );
       }
 
       const audioBlob = await response.blob();
       const audioUrl = URL.createObjectURL(audioBlob);
-      
+
       if (audioRef.current) {
         audioRef.current.src = audioUrl;
         try {
@@ -292,14 +304,14 @@ const Chat = ({ slug, children }) => {
       audioRef.current.onended = () => {
         console.log("Audio playback ended");
         setIsSpeaking(false);
-        
+
         // Automatically start listening when speech ends
         if (!isMicClicked) {
           console.log("Starting microphone after speech ended");
           toggleSpeechRecognition();
         }
       };
-      
+
       audioRef.current.onerror = (error) => {
         console.error("Audio playback error:", error);
         setIsSpeaking(false);
@@ -330,18 +342,22 @@ const Chat = ({ slug, children }) => {
     console.log(session_id, persona_id, "session_id_persona_id");
 
     try {
-      let data = await Post(chat_chat, {
-        message: transcriptDummy,
-        session_id: session_id,
-        persona_id: persona_id,
+      let data = await Post(`${chat_chat}/${session_id}`, {
+        user_input: transcriptDummy,
+        industry: personaData?.industry,
+        manufacturing_model: personaData?.manufacturing_model,
+        experience_level: personaData?.experience_level,
+        role: personaData?.role,
+        geography: personaData?.geography,
+        plant_size_impact: personaData?.plant_size_impact,
       });
-      
+
       if (data?.response) {
         setIsMicClicked(false);
         setTranscriptDummy("");
         setTriggerSenChat(false);
         setIsVolClicked(true);
-        
+
         // Add the response to chat messages
         const newResponse = { response: data.response };
         setResChat((pre) => [...pre, newResponse]);
@@ -877,11 +893,17 @@ const Chat = ({ slug, children }) => {
                         <SendMessage />
                       </div>
                     </div>
-                    <div 
-                      className={`w-10 h-10 ${isAutoMode ? 'bg-[#26AD35]' : 'bg-[#FFFFFF1A]'} rounded-full flex items-center justify-center cursor-pointer`}
+                    <div
+                      className={`w-10 h-10 ${
+                        isAutoMode ? "bg-[#26AD35]" : "bg-[#FFFFFF1A]"
+                      } rounded-full flex items-center justify-center cursor-pointer`}
                       onClick={toggleAutoMode}
                     >
-                      <MicNoneOutlinedIcon className={`${isAutoMode ? 'text-white' : 'text-[#FFFFFF80]'} !text-[20px]`} />
+                      <MicNoneOutlinedIcon
+                        className={`${
+                          isAutoMode ? "text-white" : "text-[#FFFFFF80]"
+                        } !text-[20px]`}
+                      />
                     </div>
                     <div className="w-14 h-14 rounded-full p-1 border-2 border-solid border-white overflow-hidden">
                       <Image

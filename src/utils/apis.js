@@ -7,5 +7,5 @@ export const apis = {
   google: "/google",
   interaction_modes_by_name: "/interaction-modes/by-name",
   sessions: "/sessions",
-  chat_chat: "/chat/chat",
+  chat_chat: "/ai-persona-chat/chat",
 };
