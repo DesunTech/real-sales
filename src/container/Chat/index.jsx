@@ -122,6 +122,8 @@ const Chat = ({ slug, children }) => {
 
         recognition.onerror = (event) => {
           console.error("Speech recognition error:", event.error);
+          // Provide user feedback
+          alert("Speech recognition error: " + event.error);
           if (event.error === "no-speech") {
             return;
           }
@@ -263,17 +265,8 @@ const Chat = ({ slug, children }) => {
 
       if (!response.ok) {
         const errorData = await response.json();
-        if (errorData.detail?.status === "detected_unusual_activity") {
-          console.error(
-            "ElevenLabs API rate limit or abuse detection triggered"
-          );
-          // Disable auto mode if abuse detected
-          setIsAutoMode(false);
-          return;
-        }
-        throw new Error(
-          `Failed to convert text to speech: ${JSON.stringify(errorData)}`
-        );
+        alert("Error in text-to-speech: " + errorData.detail?.status);
+        return; // Exit if there's an error
       }
 
       const audioBlob = await response.blob();
@@ -415,9 +408,9 @@ const Chat = ({ slug, children }) => {
   useEffect(() => {
     const el = containerRef.current;
     if (el) {
-      el.scrollTop = el.scrollHeight; // scroll to bottom on mount
+      el.scrollTop = el.scrollHeight; // scroll to bottom on new message
     }
-  }, [transcript]);
+  }, [chatMessages, resChat]); // Add dependencies to trigger on new messages
 
   const coachingArr = [{}, {}];
   const qnaArr = [
