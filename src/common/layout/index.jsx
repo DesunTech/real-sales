@@ -24,6 +24,9 @@ import PaymentConfirmation from "../modals/PaymentConfirmation";
 import { useApi } from "../../hooks/useApi";
 import { AddAuth } from "../../redux/AuthReducer";
 import { apis } from "../../utils/apis";
+import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
+import { Logout } from "@mui/icons-material";
+import { useLogout } from "../../hooks/useLogout";
 
 const Layout = ({ children }) => {
   const { Get, Post } = useApi();
@@ -34,6 +37,7 @@ const Layout = ({ children }) => {
   const isChatPage = router.pathname.startsWith("/chat");
 
   const [personaData, setPersonaData] = useState([]);
+  const [token, setToken] = useState("");
 
   const trimedPersona = personaData.reduce((acc, v) => {
     acc[v.persona] = v.type; // Assign type to the persona key
@@ -110,20 +114,23 @@ const Layout = ({ children }) => {
     // router?.push("/pricing");
   };
 
-  // useEffect(() => {
-  //   const getAuth = async () => {
-  //     const data = await Get(get_auth);
-  //     if (data) {
-  //       dispatch(AddAuth(data));
-  //     } else {
-  //       console.error("data");
-  //     }
-  //   };
-  //   getAuth();
-  // }, []);
+  useEffect(() => {
+    if (window !== undefined) {
+      let getToken = localStorage.getItem("token");
+      if (getToken) {
+        setToken(getToken);
+      }
+    }
+  }, []);
 
   return (
-    <>
+    <div className="relative">
+      {token !== "" && (
+        <div 
+        onClick={()=> useLogout()} className="fixed top-[92vh] right-4 z-[100] bg-white shadow-[0px_0px_4px_0px_rgba(238,0,0,0.75)] border border-solid border-red-300 rounded-full p-1.5 hover:p-2 duration-300 cursor-pointer">
+          <PowerSettingsNewIcon className="text-red-600" />
+        </div>
+      )}
       {!isChatPage && <Header />}
       {children}
       {!isChatPage && <Footer />}
@@ -143,7 +150,7 @@ const Layout = ({ children }) => {
       <InteractionModal onNext={handleInteractionNext} />
       <IdealPersonaModal onNext={handleIdealPersonaNext} />
       <ShortlistedPersonaModal onNext={handleShortlistedPersonaNext} />
-    </>
+    </div>
   );
 };
 
