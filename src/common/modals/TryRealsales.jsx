@@ -131,9 +131,14 @@ const TryRealsales = (props) => {
         const data = await Post(signup, {
           ...fromData,
           phone_number: `${idc}${fromData?.phone_number}`,
+          // role_id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          // access_level: "free_trial",
         });
         if (data?.token) {
           setFromDataErr(initialFormData);
+          setFromData(initialFormData);
+          localStorage.setItem("user", data?.user?.user_id);
+          localStorage.setItem("token", data?.token);
           dispatch(TryRealsalesValue(false));
           router.push("/pricing/free-trial");
         }
@@ -175,6 +180,7 @@ const TryRealsales = (props) => {
           localStorage.setItem("user", data?.user?.user_id);
           localStorage.setItem("token", data?.token);
           setLoginFromDataErr(initialLoginFormData);
+          setLoginfromData(initialLoginFormData);
           dispatch(TryRealsalesValue(false));
           router.push("/pricing/free-trial");
         } else {

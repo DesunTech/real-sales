@@ -70,7 +70,7 @@ const Banner = () => {
 
               <div
                 data-aos="fade-left"
-                className="flex lg:flex-row flex-col items-center gap-4 w-full"
+                className="flex md:flex-row flex-col items-center gap-4 w-full"
               >
                 <BookAdemo
                   onClick={() => dispatch(DemoMeetingValue(true))}
@@ -105,7 +105,7 @@ const Banner = () => {
               data-aos="fade-right"
               className="lg:w-[55%] w-full flex md:flex-row flex-col-reverse md:items-start items-center justify-center gap-4"
             >
-              <div className="flex flex-col gap-4">
+              <div className="flex flex-col gap-4 w-full">
                 <div className={`${bannerBottomCardRoot}`}>
                   <Image
                     src={bannerBottom1}
@@ -141,7 +141,7 @@ const Banner = () => {
                   </div>
                 </div>
               </div>
-              <div className="flex flex-col gap-4">
+              <div className="flex flex-col gap-4 w-full">
                 <div className="flex flex-col items-center">
                   <h1 className="text-[#060606CC] text-6xl m-plus-rounded-1c-medium">
                     RealSales

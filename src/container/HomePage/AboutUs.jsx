@@ -66,7 +66,7 @@ const AboutUs = () => {
           <Image
             src={bg_11}
             alt="bg_11"
-            className="absolute right-0 -top-[563px] max-w-[664px]"
+            className="absolute right-0 -top-[563px] max-w-[664px] lg:block hidden"
           />
           <div className="lg:flex none"></div>
           <hr className="border-[#FFFFFF33] border-1 lg:w-1/2 w-full" />
@@ -127,7 +127,7 @@ const AboutUs = () => {
           <Image
             src={bg_12}
             alt="bg_11"
-            className="absolute left-0 -top-[563px] lg:max-w-[664px] w-full"
+            className="absolute left-0 -top-[563px] lg:max-w-[664px] w-full lg:block hidden"
           />
           <div className="lg:flex none"></div>
           <hr className="border-[#FFFFFF33] border-1 lg:w-1/2 w-full" />
@@ -152,7 +152,7 @@ const AboutUs = () => {
                   }
                 />
               </div>
-              <p className="text-[32px] text-[#ffffff] m-plus-rounded-1c-regular">
+              <p className="text-[32px] text-[#ffffff] m-plus-rounded-1c-regular lg:text-left text-center">
                 <span className="m-plus-rounded-1c-extrabold">RealSales</span>&nbsp;is the answer to
                 <br />
                 Common problem is Sales team Impacting
@@ -229,7 +229,7 @@ const AboutUs = () => {
           <Image
             src={bg_11}
             alt="bg_11"
-            className="absolute right-0 -top-[563px] max-w-[664px]"
+            className="absolute right-0 -top-[563px] max-w-[664px] lg:block hidden"
           />
           <div className="lg:flex none"></div>
           {/* <hr className="border-[#FFFFFF33] border-1 lg:w-1/2 w-full" /> */}

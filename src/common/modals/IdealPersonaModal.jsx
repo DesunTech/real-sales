@@ -50,7 +50,7 @@ const IdealPersonaModal = ({ onNext }) => {
         {
           image: plantManagerimage,
           type: "Role",
-          title: "plant-manager",
+          title: "plant_manager",
           view: "plant Manager",
         },
         {
@@ -84,12 +84,6 @@ const IdealPersonaModal = ({ onNext }) => {
       ]);
     } else if (open?.type === "geography") {
       setIdealPersonaArr([
-        {
-          image: countryimage,
-          type: "Geography",
-          title: "india",
-          view: "India",
-        },
         { image: stateimage, type: "Geography", title: "us", view: "US" },
       ]);
     } else if (open?.type === "manufacturing_model") {
