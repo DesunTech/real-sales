@@ -1,5 +1,7 @@
 import { useApi } from "./useApi";
 import { apis } from "../utils/apis";
+import { useDispatch } from "react-redux";
+import { AddAuth } from "../redux/AuthReducer";
 
 /**
  * Custom hook to handle user logout.
