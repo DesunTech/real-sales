@@ -1,5 +1,7 @@
 import { useApi } from "./useApi";
 import { apis } from "../utils/apis";
+import { useDispatch } from "react-redux";
+import { AddAuth } from "../redux/AuthReducer";
 
 /**
  * Custom hook to handle user logout.
@@ -8,23 +10,27 @@ import { apis } from "../utils/apis";
  * 
  * @returns {Promise<Object|null>} The response data from the logout API or null if no data is returned.
  */
-export const useLogout = async () => {
+export const useLogout = () => {
   const { Get } = useApi();
   const { logout } = apis;
   let data = {};
 
-  try {
-    data = await Get(logout);
-  } catch (error) {
-    console.log(error, "_error_");
+  const doLogOut = async () => {
+    try {
+      data = await Get(logout);
+    } catch (error) {
+      console.log(error, "_error_");
+    }
+    if (data && Object.keys(data).length > 0) {
+      localStorage.removeItem("token")
+      localStorage.removeItem("user")
+      localStorage.removeItem("session_id")
+      localStorage.removeItem("persona_id")
+      return data;
+    } else {
+      return null;
+    }
   }
-  if (data && Object.keys(data).length > 0) {
-    localStorage.removeItem("token")
-    localStorage.removeItem("user")
-    localStorage.removeItem("session_id")
-    localStorage.removeItem("persona_id")
-    return data;
-  } else {
-    return null;
-  }
+
+  return doLogOut();
 };

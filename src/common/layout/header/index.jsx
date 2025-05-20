@@ -8,32 +8,26 @@ import { useRouter } from "next/router";
 import persona_plant from "../../../../public/assets/images/RealSales-user-images/persona-plant.png";
 import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined";
 import DemoMeeting from "../../modals/DemoMeeting";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { DemoMeetingValue } from "../../../redux/OpenModal";
 import TryRealsales from "../../modals/TryRealsales";
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useLogout } from "../../../hooks/useLogout";
+import { AddAuth } from "../../../redux/AuthReducer";
 
 const Header = (props) => {
   const router = useRouter();
   const dispatch = useDispatch();
+  const token = useSelector((state) => state.auth.auth);
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openIndustry, setOpenIndustry] = useState(false);
-  const [token, setToken] = useState("");
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
   };
 
-  useEffect(() => {
-    if (window !== undefined) {
-      let getToken = localStorage.getItem("token");
-      if (getToken) {
-        setToken(getToken);
-      }
-    }
-  }, []);
+
 
   return (
     <header className="main-header sticky top-0 z-50 bg-[#060606] h-[60px] flex items-center justify-center">
@@ -119,14 +113,14 @@ const Header = (props) => {
           </div>
           {/* Call to Action Buttons */}
           <div className="header-btn hidden md:flex items-center space-x-4">
-          {token !== "" && (
-        <div
-          onClick={() => useLogout()}
-          className="border border-solid border-white rounded p-0.5 px-4 cursor-pointer text-white"
-        >
-          <LogoutIcon className="text-white" />&nbsp;Logout
-        </div>
-      )}
+            {token !== "" && (
+              <div
+                onClick={() => { useLogout(); dispatch(AddAuth("")); }}
+                className="border border-solid border-white rounded p-0.5 px-4 cursor-pointer text-white"
+              >
+                <LogoutIcon className="text-white" />&nbsp;Logout
+              </div>
+            )}
             <BookAdemo
               className={`!text-[14px]`}
               onClick={() => dispatch(DemoMeetingValue(true))}
@@ -135,7 +129,7 @@ const Header = (props) => {
           </div>
 
           {/* Mobile Menu Toggle */}
-          <div className="mobile-toggle md:hidden" onClick={toggleMobileMenu}>
+          <div className="mobile-toggle md:hidden cursor-pointer" onClick={toggleMobileMenu}>
             <span className="menu-bar block w-6 h-0.5 bg-white my-1"></span>
             <span className="menu-bar block w-6 h-0.5 bg-white my-1"></span>
             <span className="menu-bar block w-6 h-0.5 bg-white my-1"></span>
@@ -153,7 +147,7 @@ const Header = (props) => {
                 />
                 <button
                   onClick={toggleMobileMenu}
-                  className="text-2xl text-white"
+                  className="text-2xl text-white cursor-pointer"
                 >
                   &times;
                 </button>
@@ -179,7 +173,15 @@ const Header = (props) => {
                     FAQ
                   </Link>
                 </li>
-                <li className="py-4">
+                <li className="py-4 flex flex-col gap-4">
+                  {token !== "" && (
+                    <div
+                      onClick={() => { useLogout(); dispatch(AddAuth("")); }}
+                      className="border border-solid border-white rounded p-0.5 px-4 cursor-pointer text-white"
+                    >
+                      <LogoutIcon className="text-white" />&nbsp;Logout
+                    </div>
+                  )}
                   <BookAdemo
                     link={`#`}
                     onClick={() => dispatch(DemoMeetingValue(true))}

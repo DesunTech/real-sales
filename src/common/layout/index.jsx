@@ -25,7 +25,6 @@ import { useApi } from "../../hooks/useApi";
 import { AddAuth } from "../../redux/AuthReducer";
 import { apis } from "../../utils/apis";
 import { Logout } from "@mui/icons-material";
-import { useLogout } from "../../hooks/useLogout";
 
 /**
  * Layout component that wraps the main application content.
@@ -42,6 +41,8 @@ const Layout = ({ children }) => {
   const { get_auth, ai_personas, sessions } = apis;
 
   const isChatPage = router.pathname.startsWith("/chat");
+  const token = useSelector((state) => state.auth.auth);
+  console.log(token, "__token")
 
   const [personaData, setPersonaData] = useState([]);
 
@@ -150,12 +151,22 @@ const Layout = ({ children }) => {
     // router?.push("/pricing");
   };
 
+  useEffect(() => {
+    if (!token) {
+      if (window !== undefined) {
+        let getToken = localStorage.getItem("token");
+        if (getToken) {
+          dispatch(AddAuth(getToken))
+        }
+      }
+    }
+  }, []);
 
   return (
     <div className="">
 
       {/* Conditional rendering of header and footer */}
-      {!isChatPage && <Header logOut={() => useLogout()} token={token} />}
+      {!isChatPage && <Header />}
       {children}
       {!isChatPage && <Footer />}
       {/* Modal components */}

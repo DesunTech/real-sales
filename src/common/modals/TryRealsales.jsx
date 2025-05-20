@@ -23,6 +23,9 @@ import { useApi } from "../../hooks/useApi";
 import { apis } from "../../utils/apis";
 import google_logo from "../../../public/assets/icons/google-logo.svg";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
+import { showToast } from "../../utils/toastConfig";
+import LoopIcon from '@mui/icons-material/Loop';
+import { AddAuth } from "../../redux/AuthReducer";
 
 const TryRealsales = (props) => {
   const { Post } = useApi();
@@ -53,6 +56,8 @@ const TryRealsales = (props) => {
     useState(initialLoginFormData);
   const [width, setWidth] = useState(1366);
   const [openLogin, setOpenLogin] = useState(false);
+  const [signupLoading, setSignupLoading] = useState(false);
+  const [loginLoading, setLoginLoading] = useState(false);
 
   useEffect(() => {
     const handleResize = () => setWidth(window.innerWidth);
@@ -127,6 +132,7 @@ const TryRealsales = (props) => {
     setFromDataErr(errors);
 
     if (valid) {
+      setSignupLoading(true);
       try {
         const data = await Post(signup, {
           ...fromData,
@@ -140,10 +146,13 @@ const TryRealsales = (props) => {
           localStorage.setItem("user", data?.user?.user_id);
           localStorage.setItem("token", data?.token);
           dispatch(TryRealsalesValue(false));
+          dispatch(AddAuth(data?.token))
           router.push("/pricing/free-trial");
         }
       } catch (error) {
         console.log(error, "error");
+      } finally {
+        setSignupLoading(false);
       }
     }
   };
@@ -174,6 +183,7 @@ const TryRealsales = (props) => {
     setLoginFromDataErr(errors);
 
     if (valid) {
+      setLoginLoading(true);
       try {
         let data = await Post(sign_in, loginfromData);
         if (data?.token) {
@@ -182,6 +192,7 @@ const TryRealsales = (props) => {
           setLoginFromDataErr(initialLoginFormData);
           setLoginfromData(initialLoginFormData);
           dispatch(TryRealsalesValue(false));
+          dispatch(AddAuth(data?.token))
           router.push("/pricing/free-trial");
         } else {
           setLoginFromDataErr((prev) => ({
@@ -195,6 +206,8 @@ const TryRealsales = (props) => {
           ...prev,
           general: "An error occurred. Please try again.",
         }));
+      } finally {
+        setLoginLoading(false);
       }
     }
   };
@@ -372,10 +385,11 @@ const TryRealsales = (props) => {
           </div>
           <CommonButton
             className={`w-full !border-0 !outline-0 !bg-[#FFDE5A] shadow-md !text-[#060606] text-[20px]`}
-            buttontext={`START session`}
+            buttontext={signupLoading ? <LoopIcon className="animate-spin" /> : "START session"}
             onClick={() => submitTryRealsales()}
+            disabled={signupLoading}
             icon={
-              <DoneOutlinedIcon className="text-[#060606] !font-normal !text-[20px]" />
+              !signupLoading && <DoneOutlinedIcon className="text-[#060606] !font-normal !text-[20px]" />
             }
           />
           <div className="flex items-center">
@@ -465,10 +479,11 @@ const TryRealsales = (props) => {
               <div className="flex items-center gap-4">
                 <CommonButton
                   className={`w-full !border-0 !outline-0 !bg-[#FFDE5A] shadow-md !text-[#060606] text-[20px]`}
-                  buttontext={`START session`}
+                  buttontext={loginLoading ? <LoopIcon className="animate-spin" /> : "START session"}
                   onClick={() => loginUser()}
+                  disabled={loginLoading}
                   icon={
-                    <DoneOutlinedIcon className="text-[#060606] !font-normal !text-[20px]" />
+                    !loginLoading && <DoneOutlinedIcon className="text-[#060606] !font-normal !text-[20px]" />
                   }
                 />
                 <GoogleLogin
