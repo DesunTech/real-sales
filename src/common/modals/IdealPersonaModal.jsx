@@ -35,13 +35,13 @@ const IdealPersonaModal = ({ onNext }) => {
         {
           image: persona_food_new,
           type: "Industry",
-          title: "food-&-beverage",
+          title: "food_and_beverage",
           view: "Food & Beverage",
         },
         {
           image: persona_food_old,
           type: "Industry",
-          title: "Packaging",
+          title: "packaging",
           view: "Packaging",
         },
       ]);
@@ -56,14 +56,14 @@ const IdealPersonaModal = ({ onNext }) => {
         {
           image: procecurementimage,
           type: "Role",
-          title: "procurement_manager",
-          view: "Procurement",
+          title: "production_manager",
+          view: "Production Manager",
         },
         {
           image: maintenanceimage,
           type: "Role",
           title: "maintenance_manager",
-          view: "Maintenance",
+          view: "Maintenance Manager",
         },
       ]);
     } else if (open?.type === "experience_level") {
