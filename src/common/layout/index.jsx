@@ -155,7 +155,7 @@ const Layout = ({ children }) => {
     <div className="">
 
       {/* Conditional rendering of header and footer */}
-      {!isChatPage && <Header logOut={() => useLogout()} token={token} />}
+      {!isChatPage && <Header />}
       {children}
       {!isChatPage && <Footer />}
       {/* Modal components */}
