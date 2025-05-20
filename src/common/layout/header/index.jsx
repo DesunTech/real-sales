@@ -14,8 +14,7 @@ import TryRealsales from "../../modals/TryRealsales";
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useLogout } from "../../../hooks/useLogout";
 
-
-const Header = () => {
+const Header = (props) => {
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -56,9 +55,8 @@ const Header = () => {
               <div>
                 <Link
                   href="/"
-                  className={`text-white leading-1 hover:underline ${
-                    router?.pathname === "/" ? `underline` : ``
-                  }`}
+                  className={`text-white leading-1 hover:underline ${router?.pathname === "/" ? `underline` : ``
+                    }`}
                 >
                   Home
                 </Link>
@@ -66,9 +64,8 @@ const Header = () => {
               <div>
                 <Link
                   href="/about"
-                  className={`text-white leading-1 hover:underline ${
-                    router?.pathname === "/about" ? `underline` : ``
-                  }`}
+                  className={`text-white leading-1 hover:underline ${router?.pathname === "/about" ? `underline` : ``
+                    }`}
                 >
                   About
                 </Link>
@@ -81,9 +78,8 @@ const Header = () => {
                 >
                   Industries&nbsp;
                   <ArrowDropDownOutlinedIcon
-                    className={`${
-                      openIndustry ? `rotate-0` : `rotate-180`
-                    } transform duration-300`}
+                    className={`${openIndustry ? `rotate-0` : `rotate-180`
+                      } transform duration-300`}
                   />
                 </Link>
                 {openIndustry ? (
@@ -113,9 +109,8 @@ const Header = () => {
               <div>
                 <Link
                   href="/faq"
-                  className={`text-white leading-1 hover:underline ${
-                    router?.pathname === "/faq" ? `underline` : ``
-                  }`}
+                  className={`text-white leading-1 hover:underline ${router?.pathname === "/faq" ? `underline` : ``
+                    }`}
                 >
                   FAQ
                 </Link>

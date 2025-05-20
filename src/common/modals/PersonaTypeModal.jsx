@@ -112,6 +112,7 @@ const PersonaTypeModal = ({ onNext, personaData }) => {
                 type={Industry[0]}
               />
               <PersonaCard
+              disabled={!Industry[0]}
                 persona={persona === "Role" ? true : false}
                 disabled={!Industry[0]}
                 onClick={() =>
@@ -123,6 +124,7 @@ const PersonaTypeModal = ({ onNext, personaData }) => {
             </div>
             <div className="w-full flex lg:flex-row flex-col items-center justify-between gap-y-5 gap-x-10">
               <PersonaCard
+              disabled={!Role[0]}
                 persona={persona === "Experience" ? true : false}
                 disabled={!Role[0]}
                 // onClick={() => setPersona("Experience")}
@@ -135,6 +137,7 @@ const PersonaTypeModal = ({ onNext, personaData }) => {
                 type={Experience[0]}
               />
               <PersonaCard
+              disabled={!Experience[0]}
                 persona={persona === "Geography" ? true : false}
                 disabled={!Experience[0]}
                 // onClick={() => setPersona("Geography")}
@@ -147,6 +150,7 @@ const PersonaTypeModal = ({ onNext, personaData }) => {
             </div>
             <div className="w-full flex lg:flex-row flex-col items-center justify-between gap-y-5 gap-x-10">
               <PersonaCard
+              disabled={!Geography[0]}
                 persona={persona === "Manufacture" ? true : false}
                 disabled={!Geography[0]}
                 // onClick={() => setPersona("Manufacture")}
@@ -162,6 +166,7 @@ const PersonaTypeModal = ({ onNext, personaData }) => {
                 type={Manufacture[0]}
               />
               <PersonaCard
+              disabled={!Manufacture[0]}
                 persona={persona === "Manufacture" ? true : false}
                 disabled={!Manufacture[0]}
                 // onClick={() => setPersona("Manufacture")}

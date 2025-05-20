@@ -56,13 +56,13 @@ const IdealPersonaModal = ({ onNext }) => {
         {
           image: procecurementimage,
           type: "Role",
-          title: "procurement",
+          title: "procurement_manager",
           view: "Procurement",
         },
         {
           image: maintenanceimage,
           type: "Role",
-          title: "maintenance",
+          title: "maintenance_manager",
           view: "Maintenance",
         },
       ]);
