@@ -24,7 +24,6 @@ import PaymentConfirmation from "../modals/PaymentConfirmation";
 import { useApi } from "../../hooks/useApi";
 import { AddAuth } from "../../redux/AuthReducer";
 import { apis } from "../../utils/apis";
-import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
 import { Logout } from "@mui/icons-material";
 import { useLogout } from "../../hooks/useLogout";
 
@@ -45,7 +44,6 @@ const Layout = ({ children }) => {
   const isChatPage = router.pathname.startsWith("/chat");
 
   const [personaData, setPersonaData] = useState([]);
-  const [token, setToken] = useState("");
 
   /**
    * Trims the persona data to a key-value pair of persona and type.
@@ -152,17 +150,10 @@ const Layout = ({ children }) => {
     // router?.push("/pricing");
   };
 
-  useEffect(() => {
-    if (window !== undefined) {
-      let getToken = localStorage.getItem("token");
-      if (getToken) {
-        setToken(getToken);
-      }
-    }
-  }, []);
 
   return (
     <div className="">
+
       {/* Conditional rendering of header and footer */}
       {!isChatPage && <Header logOut={() => useLogout()} token={token} />}
       {children}
