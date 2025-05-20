@@ -36,6 +36,7 @@ import Link from "next/link";
 import { apis } from "../../utils/apis";
 import { useApi } from "../../hooks/useApi";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
+import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 
 const Chat = ({ slug, children }) => {
   const { Post } = useApi();
@@ -63,6 +64,7 @@ const Chat = ({ slug, children }) => {
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isAutoMode, setIsAutoMode] = useState(false);
   const [personaData, setPersonaData] = useState({});
+  const [startConversion, setStartConversion] = useState(true);
   const audioRef = useRef(null);
 
   useEffect(() => {
@@ -629,25 +631,34 @@ const Chat = ({ slug, children }) => {
                       {slug === "audio" ? (
                         <div className="absolute inset-0 p-5 w-full h-full flex flex-col items-center">
                           {/* ai mic */}
-                          <div className="w-[90%] flex items-start gap-1.5 z-10">
+                          <div className="relative w-[90%] flex items-start gap-1.5 z-10">
+                            {startConversion ?
+                              <div className="absolute bg-[#26AD35] text-white text-[12px] sora-senibold left-[3rem] px-2 py-0.5">
+                                Start Conversion
+                                <div className="relative">
+                                  <div className="absolute -left-[22px] -top-5">
+                                    <ArrowLeftIcon className="text-[#26AD35]"/>
+                                  </div>
+                                </div>
+                              </div>
+                              : null}
                             <div className="flex items-center gap-1.5 -mt-2">
                               <button
-                                className={`w-10 h-10 ${
-                                  isMicClicked
-                                    ? "bg-[#26AD35] hover:bg-[#26AD35]"
-                                    : "bg-[#FFFFFF1A] hover:bg-[#FFFFFF33]"
-                                } rounded-full flex items-center justify-center cursor-pointer transition-colors`}
+                                className={`w-10 h-10 ${isMicClicked
+                                  ? "bg-[#26AD35] hover:bg-[#26AD35]"
+                                  : "bg-[#FFFFFF1A] hover:bg-[#FFFFFF33]"
+                                  } rounded-full flex items-center justify-center cursor-pointer transition-colors`}
                                 onClick={() => {
                                   toggleSpeechRecognition();
                                   setIsVolClicked(false);
+                                  setStartConversion(false)
                                 }}
                               >
                                 <MicNoneOutlinedIcon
-                                  className={`${
-                                    isMicClicked
-                                      ? "text-white"
-                                      : "text-[#FFFFFF80]"
-                                  } !text-[20px]`}
+                                  className={`${isMicClicked
+                                    ? "text-white"
+                                    : "text-[#FFFFFF80]"
+                                    } !text-[20px]`}
                                 />
                               </button>
                               <Image
@@ -701,10 +712,9 @@ const Chat = ({ slug, children }) => {
                           <div className="w-[90%] flex items-start gap-1.5 z-10">
                             <button
                               className={`w-10 h-10 flex-s 
-                                ${
-                                  isVolClicked
-                                    ? "bg-[#26AD35] hover:bg-[#26AD35]"
-                                    : "bg-[#FFFFFF1A] hover:bg-[#FFFFFF33]"
+                                ${isVolClicked
+                                  ? "bg-[#26AD35] hover:bg-[#26AD35]"
+                                  : "bg-[#FFFFFF1A] hover:bg-[#FFFFFF33]"
                                 }
                               rounded-full flex items-center justify-center cursor-pointer transition-colors`}
                               onClick={() => {
@@ -717,11 +727,10 @@ const Chat = ({ slug, children }) => {
                               }}
                             >
                               <VolumeUpIcon
-                                className={`${
-                                  isVolClicked
-                                    ? "text-white"
-                                    : "text-[#FFFFFF80]"
-                                } !text-[20px]`}
+                                className={`${isVolClicked
+                                  ? "text-white"
+                                  : "text-[#FFFFFF80]"
+                                  } !text-[20px]`}
                               />
                             </button>
                             <Image
@@ -739,16 +748,16 @@ const Chat = ({ slug, children }) => {
                               &nbsp;how are you !! */}
                               {resChat?.length
                                 ? resChat.map((v, i) => (
-                                    <p
-                                      key={i}
-                                      className="pr-4 text-white text-base sora-regular"
-                                    >
-                                      <span className="text-[#FFDE5A] sora-semibold">
-                                        AI Client
-                                      </span>
-                                      &nbsp;{v?.response}
-                                    </p>
-                                  ))
+                                  <p
+                                    key={i}
+                                    className="pr-4 text-white text-base sora-regular"
+                                  >
+                                    <span className="text-[#FFDE5A] sora-semibold">
+                                      AI Client
+                                    </span>
+                                    &nbsp;{v?.response}
+                                  </p>
+                                ))
                                 : null}
                             </div>
                           </div>
@@ -894,15 +903,13 @@ const Chat = ({ slug, children }) => {
                       </div>
                     </div>
                     <div
-                      className={`w-10 h-10 ${
-                        isAutoMode ? "bg-[#26AD35]" : "bg-[#FFFFFF1A]"
-                      } rounded-full flex items-center justify-center cursor-pointer`}
+                      className={`w-10 h-10 ${isAutoMode ? "bg-[#26AD35]" : "bg-[#FFFFFF1A]"
+                        } rounded-full flex items-center justify-center cursor-pointer`}
                       onClick={toggleAutoMode}
                     >
                       <MicNoneOutlinedIcon
-                        className={`${
-                          isAutoMode ? "text-white" : "text-[#FFFFFF80]"
-                        } !text-[20px]`}
+                        className={`${isAutoMode ? "text-white" : "text-[#FFFFFF80]"
+                          } !text-[20px]`}
                       />
                     </div>
                     <div className="w-14 h-14 rounded-full p-1 border-2 border-solid border-white overflow-hidden">
@@ -1001,27 +1008,24 @@ const Chat = ({ slug, children }) => {
                     <div className="flex flex-col gap-2 h-[45vh] overflow-y-auto">
                       {coachingArr?.map((v, idx) => (
                         <div
-                          className={`border-l-4 border-solid relative ${
-                            idx % 2 === 0
-                              ? "border-[#26AD35B2] bg-[linear-gradient(90deg,rgba(38,173,53,0.2)_0%,rgba(38,173,53,0)_63.5%)]"
-                              : "border-[#E59E2CB2] bg-[linear-gradient(90deg,rgba(229,158,44,0.2)_0%,rgba(229,158,44,0)_63.5%)]"
-                          }`}
+                          className={`border-l-4 border-solid relative ${idx % 2 === 0
+                            ? "border-[#26AD35B2] bg-[linear-gradient(90deg,rgba(38,173,53,0.2)_0%,rgba(38,173,53,0)_63.5%)]"
+                            : "border-[#E59E2CB2] bg-[linear-gradient(90deg,rgba(229,158,44,0.2)_0%,rgba(229,158,44,0)_63.5%)]"
+                            }`}
                         >
                           <div className="flex flex-col gap-2 p-4">
                             <div className="relative flex items-center justify-start">
                               <div
-                                className={`w-10 h-10 ${
-                                  idx % 2 === 0
-                                    ? "bg-[#26AD35]"
-                                    : "bg-[#E59E2C]"
-                                } rounded-full`}
+                                className={`w-10 h-10 ${idx % 2 === 0
+                                  ? "bg-[#26AD35]"
+                                  : "bg-[#E59E2C]"
+                                  } rounded-full`}
                               />
                               <p
-                                class={`absolute left-1 rounded-[5px] ${
-                                  idx % 2 === 0
-                                    ? "bg-[linear-gradient(90deg,#26AD35_0%,#077A15_100%)]"
-                                    : "bg-[linear-gradient(90deg,#E59E2C_0%,#A36B12_100%)]"
-                                } w-fit sora-regular text-sm text-white px-3 py-1 capitalize`}
+                                class={`absolute left-1 rounded-[5px] ${idx % 2 === 0
+                                  ? "bg-[linear-gradient(90deg,#26AD35_0%,#077A15_100%)]"
+                                  : "bg-[linear-gradient(90deg,#E59E2C_0%,#A36B12_100%)]"
+                                  } w-fit sora-regular text-sm text-white px-3 py-1 capitalize`}
                               >
                                 Response Tips
                               </p>
@@ -1105,7 +1109,7 @@ const Chat = ({ slug, children }) => {
                         {openAnswer === i ? (
                           <p
                             className="bg-[#00000000] border-2 border-solid border-[#7d7349] rounded-[5px] py-2 px-3 flex items-start gap-1 m-plus-rounded-1c-regular text-white text-[14px]"
-                            onClick={() => {}}
+                            onClick={() => { }}
                           >
                             {v?.answer}
                           </p>
