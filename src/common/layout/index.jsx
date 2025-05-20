@@ -123,7 +123,7 @@ const Layout = ({ children }) => {
         // dispatch(IdealPersonaValue(true));
         dispatch(ShortlistedPersonaValue(true));
       }
-    } catch (error) {}
+    } catch (error) { }
   };
 
   /**
@@ -163,17 +163,8 @@ const Layout = ({ children }) => {
 
   return (
     <div className="">
-      {/* Logout button */}
-      {token !== "" && (
-        <div
-          onClick={() => useLogout()}
-          className="fixed top-[92vh] right-4 z-[100] bg-white shadow-[0px_0px_4px_0px_rgba(238,0,0,0.75)] border border-solid border-red-300 rounded-full p-1.5 hover:p-2 duration-300 cursor-pointer"
-        >
-          <PowerSettingsNewIcon className="text-red-600" />
-        </div>
-      )}
       {/* Conditional rendering of header and footer */}
-      {!isChatPage && <Header />}
+      {!isChatPage && <Header logOut={() => useLogout()} token={token} />}
       {children}
       {!isChatPage && <Footer />}
       {/* Modal components */}

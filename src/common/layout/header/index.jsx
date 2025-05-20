@@ -11,8 +11,9 @@ import DemoMeeting from "../../modals/DemoMeeting";
 import { useDispatch } from "react-redux";
 import { DemoMeetingValue } from "../../../redux/OpenModal";
 import TryRealsales from "../../modals/TryRealsales";
+import LogoutIcon from '@mui/icons-material/Logout';
 
-const Header = () => {
+const Header = (props) => {
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -43,9 +44,8 @@ const Header = () => {
               <div>
                 <Link
                   href="/"
-                  className={`text-white leading-1 hover:underline ${
-                    router?.pathname === "/" ? `underline` : ``
-                  }`}
+                  className={`text-white leading-1 hover:underline ${router?.pathname === "/" ? `underline` : ``
+                    }`}
                 >
                   Home
                 </Link>
@@ -53,9 +53,8 @@ const Header = () => {
               <div>
                 <Link
                   href="/about"
-                  className={`text-white leading-1 hover:underline ${
-                    router?.pathname === "/about" ? `underline` : ``
-                  }`}
+                  className={`text-white leading-1 hover:underline ${router?.pathname === "/about" ? `underline` : ``
+                    }`}
                 >
                   About
                 </Link>
@@ -68,9 +67,8 @@ const Header = () => {
                 >
                   Industries&nbsp;
                   <ArrowDropDownOutlinedIcon
-                    className={`${
-                      openIndustry ? `rotate-0` : `rotate-180`
-                    } transform duration-300`}
+                    className={`${openIndustry ? `rotate-0` : `rotate-180`
+                      } transform duration-300`}
                   />
                 </Link>
                 {openIndustry ? (
@@ -100,9 +98,8 @@ const Header = () => {
               <div>
                 <Link
                   href="/faq"
-                  className={`text-white leading-1 hover:underline ${
-                    router?.pathname === "/faq" ? `underline` : ``
-                  }`}
+                  className={`text-white leading-1 hover:underline ${router?.pathname === "/faq" ? `underline` : ``
+                    }`}
                 >
                   FAQ
                 </Link>
@@ -112,6 +109,14 @@ const Header = () => {
 
           {/* Call to Action Buttons */}
           <div className="header-btn hidden md:flex items-center space-x-4">
+            {props?.token !== "" && (
+              <div
+                onClick={() => props?.logOut()}
+                className="bg-white border border-solid border-red-300 rounded p-0.5 px-4 cursor-pointer"
+              >
+                <LogoutIcon className="text-red-600" />&nbsp;Logout
+              </div>
+            )}
             <BookAdemo
               className={`!text-[14px]`}
               onClick={() => dispatch(DemoMeetingValue(true))}

@@ -8,11 +8,10 @@ const PersonaCard = (props) => {
   return (
     <div className="bg-[url(../../public/assets/images/aboutus/PersonaCardImg.png)] shadow-md bg-cover bg-center bg-no-repeat w-full rounded-[10px]">
       <div
-        className={`${
-          props?.type
+        className={`${props?.type
             ? `bg-gradient-to-r from-blue-200/50 to-white/0`
             : `bg-gradient-to-r from-white/50 to-white/0`
-        } py-4 px-8 w-full flex flex-col items-start justify-between gap-4`}
+          } py-4 px-8 w-full flex flex-col items-start justify-between gap-4`}
       >
         <div className="flex flex-col items-start">
           <h2 className="lg:text-[12px] text-[10px] sora-regular text-[#060606]">
@@ -32,9 +31,9 @@ const PersonaCard = (props) => {
           </p>
         ) : (
           <BookAdemo
-            onClick={props?.onClick}
+            onClick={() => { props?.disabled ? null : props?.onClick() }}
             BookaDemo={"SELECT"}
-            className={`!border-[#FFDE5A] !bg-[#060606] !text-[#FFDE5A] !px-5 !py-1 h-fit uppercase`}
+            className={`!border-[#FFDE5A] ${props?.disabled ? "!bg-[#0606064e]" : "!bg-[#060606]"} !text-[#FFDE5A] !px-5 !py-1 h-fit uppercase`}
           />
         )}
       </div>
