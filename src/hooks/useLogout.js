@@ -30,5 +30,5 @@ export const useLogout = () => {
     }
   }
 
-  return doLogOut
+  return doLogOut();
 };
