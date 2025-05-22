@@ -25,6 +25,7 @@ import { useApi } from "../../hooks/useApi";
 import { AddAuth } from "../../redux/AuthReducer";
 import { apis } from "../../utils/apis";
 import { Logout } from "@mui/icons-material";
+import NewPersonaTypeModal from "../modals/NewPersonaTypeModal";
 
 /**
  * Layout component that wraps the main application content.
@@ -42,7 +43,7 @@ const Layout = ({ children }) => {
 
   const isChatPage = router.pathname.startsWith("/chat");
   const token = useSelector((state) => state.auth.auth);
-  console.log(token, "__token")
+  console.log(token, "__token");
 
   const [personaData, setPersonaData] = useState([]);
 
@@ -104,8 +105,13 @@ const Layout = ({ children }) => {
    * @param {string} personaName - The name of the persona.
    * @returns {void} - This function does not return a value.
    */
-  const handlePersonaTypeNext = (personaName) => {
-    CreateAiPersonas(personaName);
+  const handlePersonaTypeNext = (personaData) => {
+    // CreateAiPersonas(personaName);
+    console.log(personaData, "personaData");
+    localStorage.setItem("persona_id", personaData?.id);
+    localStorage.setItem("persona_data", JSON.stringify(personaData));
+    dispatch(PersonaTypeValue(false));
+    dispatch(SessionModesValue(true));
   };
 
   /**
@@ -120,9 +126,10 @@ const Layout = ({ children }) => {
         localStorage.setItem("session_id", data?.session_id);
         dispatch(InteractionValue({ open: false, fromData: "" }));
         // dispatch(IdealPersonaValue(true));
-        dispatch(ShortlistedPersonaValue(true));
+        // dispatch(ShortlistedPersonaValue(true));
+        dispatch(PersonaTypeValue(true));
       }
-    } catch (error) { }
+    } catch (error) {}
   };
 
   /**
@@ -156,7 +163,7 @@ const Layout = ({ children }) => {
       if (window !== undefined) {
         let getToken = localStorage.getItem("token");
         if (getToken) {
-          dispatch(AddAuth(getToken))
+          dispatch(AddAuth(getToken));
         }
       }
     }
@@ -164,7 +171,6 @@ const Layout = ({ children }) => {
 
   return (
     <div className="">
-
       {/* Conditional rendering of header and footer */}
       {!isChatPage && <Header />}
       {children}
@@ -179,7 +185,12 @@ const Layout = ({ children }) => {
       <PaymentConfirmation />
 
       {/* Persona Flow Modals */}
-      <PersonaTypeModal
+      {/* <PersonaTypeModal
+        personaData={personaData}
+        onNext={handlePersonaTypeNext}
+      /> */}
+
+      <NewPersonaTypeModal
         personaData={personaData}
         onNext={handlePersonaTypeNext}
       />
