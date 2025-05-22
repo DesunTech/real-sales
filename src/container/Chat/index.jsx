@@ -177,9 +177,9 @@ const Chat = ({ slug, children }) => {
       silenceCheckInterval = setInterval(() => {
         if (
           lastSpeechTimeRef.current &&
-          Date.now() - lastSpeechTimeRef.current >= 3000
+          Date.now() - lastSpeechTimeRef.current >= 6000
         ) {
-          // If no speech detected for 3 seconds
+          // If no speech detected for 6 seconds
           isSilenceTimeoutRef.current = true;
           if (recognitionRef.current) {
             try {
@@ -193,7 +193,7 @@ const Chat = ({ slug, children }) => {
 
           lastSpeechTimeRef.current = null;
         }
-      }, 1000); // Check every second
+      }, 3000); // Check every second
     }
 
     return () => {
