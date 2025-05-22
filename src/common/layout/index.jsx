@@ -105,13 +105,21 @@ const Layout = ({ children }) => {
    * @param {string} personaName - The name of the persona.
    * @returns {void} - This function does not return a value.
    */
-  const handlePersonaTypeNext = (personaData) => {
+  const handlePersonaTypeNext = async(personaData) => {
     // CreateAiPersonas(personaName);
     console.log(personaData, "personaData");
     localStorage.setItem("persona_id", personaData?.id);
-    localStorage.setItem("persona_data", JSON.stringify(personaData));
-    dispatch(PersonaTypeValue(false));
-    dispatch(SessionModesValue(true));
+    try {
+      let data = await Post(`${sessions}/${personaData?.id}`);
+      if (data?.session_id) {
+        localStorage.setItem("session_id", data?.session_id);
+        localStorage.setItem("persona_data", JSON.stringify(personaData));
+        dispatch(PersonaTypeValue(false));
+        dispatch(SessionModesValue(true));
+      }
+    } catch (error) {
+      
+    }
   };
 
   /**
@@ -120,16 +128,16 @@ const Layout = ({ children }) => {
    * @returns {Promise<void>} - A promise that resolves when the interaction is processed.
    */
   const handleInteractionNext = async (fromData) => {
-    try {
-      let data = await Post(`${sessions}/${fromData?.persona_id}`);
-      if (data?.session_id) {
-        localStorage.setItem("session_id", data?.session_id);
+    // try {
+    //   let data = await Post(`${sessions}/${fromData?.persona_id}`);
+    //   if (data?.session_id) {
+    //     localStorage.setItem("session_id", data?.session_id);
         dispatch(InteractionValue({ open: false, fromData: "" }));
         // dispatch(IdealPersonaValue(true));
         // dispatch(ShortlistedPersonaValue(true));
         dispatch(PersonaTypeValue(true));
-      }
-    } catch (error) {}
+    //   }
+    // } catch (error) {}
   };
 
   /**
@@ -168,6 +176,8 @@ const Layout = ({ children }) => {
       }
     }
   }, []);
+
+  console.log(children, "children")
 
   return (
     <div className="">

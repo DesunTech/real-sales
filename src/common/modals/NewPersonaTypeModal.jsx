@@ -25,21 +25,38 @@ import MapIcon from "@mui/icons-material/Map";
 import PrecisionManufacturingIcon from "@mui/icons-material/PrecisionManufacturing";
 import FactoryIcon from "@mui/icons-material/Factory";
 
-const NewPersonaTypeModal = ({ onNext, personaData }) => {
+const NewPersonaTypeModal = ({ onNext }) => {
   const dispatch = useDispatch();
   const { ai_personas } = apis;
   const { Get } = useApi();
   const open = useSelector((state) => state.openModal.personaTypeValue);
   const [fromData, setFromData] = useState({});
-
+  const [innerWidth, setInnerWidth] = useState(0);
 
   const handleChange = (event) => {
     setFromData((pre) => ({ ...pre, chat_type: event.target.value }));
   };
 
+  useEffect(() => {
+    const handleResize = () => {
+      setInnerWidth(window.innerWidth);
+    };
+
+    if (typeof window !== "undefined") {
+      setInnerWidth(window.innerWidth);
+      window.addEventListener("resize", handleResize);
+    }
+
+    return () => {
+      if (typeof window !== "undefined") {
+        window.removeEventListener("resize", handleResize);
+      }
+    };
+  }, []);
+
   let dummyPersonaData = [
     {
-      id: "1",
+      id: "79ead938-8efa-4fae-b4fc-c6b20dbf6481",
       name: "Jone Doe",
       industry: { name: "food_and_beverage", title: "Food & Beverage" },
       role: { name: "plant_manager", title: "Plant manager" },
@@ -92,12 +109,26 @@ const NewPersonaTypeModal = ({ onNext, personaData }) => {
     },
   ];
 
+  const addFromData = (value) => {
+    setFromData(() => ({
+      id: value?.id,
+      name: value?.name,
+      industry: value?.industry?.name,
+      role: value?.role?.name,
+      experience: value?.experience?.name,
+      geography: value?.geography?.name,
+      manufacturing_model: value?.manufacturing_model?.name,
+      plant_size_impact: value?.plant_size_impact?.name,
+    }));
+  };
+
+  const modalWidth = innerWidth <= 1240 ? "70%" : "60%";
+
   return (
     <CommonModal
       open={open}
-      // open={true}
       onClose={() => dispatch(PersonaTypeValue(false))}
-      width={"60%"}
+      width={modalWidth}
     >
       <div className="flex flex-col gap-4 items-start">
         <div className="flex flex-col items-start">
@@ -138,15 +169,15 @@ const NewPersonaTypeModal = ({ onNext, personaData }) => {
                       ? "shadow-[0px_0px_6px_0px_#00000070]"
                       : ""
                   } lg:w-[calc(50%_-_8px)] w-full chat border border-solid border-[#00000070] rounded p-2 flex flex-col gap-2 cursor-pointer`}
-                  onClick={() => setFromData(v)}
+                  onClick={() => addFromData(v)}
                 >
                   <div className="flex gap-4">
                     <Image
                       src={industryImg}
                       alt="industry"
-                      className="w-[8rem] h-[8rem] rounded-full"
+                      className="w-[8rem] h-[8rem] rounded"
                     />
-                    <div className="flex flex-col items-start justify-start mt-4">
+                    <div className="flex flex-col items-start justify-start">
                       <p className="text-2xl sora-medium text-[#060606] capitalize">
                         {v?.name || "Name"}
                       </p>
@@ -235,7 +266,7 @@ const NewPersonaTypeModal = ({ onNext, personaData }) => {
             icon={<ArrowRight stroke={`#060606`} width={19} height={13} />}
             disabled={fromData?.id ? false : true}
             onClick={() => {
-                onNext(fromData);
+              onNext(fromData);
             }}
             buttontext={"Proceed to Next step"}
           />
