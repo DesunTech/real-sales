@@ -76,7 +76,7 @@ const Feedback = () => {
               </Button>
               <p
                 className="text-[#060606CC] sora-semibold capitalize text-center cursor-pointer"
-                onClick={() => router.push("/chat/rating")}
+                onClick={() => router.push("/")}
               >
                 No Thanks
               </p>
