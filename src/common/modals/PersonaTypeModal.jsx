@@ -35,6 +35,8 @@ const PersonaTypeModal = ({ onNext, personaData }) => {
         .map((val) => val?.view)
     : false;
 
+    console.log(Industry, "__Industry__");
+
   let Role = personaData?.length
     ? personaData.filter((v) => v?.persona === "role").map((val) => val?.view)
     : false;

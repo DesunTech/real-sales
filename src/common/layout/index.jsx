@@ -133,6 +133,7 @@ const Layout = ({ children }) => {
    * @returns {void} - This function does not return a value.
    */
   const handleIdealPersonaNext = (industryType, industryView, type) => {
+    console.log(industryType, industryView, type, "industryType_industryView_type");
     dispatch(IdealPersonaValue({ open: false, type: "" }));
     // dispatch(ShortlistedPersonaValue(true));
     setPersonaData((pre) => [

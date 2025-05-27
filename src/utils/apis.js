@@ -8,4 +8,6 @@ export const apis = {
   interaction_modes_by_name: "/interaction-modes/by-name",
   sessions: "/sessions",
   chat_chat: "/ai-persona-chat/chat",
+  industries: "/industries",
+  geography: "/geography"
 };
