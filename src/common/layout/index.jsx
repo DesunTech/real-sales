@@ -46,6 +46,7 @@ const Layout = ({ children }) => {
   console.log(token, "__token");
 
   const [personaData, setPersonaData] = useState([]);
+  const [mode_id, setModeId] = useState("");
 
   /**
    * Trims the persona data to a key-value pair of persona and type.
@@ -108,9 +109,9 @@ const Layout = ({ children }) => {
   const handlePersonaTypeNext = async(personaData) => {
     // CreateAiPersonas(personaName);
     console.log(personaData, "personaData");
-    localStorage.setItem("persona_id", personaData?.id);
+    localStorage.setItem("persona_id", personaData?.persona_id);
     try {
-      let data = await Post(`${sessions}/${personaData?.id}`);
+      let data = await Post(sessions, {mode_id: mode_id, persona_id: personaData?.persona_id});
       if (data?.session_id) {
         localStorage.setItem("session_id", data?.session_id);
         localStorage.setItem("persona_data", JSON.stringify(personaData));
@@ -133,6 +134,7 @@ const Layout = ({ children }) => {
     //   if (data?.session_id) {
     //     localStorage.setItem("session_id", data?.session_id);
         dispatch(InteractionValue({ open: false, fromData: "" }));
+        setModeId(fromData?.mode_id);
         // dispatch(IdealPersonaValue(true));
         // dispatch(ShortlistedPersonaValue(true));
         dispatch(PersonaTypeValue(true));
