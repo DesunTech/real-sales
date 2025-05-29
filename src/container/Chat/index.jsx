@@ -43,7 +43,7 @@ const Chat = ({ slug, children }) => {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  const [checked, setChecked] = useState(false);
+  const [checked, setChecked] = useState(true);
   const [openAnswer, setOpenAnswer] = useState(0);
   const [micUser, setMicUser] = useState(true);
   const [micAi, setMicAi] = useState(true);
@@ -189,7 +189,7 @@ const Chat = ({ slug, children }) => {
       silenceCheckInterval = setInterval(() => {
         if (
           lastSpeechTimeRef.current &&
-          Date.now() - lastSpeechTimeRef.current >= 6000
+          Date.now() - lastSpeechTimeRef.current >= 4000
         ) {
           // If no speech detected for 6 seconds
           isSilenceTimeoutRef.current = true;
@@ -205,7 +205,7 @@ const Chat = ({ slug, children }) => {
 
           lastSpeechTimeRef.current = null;
         }
-      }, 6000); // Check every second
+      }, 4000); // Check every second
     }
 
     return () => {
