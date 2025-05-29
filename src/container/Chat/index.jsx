@@ -193,7 +193,7 @@ const Chat = ({ slug, children }) => {
 
           lastSpeechTimeRef.current = null;
         }
-      }, 3000); // Check every second
+      }, 6000); // Check every second
     }
 
     return () => {
@@ -344,12 +344,12 @@ const Chat = ({ slug, children }) => {
     try {
       let data = await Post(`${chat_chat}/${session_id}`, {
         user_input: transcriptDummy,
-        industry: personaData?.industry,
-        manufacturing_model: personaData?.manufacturing_model,
-        experience_level: personaData?.experience_level,
-        role: personaData?.role,
-        geography: personaData?.geography,
-        plant_size_impact: personaData?.plant_size_impact,
+        // industry: personaData?.industry,
+        // manufacturing_model: personaData?.manufacturing_model,
+        // experience_level: personaData?.experience_level,
+        // role: personaData?.role,
+        // geography: personaData?.geography,
+        // plant_size_impact: personaData?.plant_size_impact,
       });
 
       if (data?.response) {
