@@ -420,7 +420,7 @@ const Chat = ({ slug, children }) => {
   const clearTranscript = () => {
     setTranscript("");
     setTranscriptDummy("");
-    setChatMessages([])
+    setChatMessages([]);
   };
 
   const CustomTooltip = styled(({ className, ...props }) => (
@@ -472,9 +472,12 @@ const Chat = ({ slug, children }) => {
               <div className="w-[40%]">
                 <div
                   onClick={() => {
-                    slug === "rating"
-                      ? router.push("/")
-                      : dispatch(EndChatValue({ open: true, type: "audio" }));
+                    if (slug === "rating") {
+                      router.push("/");
+                      localStorage.removeItem("session_id");
+                    } else {
+                      dispatch(EndChatValue({ open: true, type: "audio" }));
+                    }
                   }}
                   className="w-10 h-10 bg-[#FFFFFF1A] rounded-full flex items-center justify-center cursor-pointer"
                 >

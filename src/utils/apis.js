@@ -14,5 +14,6 @@ export const apis = {
   plant_size_impacts: "/plant-size-impacts/",
   interaction_mode_ai_roles: "/interaction-mode-ai-roles/",
   interaction_mode_manufacturing_models: "/interaction-mode-manufacturing-models/",
-  interaction_mode_plant_size_impacts: "/interaction-mode-plant-size-impacts/"
+  interaction_mode_plant_size_impacts: "/interaction-mode-plant-size-impacts/",
+  performance_reports: "/performance-reports/",
 };
