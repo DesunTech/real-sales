@@ -88,7 +88,7 @@ const ChatEndModal = () => {
                     type: endChatValue?.type,
                   })
                 );
-                localStorage.removeItem("session_id")
+                // localStorage.removeItem("session_id")
                 localStorage.removeItem("persona_id")
                 router.push("/feedback")
               }}

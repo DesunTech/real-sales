@@ -9,7 +9,12 @@ import { useApi } from "../../hooks/useApi";
 import { apis } from "../../utils/apis";
 import { TextField } from "@mui/material";
 
+
 const PersonaTypeModal = ({ onNext, personaData }) => {
+  let capitalize = (str) => {
+    if (!str) return "";
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  };
   const dispatch = useDispatch();
   const { ai_personas } = apis;
   const { Get } = useApi();
@@ -111,7 +116,7 @@ const PersonaTypeModal = ({ onNext, personaData }) => {
                   dispatch(IdealPersonaValue({ open: true, type: "industry" }))
                 }
                 title={"Persona by Industry"}
-                type={Industry[0]}
+                type={capitalize(Industry[0]?.replace(/_/g, ' '))}
               />
               <PersonaCard
               disabled={!Industry[0]}
@@ -120,7 +125,7 @@ const PersonaTypeModal = ({ onNext, personaData }) => {
                   dispatch(IdealPersonaValue({ open: true, type: "role" }))
                 }
                 title={"Persona by Role"}
-                type={Role[0]}
+                type={capitalize(Role[0]?.replace(/_/g, ' '))}
               />
             </div>
             <div className="w-full flex lg:flex-row flex-col items-center justify-between gap-y-5 gap-x-10">
@@ -134,7 +139,7 @@ const PersonaTypeModal = ({ onNext, personaData }) => {
                   )
                 }
                 title={"Persona by Experience"}
-                type={Experience[0]}
+                type={capitalize(Experience[0]?.replace(/_/g, ' '))}
               />
               <PersonaCard
               disabled={!Experience[0]}
@@ -144,7 +149,7 @@ const PersonaTypeModal = ({ onNext, personaData }) => {
                   dispatch(IdealPersonaValue({ open: true, type: "geography" }))
                 }
                 title={"Persona by Geography"}
-                type={Geography[0]}
+                type={capitalize(Geography[0]?.replace(/_/g, ' '))}
               />
             </div>
             <div className="w-full flex lg:flex-row flex-col items-center justify-between gap-y-5 gap-x-10">
@@ -161,7 +166,7 @@ const PersonaTypeModal = ({ onNext, personaData }) => {
                   )
                 }
                 title={"Persona by Manufacture"}
-                type={Manufacture[0]}
+                type={capitalize(Manufacture[0]?.replace(/_/g, ' '))}
               />
               <PersonaCard
               disabled={!Manufacture[0]}
@@ -176,7 +181,7 @@ const PersonaTypeModal = ({ onNext, personaData }) => {
                   )
                 }
                 title={"Persona by Plant size"}
-                type={Plant_size_impact[0]}
+                type={capitalize(Plant_size_impact[0]?.replace(/_/g, ' '))}
               />
             </div>
           </div>

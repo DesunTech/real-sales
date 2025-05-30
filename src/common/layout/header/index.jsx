@@ -11,9 +11,10 @@ import DemoMeeting from "../../modals/DemoMeeting";
 import { useDispatch, useSelector } from "react-redux";
 import { DemoMeetingValue } from "../../../redux/OpenModal";
 import TryRealsales from "../../modals/TryRealsales";
-import LogoutIcon from '@mui/icons-material/Logout';
+import LogoutIcon from "@mui/icons-material/Logout";
 import { useLogout } from "../../../hooks/useLogout";
 import { AddAuth } from "../../../redux/AuthReducer";
+import { ClickAwayListener } from "@mui/material";
 
 const Header = (props) => {
   const router = useRouter();
@@ -26,8 +27,6 @@ const Header = (props) => {
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
   };
-
-
 
   return (
     <header className="main-header sticky top-0 z-50 bg-[#060606] h-[60px] flex items-center justify-center">
@@ -49,8 +48,9 @@ const Header = (props) => {
               <div>
                 <Link
                   href="/"
-                  className={`text-white leading-1 hover:underline ${router?.pathname === "/" ? `underline` : ``
-                    }`}
+                  className={`text-white leading-1 hover:underline ${
+                    router?.pathname === "/" ? `underline` : ``
+                  }`}
                 >
                   Home
                 </Link>
@@ -58,24 +58,29 @@ const Header = (props) => {
               <div>
                 <Link
                   href="/about"
-                  className={`text-white leading-1 hover:underline ${router?.pathname === "/about" ? `underline` : ``
-                    }`}
+                  className={`text-white leading-1 hover:underline ${
+                    router?.pathname === "/about" ? `underline` : ``
+                  }`}
                 >
                   About
                 </Link>
               </div>
               <div className="relative">
-                <Link
-                  href="#"
-                  onClick={() => setOpenIndustry(!openIndustry)}
-                  className={`text-white leading-1`}
-                >
-                  Industries&nbsp;
-                  <ArrowDropDownOutlinedIcon
-                    className={`${openIndustry ? `rotate-0` : `rotate-180`
+                <ClickAwayListener onClickAway={() => setOpenIndustry(false)}>
+                  <Link
+                    href="#"
+                    onClick={() => setOpenIndustry(!openIndustry)}
+                    className={`text-white leading-1`}
+                  >
+                    Industries&nbsp;
+                    <ArrowDropDownOutlinedIcon
+                      className={`${
+                        openIndustry ? `rotate-0` : `rotate-180`
                       } transform duration-300`}
-                  />
-                </Link>
+                    />
+                  </Link>
+                </ClickAwayListener>
+
                 {openIndustry ? (
                   <Link
                     href={`#`}
@@ -103,8 +108,9 @@ const Header = (props) => {
               <div>
                 <Link
                   href="/faq"
-                  className={`text-white leading-1 hover:underline ${router?.pathname === "/faq" ? `underline` : ``
-                    }`}
+                  className={`text-white leading-1 hover:underline ${
+                    router?.pathname === "/faq" ? `underline` : ``
+                  }`}
                 >
                   FAQ
                 </Link>
@@ -115,10 +121,14 @@ const Header = (props) => {
           <div className="header-btn hidden md:flex items-center space-x-4">
             {token !== "" && (
               <div
-                onClick={() => { useLogout(); dispatch(AddAuth("")); }}
+                onClick={() => {
+                  useLogout();
+                  dispatch(AddAuth(""));
+                }}
                 className="border border-solid border-white rounded p-0.5 px-4 cursor-pointer text-white"
               >
-                <LogoutIcon className="text-white" />&nbsp;Logout
+                <LogoutIcon className="text-white" />
+                &nbsp;Logout
               </div>
             )}
             <BookAdemo
@@ -129,7 +139,10 @@ const Header = (props) => {
           </div>
 
           {/* Mobile Menu Toggle */}
-          <div className="mobile-toggle md:hidden cursor-pointer" onClick={toggleMobileMenu}>
+          <div
+            className="mobile-toggle md:hidden cursor-pointer"
+            onClick={toggleMobileMenu}
+          >
             <span className="menu-bar block w-6 h-0.5 bg-white my-1"></span>
             <span className="menu-bar block w-6 h-0.5 bg-white my-1"></span>
             <span className="menu-bar block w-6 h-0.5 bg-white my-1"></span>
@@ -176,10 +189,14 @@ const Header = (props) => {
                 <li className="py-4 flex flex-col gap-4">
                   {token !== "" && (
                     <div
-                      onClick={() => { useLogout(); dispatch(AddAuth("")); }}
+                      onClick={() => {
+                        useLogout();
+                        dispatch(AddAuth(""));
+                      }}
                       className="border border-solid border-white rounded p-0.5 px-4 cursor-pointer text-white"
                     >
-                      <LogoutIcon className="text-white" />&nbsp;Logout
+                      <LogoutIcon className="text-white" />
+                      &nbsp;Logout
                     </div>
                   )}
                   <BookAdemo

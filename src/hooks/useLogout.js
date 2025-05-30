@@ -26,6 +26,7 @@ export const useLogout = () => {
       localStorage.removeItem("user")
       localStorage.removeItem("session_id")
       localStorage.removeItem("persona_id")
+      localStorage.removeItem("persona_data")
       return data;
     } else {
       return null;

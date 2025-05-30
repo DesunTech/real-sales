@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined";
 import PersonaTypeModal from "../../common/modals/PersonaTypeModal";
 import InteractionModal from "../../common/modals/InteractionModal";
@@ -17,6 +17,9 @@ import {
 const MeetPerfectPersona = () => {
   const router = useRouter();
   const dispatch = useDispatch();
+
+  const token = useSelector((state) => state.auth.auth);
+
   const [session_id, setSession_id] = useState("");
   const [persona_id, setPersona_id] = useState("");
   const [user_id, setUser_id] = useState("");
@@ -52,21 +55,24 @@ const MeetPerfectPersona = () => {
       <div className="w-full flex flex-col items-start gap-2">
         <h2
           onClick={() => {
-            if (user_id !== "") {
-              dispatch(PersonaTypeValue(true));
-            } else if (persona_id !== "") {
-              dispatch(
-                InteractionValue({
-                  open: true,
-                  fromData: {
-                    user_id: user_id,
-                    persona_id: persona_id,
-                  },
-                })
-              );
-            } else if (persona_id !== "" && session_id !== "") {
-              dispatch(ShortlistedPersonaValue(true));
-            } else {
+            if (token !== "") {
+              // dispatch(PersonaTypeValue(true));
+              dispatch(InteractionValue({ open: true, fromData: "" }))
+            } 
+            // else if (persona_id !== "") {
+            //   dispatch(
+            //     InteractionValue({
+            //       open: true,
+            //       fromData: {
+            //         user_id: user_id,
+            //         persona_id: persona_id,
+            //       },
+            //     })
+            //   );
+            // } else if (persona_id !== "" && session_id !== "") {
+            //   dispatch(ShortlistedPersonaValue(true));
+            // } 
+            else {
               dispatch(TryRealsalesValue(true));
             }
           }}
