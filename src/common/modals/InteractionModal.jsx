@@ -192,7 +192,7 @@ const InteractionModal = ({ onNext }) => {
           <CommonButton
             className={`!mt-8 !border-[2px] !border-[#060606] !text-[#060606] !font-[500] !px-6 !py-1] !text-[16px] !capitalize flex !items-center gap-2 w-fit h-fit`}
             icon={<ArrowRight stroke={`#060606`} width={19} height={13} />}
-            disabled={choosePersona === "" ? true : false}
+            disabled={!interactionModesData?.mode_id ? true : false}
             onClick={() =>
               choosePersona === ""
                 ? undefined

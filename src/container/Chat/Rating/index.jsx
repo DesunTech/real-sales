@@ -13,6 +13,8 @@ import ArrowRight from "../../../../public/assets/icons/arrowRight";
 import cil_audio from "../../../../public/assets/icons/cil_audio.svg";
 import pdfIcon from "../../../../public/assets/icons/pdfIcon.svg";
 import { useRouter } from "next/router";
+import { apis } from "../../../utils/apis";
+import { useApi } from "../../../hooks/useApi";
 
 const RatingContainer = () => {
   const [rating, setRating] = useState(3.5);

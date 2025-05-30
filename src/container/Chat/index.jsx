@@ -36,7 +36,6 @@ import Link from "next/link";
 import { apis } from "../../utils/apis";
 import { useApi } from "../../hooks/useApi";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
-import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 
 const Chat = ({ slug, children }) => {
   const { Post } = useApi();
@@ -44,7 +43,7 @@ const Chat = ({ slug, children }) => {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  const [checked, setChecked] = useState(false);
+  const [checked, setChecked] = useState(true);
   const [openAnswer, setOpenAnswer] = useState(0);
   const [micUser, setMicUser] = useState(true);
   const [micAi, setMicAi] = useState(true);
@@ -53,6 +52,7 @@ const Chat = ({ slug, children }) => {
   const [transcript, setTranscript] = useState("");
   const [transcriptDummy, setTranscriptDummy] = useState("");
   const [chatMessages, setChatMessages] = useState([]);
+  const [chatMessagesView, setChatMessagesView] = useState([]);
   const [triggerSenChat, setTriggerSenChat] = useState(false);
   const [resChat, setResChat] = useState([]);
   const [session_id, setSession_id] = useState("");
@@ -64,7 +64,6 @@ const Chat = ({ slug, children }) => {
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isAutoMode, setIsAutoMode] = useState(false);
   const [personaData, setPersonaData] = useState({});
-  const [startConversion, setStartConversion] = useState(true);
   const audioRef = useRef(null);
 
   useEffect(() => {
@@ -117,6 +116,17 @@ const Chat = ({ slug, children }) => {
                 timestamp: new Date().toISOString(),
               },
             ]);
+
+            if (event.results[current].isFinal) {
+              setChatMessagesView((prev) => [
+                ...prev,
+                {
+                  text: transcript,
+                  isUser: true,
+                  timestamp: new Date().toISOString(),
+                },
+              ]);
+            }
             setTranscript("");
             // setTranscriptDummy("");
           }
@@ -179,9 +189,9 @@ const Chat = ({ slug, children }) => {
       silenceCheckInterval = setInterval(() => {
         if (
           lastSpeechTimeRef.current &&
-          Date.now() - lastSpeechTimeRef.current >= 3000
+          Date.now() - lastSpeechTimeRef.current >= 4000
         ) {
-          // If no speech detected for 3 seconds
+          // If no speech detected for 6 seconds
           isSilenceTimeoutRef.current = true;
           if (recognitionRef.current) {
             try {
@@ -195,7 +205,7 @@ const Chat = ({ slug, children }) => {
 
           lastSpeechTimeRef.current = null;
         }
-      }, 1000); // Check every second
+      }, 4000); // Check every second
     }
 
     return () => {
@@ -220,6 +230,7 @@ const Chat = ({ slug, children }) => {
           setIsMicClicked(false);
           setTranscript("");
           setTranscriptDummy("");
+          setChatMessages([]);
         }
       } catch (error) {
         console.error("Error toggling speech recognition:", error);
@@ -338,20 +349,29 @@ const Chat = ({ slug, children }) => {
       if (timeoutId) clearTimeout(timeoutId);
     };
   }, [resChat, isVolClicked]);
+  console.log(chatMessages, "chatMessages__");
 
   const senChat = async () => {
     const persona_id = localStorage.getItem("persona_id");
+    let oneLineText = "";
     console.log(session_id, persona_id, "session_id_persona_id");
+    // console.log(chatMessages, "chatMessages__");
+    if (chatMessages?.length) {
+      let textData = chatMessages.map((v) => v?.text);
+      if (textData?.length) {
+        oneLineText = textData.join(" ");
+      }
+    }
 
     try {
       let data = await Post(`${chat_chat}/${session_id}`, {
-        user_input: transcriptDummy,
-        industry: personaData?.industry,
-        manufacturing_model: personaData?.manufacturing_model,
-        experience_level: personaData?.experience_level,
-        role: personaData?.role,
-        geography: personaData?.geography,
-        plant_size_impact: personaData?.plant_size_impact,
+        user_input: oneLineText,
+        // industry: personaData?.industry,
+        // manufacturing_model: personaData?.manufacturing_model,
+        // experience_level: personaData?.experience_level,
+        // role: personaData?.role,
+        // geography: personaData?.geography,
+        // plant_size_impact: personaData?.plant_size_impact,
       });
 
       if (data?.response) {
@@ -359,6 +379,7 @@ const Chat = ({ slug, children }) => {
         setTranscriptDummy("");
         setTriggerSenChat(false);
         setIsVolClicked(true);
+        setChatMessages([]);
 
         // Add the response to chat messages
         const newResponse = { response: data.response };
@@ -399,6 +420,7 @@ const Chat = ({ slug, children }) => {
   const clearTranscript = () => {
     setTranscript("");
     setTranscriptDummy("");
+    setChatMessages([]);
   };
 
   const CustomTooltip = styled(({ className, ...props }) => (
@@ -450,9 +472,12 @@ const Chat = ({ slug, children }) => {
               <div className="w-[40%]">
                 <div
                   onClick={() => {
-                    slug === "rating"
-                      ? router.push("/")
-                      : dispatch(EndChatValue({ open: true, type: "audio" }));
+                    if (slug === "rating") {
+                      router.push("/");
+                      localStorage.removeItem("session_id");
+                    } else {
+                      dispatch(EndChatValue({ open: true, type: "audio" }));
+                    }
                   }}
                   className="w-10 h-10 bg-[#FFFFFF1A] rounded-full flex items-center justify-center cursor-pointer"
                 >
@@ -512,7 +537,9 @@ const Chat = ({ slug, children }) => {
           ) : slug === "audio" || slug === "video" ? (
             <div className="flex flex-row gap-2">
               {/* left */}
-              <div className="relative w-[70%] h-[calc(100vh_-_8rem)] flex flex-col justify-between gap-4">
+              <div
+                className={`relative w-[70%] h-[calc(100vh_-_8rem)] flex flex-col justify-between gap-4`}
+              >
                 {/* top */}
                 <div className="w-full flex flex-row items-start gap-2">
                   {/* top right */}
@@ -631,34 +658,25 @@ const Chat = ({ slug, children }) => {
                       {slug === "audio" ? (
                         <div className="absolute inset-0 p-5 w-full h-full flex flex-col items-center">
                           {/* ai mic */}
-                          <div className="relative w-[90%] flex items-start gap-1.5 z-10">
-                            {startConversion ?
-                              <div className="absolute bg-[#26AD35] text-white text-[12px] sora-senibold left-[3rem] px-2 py-0.5">
-                                Start Conversion
-                                <div className="relative">
-                                  <div className="absolute -left-[22px] -top-5">
-                                    <ArrowLeftIcon className="text-[#26AD35]"/>
-                                  </div>
-                                </div>
-                              </div>
-                              : null}
+                          <div className="w-[90%] flex items-start gap-1.5 z-10">
                             <div className="flex items-center gap-1.5 -mt-2">
                               <button
-                                className={`w-10 h-10 ${isMicClicked
-                                  ? "bg-[#26AD35] hover:bg-[#26AD35]"
-                                  : "bg-[#FFFFFF1A] hover:bg-[#FFFFFF33]"
-                                  } rounded-full flex items-center justify-center cursor-pointer transition-colors`}
+                                className={`w-10 h-10 ${
+                                  isMicClicked
+                                    ? "bg-[#26AD35] hover:bg-[#26AD35]"
+                                    : "bg-[#FFFFFF1A] hover:bg-[#FFFFFF33]"
+                                } rounded-full flex items-center justify-center cursor-pointer transition-colors`}
                                 onClick={() => {
                                   toggleSpeechRecognition();
                                   setIsVolClicked(false);
-                                  setStartConversion(false)
                                 }}
                               >
                                 <MicNoneOutlinedIcon
-                                  className={`${isMicClicked
-                                    ? "text-white"
-                                    : "text-[#FFFFFF80]"
-                                    } !text-[20px]`}
+                                  className={`${
+                                    isMicClicked
+                                      ? "text-white"
+                                      : "text-[#FFFFFF80]"
+                                  } !text-[20px]`}
                                 />
                               </button>
                               <Image
@@ -671,7 +689,7 @@ const Chat = ({ slug, children }) => {
                               ref={containerRef}
                               className="flex flex-col items-start gap-1 w-[80%] h-[20vh] overflow-y-auto"
                             >
-                              {chatMessages.map((message, index) => (
+                              {chatMessagesView.map((message, index) => (
                                 <p
                                   key={index}
                                   className="text-white text-[14px] sora-regular w-[80%] opacity-70"
@@ -712,9 +730,10 @@ const Chat = ({ slug, children }) => {
                           <div className="w-[90%] flex items-start gap-1.5 z-10">
                             <button
                               className={`w-10 h-10 flex-s 
-                                ${isVolClicked
-                                  ? "bg-[#26AD35] hover:bg-[#26AD35]"
-                                  : "bg-[#FFFFFF1A] hover:bg-[#FFFFFF33]"
+                                ${
+                                  isVolClicked
+                                    ? "bg-[#26AD35] hover:bg-[#26AD35]"
+                                    : "bg-[#FFFFFF1A] hover:bg-[#FFFFFF33]"
                                 }
                               rounded-full flex items-center justify-center cursor-pointer transition-colors`}
                               onClick={() => {
@@ -727,10 +746,11 @@ const Chat = ({ slug, children }) => {
                               }}
                             >
                               <VolumeUpIcon
-                                className={`${isVolClicked
-                                  ? "text-white"
-                                  : "text-[#FFFFFF80]"
-                                  } !text-[20px]`}
+                                className={`${
+                                  isVolClicked
+                                    ? "text-white"
+                                    : "text-[#FFFFFF80]"
+                                } !text-[20px]`}
                               />
                             </button>
                             <Image
@@ -748,16 +768,16 @@ const Chat = ({ slug, children }) => {
                               &nbsp;how are you !! */}
                               {resChat?.length
                                 ? resChat.map((v, i) => (
-                                  <p
-                                    key={i}
-                                    className="pr-4 text-white text-base sora-regular"
-                                  >
-                                    <span className="text-[#FFDE5A] sora-semibold">
-                                      AI Client
-                                    </span>
-                                    &nbsp;{v?.response}
-                                  </p>
-                                ))
+                                    <p
+                                      key={i}
+                                      className="pr-4 text-white text-base sora-regular"
+                                    >
+                                      <span className="text-[#FFDE5A] sora-semibold">
+                                        AI Client
+                                      </span>
+                                      &nbsp;{v?.response}
+                                    </p>
+                                  ))
                                 : null}
                             </div>
                           </div>
@@ -903,13 +923,15 @@ const Chat = ({ slug, children }) => {
                       </div>
                     </div>
                     <div
-                      className={`w-10 h-10 ${isAutoMode ? "bg-[#26AD35]" : "bg-[#FFFFFF1A]"
-                        } rounded-full flex items-center justify-center cursor-pointer`}
+                      className={`w-10 h-10 ${
+                        isAutoMode ? "bg-[#26AD35]" : "bg-[#FFFFFF1A]"
+                      } rounded-full flex items-center justify-center cursor-pointer`}
                       onClick={toggleAutoMode}
                     >
                       <MicNoneOutlinedIcon
-                        className={`${isAutoMode ? "text-white" : "text-[#FFFFFF80]"
-                          } !text-[20px]`}
+                        className={`${
+                          isAutoMode ? "text-white" : "text-[#FFFFFF80]"
+                        } !text-[20px]`}
                       />
                     </div>
                     <div className="w-14 h-14 rounded-full p-1 border-2 border-solid border-white overflow-hidden">
@@ -961,163 +983,173 @@ const Chat = ({ slug, children }) => {
                     onChange={(e) => setChecked(e.target.checked)}
                   />
                 </div>
-                <div className="flex flex-col gap-2 mt-4">
-                  {/* card top */}
-                  <div className="border border-solid border-[#14558C4D] bg-[linear-gradient(90deg,rgba(20,85,140,0.3)_0%,rgba(20,85,140,0)_50%,rgba(20,85,140,0.3)_100%)] relative">
-                    <div className="flex flex-col gap-2 p-4">
-                      <div className="relative flex items-center justify-start">
-                        <div className="w-10 h-10 bg-[#14558C] rounded-full" />
-                        <p class="absolute left-1 rounded-[5px] bg-[linear-gradient(90deg,#14558C_0%,#5586B0_100%)] w-fit sora-regular text-sm text-white px-3 py-1 capitalize">
-                          Response Tips
-                        </p>
-                      </div>
-                      <div className="w-full flex items-start gap-2">
-                        <div className="w-16 hg-16 p-1 border border-solid border-white rounded-full">
-                          <Image
-                            src={personaExtra}
-                            alt="personaExtra"
-                            className="w-full h-full rounded-full"
-                          />
-                        </div>
-                        <div className="flex flex-col">
-                          <h1 className="text-white text-[20px] m-plus-rounded-1c-regular">
-                            Understand the Context
-                          </h1>
-                          <p className="text-white text-[14px] m-plus-rounded-1c-light w-[80%]">
-                            Lorem Ipsum is the simply dummy text of t ...
+                {checked ? (
+                  <div className="flex flex-col gap-2 mt-4">
+                    {/* card top */}
+                    <div className="border border-solid border-[#14558C4D] bg-[linear-gradient(90deg,rgba(20,85,140,0.3)_0%,rgba(20,85,140,0)_50%,rgba(20,85,140,0.3)_100%)] relative">
+                      <div className="flex flex-col gap-2 p-4">
+                        <div className="relative flex items-center justify-start">
+                          <div className="w-10 h-10 bg-[#14558C] rounded-full" />
+                          <p class="absolute left-1 rounded-[5px] bg-[linear-gradient(90deg,#14558C_0%,#5586B0_100%)] w-fit sora-regular text-sm text-white px-3 py-1 capitalize">
+                            Response Tips
                           </p>
                         </div>
-                      </div>
-                      <div className="w-full flex items-center justify-end gap-2">
-                        <div class="bg-[linear-gradient(90deg,#26AD35_0%,#0C7618_100%)] flex items-center gap-1 px-2 pt-0.5 pb-1 rounded-full w-fit">
-                          <p className="text-white text-[12px]">Check</p>
-                          <CheckCircleOutlineOutlinedIcon className="text-white !text-[17px]" />
+                        <div className="w-full flex items-start gap-2">
+                          <div className="w-16 hg-16 p-1 border border-solid border-white rounded-full">
+                            <Image
+                              src={personaExtra}
+                              alt="personaExtra"
+                              className="w-full h-full rounded-full"
+                            />
+                          </div>
+                          <div className="flex flex-col">
+                            <h1 className="text-white text-[20px] m-plus-rounded-1c-regular">
+                              Understand the Context
+                            </h1>
+                            <p className="text-white text-[14px] m-plus-rounded-1c-light w-[80%]">
+                              Lorem Ipsum is the simply dummy text of t ...
+                            </p>
+                          </div>
                         </div>
-                        <div class="bg-[linear-gradient(90deg,#CF2427_0%,#ED3B3E_100%)] flex items-center gap-1 px-2 pt-0.5 pb-1 rounded-full w-fit">
-                          <p className="text-white text-[12px]">Ignore</p>
-                          <CheckCircleOutlineOutlinedIcon className="text-white !text-[17px]" />
+                        <div className="w-full flex items-center justify-end gap-2">
+                          <div class="bg-[linear-gradient(90deg,#26AD35_0%,#0C7618_100%)] flex items-center gap-1 px-2 pt-0.5 pb-1 rounded-full w-fit">
+                            <p className="text-white text-[12px]">Check</p>
+                            <CheckCircleOutlineOutlinedIcon className="text-white !text-[17px]" />
+                          </div>
+                          <div class="bg-[linear-gradient(90deg,#CF2427_0%,#ED3B3E_100%)] flex items-center gap-1 px-2 pt-0.5 pb-1 rounded-full w-fit">
+                            <p className="text-white text-[12px]">Ignore</p>
+                            <CheckCircleOutlineOutlinedIcon className="text-white !text-[17px]" />
+                          </div>
                         </div>
                       </div>
+                      <p class="absolute right-0 top-4 bg-[linear-gradient(90deg,rgba(38,173,53,0.8)_0%,rgba(38,173,53,0)_100%)] w-fit sora-regular text-[12px] text-white px-2.5 py-1 capitalize">
+                        Acknowledged
+                      </p>
                     </div>
-                    <p class="absolute right-0 top-4 bg-[linear-gradient(90deg,rgba(38,173,53,0.8)_0%,rgba(38,173,53,0)_100%)] w-fit sora-regular text-[12px] text-white px-2.5 py-1 capitalize">
-                      Acknowledged
-                    </p>
-                  </div>
-                  {/* card stack */}
-                  <div className="relative">
-                    <div className="flex flex-col gap-2 h-[45vh] overflow-y-auto">
-                      {coachingArr?.map((v, idx) => (
-                        <div
-                          className={`border-l-4 border-solid relative ${idx % 2 === 0
-                            ? "border-[#26AD35B2] bg-[linear-gradient(90deg,rgba(38,173,53,0.2)_0%,rgba(38,173,53,0)_63.5%)]"
-                            : "border-[#E59E2CB2] bg-[linear-gradient(90deg,rgba(229,158,44,0.2)_0%,rgba(229,158,44,0)_63.5%)]"
+                    {/* card stack */}
+                    <div className="relative">
+                      <div className="flex flex-col gap-2 h-[45vh] overflow-y-auto">
+                        {coachingArr?.map((v, idx) => (
+                          <div
+                            className={`border-l-4 border-solid relative ${
+                              idx % 2 === 0
+                                ? "border-[#26AD35B2] bg-[linear-gradient(90deg,rgba(38,173,53,0.2)_0%,rgba(38,173,53,0)_63.5%)]"
+                                : "border-[#E59E2CB2] bg-[linear-gradient(90deg,rgba(229,158,44,0.2)_0%,rgba(229,158,44,0)_63.5%)]"
                             }`}
-                        >
-                          <div className="flex flex-col gap-2 p-4">
-                            <div className="relative flex items-center justify-start">
-                              <div
-                                className={`w-10 h-10 ${idx % 2 === 0
-                                  ? "bg-[#26AD35]"
-                                  : "bg-[#E59E2C]"
+                          >
+                            <div className="flex flex-col gap-2 p-4">
+                              <div className="relative flex items-center justify-start">
+                                <div
+                                  className={`w-10 h-10 ${
+                                    idx % 2 === 0
+                                      ? "bg-[#26AD35]"
+                                      : "bg-[#E59E2C]"
                                   } rounded-full`}
-                              />
-                              <p
-                                class={`absolute left-1 rounded-[5px] ${idx % 2 === 0
-                                  ? "bg-[linear-gradient(90deg,#26AD35_0%,#077A15_100%)]"
-                                  : "bg-[linear-gradient(90deg,#E59E2C_0%,#A36B12_100%)]"
-                                  } w-fit sora-regular text-sm text-white px-3 py-1 capitalize`}
-                              >
-                                Response Tips
-                              </p>
-                            </div>
-                            <div className="w-full flex items-start gap-2">
-                              <div className="w-16 hg-16 p-1 border border-solid border-white rounded-full">
-                                <Image
-                                  src={personaExtra}
-                                  alt="personaExtra"
-                                  className="w-full h-full rounded-full"
                                 />
-                              </div>
-                              <div className="flex flex-col">
-                                <h1 className="text-white text-[20px] m-plus-rounded-1c-regular">
-                                  Understand the Context
-                                </h1>
-                                <p className="text-white text-[14px] m-plus-rounded-1c-light w-[80%]">
-                                  Lorem Ipsum is the simply dummy text of t ...
+                                <p
+                                  class={`absolute left-1 rounded-[5px] ${
+                                    idx % 2 === 0
+                                      ? "bg-[linear-gradient(90deg,#26AD35_0%,#077A15_100%)]"
+                                      : "bg-[linear-gradient(90deg,#E59E2C_0%,#A36B12_100%)]"
+                                  } w-fit sora-regular text-sm text-white px-3 py-1 capitalize`}
+                                >
+                                  Response Tips
                                 </p>
                               </div>
-                            </div>
-                            <div className="w-full flex items-center justify-end gap-2">
-                              <div class="bg-[linear-gradient(90deg,#26AD35_0%,#0C7618_100%)] flex items-center gap-1 px-2 pt-0.5 pb-1 rounded-full w-fit">
-                                <p className="text-white text-[12px]">Check</p>
-                                <CheckCircleOutlineOutlinedIcon className="text-white !text-[17px]" />
+                              <div className="w-full flex items-start gap-2">
+                                <div className="w-16 hg-16 p-1 border border-solid border-white rounded-full">
+                                  <Image
+                                    src={personaExtra}
+                                    alt="personaExtra"
+                                    className="w-full h-full rounded-full"
+                                  />
+                                </div>
+                                <div className="flex flex-col">
+                                  <h1 className="text-white text-[20px] m-plus-rounded-1c-regular">
+                                    Understand the Context
+                                  </h1>
+                                  <p className="text-white text-[14px] m-plus-rounded-1c-light w-[80%]">
+                                    Lorem Ipsum is the simply dummy text of t
+                                    ...
+                                  </p>
+                                </div>
                               </div>
-                              <div class="bg-[linear-gradient(90deg,#CF2427_0%,#ED3B3E_100%)] flex items-center gap-1 px-2 pt-0.5 pb-1 rounded-full w-fit">
-                                <p className="text-white text-[12px]">Ignore</p>
-                                <CheckCircleOutlineOutlinedIcon className="text-white !text-[17px]" />
+                              <div className="w-full flex items-center justify-end gap-2">
+                                <div class="bg-[linear-gradient(90deg,#26AD35_0%,#0C7618_100%)] flex items-center gap-1 px-2 pt-0.5 pb-1 rounded-full w-fit">
+                                  <p className="text-white text-[12px]">
+                                    Check
+                                  </p>
+                                  <CheckCircleOutlineOutlinedIcon className="text-white !text-[17px]" />
+                                </div>
+                                <div class="bg-[linear-gradient(90deg,#CF2427_0%,#ED3B3E_100%)] flex items-center gap-1 px-2 pt-0.5 pb-1 rounded-full w-fit">
+                                  <p className="text-white text-[12px]">
+                                    Ignore
+                                  </p>
+                                  <CheckCircleOutlineOutlinedIcon className="text-white !text-[17px]" />
+                                </div>
                               </div>
                             </div>
+                            <p class="absolute right-0 top-4 bg-[linear-gradient(90deg,rgba(207,36,39,0.8)_0%,rgba(207,36,39,0)_100%)] w-fit sora-regular text-[12px] text-white px-2.5 py-1 capitalize">
+                              Acknowledged
+                            </p>
                           </div>
-                          <p class="absolute right-0 top-4 bg-[linear-gradient(90deg,rgba(207,36,39,0.8)_0%,rgba(207,36,39,0)_100%)] w-fit sora-regular text-[12px] text-white px-2.5 py-1 capitalize">
-                            Acknowledged
-                          </p>
+                        ))}
+                        <div class="z-10 absolute bottom-0 bg-[linear-gradient(0deg,#262D3E_0%,rgba(38,45,62,0)_100%)] w-[calc(100%_-_8px)] h-[20vh]"></div>
+                      </div>
+                    </div>
+
+                    <FormControlLabel
+                      defaultChecked
+                      value="end"
+                      control={
+                        <Radio
+                          checked={true}
+                          sx={{
+                            cursor: "default",
+                            color: "#FFDE5A",
+                            "&.Mui-checked": {
+                              color: "#FFDE5A", // checked color
+                            },
+                          }}
+                        />
+                      }
+                      label={
+                        <p className="sora-semilight text-sm">
+                          RealSales Coaching Panel:
+                        </p>
+                      }
+                      sx={{
+                        cursor: "default",
+                        color: "#FFFFFF", // label text color
+                      }}
+                    />
+                    <div className="flex flex-col gap-2 h-[40vh] overflow-y-auto">
+                      {qnaArr?.map((v, i) => (
+                        <div key={i} className="w-full flex flex-col gap-1">
+                          <div
+                            className="bg-[#FFDE5AE5] border-2 border-solid border-[#7d7349] rounded-[5px] p-2 flex items-start gap-1 cursor-pointer"
+                            onClick={() => {
+                              setOpenAnswer(i);
+                            }}
+                          >
+                            <Image src={ideaIcon} alt="ideaIcon" className="" />
+                            <p className="sora-light text-[#060606] text-[15px] mt-1">
+                              {v?.question}
+                            </p>
+                          </div>
+                          {openAnswer === i ? (
+                            <p
+                              className="bg-[#00000000] border-2 border-solid border-[#7d7349] rounded-[5px] py-2 px-3 flex items-start gap-1 m-plus-rounded-1c-regular text-white text-[14px]"
+                              onClick={() => {}}
+                            >
+                              {v?.answer}
+                            </p>
+                          ) : null}
                         </div>
                       ))}
-                      <div class="z-10 absolute bottom-0 bg-[linear-gradient(0deg,#262D3E_0%,rgba(38,45,62,0)_100%)] w-[calc(100%_-_8px)] h-[20vh]"></div>
                     </div>
                   </div>
-
-                  <FormControlLabel
-                    defaultChecked
-                    value="end"
-                    control={
-                      <Radio
-                        checked={true}
-                        sx={{
-                          cursor: "default",
-                          color: "#FFDE5A",
-                          "&.Mui-checked": {
-                            color: "#FFDE5A", // checked color
-                          },
-                        }}
-                      />
-                    }
-                    label={
-                      <p className="sora-semilight text-sm">
-                        RealSales Coaching Panel:
-                      </p>
-                    }
-                    sx={{
-                      cursor: "default",
-                      color: "#FFFFFF", // label text color
-                    }}
-                  />
-                  <div className="flex flex-col gap-2 h-[40vh] overflow-y-auto">
-                    {qnaArr?.map((v, i) => (
-                      <div key={i} className="w-full flex flex-col gap-1">
-                        <div
-                          className="bg-[#FFDE5AE5] border-2 border-solid border-[#7d7349] rounded-[5px] p-2 flex items-start gap-1 cursor-pointer"
-                          onClick={() => {
-                            setOpenAnswer(i);
-                          }}
-                        >
-                          <Image src={ideaIcon} alt="ideaIcon" className="" />
-                          <p className="sora-light text-[#060606] text-[15px] mt-1">
-                            {v?.question}
-                          </p>
-                        </div>
-                        {openAnswer === i ? (
-                          <p
-                            className="bg-[#00000000] border-2 border-solid border-[#7d7349] rounded-[5px] py-2 px-3 flex items-start gap-1 m-plus-rounded-1c-regular text-white text-[14px]"
-                            onClick={() => { }}
-                          >
-                            {v?.answer}
-                          </p>
-                        ) : null}
-                      </div>
-                    ))}
-                  </div>
-                </div>
+                ) : null}
               </div>
             </div>
           ) : null}
