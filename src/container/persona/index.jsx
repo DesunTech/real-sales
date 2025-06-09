@@ -67,6 +67,8 @@ const Persona = () => {
       }
     } catch (error) {
       console.log(error, "__error__");
+    } finally {
+      setLoading(false);
     }
   };
 
