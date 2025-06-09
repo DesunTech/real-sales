@@ -85,9 +85,16 @@ const Index = () => {
             session_id: sessionId,
           });
           if (createData?.coaching_summary) {
+            const getReportData1 = await Get(
+              `${performance_reports}${sessionId}`
+            );
+            if (getReportData1?.coaching_summary) {
+              setReportData(getReportData1);
+            }
             const getPdfData1 = await Get(
               `${performance_reports}${sessionId}/pdf`
             );
+            setReportData(getPdfData1);
             if (getPdfData1) {
               setPdf(getPdfData1);
             }
