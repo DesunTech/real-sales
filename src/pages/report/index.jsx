@@ -37,7 +37,7 @@ function formatSummary(summary) {
 const Index = () => {
   const router = useRouter();
 
-  const { Get } = useApi();
+  const { Get, Post } = useApi();
   const { performance_reports } = apis;
   const [pdf, setPdf] = useState();
   const [reportData, setReportData] = useState({});
@@ -77,29 +77,40 @@ const Index = () => {
       sessionId = localStorage.getItem("session_id");
     }
 
-    const getPdf = async () => {
+    console.log(sessionId, "sessionId");
+    const getReport = async () => {
       if (sessionId) {
         try {
-          const getPdfData = await Get(
-            `${performance_reports}${sessionId}/pdf`
-          );
-          if (getPdfData) {
-            const pdfBlob =
-              getPdfData instanceof Blob
-                ? getPdfData
-                : new Blob([getPdfData], { type: "application/pdf" });
-            setPdf(pdfBlob);
-          }
-          const getReportData = await Get(`${performance_reports}${sessionId}`);
-          if (getReportData?.coaching_summary) {
-            setReportData(getReportData);
+          let createData = await Post(performance_reports, {
+            session_id: sessionId,
+          });
+          if (createData?.coaching_summary) {
+            const getPdfData1 = await Get(
+              `${performance_reports}${sessionId}/pdf`
+            );
+            if (getPdfData1) {
+              setPdf(getPdfData1);
+            }
+          } else {
+            const getReportData = await Get(
+              `${performance_reports}${sessionId}`
+            );
+            if (getReportData?.coaching_summary) {
+              setReportData(getReportData);
+              const getPdfData2 = await Get(
+                `${performance_reports}${sessionId}/pdf`
+              );
+              if (getPdfData2) {
+                setPdf(getPdfData2);
+              }
+            }
           }
         } catch (error) {
-          console.error("Error fetching data:", error);
+          console.log(error, "error");
         }
       }
     };
-    getPdf();
+    getReport();
   }, []);
 
   const downLoadPdf = () => {
