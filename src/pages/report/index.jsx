@@ -94,7 +94,6 @@ const Index = () => {
             const getPdfData1 = await Get(
               `${performance_reports}${sessionId}/pdf`
             );
-            setReportData(getPdfData1);
             if (getPdfData1) {
               setPdf(getPdfData1);
             }
