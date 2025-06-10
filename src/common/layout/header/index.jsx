@@ -122,7 +122,7 @@ const Header = (props) => {
             {token !== "" && (
               <div
                 onClick={() => {
-                  useLogout();
+                  useLogout({ final: router.push("/") });
                   dispatch(AddAuth(""));
                 }}
                 className="border border-solid border-white rounded p-0.5 px-4 cursor-pointer text-white"
@@ -190,7 +190,7 @@ const Header = (props) => {
                   {token !== "" && (
                     <div
                       onClick={() => {
-                        useLogout();
+                        useLogout({ final: router.push("/") });
                         dispatch(AddAuth(""));
                       }}
                       className="border border-solid border-white rounded p-0.5 px-4 cursor-pointer text-white"

@@ -2,6 +2,7 @@ import { useApi } from "./useApi";
 import { apis } from "../utils/apis";
 import { useDispatch } from "react-redux";
 import { AddAuth } from "../redux/AuthReducer";
+import { useRouter } from "next/router";
 
 /**
  * Custom hook to handle user logout.
@@ -10,7 +11,8 @@ import { AddAuth } from "../redux/AuthReducer";
  *
  * @returns {Promise<Object|null>} The response data from the logout API or null if no data is returned.
  */
-export const useLogout = () => {
+export const useLogout = ({final}) => {
+
   const { Get } = useApi();
   const { logout } = apis;
   let data = {};
@@ -25,6 +27,7 @@ export const useLogout = () => {
         localStorage.removeItem("persona_id");
         localStorage.removeItem("persona_data");
         localStorage.removeItem("mode_id");
+        final
         return data;
       } else {
         localStorage.removeItem("token");
@@ -33,6 +36,7 @@ export const useLogout = () => {
         localStorage.removeItem("persona_id");
         localStorage.removeItem("persona_data");
         localStorage.removeItem("mode_id");
+        final
       }
     } catch (error) {
       console.log(error, "_error_");

@@ -5,22 +5,6 @@ import { useApi } from "../../hooks/useApi";
 import { apis } from "../../utils/apis";
 import { useRouter } from "next/router";
 
-// const reportData = {
-//   discovery: 70,
-//   adaptability: 60,
-//   sale_closing: 40,
-//   solution_fit: 75,
-//   cross_selling: 0,
-//   overall_score: 65,
-//   persuasiveness: 70,
-//   create_interest: 85,
-//   coaching_summary:
-//     "The sales representative demonstrates good initial engagement and communication, effectively creating interest in the product. The rep acknowledges the customer's concerns and provides some incentives like discounts and free shipping. However, objection handling is weak, particularly regarding implementation, tariff concerns, and contract details. The rep attempts to close prematurely without fully addressing the customer's questions about warranty, contract flexibility, and tariff protection. There's no evidence of cross-selling. \n\n**Specific Feedback:**\n\n*   **Objection Handling:** The rep needs to directly address the customer's concerns about implementation, downtime, training, and tariff implications with specific details and evidence. Instead of just offering discounts, provide concrete solutions and assurances. For example, quantify the expected downtime, detail the training program, and explain the tariff mitigation strategies.\n\n*   **Value Reinforcement:** While the rep mentions benefits like fast turns and promo support, they need to connect these benefits more explicitly to the customer's operational challenges and KPIs. Quantify the potential ROI and payback period. Differentiate the product from alternatives by highlighting unique features and benefits.\n\n*   **Risk Mitigation:** The rep should provide more credible assurances about implementation and disruption. Outline specific support and contingency plans. Address warranty and performance guarantee concerns. Provide realistic timelines and resource requirements. Offer references or evidence of successful similar implementations.\n\n*   **Negotiation Skill:** The rep needs to be more flexible and creative in finding win-win solutions to contractual concerns. Instead of just offering discounts, explore other options like extended payment terms or shared risk agreements. Maintain a value focus rather than just price focus.\n\n*   **Commitment Securing:** The rep attempts to close prematurely without fully addressing the customer's concerns. They need to recognize buying signals and advance appropriately. Propose clear, specific next steps that address the customer's remaining concerns. Avoid high-pressure tactics and focus on building trust and confidence.\n\n*   **Tariff Knowledge & Mitigation Assessment:** The rep needs to demonstrate a better understanding of tariff impacts on F&B equipment and parts. They should present credible strategies for mitigating tariff-related risks and offer appropriate contractual protections against future tariff increases. Show awareness of domestic vs. international sourcing implications and provide relevant examples of how other customers have managed tariff issues.",
-//   engagement_level: 75,
-//   objection_handling: 50,
-//   communication_level: 80,
-// };
-
 function formatSummary(summary) {
   if (!summary) return "";
   return (
@@ -201,22 +185,6 @@ const Index = () => {
               }}
             />
           </div>
-          {/* <div className="flex justify-end gap-2 mt-4">
-            <Button
-              className={`rounded-[8px] shadow-[0px_4px_4px_0px_#00000040] !text-white !bg-[#425756] uppercase !py3 !px-3 !text-[16px]`}
-              onClick={() => downLoadPdf()}
-              disabled={pdf ? false : true}
-            >
-              DOWNLOAD&nbsp;REPORT&nbsp;
-              {pdf ? null : <CachedIcon className="animate-spin" />}
-            </Button>
-            <Button
-              className={`rounded-[8px] shadow-[0px_4px_4px_0px_#00000040] !text-white !bg-[#006ccc] uppercase !py3 !px-3 !text-[16px]`}
-              onClick={() => router.push("/feedback")}
-            >
-              Next
-            </Button>
-          </div> */}
         </div>
       </div>
     </div>
