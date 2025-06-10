@@ -3,14 +3,9 @@ import Highlighter from "../../common/highlighter";
 import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp";
 import { Button } from "@mui/material";
 import { useRouter } from "next/router";
-import { apis } from "../../utils/apis";
-import { useApi } from "../../hooks/useApi";
-import CachedIcon from "@mui/icons-material/Cached";
 
 const Feedback = () => {
   const router = useRouter();
-  const { performance_reports } = apis;
-  const { Post, Get } = useApi();
 
   const [feedBackArr, setFeedBackArr] = useState([
     { title: "Overall call quality is Poor.", action: false },
@@ -19,7 +14,6 @@ const Feedback = () => {
     { title: "AI Chatbot Misleading the user behavior.", action: false },
   ]);
 
-  const [pdf, setPdf] = useState();
 
   const checkAction = (index) => {
     setFeedBackArr((prevArr) =>
@@ -29,62 +23,6 @@ const Feedback = () => {
     );
   };
 
-  useEffect(() => {
-    let sessionId = "";
-    if (typeof window !== "undefined") {
-      sessionId = localStorage.getItem("session_id");
-    }
-
-    console.log(sessionId, "sessionId");
-    const getReport = async () => {
-      if (sessionId) {
-        try {
-          let createData = await Post(performance_reports, {
-            session_id: sessionId,
-          });
-          if (createData?.coaching_summary) {
-            const getPdfData1 = await Get(
-              `${performance_reports}${sessionId}/pdf`
-            );
-            if (getPdfData1) {
-              setPdf(getPdfData1);
-            }
-          } else {
-            const getReportData = await Get(
-              `${performance_reports}${sessionId}`
-            );
-            if (getReportData?.coaching_summary) {
-              const getPdfData2 = await Get(
-                `${performance_reports}${sessionId}/pdf`
-              );
-              if (getPdfData2) {
-                setPdf(getPdfData2);
-              }
-            }
-          }
-        } catch (error) {
-          console.log(error, "error");
-        }
-      }
-    };
-    getReport();
-  }, []);
-
-  const downLoadPdf = () => {
-    if (pdf) {
-      const blob = new Blob([pdf], { type: "application/pdf" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "feedback_report.pdf"; // Specify the file name
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url); // Clean up the URL object
-    } else {
-      console.log("No PDF data available to download.");
-    }
-  };
 
   return (
     <div className="bg-[url(../../public/assets/images/RealSales-backgrounds/bg-2.png)] bg-cover bg-center bg-no-repeat">
@@ -132,16 +70,6 @@ const Feedback = () => {
                 </div>
               ))}
               <div className="flex items-center gap-2">
-                <Button
-                  className={`!w-full shadow-[0px_4px_4px_0px_#00000040] !text-white ${
-                    pdf ? "!bg-[#0a605b]" : "!bg-[#425756]"
-                  } uppercase`}
-                  onClick={() => downLoadPdf()}
-                  disabled={pdf ? false : true}
-                >
-                  DOWNLOAD&nbsp;REPORT&nbsp;
-                  {pdf ? null : <CachedIcon className="animate-spin" />}
-                </Button>
                 <Button
                   className="!w-full shadow-[0px_4px_4px_0px_#00000040] !text-white !bg-[#CF2427] uppercase"
                   onClick={() => router.push("/chat/rating")}

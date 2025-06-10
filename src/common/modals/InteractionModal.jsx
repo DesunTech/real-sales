@@ -62,18 +62,18 @@ const InteractionModal = ({ onNext }) => {
               <div className="bg-[url(../../public/assets/images/aboutus/PersonaCardImg.png)] shadow-md bg-cover bg-center bg-no-repeat w-full rounded-[10px]">
                 <div
                   className={`relative ${
-                    choosePersona === "Prospective"
+                    choosePersona === "prospecting"
                       ? `bg-gradient-to-r from-blue-200/50 to-white/0`
                       : `bg-gradient-to-r from-white/50 to-white/0`
                   } py-6 px-8 w-full flex items-center justify-between flex-col`}
                 >
                   <div className="flex flex-col items-start justify-between gap-2">
                     <div className="lg:w-28 w-20 lg:h-28 h-20 rounded-full overflow-hidden bg-gray-100">
-                      <Image src={persona_plant} alt={"Prospective"} />
+                      <Image src={persona_plant} alt={"prospecting"} />
                     </div>
                     <div className="w-full">
                       <h1 className="lg:text-[28px] text-[16px] m-plus-rounded-1c-medium text-[#060606B2]">
-                        Prospective
+                        Prospecting
                       </h1>
                       <p className="lg:text-[14px] text-[12px] m-plus-rounded-1c-regular text-[#060606CC]">
                         Lorem Ipsum is simply dummy text of the printing and
@@ -85,7 +85,7 @@ const InteractionModal = ({ onNext }) => {
                   <BookAdemo
                     BookaDemo={"CHOOSE IT"}
                     onClick={() => {
-                      setChoosePersona("Prospective");
+                      setChoosePersona("prospecting");
                     }}
                     className={`!border-[#FFDE5A] !bg-[#060606] !text-[#FFDE5A] !px-5 !py-1 h-fit uppercase absolute -bottom-4 left-[30%]`}
                   />
@@ -95,18 +95,18 @@ const InteractionModal = ({ onNext }) => {
               <div className="bg-[url(../../public/assets/images/aboutus/PersonaCardImg.png)] shadow-md bg-cover bg-center bg-no-repeat w-full rounded-[10px]">
                 <div
                   className={`relative ${
-                    choosePersona === "Sales"
+                    choosePersona === "discovering"
                       ? `bg-gradient-to-r from-blue-200/50 to-white/0`
                       : `bg-gradient-to-r from-white/50 to-white/0`
                   } py-6 px-8 w-full flex items-center justify-between flex-col`}
                 >
                   <div className="flex flex-col items-start justify-between gap-2">
                     <div className="lg:w-28 w-20 lg:h-28 h-20 rounded-full overflow-hidden bg-gray-100">
-                      <Image src={persona_food} alt={"Sales"} />
+                      <Image src={persona_food} alt={"discovering"} />
                     </div>
                     <div className="w-full">
                       <h1 className="lg:text-[28px] text-[16px] m-plus-rounded-1c-medium text-[#060606B2]">
-                        Sales
+                        Discovering
                       </h1>
                       <p className="lg:text-[14px] text-[12px] m-plus-rounded-1c-regular text-[#060606CC]">
                         Lorem Ipsum is simply dummy text of the printing and
@@ -118,7 +118,7 @@ const InteractionModal = ({ onNext }) => {
                   <BookAdemo
                     BookaDemo={"CHOOSE IT"}
                     onClick={() => {
-                      setChoosePersona("Sales");
+                      setChoosePersona("discovering");
                     }}
                     className={`!border-[#FFDE5A] !bg-[#060606] !text-[#FFDE5A] !px-5 !py-1 h-fit uppercase absolute -bottom-4 left-[30%]`}
                   />

@@ -160,7 +160,7 @@ const Layout = ({ children }) => {
           },
         ],
       });
-      console.log(data?.persona_id, "data_persona_id")
+      console.log(data?.persona_id, "data_persona_id");
       if (data?.persona_id) {
         // localStorage.setItem("persona_id", data?.persona_id);
         // localStorage.setItem("persona_data", JSON.stringify(data));
@@ -229,9 +229,11 @@ const Layout = ({ children }) => {
     //     localStorage.setItem("session_id", data?.session_id);
     dispatch(InteractionValue({ open: false, fromData: "" }));
     setModeId(fromData?.mode_id);
+    localStorage.setItem("mode_id", fromData?.mode_id);
     // dispatch(IdealPersonaValue(true));
     // dispatch(ShortlistedPersonaValue(true));
-    dispatch(PersonaTypeValue(true));
+    // dispatch(PersonaTypeValue(true));
+    router.push("/persona");
     //   }
     // } catch (error) {}
   };

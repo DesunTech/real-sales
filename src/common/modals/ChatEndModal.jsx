@@ -90,7 +90,7 @@ const ChatEndModal = () => {
                 );
                 // localStorage.removeItem("session_id")
                 localStorage.removeItem("persona_id")
-                router.push("/feedback")
+                router.push("/report")
               }}
             >
               quit session anyway
