@@ -201,7 +201,7 @@ const Index = () => {
               }}
             />
           </div>
-          <div className="flex justify-end gap-2 mt-4">
+          {/* <div className="flex justify-end gap-2 mt-4">
             <Button
               className={`rounded-[8px] shadow-[0px_4px_4px_0px_#00000040] !text-white !bg-[#425756] uppercase !py3 !px-3 !text-[16px]`}
               onClick={() => downLoadPdf()}
@@ -213,11 +213,10 @@ const Index = () => {
             <Button
               className={`rounded-[8px] shadow-[0px_4px_4px_0px_#00000040] !text-white !bg-[#006ccc] uppercase !py3 !px-3 !text-[16px]`}
               onClick={() => router.push("/feedback")}
-              // disabled={pdf ? false : true}
             >
               Next
             </Button>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
