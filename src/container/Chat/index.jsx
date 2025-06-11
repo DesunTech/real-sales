@@ -37,6 +37,116 @@ import { apis } from "../../utils/apis";
 import { useApi } from "../../hooks/useApi";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 
+// Update the SpeakingIndicator component
+const SpeakingIndicator = ({ isActive, color = "#26AD35", transcript = "", isAi = false }) => {
+  const [heights, setHeights] = useState([40, 60, 80, 100, 80, 60, 40]);
+  const [currentWord, setCurrentWord] = useState("");
+  const wordInterval = useRef(null);
+  const prevHeightsRef = useRef(heights);
+  
+  useEffect(() => {
+    if (isActive && transcript) {
+      if (isAi) {
+        // For AI, simulate word-by-word animation
+        const words = transcript.split(" ");
+        let currentIndex = 0;
+
+        if (wordInterval.current) {
+          clearInterval(wordInterval.current);
+        }
+
+        wordInterval.current = setInterval(() => {
+          if (currentIndex < words.length) {
+            setCurrentWord(words[currentIndex]);
+            // Generate heights based on current word with smooth transitions
+            const newHeights = heights.map((_, index) => {
+              const wordLength = words[currentIndex].length;
+              const baseHeight = (wordLength * 10) % 60;
+              const randomFactor = Math.random() * 30; // Reduced random factor for smoother transitions
+              const targetHeight = Math.min(100, Math.max(20, baseHeight + randomFactor));
+              // Smooth transition from previous height
+              const prevHeight = prevHeightsRef.current[index];
+              return Math.round(prevHeight + (targetHeight - prevHeight) * 0.3);
+            });
+            prevHeightsRef.current = newHeights;
+            setHeights(newHeights);
+            currentIndex++;
+          } else {
+            clearInterval(wordInterval.current);
+            setCurrentWord("");
+          }
+        }, 150); // Faster interval for smoother animation
+      } else {
+        // For user, use transcript length with smooth transitions
+        const newHeights = heights.map((prevHeight, index) => {
+          const baseHeight = transcript.length % 60;
+          const randomFactor = Math.random() * 30; // Reduced random factor
+          const targetHeight = Math.min(100, Math.max(20, baseHeight + randomFactor));
+          // Smooth transition from previous height
+          return Math.round(prevHeight + (targetHeight - prevHeight) * 0.3);
+        });
+        prevHeightsRef.current = newHeights;
+        setHeights(newHeights);
+      }
+    }
+
+    return () => {
+      if (wordInterval.current) {
+        clearInterval(wordInterval.current);
+      }
+    };
+  }, [transcript, isActive, isAi]);
+
+  return (
+    <div className="flex items-center gap-1">
+      <div className="flex items-center gap-[2px] h-6">
+        <div className="flex items-end gap-[2px] h-full">
+          {isActive && transcript ? (
+            // Show animated bars when active and has transcript
+            heights.map((height, index) => (
+              <div
+                key={index}
+                className="w-[2px] rounded-full"
+                style={{ 
+                  height: `${height}%`,
+                  transform: 'scaleY(1)',
+                  transition: 'all 0.15s cubic-bezier(0.4, 0, 0.2, 1)',
+                  backgroundColor: color,
+                  opacity: 0.8 + (height / 100) * 0.2 // Dynamic opacity based on height
+                }}
+              />
+            ))
+          ) : (
+            // Show single line when inactive or no transcript
+            <div
+              className="w-[2px] rounded-full"
+              style={{ 
+                height: '20%',
+                transform: 'scaleY(1)',
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                backgroundColor: color,
+                opacity: 0.5
+              }}
+            />
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Add this style block at the top of your file, after the imports
+const styles = `
+@keyframes wave {
+  0%, 100% {
+    transform: scaleY(0.5);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+`;
+
 const Chat = ({ slug, children }) => {
   const { Post } = useApi();
   const { chat_chat } = apis;
@@ -65,6 +175,12 @@ const Chat = ({ slug, children }) => {
   const [isAutoMode, setIsAutoMode] = useState(false);
   const [personaData, setPersonaData] = useState({});
   const audioRef = useRef(null);
+  const [isAiThinking, setIsAiThinking] = useState(false);
+  const [isAiSpeaking, setIsAiSpeaking] = useState(false);
+
+  // Add these new refs
+  const isProcessingRef = useRef(false);
+  const lastProcessedTextRef = useRef("");
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -244,11 +360,22 @@ const Chat = ({ slug, children }) => {
   console.log(transcriptDummy, "transcriptDummy");
   const textToSpeech = async (text) => {
     try {
+      // Check if we're already processing or if this is the same text
+      if (isProcessingRef.current || text === lastProcessedTextRef.current) {
+        console.log("Skipping duplicate or already processing request");
+        return;
+      }
+
       if (!text) {
         console.log("No text provided for text-to-speech");
         return;
       }
 
+      // Set processing flag and store the text
+      isProcessingRef.current = true;
+      lastProcessedTextRef.current = text;
+
+      setIsAiThinking(true);
       console.log("Starting text-to-speech conversion for:", text);
 
       // Add delay between requests to prevent rate limiting
@@ -277,16 +404,13 @@ const Chat = ({ slug, children }) => {
       if (!response.ok) {
         const errorData = await response.json();
         if (errorData.detail?.status === "detected_unusual_activity") {
-          console.error(
-            "ElevenLabs API rate limit or abuse detection triggered"
-          );
-          // Disable auto mode if abuse detected
+          console.error("ElevenLabs API rate limit or abuse detection triggered");
           setIsAutoMode(false);
+          setIsAiThinking(false);
+          isProcessingRef.current = false;
           return;
         }
-        throw new Error(
-          `Failed to convert text to speech: ${JSON.stringify(errorData)}`
-        );
+        throw new Error(`Failed to convert text to speech: ${JSON.stringify(errorData)}`);
       }
 
       const audioBlob = await response.blob();
@@ -295,28 +419,40 @@ const Chat = ({ slug, children }) => {
       if (audioRef.current) {
         audioRef.current.src = audioUrl;
         try {
+          setIsAiThinking(false);
+          setIsAiSpeaking(true);
           await audioRef.current.play();
           setIsSpeaking(true);
           console.log("Audio playback started");
         } catch (playError) {
           console.error("Error playing audio:", playError);
           setIsSpeaking(false);
+          setIsAiSpeaking(false);
         }
       } else {
         console.error("Audio element not found");
+        setIsAiThinking(false);
       }
     } catch (error) {
       console.error("Error in text to speech:", error);
       setIsSpeaking(false);
+      setIsAiThinking(false);
+      setIsAiSpeaking(false);
+    } finally {
+      // Reset processing flag after completion or error
+      isProcessingRef.current = false;
     }
   };
 
-  // Effect to handle audio element and auto mode
+  // Update the audio element's onended handler
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.onended = () => {
         console.log("Audio playback ended");
         setIsSpeaking(false);
+        setIsAiSpeaking(false);
+        // Clear the last processed text when audio ends
+        lastProcessedTextRef.current = "";
 
         // Automatically start listening when speech ends
         if (!isMicClicked) {
@@ -328,6 +464,9 @@ const Chat = ({ slug, children }) => {
       audioRef.current.onerror = (error) => {
         console.error("Audio playback error:", error);
         setIsSpeaking(false);
+        setIsAiSpeaking(false);
+        // Clear the last processed text on error
+        lastProcessedTextRef.current = "";
       };
     }
   }, []);
@@ -458,6 +597,18 @@ const Chat = ({ slug, children }) => {
       answer: `Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making`,
     },
   ];
+
+  useEffect(() => {
+    // Add the styles to the document
+    const styleSheet = document.createElement("style");
+    styleSheet.textContent = styles;
+    document.head.appendChild(styleSheet);
+
+    return () => {
+      // Clean up the styles when component unmounts
+      document.head.removeChild(styleSheet);
+    };
+  }, []);
 
   return (
     <div className="p-4 flex justify-between flex-col">
@@ -679,11 +830,7 @@ const Chat = ({ slug, children }) => {
                                   } !text-[20px]`}
                                 />
                               </button>
-                              <Image
-                                src={callVibration}
-                                alt="callVibration"
-                                className="w-6 h-10"
-                              />
+                              {isMicClicked && <SpeakingIndicator isActive={true} transcript={transcript} color="#FFFFFF" />}
                             </div>
                             <div
                               ref={containerRef}
@@ -728,36 +875,35 @@ const Chat = ({ slug, children }) => {
 
                           {/* ai chat */}
                           <div className="w-[90%] flex items-start gap-1.5 z-10">
-                            <button
-                              className={`w-10 h-10 flex-s 
-                                ${
-                                  isVolClicked
-                                    ? "bg-[#26AD35] hover:bg-[#26AD35]"
-                                    : "bg-[#FFFFFF1A] hover:bg-[#FFFFFF33]"
-                                }
-                              rounded-full flex items-center justify-center cursor-pointer transition-colors`}
-                              onClick={() => {
-                                if (!isVolClicked) {
-                                  setIsVolClicked(true);
-                                } else {
-                                  setIsVolClicked(false);
-                                  setIsMicClicked(true);
-                                }
-                              }}
-                            >
-                              <VolumeUpIcon
-                                className={`${
-                                  isVolClicked
-                                    ? "text-white"
-                                    : "text-[#FFFFFF80]"
-                                } !text-[20px]`}
-                              />
-                            </button>
-                            <Image
-                              src={callVibration}
-                              alt="callVibration"
-                              className="w-6 h-10"
-                            />
+                            <div className="flex items-center gap-1.5">
+                              <button
+                                className={`w-10 h-10 flex-s 
+                                  ${
+                                    isVolClicked
+                                      ? "bg-[#26AD35] hover:bg-[#26AD35]"
+                                      : "bg-[#FFFFFF1A] hover:bg-[#FFFFFF33]"
+                                  }
+                                rounded-full flex items-center justify-center cursor-pointer transition-colors`}
+                                onClick={() => {
+                                  if (!isVolClicked) {
+                                    setIsVolClicked(true);
+                                  } else {
+                                    setIsVolClicked(false);
+                                    setIsMicClicked(true);
+                                  }
+                                }}
+                              >
+                                <VolumeUpIcon
+                                  className={`${
+                                    isVolClicked
+                                      ? "text-white"
+                                      : "text-[#FFFFFF80]"
+                                  } !text-[20px]`}
+                                />
+                              </button>
+                              {/* {isAiSpeaking && <SpeakingIndicator isActive={true} color="#FFDE5A" transcript={resChat[resChat.length - 1]?.response || ""} isAi={true} />} */}
+                              {isAiSpeaking && <SpeakingIndicator isActive={true} color="#26AD35" transcript={resChat[resChat.length - 1]?.response || ""} isAi={true} />}
+                            </div>
                             <div
                               ref={containerRef}
                               className="w-[80%] flex flex-col items-start h-[20vh] overflow-y-auto mt-1.5"
