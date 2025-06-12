@@ -36,14 +36,21 @@ import Link from "next/link";
 import { apis } from "../../utils/apis";
 import { useApi } from "../../hooks/useApi";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
+import soundWave from "../../../public/assets/gifs/soundWave.gif";
+import soundWaveAi from "../../../public/assets/gifs/soundWaveAi.gif";
 
 // Update the SpeakingIndicator component
-const SpeakingIndicator = ({ isActive, color = "#26AD35", transcript = "", isAi = false }) => {
+const SpeakingIndicator = ({
+  isActive,
+  color = "#26AD35",
+  transcript = "",
+  isAi = false,
+}) => {
   const [heights, setHeights] = useState([40, 60, 80, 100, 80, 60, 40]);
   const [currentWord, setCurrentWord] = useState("");
   const wordInterval = useRef(null);
   const prevHeightsRef = useRef(heights);
-  
+
   useEffect(() => {
     if (isActive && transcript) {
       if (isAi) {
@@ -63,7 +70,10 @@ const SpeakingIndicator = ({ isActive, color = "#26AD35", transcript = "", isAi 
               const wordLength = words[currentIndex].length;
               const baseHeight = (wordLength * 10) % 60;
               const randomFactor = Math.random() * 30; // Reduced random factor for smoother transitions
-              const targetHeight = Math.min(100, Math.max(20, baseHeight + randomFactor));
+              const targetHeight = Math.min(
+                100,
+                Math.max(20, baseHeight + randomFactor)
+              );
               // Smooth transition from previous height
               const prevHeight = prevHeightsRef.current[index];
               return Math.round(prevHeight + (targetHeight - prevHeight) * 0.3);
@@ -81,7 +91,10 @@ const SpeakingIndicator = ({ isActive, color = "#26AD35", transcript = "", isAi 
         const newHeights = heights.map((prevHeight, index) => {
           const baseHeight = transcript.length % 60;
           const randomFactor = Math.random() * 30; // Reduced random factor
-          const targetHeight = Math.min(100, Math.max(20, baseHeight + randomFactor));
+          const targetHeight = Math.min(
+            100,
+            Math.max(20, baseHeight + randomFactor)
+          );
           // Smooth transition from previous height
           return Math.round(prevHeight + (targetHeight - prevHeight) * 0.3);
         });
@@ -107,12 +120,12 @@ const SpeakingIndicator = ({ isActive, color = "#26AD35", transcript = "", isAi 
               <div
                 key={index}
                 className="w-[2px] rounded-full"
-                style={{ 
+                style={{
                   height: `${height}%`,
-                  transform: 'scaleY(1)',
-                  transition: 'all 0.15s cubic-bezier(0.4, 0, 0.2, 1)',
+                  transform: "scaleY(1)",
+                  transition: "all 0.15s cubic-bezier(0.4, 0, 0.2, 1)",
                   backgroundColor: color,
-                  opacity: 0.8 + (height / 100) * 0.2 // Dynamic opacity based on height
+                  opacity: 0.8 + (height / 100) * 0.2, // Dynamic opacity based on height
                 }}
               />
             ))
@@ -120,12 +133,12 @@ const SpeakingIndicator = ({ isActive, color = "#26AD35", transcript = "", isAi 
             // Show single line when inactive or no transcript
             <div
               className="w-[2px] rounded-full"
-              style={{ 
-                height: '20%',
-                transform: 'scaleY(1)',
-                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+              style={{
+                height: "20%",
+                transform: "scaleY(1)",
+                transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
                 backgroundColor: color,
-                opacity: 0.5
+                opacity: 0.5,
               }}
             />
           )}
@@ -404,13 +417,17 @@ const Chat = ({ slug, children }) => {
       if (!response.ok) {
         const errorData = await response.json();
         if (errorData.detail?.status === "detected_unusual_activity") {
-          console.error("ElevenLabs API rate limit or abuse detection triggered");
+          console.error(
+            "ElevenLabs API rate limit or abuse detection triggered"
+          );
           setIsAutoMode(false);
           setIsAiThinking(false);
           isProcessingRef.current = false;
           return;
         }
-        throw new Error(`Failed to convert text to speech: ${JSON.stringify(errorData)}`);
+        throw new Error(
+          `Failed to convert text to speech: ${JSON.stringify(errorData)}`
+        );
       }
 
       const audioBlob = await response.blob();
@@ -830,7 +847,20 @@ const Chat = ({ slug, children }) => {
                                   } !text-[20px]`}
                                 />
                               </button>
-                              {isMicClicked && <SpeakingIndicator isActive={true} transcript={transcript} color="#FFFFFF" />}
+                              {transcript && (
+                                <Image
+                                  src={soundWave}
+                                  alt="soundWave"
+                                  className="w-8 h-8"
+                                />
+                              )}
+                              {/* {isMicClicked && (
+                                <SpeakingIndicator
+                                  isActive={true}
+                                  transcript={transcript}
+                                  color="#FFFFFF"
+                                />
+                              )} */}
                             </div>
                             <div
                               ref={containerRef}
@@ -859,11 +889,19 @@ const Chat = ({ slug, children }) => {
                           </div>
 
                           <div className="relative w-full h-[45%] flex items-center justify-center">
-                            <Image
-                              src={callVibration}
-                              alt="callVibration"
-                              className="w-[80%] h-auto absolute"
-                            />
+                            {resChat[resChat.length - 1]?.response ? (
+                              <Image
+                                src={soundWaveAi}
+                                alt="soundWaveAi"
+                                className="w-[80%] h-auto absolute"
+                              />
+                            ) : (
+                              <Image
+                                src={callVibration}
+                                alt="callVibration"
+                                className="w-[80%] h-auto absolute"
+                              />
+                            )}
                             <div className="w-32 h-32 rounded-full p-1 border border-solid border-white z-10 absolute">
                               <Image
                                 src={persona_plant}
@@ -901,8 +939,24 @@ const Chat = ({ slug, children }) => {
                                   } !text-[20px]`}
                                 />
                               </button>
+                              {resChat[resChat.length - 1]?.response && (
+                                <Image
+                                  src={soundWaveAi}
+                                  alt="soundWaveAi"
+                                  className="w-8 h-8"
+                                />
+                              )}
                               {/* {isAiSpeaking && <SpeakingIndicator isActive={true} color="#FFDE5A" transcript={resChat[resChat.length - 1]?.response || ""} isAi={true} />} */}
-                              {isAiSpeaking && <SpeakingIndicator isActive={true} color="#26AD35" transcript={resChat[resChat.length - 1]?.response || ""} isAi={true} />}
+                              {/* {isAiSpeaking && (
+                                <SpeakingIndicator
+                                  isActive={true}
+                                  color="#26AD35"
+                                  transcript={
+                                    resChat[resChat.length - 1]?.response || ""
+                                  }
+                                  isAi={true}
+                                />
+                              )} */}
                             </div>
                             <div
                               ref={containerRef}
