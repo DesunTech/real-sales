@@ -889,12 +889,20 @@ const Chat = ({ slug, children }) => {
                           </div>
 
                           <div className="relative w-full h-[45%] flex items-center justify-center">
-                            {resChat[resChat.length - 1]?.response ? (
-                              <Image
-                                src={soundWaveAi}
-                                alt="soundWaveAi"
-                                className="w-[80%] h-auto absolute"
-                              />
+                            {isAiSpeaking ? (
+                              resChat[resChat.length - 1]?.response ? (
+                                <Image
+                                  src={soundWaveAi}
+                                  alt="soundWaveAi"
+                                  className="w-[80%] h-auto absolute"
+                                />
+                              ) : (
+                                <Image
+                                  src={callVibration}
+                                  alt="callVibration"
+                                  className="w-[80%] h-auto absolute"
+                                />
+                              )
                             ) : (
                               <Image
                                 src={callVibration}
@@ -939,13 +947,15 @@ const Chat = ({ slug, children }) => {
                                   } !text-[20px]`}
                                 />
                               </button>
-                              {resChat[resChat.length - 1]?.response && (
-                                <Image
-                                  src={soundWaveAi}
-                                  alt="soundWaveAi"
-                                  className="w-8 h-8"
-                                />
-                              )}
+                              {isAiSpeaking
+                                ? resChat[resChat.length - 1]?.response && (
+                                    <Image
+                                      src={soundWaveAi}
+                                      alt="soundWaveAi"
+                                      className="w-8 h-8"
+                                    />
+                                  )
+                                : null}
                               {/* {isAiSpeaking && <SpeakingIndicator isActive={true} color="#FFDE5A" transcript={resChat[resChat.length - 1]?.response || ""} isAi={true} />} */}
                               {/* {isAiSpeaking && (
                                 <SpeakingIndicator
