@@ -98,14 +98,7 @@ const Persona = () => {
         <Image src={dummy} alt="persona" className="w-full h-full" />
         <div className="bg-[#ffffff] w-full h-[calc(100%_-_85%)] p-2 absolute bottom-0 z-10">
           <p className="m-plus-rounded-1c-semibold text-lg text-[#1a1a1a] uppercase pb-1.5">
-            {v?.name?.replace(/_/g, " ")}&nbsp;
-            {v?.name === "small"
-              ? "(1-500)"
-              : v?.name === "medium"
-              ? "(501-5,000)"
-              : v?.name === "large"
-              ? "(5,000+)"
-              : ""}
+            {v?.name?.replace(/_/g, " ")}
           </p>
         </div>
         <div className="bg-[#ffffff] w-full h-[calc(100%_-_35%)] p-2 absolute top-[35%] transition-opacity duration-300 opacity-0 group-hover:opacity-100 -z-20 group-hover:z-20">
@@ -129,7 +122,14 @@ const Persona = () => {
           </p>
           <p className="flex items-center gap-2 sora-medium md:text-[14px] text-[13px]">
             <span className="w-1 h-1 rounded-full bg-[#2d2d2d]" />
-            {capitalize(v?.plant_size_impact?.name?.replace(/_/g, " "))}
+            {capitalize(v?.plant_size_impact?.name?.replace(/_/g, " "))}&nbsp;
+            {v?.plant_size_impact?.name === "small"
+              ? "(1-500)"
+              : v?.plant_size_impact?.name === "medium"
+              ? "(501-5,000)"
+              : v?.plant_size_impact?.name === "large"
+              ? "(5,000+)"
+              : ""}
           </p>
           <p className="flex items-center gap-2 sora-medium md:text-[14px] text-[13px]">
             <span className="w-1 h-1 rounded-full bg-[#2d2d2d]" />
@@ -198,7 +198,14 @@ const Persona = () => {
                 <MenuItem value="">All Plant Sizes</MenuItem>
                 {plantSizes.map((size) => (
                   <MenuItem key={size} value={size}>
-                    {capitalize(size?.replace(/_/g, " "))}
+                    {capitalize(size?.replace(/_/g, " "))}&nbsp;
+                    {size === "small"
+                      ? "(1-500)"
+                      : size === "medium"
+                      ? "(501-5,000)"
+                      : size === "large"
+                      ? "(5,000+)"
+                      : ""}
                   </MenuItem>
                 ))}
               </Select>
