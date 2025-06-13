@@ -98,7 +98,14 @@ const Persona = () => {
         <Image src={dummy} alt="persona" className="w-full h-full" />
         <div className="bg-[#ffffff] w-full h-[calc(100%_-_85%)] p-2 absolute bottom-0 z-10">
           <p className="m-plus-rounded-1c-semibold text-lg text-[#1a1a1a] uppercase pb-1.5">
-            {v?.name?.replace(/_/g, " ")}
+            {v?.name?.replace(/_/g, " ")}&nbsp;
+            {v?.name === "small"
+              ? "(1-500)"
+              : v?.name === "medium"
+              ? "(501-5,000)"
+              : v?.name === "large"
+              ? "(5,000+)"
+              : ""}
           </p>
         </div>
         <div className="bg-[#ffffff] w-full h-[calc(100%_-_35%)] p-2 absolute top-[35%] transition-opacity duration-300 opacity-0 group-hover:opacity-100 -z-20 group-hover:z-20">
