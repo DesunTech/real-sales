@@ -22,7 +22,7 @@ import {
 } from "../../redux/OpenModal";
 import PaymentConfirmation from "../modals/PaymentConfirmation";
 import { useApi } from "../../hooks/useApi";
-import { AddAuth } from "../../redux/AuthReducer";
+import { AddAuth, AddUser } from "../../redux/AuthReducer";
 import { apis } from "../../utils/apis";
 import { Logout } from "@mui/icons-material";
 import NewPersonaTypeModal from "../modals/NewPersonaTypeModal";
@@ -39,7 +39,7 @@ const Layout = ({ children }) => {
   const { Get, Post } = useApi();
   const router = useRouter();
   const dispatch = useDispatch();
-  const { get_auth, ai_personas, sessions } = apis;
+  const { get_auth, ai_personas, sessions, auth } = apis;
 
   const isChatPage = router.pathname.startsWith("/chat");
   const token = useSelector((state) => state.auth.auth);
@@ -49,6 +49,27 @@ const Layout = ({ children }) => {
   const [mode_id, setModeId] = useState("");
 
   console.log(personaData, "<___personaData");
+
+  const user = useSelector((state) => state?.auth?.user);
+  useEffect(() => {
+    let userId = "";
+    if (typeof window !== "undefined") {
+      userId = localStorage.getItem("user");
+    }
+    const getUser = async () => {
+      try {
+        let data = await Get(
+          `${auth}/${user?.user_id ? user?.user_id : userId}`
+        );
+        if (data) {
+          dispatch(AddUser(data));
+        }
+        console.log(data, "__data___");
+      } catch (error) {}
+    };
+
+    getUser();
+  }, [user?.user_id]);
 
   /**
    * Trims the persona data to a key-value pair of persona and type.

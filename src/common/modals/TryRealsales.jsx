@@ -25,7 +25,7 @@ import google_logo from "../../../public/assets/icons/google-logo.svg";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import { showToast } from "../../utils/toastConfig";
 import LoopIcon from '@mui/icons-material/Loop';
-import { AddAuth } from "../../redux/AuthReducer";
+import { AddAuth, AddUser } from "../../redux/AuthReducer";
 
 const TryRealsales = (props) => {
   const { Post } = useApi();
@@ -147,6 +147,7 @@ const TryRealsales = (props) => {
           localStorage.setItem("token", data?.token);
           dispatch(TryRealsalesValue(false));
           dispatch(AddAuth(data?.token))
+          dispatch(AddUser(data?.user))
           router.push("/pricing/free-trial");
         }
       } catch (error) {
@@ -193,6 +194,7 @@ const TryRealsales = (props) => {
           setLoginfromData(initialLoginFormData);
           dispatch(TryRealsalesValue(false));
           dispatch(AddAuth(data?.token))
+          dispatch(AddUser(data?.user))
           router.push("/pricing/free-trial");
         } else {
           setLoginFromDataErr((prev) => ({

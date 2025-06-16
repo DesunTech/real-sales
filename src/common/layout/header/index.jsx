@@ -13,7 +13,7 @@ import { DemoMeetingValue } from "../../../redux/OpenModal";
 import TryRealsales from "../../modals/TryRealsales";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useLogout } from "../../../hooks/useLogout";
-import { AddAuth } from "../../../redux/AuthReducer";
+import { AddAuth, AddUser } from "../../../redux/AuthReducer";
 import { ClickAwayListener } from "@mui/material";
 
 const Header = (props) => {
@@ -124,6 +124,7 @@ const Header = (props) => {
                 onClick={() => {
                   useLogout({ final: router.push("/") });
                   dispatch(AddAuth(""));
+                  dispatch(AddUser({}));
                 }}
                 className="border border-solid border-white rounded p-0.5 px-4 cursor-pointer text-white"
               >
@@ -192,6 +193,7 @@ const Header = (props) => {
                       onClick={() => {
                         useLogout({ final: router.push("/") });
                         dispatch(AddAuth(""));
+                        dispatch(AddUser({}));
                       }}
                       className="border border-solid border-white rounded p-0.5 px-4 cursor-pointer text-white"
                     >
