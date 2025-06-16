@@ -38,6 +38,8 @@ import { useApi } from "../../hooks/useApi";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import soundWave from "../../../public/assets/gifs/soundWave.gif";
 import soundWaveAi from "../../../public/assets/gifs/soundWaveAi.gif";
+import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
+import AttachFileIcon from "@mui/icons-material/AttachFile";
 
 // Update the SpeakingIndicator component
 const SpeakingIndicator = ({
@@ -166,6 +168,8 @@ const Chat = ({ slug, children }) => {
   const dispatch = useDispatch();
   const router = useRouter();
 
+  const user = useSelector((state) => state?.auth?.user);
+
   const [checked, setChecked] = useState(true);
   const [openAnswer, setOpenAnswer] = useState(0);
   const [micUser, setMicUser] = useState(true);
@@ -190,6 +194,12 @@ const Chat = ({ slug, children }) => {
   const audioRef = useRef(null);
   const [isAiThinking, setIsAiThinking] = useState(false);
   const [isAiSpeaking, setIsAiSpeaking] = useState(false);
+  const [tour, setTour] = useState(false);
+  const [oneLineChatText, setOneLineChatText] = useState("");
+
+  useEffect(() => {
+    setTour(true);
+  }, []);
 
   // Add these new refs
   const isProcessingRef = useRef(false);
@@ -517,6 +527,16 @@ const Chat = ({ slug, children }) => {
       if (textData?.length) {
         oneLineText = textData.join(" ");
       }
+    } else if (oneLineChatText?.length) {
+      oneLineText = oneLineChatText;
+      setChatMessagesView((prev) => [
+        ...prev,
+        {
+          text: oneLineChatText,
+          isUser: true,
+          timestamp: new Date().toISOString(),
+        },
+      ]);
     }
 
     try {
@@ -536,6 +556,7 @@ const Chat = ({ slug, children }) => {
         setTriggerSenChat(false);
         setIsVolClicked(true);
         setChatMessages([]);
+        setOneLineChatText("");
 
         // Add the response to chat messages
         const newResponse = { response: data.response };
@@ -567,6 +588,7 @@ const Chat = ({ slug, children }) => {
   // Add auto mode toggle button in the UI
   const toggleAutoMode = () => {
     setIsAutoMode(!isAutoMode);
+    setTour(false);
     if (!isAutoMode && !isSpeaking) {
       // Start the conversation if enabling auto mode
       toggleSpeechRecognition();
@@ -682,7 +704,7 @@ const Chat = ({ slug, children }) => {
                     Logged in as:
                   </p>
                   <p className="lg:text-xl text-lg m-plus-rounded-1c-medium text-[#FFDE5A]">
-                    Mr. John Doe
+                    {user?.first_name}&nbsp;{user?.last_name}
                   </p>
                 </div>
                 <div className="flex items-center gap-1">
@@ -706,7 +728,7 @@ const Chat = ({ slug, children }) => {
             <div className="flex flex-row gap-2">
               {/* left */}
               <div
-                className={`relative w-[70%] h-[calc(100vh_-_8rem)] flex flex-col justify-between gap-4`}
+                className={`relative w-[70%] mb-40 h-[calc(100vh_-_8rem)] flex flex-col justify-between gap-4`}
               >
                 {/* top */}
                 <div className="w-full flex flex-row items-start gap-2">
@@ -745,8 +767,8 @@ const Chat = ({ slug, children }) => {
                         />
                         <div className="absolute top-0 flex items-end w-full h-full bg-[linear-gradient(16.61deg,#000000_18.44%,rgba(0,0,0,0)_82.49%)]">
                           <div className="flex flex-col p-2">
-                            <p className="m-plus-rounded-1c-light text-[#ffffff] text-[14px]">
-                              Johnsey304
+                            <p className="m-plus-rounded-1c-light text-[#ffffff] text-[14px] truncate">
+                              {user?.first_name}&nbsp;{user?.last_name}
                             </p>
                             <p className="m-plus-rounded-1c-regular text-[#FFDE5A] text-[17px]">
                               Activated
@@ -827,7 +849,7 @@ const Chat = ({ slug, children }) => {
                         <div className="absolute inset-0 p-5 w-full h-full flex flex-col items-center">
                           {/* ai mic */}
                           <div className="w-[90%] flex items-start gap-1.5 z-10">
-                            <div className="flex items-center gap-1.5 -mt-2">
+                            <div className="flex items-center gap-1.5 -mt-2 relative">
                               <button
                                 className={`w-10 h-10 ${
                                   isMicClicked
@@ -837,6 +859,7 @@ const Chat = ({ slug, children }) => {
                                 onClick={() => {
                                   toggleSpeechRecognition();
                                   setIsVolClicked(false);
+                                  setTour(false);
                                 }}
                               >
                                 <MicNoneOutlinedIcon
@@ -847,6 +870,14 @@ const Chat = ({ slug, children }) => {
                                   } !text-[20px]`}
                                 />
                               </button>
+                              {tour && (
+                                <div className="left-[130%] absolute flex items-center">
+                                  <ArrowLeftIcon className="right-[80%] absolute text-green-500" />
+                                  <div className="shadow-md bg-green-500 text-white sora-regular text-sm px-2 rounded">
+                                    Start
+                                  </div>
+                                </div>
+                              )}
                               {transcript && (
                                 <Image
                                   src={soundWave}
@@ -1120,20 +1151,40 @@ const Chat = ({ slug, children }) => {
                         <CallEndSharpIcon className="text-white" />
                       </div>
                     </CustomTooltip>
-                    <div className="bg-[#FFFFFF66] p-1 pl-2 rounded-full flex justify-between items-center lg:w-[80%] w-full">
+                    <div className="bg-[#ffffff8f] p-1 pl-2 rounded-full flex justify-between items-center lg:w-[80%] w-full">
                       <input
+                        disabled={isAiSpeaking}
                         placeholder="Chat with your AI Trainer ..."
                         className="border-0 outline-0 !py-1 !px-4 w-full text-white m-plus-rounded-1c-regular"
+                        value={oneLineChatText}
+                        onChange={(e) => {
+                          setTour(false);
+                          setOneLineChatText(e.target.value);
+                        }}
                       />
-                      <div className="flex items-center gap-2 !text-[#060606D9] !bg-[#FFE942] !capitalize !py-1 !px-4 !rounded-full cursor-pointer">
-                        <span className="m-plus-rounded-1c-medium">
+                      <div
+                        className={`flex items-center !text-[#060606D9] !bg-[#FFE942] !capitalize py-1 px-1.5 !rounded-full mr-2 ${
+                          isAiSpeaking ? "cursor-not-allowed" : "cursor-pointer"
+                        }`}
+                      >
+                        <AttachFileIcon />
+                      </div>
+                      <div
+                        onClick={() => {
+                          isAiSpeaking ? undefined : senChat();
+                        }}
+                        className={`flex items-center gap-2 !text-[#060606D9] !bg-[#FFE942] !capitalize !py-1 !px-4 !rounded-full ${
+                          isAiSpeaking ? "cursor-not-allowed" : "cursor-pointer"
+                        }`}
+                      >
+                        {/* <span className="m-plus-rounded-1c-medium">
                           Send&nbsp;Message
-                        </span>
+                        </span> */}
                         <SendMessage />
                       </div>
                     </div>
                     <div
-                      className={`w-10 h-10 ${
+                      className={`w-10 h-10 relative ${
                         isAutoMode ? "bg-[#26AD35]" : "bg-[#FFFFFF1A]"
                       } rounded-full flex items-center justify-center cursor-pointer`}
                       onClick={toggleAutoMode}
@@ -1143,6 +1194,14 @@ const Chat = ({ slug, children }) => {
                           isAutoMode ? "text-white" : "text-[#FFFFFF80]"
                         } !text-[20px]`}
                       />
+                      {tour && (
+                        <div className="left-[130%] absolute flex items-center">
+                          <ArrowLeftIcon className="right-[80%] absolute text-green-500" />
+                          <div className="shadow-md bg-green-500 text-white sora-regular text-sm px-2 rounded">
+                            Start
+                          </div>
+                        </div>
+                      )}
                     </div>
                     <div className="w-14 h-14 rounded-full p-1 border-2 border-solid border-white overflow-hidden">
                       <Image
