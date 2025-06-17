@@ -114,7 +114,7 @@ const TryRealsales = (props) => {
     }
 
     // Create image object to check dimensions
-    const img = new Image();
+    const img = new window.Image();
     img.src = URL.createObjectURL(file);
 
     img.onload = () => {
