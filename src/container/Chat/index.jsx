@@ -182,6 +182,7 @@ const Chat = ({ slug, children }) => {
   const [chatMessagesView, setChatMessagesView] = useState([]);
   const [triggerSenChat, setTriggerSenChat] = useState(false);
   const [resChat, setResChat] = useState([]);
+  const [resChatView, setResChatView] = useState([]);
   const [session_id, setSession_id] = useState("");
   const recognitionRef = useRef(null);
   const silenceTimeoutRef = useRef(null);
@@ -560,7 +561,8 @@ const Chat = ({ slug, children }) => {
 
         // Add the response to chat messages
         const newResponse = { response: data.response };
-        setResChat((pre) => [newResponse, ...pre]);
+        setResChat((pre) => [...pre, newResponse]);
+        setResChatView((pre) => [newResponse, ...pre]);
       }
     } catch (error) {
       console.log(error, "_error_");
@@ -614,14 +616,14 @@ const Chat = ({ slug, children }) => {
     },
   }));
 
-  useEffect(() => {
-    const el = containerRef.current;
-    if (el) {
-      el.scrollTop = el.scrollHeight; // scroll to bottom on mount
-    }
-  }, [transcript]);
+  // useEffect(() => {
+  //   const el = containerRef.current;
+  //   if (el) {
+  //     el.scrollTop = el.scrollHeight; // scroll to bottom on mount
+  //   }
+  // }, [transcript]);
 
-  const coachingArr = [{}, {}];
+  const coachingArr = [{}, {}, {}];
   const qnaArr = [
     {
       question: "The standard chunk of Lorem Ipsum used?",
@@ -1109,8 +1111,8 @@ const Chat = ({ slug, children }) => {
                                 Hello!
                               </span>
                               &nbsp;how are you !! */}
-                                {resChat?.length
-                                  ? resChat.map((v, i) => (
+                                {resChatView?.length
+                                  ? resChatView.map((v, i) => (
                                       <p
                                         key={i}
                                         className="pr-4 text-white text-base sora-regular"
@@ -1376,18 +1378,8 @@ const Chat = ({ slug, children }) => {
                                 Understand the Context
                               </h1>
                               <p className="text-white text-[14px] m-plus-rounded-1c-light w-[80%]">
-                                Lorem Ipsum is the simply dummy text of t ...
+                                Lorem Ipsum is the simply dummy text of t...
                               </p>
-                            </div>
-                          </div>
-                          <div className="w-full flex items-center justify-end gap-2">
-                            <div class="bg-[linear-gradient(90deg,#26AD35_0%,#0C7618_100%)] flex items-center gap-1 px-2 pt-0.5 pb-1 rounded-full w-fit">
-                              <p className="text-white text-[12px]">Check</p>
-                              <CheckCircleOutlineOutlinedIcon className="text-white !text-[17px]" />
-                            </div>
-                            <div class="bg-[linear-gradient(90deg,#CF2427_0%,#ED3B3E_100%)] flex items-center gap-1 px-2 pt-0.5 pb-1 rounded-full w-fit">
-                              <p className="text-white text-[12px]">Ignore</p>
-                              <CheckCircleOutlineOutlinedIcon className="text-white !text-[17px]" />
                             </div>
                           </div>
                         </div>
@@ -1397,7 +1389,7 @@ const Chat = ({ slug, children }) => {
                       </div>
                       {/* card stack */}
                       <div className="relative">
-                        <div className="flex flex-col gap-2 h-[45vh] overflow-y-auto">
+                        <div className="flex flex-col gap-2 h-[55vh] overflow-y-auto">
                           {coachingArr?.map((v, idx) => (
                             <div
                               className={`border-l-4 border-solid relative ${
@@ -1438,19 +1430,19 @@ const Chat = ({ slug, children }) => {
                                       Understand the Context
                                     </h1>
                                     <p className="text-white text-[14px] m-plus-rounded-1c-light w-[80%]">
-                                      Lorem Ipsum is the simply dummy text of t
-                                      ...
+                                      Lorem Ipsum is the simply dummy text of
+                                      t...
                                     </p>
                                   </div>
                                 </div>
                                 <div className="w-full flex items-center justify-end gap-2">
-                                  <div class="bg-[linear-gradient(90deg,#26AD35_0%,#0C7618_100%)] flex items-center gap-1 px-2 pt-0.5 pb-1 rounded-full w-fit">
+                                  <div class="bg-[linear-gradient(90deg,#26AD35_0%,#0C7618_100%)] flex items-center gap-1 px-2 pt-0.5 pb-1 rounded-full w-fit cursor-pointer">
                                     <p className="text-white text-[12px]">
                                       Check
                                     </p>
                                     <CheckCircleOutlineOutlinedIcon className="text-white !text-[17px]" />
                                   </div>
-                                  <div class="bg-[linear-gradient(90deg,#CF2427_0%,#ED3B3E_100%)] flex items-center gap-1 px-2 pt-0.5 pb-1 rounded-full w-fit">
+                                  <div class="bg-[linear-gradient(90deg,#CF2427_0%,#ED3B3E_100%)] flex items-center gap-1 px-2 pt-0.5 pb-1 rounded-full w-fit cursor-pointer">
                                     <p className="text-white text-[12px]">
                                       Ignore
                                     </p>
@@ -1463,7 +1455,7 @@ const Chat = ({ slug, children }) => {
                               </p>
                             </div>
                           ))}
-                          <div class="z-10 absolute bottom-0 bg-[linear-gradient(0deg,#262D3E_0%,rgba(38,45,62,0)_100%)] w-[calc(100%_-_8px)] h-[20vh]"></div>
+                          {/* <div class="z-10 absolute bottom-0 bg-[linear-gradient(0deg,#262D3E_0%,rgba(38,45,62,0)_100%)] w-[calc(100%_-_8px)] h-[20vh]"></div> */}
                         </div>
                       </div>
 
