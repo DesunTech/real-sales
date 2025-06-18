@@ -24,8 +24,9 @@ import { apis } from "../../utils/apis";
 import google_logo from "../../../public/assets/icons/google-logo.svg";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import { showToast } from "../../utils/toastConfig";
-import LoopIcon from '@mui/icons-material/Loop';
+import LoopIcon from "@mui/icons-material/Loop";
 import { AddAuth, AddUser } from "../../redux/AuthReducer";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 
 const TryRealsales = (props) => {
   const { Post } = useApi();
@@ -58,6 +59,9 @@ const TryRealsales = (props) => {
   const [openLogin, setOpenLogin] = useState(false);
   const [signupLoading, setSignupLoading] = useState(false);
   const [loginLoading, setLoginLoading] = useState(false);
+  const [profileImage, setProfileImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
+  const [imageError, setImageError] = useState("");
 
   useEffect(() => {
     const handleResize = () => setWidth(window.innerWidth);
@@ -77,6 +81,78 @@ const TryRealsales = (props) => {
     setLoginfromData((pre) => ({ ...pre, [name]: value }));
     // Clear error for the field being typed in
     setLoginFromDataErr((pre) => ({ ...pre, [name]: "" }));
+  };
+
+  const validateImage = (file) => {
+    // Reset error state
+    setImageError("");
+
+    // Check file type
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+    if (!allowedTypes.includes(file.type)) {
+      setImageError("Please upload a valid image file (JPG, PNG, or GIF)");
+      return false;
+    }
+
+    // Check file size (5MB)
+    const maxSize = 5 * 1024 * 1024; // 5MB in bytes
+    if (file.size > maxSize) {
+      setImageError("Image size should be less than 5MB");
+      return false;
+    }
+
+    return true;
+  };
+
+  const handleImageUpload = (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    if (!validateImage(file)) {
+      event.target.value = ''; // Reset input
+      return;
+    }
+
+    // Create image object to check dimensions
+    const img = new window.Image();
+    img.src = URL.createObjectURL(file);
+
+    img.onload = () => {
+      // Check dimensions
+      const minDimension = 100; // minimum width/height in pixels
+      const maxDimension = 2000; // maximum width/height in pixels
+
+      if (img.width < minDimension || img.height < minDimension) {
+        setImageError(`Image dimensions should be at least ${minDimension}x${minDimension} pixels`);
+        event.target.value = ''; // Reset input
+        return;
+      }
+
+      if (img.width > maxDimension || img.height > maxDimension) {
+        setImageError(`Image dimensions should not exceed ${maxDimension}x${maxDimension} pixels`);
+        event.target.value = ''; // Reset input
+        return;
+      }
+
+      // If all validations pass
+      setProfileImage(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    };
+
+    img.onerror = () => {
+      setImageError("Failed to load image. Please try another file.");
+      event.target.value = ''; // Reset input
+    };
+  };
+
+  const removeImage = () => {
+    setProfileImage(null);
+    setImagePreview(null);
+    setImageError("");
   };
 
   const submitTryRealsales = async () => {
@@ -134,20 +210,24 @@ const TryRealsales = (props) => {
     if (valid) {
       setSignupLoading(true);
       try {
-        const data = await Post(signup, {
-          ...fromData,
-          phone_number: `${idc}${fromData?.phone_number}`,
-          // role_id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-          // access_level: "free_trial",
+        const formData = new FormData();
+        Object.keys(fromData).forEach((key) => {
+          formData.append(key, fromData[key]);
         });
+        if (profileImage) {
+          formData.append("profile_image", profileImage);
+        }
+        formData.append("phone_number", `${idc}${fromData?.phone_number}`);
+
+        const data = await Post(signup, formData);
         if (data?.token) {
           setFromDataErr(initialFormData);
           setFromData(initialFormData);
           localStorage.setItem("user", data?.user?.user_id);
           localStorage.setItem("token", data?.token);
           dispatch(TryRealsalesValue(false));
-          dispatch(AddAuth(data?.token))
-          dispatch(AddUser(data?.user))
+          dispatch(AddAuth(data?.token));
+          dispatch(AddUser(data?.user));
           router.push("/pricing/free-trial");
         }
       } catch (error) {
@@ -193,8 +273,8 @@ const TryRealsales = (props) => {
           setLoginFromDataErr(initialLoginFormData);
           setLoginfromData(initialLoginFormData);
           dispatch(TryRealsalesValue(false));
-          dispatch(AddAuth(data?.token))
-          dispatch(AddUser(data?.user))
+          dispatch(AddAuth(data?.token));
+          dispatch(AddUser(data?.user));
           router.push("/pricing/free-trial");
         } else {
           setLoginFromDataErr((prev) => ({
@@ -242,6 +322,7 @@ const TryRealsales = (props) => {
         setFromDataErr(initialFormData);
         dispatch(TryRealsalesValue(false));
         setOpenLogin(false);
+        removeImage();
       }}
       width={width > 720 ? "60%" : "90%"}
     >
@@ -268,7 +349,53 @@ const TryRealsales = (props) => {
                 Fill the details for Demo Session:
               </p>
             </div>
-
+            <div className="flex flex-col gap-2">
+              <label className="text-sm text-gray-600">Profile Picture</label>
+              <div className="flex items-center gap-4">
+                <div className="relative w-24 h-24 rounded-full overflow-hidden border-2 border-dashed border-gray-300 hover:border-[#FFDE5A] transition-colors">
+                  {imagePreview ? (
+                    <div className="relative w-full h-full group">
+                      <Image
+                        src={imagePreview}
+                        alt="Profile preview"
+                        fill
+                        className="object-cover"
+                      />
+                      <button
+                        onClick={removeImage}
+                        className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
+                      >
+                        <span className="text-white text-sm">Remove</span>
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center bg-gray-50">
+                      <CloudUploadIcon className="text-gray-400" />
+                    </div>
+                  )}
+                  <input
+                    type="file"
+                    accept="image/jpeg,image/png,image/gif"
+                    onChange={handleImageUpload}
+                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                  />
+                </div>
+                <div className="flex-1">
+                  <p className="text-sm text-gray-500">
+                    Upload a profile picture (max 5MB)
+                  </p>
+                  <p className="text-xs text-gray-400">
+                    Supported formats: JPG, PNG, GIF
+                  </p>
+                  <p className="text-xs text-gray-400">
+                    Min dimensions: 100x100px, Max: 2000x2000px
+                  </p>
+                  {imageError && (
+                    <p className="text-xs text-red-500 mt-1">{imageError}</p>
+                  )}
+                </div>
+              </div>
+            </div>
             <div className="flex flex-col gap-4">
               <div className="flex lg:flex-row flex-col gap-2">
                 <TextField
@@ -387,11 +514,19 @@ const TryRealsales = (props) => {
           </div>
           <CommonButton
             className={`w-full !border-0 !outline-0 !bg-[#FFDE5A] shadow-md !text-[#060606] text-[20px]`}
-            buttontext={signupLoading ? <LoopIcon className="animate-spin" /> : "START session"}
+            buttontext={
+              signupLoading ? (
+                <LoopIcon className="animate-spin" />
+              ) : (
+                "START session"
+              )
+            }
             onClick={() => submitTryRealsales()}
             disabled={signupLoading}
             icon={
-              !signupLoading && <DoneOutlinedIcon className="text-[#060606] !font-normal !text-[20px]" />
+              !signupLoading && (
+                <DoneOutlinedIcon className="text-[#060606] !font-normal !text-[20px]" />
+              )
             }
           />
           <div className="flex items-center">
@@ -481,11 +616,19 @@ const TryRealsales = (props) => {
               <div className="flex items-center gap-4">
                 <CommonButton
                   className={`w-full !border-0 !outline-0 !bg-[#FFDE5A] shadow-md !text-[#060606] text-[20px]`}
-                  buttontext={loginLoading ? <LoopIcon className="animate-spin" /> : "START session"}
+                  buttontext={
+                    loginLoading ? (
+                      <LoopIcon className="animate-spin" />
+                    ) : (
+                      "START session"
+                    )
+                  }
                   onClick={() => loginUser()}
                   disabled={loginLoading}
                   icon={
-                    !loginLoading && <DoneOutlinedIcon className="text-[#060606] !font-normal !text-[20px]" />
+                    !loginLoading && (
+                      <DoneOutlinedIcon className="text-[#060606] !font-normal !text-[20px]" />
+                    )
                   }
                 />
                 <GoogleLogin

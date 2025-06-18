@@ -95,13 +95,13 @@ const Persona = () => {
         className={`group md:w-56 w-[12rem] h-72 rounded overflow-hidden relative cursor-pointer shadow-lg`}
         onClick={() => createSession({ data: v, id: v?.persona_id })}
       >
-        <Image src={dummy} alt="persona" className="w-full h-full" />
+        <Image src={v?.profile_pic ? v?.profile_pic : dummy} alt="persona" width={192} height={108} className="w-full h-full" />
         <div className="bg-[#ffffff] w-full h-[calc(100%_-_85%)] p-2 absolute bottom-0 z-10">
           <p className="m-plus-rounded-1c-semibold text-lg text-[#1a1a1a] uppercase pb-1.5">
             {v?.name?.replace(/_/g, " ")}
           </p>
         </div>
-        <div className="bg-[#ffffff] w-full h-[calc(100%_-_35%)] p-2 absolute top-[35%] transition-opacity duration-300 opacity-0 group-hover:opacity-100 -z-20 group-hover:z-20">
+        <div className="bg-[#ffffff] overflow-auto w-full h-[calc(100%_-_35%)] p-2 absolute top-[35%] transition-opacity duration-300 opacity-0 group-hover:opacity-100 -z-20 group-hover:z-20">
           <p className="m-plus-rounded-1c-semibold text-lg text-[#1a1a1a] uppercase pb-1.5">
             {v?.name?.replace(/_/g, " ")}
           </p>
@@ -123,11 +123,15 @@ const Persona = () => {
           <p className="flex items-center gap-2 sora-medium md:text-[14px] text-[13px]">
             <span className="w-1 h-1 rounded-full bg-[#2d2d2d]" />
             {capitalize(v?.plant_size_impact?.name?.replace(/_/g, " "))}&nbsp;
-            {v?.plant_size_impact?.name === "small"
+          </p>
+          <p className="flex items-center gap-2 sora-medium md:text-[14px] text-[13px]">
+            <span className="w-1 h-1 rounded-full bg-[#2d2d2d]" />
+            {capitalize(v?.company_size_new?.name?.replace(/_/g, " "))}
+            {v?.company_size_new?.name === "small"
               ? "(1-500)"
-              : v?.plant_size_impact?.name === "medium"
+              : v?.company_size_new?.name === "medium"
               ? "(501-5,000)"
-              : v?.plant_size_impact?.name === "large"
+              : v?.company_size_new?.name === "large"
               ? "(5,000+)"
               : ""}
           </p>
