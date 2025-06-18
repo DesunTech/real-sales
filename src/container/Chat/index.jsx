@@ -837,23 +837,23 @@ const Chat = ({ slug, children }) => {
               <div className="flex flex-row gap-2">
                 {/* left */}
                 <div
-                  className={`relative ${
-                    checked ? "w-[70%]" : "w-full"
-                  } mb-40 h-[calc(100vh_-_8rem)] flex flex-col justify-between gap-4`}
+                  className={`relative ${checked ? "w-[70%]" : "w-full"
+                    } mb-40 h-[calc(100vh_-_8rem)] flex flex-col justify-between gap-4`}
                 >
                   {/* top */}
                   <div className="w-full flex flex-row items-start gap-2">
                     {/* top right */}
                     <div
-                      className={`${
-                        checked ? "w-[40%]" : "w-[28%]"
-                      } flex flex-col gap-4`}
+                      className={`${checked ? "w-[40%]" : "w-[28%]"
+                        } flex flex-col gap-4`}
                     >
                       <div className="bg-[linear-gradient(180deg,rgba(17,24,43,0.3)_0%,rgba(255,255,255,0.09)_100%)] rounded-[10px] p-4 flex items-center gap-4">
                         <div className="relative w-[125px] h-[160px] overflow-hidden cursor-pointer rounded-[10px]">
                           <Image
-                            src={persona_plant}
+                            src={personaData?.profile_pic ? personaData?.profile_pic : persona_plant}
                             alt="persona_plant"
+                            width={192}
+                            height={108}
                             className="w-full h-full"
                           />
                           <div className="absolute top-0 flex items-end w-full h-full bg-[linear-gradient(16.61deg,#000000_18.44%,rgba(0,0,0,0)_82.49%)]">
@@ -889,11 +889,10 @@ const Chat = ({ slug, children }) => {
                             </div>
                           </div>
                           <div
-                            className={`flex items-center gap-1 ${
-                              isAiSpeaking
+                            className={`flex items-center gap-1 ${isAiSpeaking
                                 ? "cursor-not-allowed"
                                 : "cursor-pointer"
-                            }`}
+                              }`}
                             onClick={isAiSpeaking ? undefined : handleClick}
                           >
                             <p className="text-white m-plus-rounded-1c-medium underline text-lg">
@@ -936,15 +935,13 @@ const Chat = ({ slug, children }) => {
                     </div>
                     {/* top left */}
                     <div
-                      className={`${
-                        checked ? "w-[60%]" : "w-[72%]"
-                      } flex flex-col items-center gap-2`}
+                      className={`${checked ? "w-[60%]" : "w-[72%]"
+                        } flex flex-col items-center gap-2`}
                     >
                       <hr className="border-[#FFFFFF33] w-full" />
                       <div
-                        className={`relative w-full ${
-                          checked ? "h-[80vh]" : "h-[85vh]"
-                        } overflow-y-auto`}
+                        className={`relative w-full ${checked ? "h-[80vh]" : "h-[85vh]"
+                          } overflow-y-auto`}
                       >
                         <div className="absolute inset-0 bg-[url('../../public/assets/images/RealSales-abstracts/glow-light-1.png')] bg-cover bg-center bg-no-repeat opacity-20"></div>
                         {slug === "audio" ? (
@@ -953,11 +950,10 @@ const Chat = ({ slug, children }) => {
                             <div className="w-[90%] flex items-start gap-1.5 z-10">
                               <div className="flex items-center gap-1.5 -mt-2 relative">
                                 <button
-                                  className={`w-10 h-10 ${
-                                    isMicClicked
+                                  className={`w-10 h-10 ${isMicClicked
                                       ? "bg-[#26AD35] hover:bg-[#26AD35]"
                                       : "bg-[#FFFFFF1A] hover:bg-[#FFFFFF33]"
-                                  } rounded-full flex items-center justify-center cursor-pointer transition-colors`}
+                                    } rounded-full flex items-center justify-center cursor-pointer transition-colors`}
                                   onClick={() => {
                                     toggleSpeechRecognition();
                                     setIsVolClicked(false);
@@ -965,11 +961,10 @@ const Chat = ({ slug, children }) => {
                                   }}
                                 >
                                   <MicNoneOutlinedIcon
-                                    className={`${
-                                      isMicClicked
+                                    className={`${isMicClicked
                                         ? "text-white"
                                         : "text-[#FFFFFF80]"
-                                    } !text-[20px]`}
+                                      } !text-[20px]`}
                                   />
                                 </button>
                                 {tour && (
@@ -1059,11 +1054,10 @@ const Chat = ({ slug, children }) => {
                               <div className="flex items-center gap-1.5">
                                 <button
                                   className={`w-10 h-10 flex-s 
-                                  ${
-                                    isVolClicked
+                                  ${isVolClicked
                                       ? "bg-[#26AD35] hover:bg-[#26AD35]"
                                       : "bg-[#FFFFFF1A] hover:bg-[#FFFFFF33]"
-                                  }
+                                    }
                                 rounded-full flex items-center justify-center cursor-pointer transition-colors`}
                                   onClick={() => {
                                     if (!isVolClicked) {
@@ -1075,21 +1069,20 @@ const Chat = ({ slug, children }) => {
                                   }}
                                 >
                                   <VolumeUpIcon
-                                    className={`${
-                                      isVolClicked
+                                    className={`${isVolClicked
                                         ? "text-white"
                                         : "text-[#FFFFFF80]"
-                                    } !text-[20px]`}
+                                      } !text-[20px]`}
                                   />
                                 </button>
                                 {isAiSpeaking
                                   ? resChat[resChat.length - 1]?.response && (
-                                      <Image
-                                        src={soundWaveAi}
-                                        alt="soundWaveAi"
-                                        className="w-8 h-8"
-                                      />
-                                    )
+                                    <Image
+                                      src={soundWaveAi}
+                                      alt="soundWaveAi"
+                                      className="w-8 h-8"
+                                    />
+                                  )
                                   : null}
                                 {/* {isAiSpeaking && <SpeakingIndicator isActive={true} color="#FFDE5A" transcript={resChat[resChat.length - 1]?.response || ""} isAi={true} />} */}
                                 {/* {isAiSpeaking && (
@@ -1113,16 +1106,16 @@ const Chat = ({ slug, children }) => {
                               &nbsp;how are you !! */}
                                 {resChatView?.length
                                   ? resChatView.map((v, i) => (
-                                      <p
-                                        key={i}
-                                        className="pr-4 text-white text-base sora-regular"
-                                      >
-                                        <span className="text-[#FFDE5A] sora-semibold">
-                                          AI Client
-                                        </span>
-                                        &nbsp;{v?.response}
-                                      </p>
-                                    ))
+                                    <p
+                                      key={i}
+                                      className="pr-4 text-white text-base sora-regular"
+                                    >
+                                      <span className="text-[#FFDE5A] sora-semibold">
+                                        AI Client
+                                      </span>
+                                      &nbsp;{v?.response}
+                                    </p>
+                                  ))
                                   : null}
                               </div>
                             </div>
@@ -1229,9 +1222,8 @@ const Chat = ({ slug, children }) => {
                   </div>
                   {/* bottom */}
                   <div
-                    className={`fixed bottom-8 ${
-                      checked ? "w-[60%]" : "w-[90%]"
-                    } flex flex-col items-start gap-2 z-20`}
+                    className={`fixed bottom-8 ${checked ? "w-[60%]" : "w-[90%]"
+                      } flex flex-col items-start gap-2 z-20`}
                   >
                     <div>
                       <p className="sora-regular text-white text-sm">
@@ -1282,11 +1274,10 @@ const Chat = ({ slug, children }) => {
                           }}
                         />
                         <div
-                          className={`flex items-center !text-[#060606D9] bg-[#FFE942] hover:bg-[#ffdc42] !capitalize py-1 px-1.5 !rounded-full mr-2 ${
-                            isAiSpeaking
+                          className={`flex items-center !text-[#060606D9] bg-[#FFE942] hover:bg-[#ffdc42] !capitalize py-1 px-1.5 !rounded-full mr-2 ${isAiSpeaking
                               ? "cursor-not-allowed"
                               : "cursor-pointer"
-                          }`}
+                            }`}
                           onClick={isAiSpeaking ? undefined : handleClick}
                         >
                           <AttachFileIcon />
@@ -1308,11 +1299,10 @@ const Chat = ({ slug, children }) => {
                               }
                             }
                           }}
-                          className={`flex items-center gap-2 !text-[#060606D9] bg-[#FFE942] hover:bg-[#ffdc42] !capitalize !py-1 !px-4 !rounded-full ${
-                            isAiSpeaking
+                          className={`flex items-center gap-2 !text-[#060606D9] bg-[#FFE942] hover:bg-[#ffdc42] !capitalize !py-1 !px-4 !rounded-full ${isAiSpeaking
                               ? "cursor-not-allowed"
                               : "cursor-pointer"
-                          }`}
+                            }`}
                         >
                           {/* <span className="m-plus-rounded-1c-medium">
                           Send&nbsp;Message
@@ -1321,15 +1311,13 @@ const Chat = ({ slug, children }) => {
                         </div>
                       </div>
                       <div
-                        className={`w-10 h-10 relative ${
-                          isAutoMode ? "bg-[#26AD35]" : "bg-[#FFFFFF1A]"
-                        } rounded-full flex items-center justify-center cursor-pointer`}
+                        className={`w-10 h-10 relative ${isAutoMode ? "bg-[#26AD35]" : "bg-[#FFFFFF1A]"
+                          } rounded-full flex items-center justify-center cursor-pointer`}
                         onClick={toggleAutoMode}
                       >
                         <MicNoneOutlinedIcon
-                          className={`${
-                            isAutoMode ? "text-white" : "text-[#FFFFFF80]"
-                          } !text-[20px]`}
+                          className={`${isAutoMode ? "text-white" : "text-[#FFFFFF80]"
+                            } !text-[20px]`}
                         />
                         {tour && (
                           <div className="left-[130%] absolute flex items-center">
@@ -1392,27 +1380,24 @@ const Chat = ({ slug, children }) => {
                         <div className="flex flex-col gap-2 h-[55vh] overflow-y-auto">
                           {coachingArr?.map((v, idx) => (
                             <div
-                              className={`border-l-4 border-solid relative ${
-                                idx % 2 === 0
+                              className={`border-l-4 border-solid relative ${idx % 2 === 0
                                   ? "border-[#26AD35B2] bg-[linear-gradient(90deg,rgba(38,173,53,0.2)_0%,rgba(38,173,53,0)_63.5%)]"
                                   : "border-[#E59E2CB2] bg-[linear-gradient(90deg,rgba(229,158,44,0.2)_0%,rgba(229,158,44,0)_63.5%)]"
-                              }`}
+                                }`}
                             >
                               <div className="flex flex-col gap-2 p-4">
                                 <div className="relative flex items-center justify-start">
                                   <div
-                                    className={`w-10 h-10 ${
-                                      idx % 2 === 0
+                                    className={`w-10 h-10 ${idx % 2 === 0
                                         ? "bg-[#26AD35]"
                                         : "bg-[#E59E2C]"
-                                    } rounded-full`}
+                                      } rounded-full`}
                                   />
                                   <p
-                                    class={`absolute left-1 rounded-[5px] ${
-                                      idx % 2 === 0
+                                    class={`absolute left-1 rounded-[5px] ${idx % 2 === 0
                                         ? "bg-[linear-gradient(90deg,#26AD35_0%,#077A15_100%)]"
                                         : "bg-[linear-gradient(90deg,#E59E2C_0%,#A36B12_100%)]"
-                                    } w-fit sora-regular text-sm text-white px-3 py-1 capitalize`}
+                                      } w-fit sora-regular text-sm text-white px-3 py-1 capitalize`}
                                   >
                                     Response Tips
                                   </p>
@@ -1505,7 +1490,7 @@ const Chat = ({ slug, children }) => {
                             {openAnswer === i ? (
                               <p
                                 className="bg-[#00000000] border-2 border-solid border-[#7d7349] rounded-[5px] py-2 px-3 flex items-start gap-1 m-plus-rounded-1c-regular text-white text-[14px]"
-                                onClick={() => {}}
+                                onClick={() => { }}
                               >
                                 {v?.answer}
                               </p>
