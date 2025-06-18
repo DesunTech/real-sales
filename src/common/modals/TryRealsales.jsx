@@ -349,7 +349,7 @@ const TryRealsales = (props) => {
                 Fill the details for Demo Session:
               </p>
             </div>
-            <div className="flex flex-col gap-2">
+            {/* <div className="flex flex-col gap-2">
               <label className="text-sm text-gray-600">Profile Picture</label>
               <div className="flex items-center gap-4">
                 <div className="relative w-24 h-24 rounded-full overflow-hidden border-2 border-dashed border-gray-300 hover:border-[#FFDE5A] transition-colors">
@@ -395,7 +395,7 @@ const TryRealsales = (props) => {
                   )}
                 </div>
               </div>
-            </div>
+            </div> */}
             <div className="flex flex-col gap-4">
               <div className="flex lg:flex-row flex-col gap-2">
                 <TextField
