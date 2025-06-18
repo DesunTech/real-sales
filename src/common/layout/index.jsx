@@ -65,10 +65,14 @@ const Layout = ({ children }) => {
           dispatch(AddUser(data));
         }
         console.log(data, "__data___");
-      } catch (error) {}
+      } catch (error) { }
     };
 
-    getUser();
+    if (user?.user_id) {
+      getUser();
+    } else if(userId){
+      getUser();
+    }
   }, [user?.user_id]);
 
   /**
@@ -235,7 +239,7 @@ const Layout = ({ children }) => {
         dispatch(PersonaTypeValue(false));
         dispatch(SessionModesValue(true));
       }
-    } catch (error) {}
+    } catch (error) { }
   };
 
   /**
