@@ -1,5 +1,34 @@
-import axiosInstance from "../utils/axiosInstance";
+import axios from 'axios';
 import { showToast } from "../utils/toastConfig";
+
+const axiosInstance = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  // Do not set default Content-Type here!
+});
+
+// Add a request interceptor
+axiosInstance.interceptors.request.use(config => {
+  if (typeof window !== 'undefined') {
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers['Authorization'] = `Bearer ${token}`;
+    }
+    // Only set Content-Type to application/json if data is not FormData
+    if (
+      config.data &&
+      typeof window.FormData !== 'undefined' &&
+      config.data instanceof window.FormData
+    ) {
+      // Let axios set the correct Content-Type for FormData
+      delete config.headers['Content-Type'];
+    } else {
+      config.headers['Content-Type'] = 'application/json';
+    }
+  }
+  return config;
+}, error => {
+  return Promise.reject(error);
+});
 
 /**
  * Makes a GET request to the specified URL.

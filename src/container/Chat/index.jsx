@@ -164,7 +164,7 @@ const styles = `
 
 const Chat = ({ slug, children }) => {
   const { Post } = useApi();
-  const { chat_chat, coaching } = apis;
+  const { chat_chat, coaching, documents_upload } = apis;
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -198,6 +198,7 @@ const Chat = ({ slug, children }) => {
   const [tour, setTour] = useState(false);
   const [oneLineChatText, setOneLineChatText] = useState("");
   const [coachingMessage, setCoachingMessage] = useState("");
+  const [addDocText, setAddDocText] = useState({});
 
   useEffect(() => {
     setTour(true);
@@ -566,7 +567,9 @@ const Chat = ({ slug, children }) => {
 
     try {
       let data = await Post(`${chat_chat}/${session_id}`, {
-        user_input: oneLineText,
+        user_input: addDocText
+          ? `${oneLineText} This is the sales document ${addDocText?.summary}`
+          : oneLineText,
         // industry: personaData?.industry,
         // manufacturing_model: personaData?.manufacturing_model,
         // experience_level: personaData?.experience_level,
@@ -576,6 +579,7 @@ const Chat = ({ slug, children }) => {
       });
 
       if (data?.response) {
+        setAddDocText({});
         setIsMicClicked(false);
         setTranscriptDummy("");
         setTriggerSenChat(false);
@@ -682,7 +686,7 @@ const Chat = ({ slug, children }) => {
 
   const fileInputRef = useRef(null);
 
-  const handleFileChange = (e) => {
+  const handleFileChange = async (e) => {
     const files = e.target.files;
     const validExtensions = ["doc", "docx", "pdf"];
 
@@ -693,10 +697,27 @@ const Chat = ({ slug, children }) => {
       });
 
       if (validFiles.length > 0) {
-        console.log("Valid files:", validFiles);
-        // Process valid files here
+        try {
+          const formData = new FormData();
+          validFiles.forEach((file) => {
+            formData.append("file", file); // "files" is the field name; adjust if your backend expects a different name
+          });
+          console.log("Valid files:", formData);
+          let data = await Post(documents_upload, formData);
+          // Clear the file input after successful upload
+          if (data?.summary) {
+            setAddDocText(data);
+          }
+          if (fileInputRef.current) fileInputRef.current.value = "";
+        } catch (error) {
+          console.log(error, "_error_");
+          // Clear the file input on error as well
+          if (fileInputRef.current) fileInputRef.current.value = "";
+        }
       } else {
-        alert("Please upload only .doc or .docx files.");
+        alert("Please upload only .doc, .docx, or .pdf files.");
+        // Clear the file input if invalid
+        if (fileInputRef.current) fileInputRef.current.value = "";
       }
     }
   };
@@ -923,26 +944,34 @@ const Chat = ({ slug, children }) => {
                               </span>
                             </div>
                           </div>
-                          <div
-                            className={`flex items-center gap-1 ${
-                              isAiSpeaking
-                                ? "cursor-not-allowed"
-                                : "cursor-pointer"
-                            }`}
-                            onClick={isAiSpeaking ? undefined : handleClick}
-                          >
-                            <p className="text-white m-plus-rounded-1c-medium underline text-lg">
-                              Upload&nbsp;Files
+                          {addDocText?.filename ? (
+                            <p className="text-white m-plus-rounded-1c-medium text-base">
+                              {addDocText?.filename}
                             </p>
-                            <AddCircleOutlineSharpIcon className="text-white" />
-                            <input
-                              type="file"
-                              ref={fileInputRef}
-                              className="hidden"
-                              accept=".doc,.docx,.pdf"
-                              onChange={handleFileChange}
-                            />
-                          </div>
+                          ) : (
+                            <div
+                              className={`flex items-center gap-1 ${
+                                isAiSpeaking
+                                  ? "cursor-not-allowed"
+                                  : "cursor-pointer"
+                              }`}
+                              onClick={isAiSpeaking ? undefined : handleClick}
+                            >
+                              <p className="text-white m-plus-rounded-1c-medium underline text-lg">
+                                Upload&nbsp;Files
+                              </p>
+                              <AddCircleOutlineSharpIcon className="text-white" />
+
+                              <input
+                                type="file"
+                                ref={fileInputRef}
+                                className="hidden"
+                                accept=".doc,.docx,.pdf"
+                                onChange={handleFileChange}
+                                disabled={!addDocText?.summary ? false : true}
+                              />
+                            </div>
+                          )}
                         </div>
                       </div>
 
@@ -1320,6 +1349,8 @@ const Chat = ({ slug, children }) => {
                           className={`flex items-center !text-[#060606D9] bg-[#FFE942] hover:bg-[#ffdc42] !capitalize py-1 px-1.5 !rounded-full mr-2 ${
                             isAiSpeaking
                               ? "cursor-not-allowed"
+                              : addDocText?.summary
+                              ? "cursor-not-allowed"
                               : "cursor-pointer"
                           }`}
                           onClick={isAiSpeaking ? undefined : handleClick}
@@ -1331,6 +1362,7 @@ const Chat = ({ slug, children }) => {
                             className="hidden"
                             accept=".doc,.docx,.pdf"
                             onChange={handleFileChange}
+                            disabled={!addDocText?.summary ? false : true}
                           />
                         </div>
                         <div

@@ -90,7 +90,8 @@ const Persona = () => {
       (!modelFilter || v?.manufacturing_model?.name === modelFilter) &&
       (!plantSizeFilter || v?.plant_size_impact?.name === plantSizeFilter) &&
       (!companySizeFilter || v?.company_size_new?.name === companySizeFilter) &&
-      (!prods || v?.persona_products?.some((val) => val?.product?.name === prods))
+      (!prods ||
+        v?.persona_products?.some((val) => val?.product?.name === prods))
     );
   });
 
@@ -249,7 +250,9 @@ const Persona = () => {
           <div className="w-full flex flex-wrap gap-4">
             {/* Role */}
             <FormControl variant="outlined" className="w-[100px]">
-              <InputLabel id="role-filter-label">Role</InputLabel>
+              <InputLabel id="role-filter-label" className="!bg-white !px-2">
+                Role
+              </InputLabel>
               <Select
                 labelId="role-filter-label"
                 value={roleFilter}
@@ -267,7 +270,12 @@ const Persona = () => {
 
             {/* Industries */}
             <FormControl variant="outlined" className="w-[120px]">
-              <InputLabel id="industry-filter-label">Industry</InputLabel>
+              <InputLabel
+                id="industry-filter-label"
+                className="!bg-white !px-2"
+              >
+                Industry
+              </InputLabel>
               <Select
                 labelId="industry-filter-label"
                 value={industryFilter}
@@ -290,7 +298,12 @@ const Persona = () => {
             {/* products */}
             {products?.length ? (
               <FormControl variant="outlined" className="w-[130px]">
-                <InputLabel id="plant-size-filter-label">Products</InputLabel>
+                <InputLabel
+                  id="plant-size-filter-label"
+                  className="!bg-white !px-2"
+                >
+                  Products
+                </InputLabel>
                 <Select
                   labelId="plant-size-filter-label"
                   value={prods}
@@ -309,7 +322,12 @@ const Persona = () => {
 
             {/* Plant size */}
             <FormControl variant="outlined" className="w-[130px]">
-              <InputLabel id="plant-size-filter-label">Plant Size</InputLabel>
+              <InputLabel
+                id="plant-size-filter-label"
+                className="!bg-white !px-2"
+              >
+                Plant Size
+              </InputLabel>
               <Select
                 labelId="plant-size-filter-label"
                 value={plantSizeFilter}
@@ -326,8 +344,11 @@ const Persona = () => {
             </FormControl>
 
             {/* company size */}
-            <FormControl variant="outlined" className="w-[160px]">
-              <InputLabel id="plant-size-filter-label">
+            <FormControl variant="outlined" className="w-[170px]">
+              <InputLabel
+                id="plant-size-filter-label"
+                className="!bg-white !px-2"
+              >
                 Company Sizes
               </InputLabel>
               <Select
@@ -353,8 +374,8 @@ const Persona = () => {
             </FormControl>
 
             {/* Manufacturing */}
-            <FormControl variant="outlined" className="w-[200px]">
-              <InputLabel id="model-filter-label">
+            <FormControl variant="outlined" className="w-[210px]">
+              <InputLabel id="model-filter-label" className="!bg-white !px-2">
                 Manufacturing Model
               </InputLabel>
               <Select

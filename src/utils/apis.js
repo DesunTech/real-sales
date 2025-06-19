@@ -22,4 +22,5 @@ export const apis = {
     "/v1/interaction-mode-plant-size-impacts/",
   performance_reports: "/v1/performance-reports/",
   coaching: "/v1/ai-coaching/coaching/",
+  documents_upload: "/v1/documents/upload",
 };
