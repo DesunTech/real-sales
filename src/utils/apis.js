@@ -14,8 +14,12 @@ export const apis = {
   ai_roles: "/v1/ai-roles/",
   manufacturing_models: "/v1/manufacturing-models/",
   plant_size_impacts: "/v1/plant-size-impacts/",
+  product_categories: "/v1/produced-product-categories/",
   interaction_mode_ai_roles: "/v1/interaction-mode-ai-roles/",
-  interaction_mode_manufacturing_models: "/v1/interaction-mode-manufacturing-models/",
-  interaction_mode_plant_size_impacts: "/v1/interaction-mode-plant-size-impacts/",
+  interaction_mode_manufacturing_models:
+    "/v1/interaction-mode-manufacturing-models/",
+  interaction_mode_plant_size_impacts:
+    "/v1/interaction-mode-plant-size-impacts/",
   performance_reports: "/v1/performance-reports/",
+  coaching: "/v1/ai-coaching/coaching/",
 };
