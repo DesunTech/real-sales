@@ -6,7 +6,13 @@ import { apis } from "../../utils/apis";
 import { SessionModesValue } from "../../redux/OpenModal";
 import { useDispatch } from "react-redux";
 import RotateRightIcon from "@mui/icons-material/RotateRight";
-import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  Button,
+} from "@mui/material";
 
 const Persona = () => {
   const dispatch = useDispatch();
@@ -84,9 +90,11 @@ const Persona = () => {
       (!modelFilter || v?.manufacturing_model?.name === modelFilter) &&
       (!plantSizeFilter || v?.plant_size_impact?.name === plantSizeFilter) &&
       (!companySizeFilter || v?.company_size_new?.name === companySizeFilter) &&
-      (!prods || v?.product?.name === prods)
+      (!prods || v?.persona_products?.some((val) => val?.product?.name === prods))
     );
   });
+
+  // console.log( personaData[3], (personaData[3]?.persona_products.filter((val) => val?.product?.name === prods).map((itm)=> itm?.product?.name)), "filteredPersonas");
 
   const createSession = async ({ data, id }) => {
     setLoading(true);
@@ -139,6 +147,29 @@ const Persona = () => {
       setModeId(localStorage.getItem("mode_id"));
     }
   }, []);
+
+  // Function to check if any filter is active
+  const isAnyFilterActive = () => {
+    return (
+      roleFilter ||
+      industryFilter ||
+      prods ||
+      modelFilter ||
+      plantSizeFilter ||
+      companySizeFilter
+    );
+  };
+
+  // Function to clear all filters
+  const clearAllFilters = () => {
+    setRoleFilter("");
+    setIndustryFilter("");
+    setIndustryId("");
+    setProds("");
+    setModelFilter("");
+    setPlantSizeFilter("");
+    setCompanySizeFilter("");
+  };
 
   const PersonaCard = ({ v }) => {
     return (
@@ -269,14 +300,7 @@ const Persona = () => {
                   <MenuItem value="">All Products</MenuItem>
                   {products.map((prod) => (
                     <MenuItem key={prod} value={prod}>
-                      {capitalize(prod?.replace(/_/g, " "))}&nbsp;
-                      {/* {size === "small"
-                      ? "(1-500)"
-                      : size === "medium"
-                      ? "(501-5,000)"
-                      : size === "large"
-                      ? "(5,000+)"
-                      : ""} */}
+                      {capitalize(prod?.replace(/_/g, " "))}
                     </MenuItem>
                   ))}
                 </Select>
@@ -295,14 +319,7 @@ const Persona = () => {
                 <MenuItem value="">All Plant Sizes</MenuItem>
                 {plantSizes.map((size) => (
                   <MenuItem key={size} value={size}>
-                    {capitalize(size?.replace(/_/g, " "))}&nbsp;
-                    {/* {size === "small"
-                      ? "(1-500)"
-                      : size === "medium"
-                      ? "(501-5,000)"
-                      : size === "large"
-                      ? "(5,000+)"
-                      : ""} */}
+                    {capitalize(size?.replace(/_/g, " "))}
                   </MenuItem>
                 ))}
               </Select>
@@ -354,6 +371,22 @@ const Persona = () => {
                 ))}
               </Select>
             </FormControl>
+
+            {/* Clear Filter Button */}
+            {isAnyFilterActive() && (
+              <Button
+                variant="contained"
+                onClick={clearAllFilters}
+                sx={{
+                  backgroundColor: "#fe0000",
+                  "&:hover": {
+                    backgroundColor: "#dd0000",
+                  },
+                }}
+              >
+                Clear Filters
+              </Button>
+            )}
           </div>
           <div className="w-full flex flex-wrap items-center justify-self-start gap-4">
             {filteredPersonas?.length ? (
