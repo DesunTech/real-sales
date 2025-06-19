@@ -11,7 +11,7 @@ import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 const Persona = () => {
   const dispatch = useDispatch();
   const { Get, Post } = useApi();
-  const { ai_personas, sessions } = apis;
+  const { ai_personas, sessions, product_categories } = apis;
 
   let capitalize = (str) => {
     if (!str) return "";
@@ -23,15 +23,44 @@ const Persona = () => {
   const [loading, setLoading] = useState(false);
   const [roleFilter, setRoleFilter] = useState("");
   const [industryFilter, setIndustryFilter] = useState("");
+  const [industryId, setIndustryId] = useState("");
+  const [prods, setProds] = useState("");
   const [modelFilter, setModelFilter] = useState("");
   const [plantSizeFilter, setPlantSizeFilter] = useState("");
+  const [companySizeFilter, setCompanySizeFilter] = useState("");
+  const [product, setProduct] = useState([]);
+
+  console.log(
+    product.filter((v) => v?.industry_id === industryId).map((val) => val),
+    "indus_Val"
+  );
 
   // Extract unique values for dropdowns
   const roles = Array.from(
     new Set(personaData.map((v) => v?.ai_role?.name).filter(Boolean))
   );
   const industries = Array.from(
-    new Set(personaData.map((v) => v?.industry?.name).filter(Boolean))
+    personaData
+      .map((v) =>
+        v?.industry && v.industry.name && v.industry.industry_id
+          ? { name: v.industry.name, id: v.industry.industry_id }
+          : null
+      )
+      .filter(Boolean)
+      .reduce((acc, curr) => {
+        if (!acc.has(curr.id)) acc.set(curr.id, curr);
+        return acc;
+      }, new Map())
+      .values()
+  );
+  const products = Array.from(
+    new Set(
+      product
+        .filter((v) => v?.industry_id === industryId)
+        .map((val) => val)
+        .map((itm) => itm?.name)
+        .filter(Boolean)
+    )
   );
   const models = Array.from(
     new Set(
@@ -41,6 +70,11 @@ const Persona = () => {
   const plantSizes = Array.from(
     new Set(personaData.map((v) => v?.plant_size_impact?.name).filter(Boolean))
   );
+  const companySize = Array.from(
+    new Set(personaData.map((v) => v?.company_size_new?.name).filter(Boolean))
+  );
+
+  console.log(industries, "industries");
 
   // Filtered data
   const filteredPersonas = personaData.filter((v) => {
@@ -48,7 +82,9 @@ const Persona = () => {
       (!roleFilter || v?.ai_role?.name === roleFilter) &&
       (!industryFilter || v?.industry?.name === industryFilter) &&
       (!modelFilter || v?.manufacturing_model?.name === modelFilter) &&
-      (!plantSizeFilter || v?.plant_size_impact?.name === plantSizeFilter)
+      (!plantSizeFilter || v?.plant_size_impact?.name === plantSizeFilter) &&
+      (!companySizeFilter || v?.company_size_new?.name === companySizeFilter) &&
+      (!prods || v?.product?.name === prods)
     );
   });
 
@@ -72,18 +108,33 @@ const Persona = () => {
     }
   };
 
-  useEffect(() => {
-    const getRealAIPersona = async () => {
-      try {
-        let data = await Get(ai_personas);
-        if (data?.length) {
-          setPersonaData(data);
-        }
-      } catch (error) {
-        console.log(error);
+  const readProduct = async () => {
+    try {
+      let data = await Get(product_categories);
+      if (data?.length) {
+        setProduct(data);
+      } else {
+        setProduct([]);
       }
-    };
+    } catch (error) {
+      setProduct([]);
+      console.log(error, "_error_");
+    }
+  };
+
+  const getRealAIPersona = async () => {
+    try {
+      let data = await Get(ai_personas);
+      if (data?.length) {
+        setPersonaData(data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
     getRealAIPersona();
+    readProduct();
     if (typeof window !== "undefined") {
       setModeId(localStorage.getItem("mode_id"));
     }
@@ -95,7 +146,13 @@ const Persona = () => {
         className={`group md:w-56 w-[12rem] h-72 rounded overflow-hidden relative cursor-pointer shadow-lg`}
         onClick={() => createSession({ data: v, id: v?.persona_id })}
       >
-        <Image src={v?.profile_pic ? v?.profile_pic : dummy} alt="persona" width={192} height={108} className="w-full h-full" />
+        <Image
+          src={v?.profile_pic ? v?.profile_pic : dummy}
+          alt="persona"
+          width={192}
+          height={108}
+          className="w-full h-full"
+        />
         <div className="bg-[#ffffff] w-full h-[calc(100%_-_85%)] p-2 absolute bottom-0 z-10">
           <p className="m-plus-rounded-1c-semibold text-lg text-[#1a1a1a] uppercase pb-1.5">
             {v?.name?.replace(/_/g, " ")}
@@ -108,25 +165,25 @@ const Persona = () => {
           <p className="font-medium m-plus-rounded-1c-medium text-[1.05rem] capitalize">
             Details:
           </p>
-          <p className="flex items-center gap-2 sora-medium md:text-[14px] text-[13px]">
-            <span className="w-1 h-1 rounded-full bg-[#2d2d2d]" />
+          <p className="flex items-start gap-2 sora-medium md:text-[14px] text-[13px]">
+            <span className="p-0.5 mt-2 rounded-full bg-[#2d2d2d]" />
             {capitalize(v?.ai_role?.name?.replace(/_/g, " "))}
           </p>
-          <p className="flex items-center gap-2 sora-medium md:text-[14px] text-[13px]">
-            <span className="w-1 h-1 rounded-full bg-[#2d2d2d]" />
+          <p className="flex items-start gap-2 sora-medium md:text-[14px] text-[13px]">
+            <span className="p-0.5 mt-2 rounded-full bg-[#2d2d2d]" />
             {capitalize(v?.industry?.name?.replace(/_/g, " "))}
           </p>
-          <p className="flex items-center gap-2 sora-medium md:text-[14px] text-[13px]">
-            <span className="w-1 h-1 rounded-full bg-[#2d2d2d]" />
+          <p className="flex items-start gap-2 sora-medium md:text-[14px] text-[13px]">
+            <span className="p-0.5 mt-2 rounded-full bg-[#2d2d2d]" />
             {capitalize(v?.manufacturing_model?.name?.replace(/_/g, " "))}
           </p>
-          <p className="flex items-center gap-2 sora-medium md:text-[14px] text-[13px]">
-            <span className="w-1 h-1 rounded-full bg-[#2d2d2d]" />
-            {capitalize(v?.plant_size_impact?.name?.replace(/_/g, " "))}&nbsp;
+          <p className="flex items-start gap-2 sora-medium md:text-[14px] text-[13px]">
+            <span className="p-0.5 mt-2 rounded-full bg-[#2d2d2d]" />
+            {capitalize(v?.plant_size_impact?.name?.replace(/_/g, " "))}
           </p>
-          <p className="flex items-center gap-2 sora-medium md:text-[14px] text-[13px]">
-            <span className="w-1 h-1 rounded-full bg-[#2d2d2d]" />
-            {capitalize(v?.company_size_new?.name?.replace(/_/g, " "))}
+          <p className="flex items-start gap-2 sora-medium md:text-[14px] text-[13px]">
+            <span className="p-0.5 mt-2 rounded-full bg-[#2d2d2d]" />
+            {capitalize(v?.company_size_new?.name?.replace(/_/g, " "))}&nbsp;
             {v?.company_size_new?.name === "small"
               ? "(1-500)"
               : v?.company_size_new?.name === "medium"
@@ -135,8 +192,8 @@ const Persona = () => {
               ? "(5,000+)"
               : ""}
           </p>
-          <p className="flex items-center gap-2 sora-medium md:text-[14px] text-[13px]">
-            <span className="w-1 h-1 rounded-full bg-[#2d2d2d]" />
+          <p className="flex items-start gap-2 sora-medium md:text-[14px] text-[13px]">
+            <span className="p-0.5 mt-2 rounded-full bg-[#2d2d2d]" />
             {v?.geography?.replace(/_/g, " ")}
           </p>
         </div>
@@ -159,6 +216,7 @@ const Persona = () => {
 
           {/* Filters */}
           <div className="w-full flex flex-wrap gap-4">
+            {/* Role */}
             <FormControl variant="outlined" className="w-[100px]">
               <InputLabel id="role-filter-label">Role</InputLabel>
               <Select
@@ -175,6 +233,8 @@ const Persona = () => {
                 ))}
               </Select>
             </FormControl>
+
+            {/* Industries */}
             <FormControl variant="outlined" className="w-[120px]">
               <InputLabel id="industry-filter-label">Industry</InputLabel>
               <Select
@@ -185,12 +245,45 @@ const Persona = () => {
               >
                 <MenuItem value="">All Industries</MenuItem>
                 {industries.map((ind) => (
-                  <MenuItem key={ind} value={ind}>
-                    {capitalize(ind?.replace(/_/g, " "))}
+                  <MenuItem
+                    key={ind?.name}
+                    value={ind?.name}
+                    onClick={() => setIndustryId(ind?.id)}
+                  >
+                    {capitalize(ind?.name?.replace(/_/g, " "))}
                   </MenuItem>
                 ))}
               </Select>
             </FormControl>
+
+            {/* products */}
+            {products?.length ? (
+              <FormControl variant="outlined" className="w-[130px]">
+                <InputLabel id="plant-size-filter-label">Products</InputLabel>
+                <Select
+                  labelId="plant-size-filter-label"
+                  value={prods}
+                  onChange={(e) => setProds(e.target.value)}
+                  label="Products"
+                >
+                  <MenuItem value="">All Products</MenuItem>
+                  {products.map((prod) => (
+                    <MenuItem key={prod} value={prod}>
+                      {capitalize(prod?.replace(/_/g, " "))}&nbsp;
+                      {/* {size === "small"
+                      ? "(1-500)"
+                      : size === "medium"
+                      ? "(501-5,000)"
+                      : size === "large"
+                      ? "(5,000+)"
+                      : ""} */}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            ) : null}
+
+            {/* Plant size */}
             <FormControl variant="outlined" className="w-[130px]">
               <InputLabel id="plant-size-filter-label">Plant Size</InputLabel>
               <Select
@@ -201,6 +294,33 @@ const Persona = () => {
               >
                 <MenuItem value="">All Plant Sizes</MenuItem>
                 {plantSizes.map((size) => (
+                  <MenuItem key={size} value={size}>
+                    {capitalize(size?.replace(/_/g, " "))}&nbsp;
+                    {/* {size === "small"
+                      ? "(1-500)"
+                      : size === "medium"
+                      ? "(501-5,000)"
+                      : size === "large"
+                      ? "(5,000+)"
+                      : ""} */}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+
+            {/* company size */}
+            <FormControl variant="outlined" className="w-[160px]">
+              <InputLabel id="plant-size-filter-label">
+                Company Sizes
+              </InputLabel>
+              <Select
+                labelId="plant-size-filter-label"
+                value={companySizeFilter}
+                onChange={(e) => setCompanySizeFilter(e.target.value)}
+                label="Plant Size"
+              >
+                <MenuItem value="">All Company Sizes</MenuItem>
+                {companySize.map((size) => (
                   <MenuItem key={size} value={size}>
                     {capitalize(size?.replace(/_/g, " "))}&nbsp;
                     {size === "small"
@@ -214,6 +334,8 @@ const Persona = () => {
                 ))}
               </Select>
             </FormControl>
+
+            {/* Manufacturing */}
             <FormControl variant="outlined" className="w-[200px]">
               <InputLabel id="model-filter-label">
                 Manufacturing Model
