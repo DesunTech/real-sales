@@ -10,7 +10,9 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import SendMessage from "../../../public/assets/icons/sendMessage";
 import CallEndSharpIcon from "@mui/icons-material/CallEndSharp";
 import {
+  Box,
   FormControlLabel,
+  Modal,
   Radio,
   styled,
   Switch,
@@ -163,7 +165,7 @@ const styles = `
 `;
 
 const Chat = ({ slug, children }) => {
-  const { Post } = useApi();
+  const { Post, Get } = useApi();
   const { chat_chat, coaching, documents_upload } = apis;
   const dispatch = useDispatch();
   const router = useRouter();
@@ -199,7 +201,14 @@ const Chat = ({ slug, children }) => {
   const [oneLineChatText, setOneLineChatText] = useState("");
   const [coachingMessage, setCoachingMessage] = useState("");
   const [addDocText, setAddDocText] = useState({});
+  const [coachingAround, setCoachingAround] = useState(false);
+  const [coachingData, setCoachingData] = useState([]);
+  const [coachingAccept, setCoachingAccept] = useState([]);
+  const [showCoachingData, setShowCoachingData] = useState("");
+  const [isUploading, setIsUploading] = useState(false);
+  const [isChatPosting, setIsChatPosting] = useState(false);
 
+  console.log(coachingAccept, coachingData, "coachingAccept");
   useEffect(() => {
     setTour(true);
   }, []);
@@ -210,26 +219,35 @@ const Chat = ({ slug, children }) => {
 
   const startCoaching = async (id) => {
     try {
-      let data = await Post(`${coaching}start/${id}`);
+      let data = await Get(`${coaching}${id}`);
       if (data?.session_id) {
         setCoachingMessage(data?.message);
+        setCoachingData((pre) => [
+          { id: `${coachingData?.length + 1}`, ...data },
+          ...pre,
+        ]);
+        setCoachingAround(false);
+        setCoachingAround(false);
         console.log(data, "session_data__");
       }
     } catch (error) {
       console.log(error, "__error");
+    } finally {
+      setCoachingAround(false);
+      setCoachingAround(false);
     }
   };
 
-  const stopCoaching = async (id) => {
-    try {
-      let data = await Post(`${coaching}stop/${id}`);
-      if (data?.session_id) {
-        console.log(data, "session_data__");
-      }
-    } catch (error) {
-      console.log(error, "__error");
-    }
-  };
+  // const stopCoaching = async (id) => {
+  //   try {
+  //     let data = await Post(`${coaching}stop/${id}`);
+  //     if (data?.session_id) {
+  //       console.log(data, "session_data__");
+  //     }
+  //   } catch (error) {
+  //     console.log(error, "__error");
+  //   }
+  // };
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -565,9 +583,10 @@ const Chat = ({ slug, children }) => {
       ]);
     }
 
+    setIsChatPosting(true); // Start loading
     try {
       let data = await Post(`${chat_chat}/${session_id}`, {
-        user_input: addDocText
+        user_input: addDocText?.summary
           ? `${oneLineText} This is the sales document ${addDocText?.summary}`
           : oneLineText,
         // industry: personaData?.industry,
@@ -584,6 +603,7 @@ const Chat = ({ slug, children }) => {
         setTranscriptDummy("");
         setTriggerSenChat(false);
         setIsVolClicked(true);
+        setCoachingAround(true);
         setChatMessages([]);
         setOneLineChatText("");
 
@@ -594,6 +614,8 @@ const Chat = ({ slug, children }) => {
       }
     } catch (error) {
       console.log(error, "_error_");
+    } finally {
+      setIsChatPosting(false); // End loading
     }
   };
 
@@ -647,14 +669,14 @@ const Chat = ({ slug, children }) => {
   useEffect(() => {
     if (session_id) {
       if (checked) {
-        startCoaching(session_id);
-      } else if (!checked) {
-        if (coachingMessage !== "") {
-          stopCoaching(session_id);
+        if (coachingAround) {
+          startCoaching(session_id);
         }
+      } else {
+        console.log("dont coach");
       }
     }
-  }, [session_id, checked, coachingMessage]);
+  }, [session_id, checked, coachingMessage, coachingAround]);
 
   const coachingArr = [{}, {}, {}];
   const qnaArr = [
@@ -698,6 +720,7 @@ const Chat = ({ slug, children }) => {
 
       if (validFiles.length > 0) {
         try {
+          setIsUploading(true);
           const formData = new FormData();
           validFiles.forEach((file) => {
             formData.append("file", file); // "files" is the field name; adjust if your backend expects a different name
@@ -713,6 +736,8 @@ const Chat = ({ slug, children }) => {
           console.log(error, "_error_");
           // Clear the file input on error as well
           if (fileInputRef.current) fileInputRef.current.value = "";
+        } finally {
+          setIsUploading(false);
         }
       } else {
         alert("Please upload only .doc, .docx, or .pdf files.");
@@ -948,6 +973,10 @@ const Chat = ({ slug, children }) => {
                             <p className="text-white m-plus-rounded-1c-medium text-base">
                               {addDocText?.filename}
                             </p>
+                          ) : isUploading ? (
+                            <div className="w-full flex items-center justify-center">
+                              <div class="h-8 w-8 rounded-full border-4 border-gray-300 border-t-yellow-500 animate-spin"></div>
+                            </div>
                           ) : (
                             <div
                               className={`flex items-center gap-1 ${
@@ -1355,7 +1384,13 @@ const Chat = ({ slug, children }) => {
                           }`}
                           onClick={isAiSpeaking ? undefined : handleClick}
                         >
-                          <AttachFileIcon />
+                          {isUploading ? (
+                            <div className="w-full flex items-center justify-center">
+                              <div class="h-[25px] w-[25px] rounded-full border-4 border-white border-t-[#FFE942] animate-spin"></div>
+                            </div>
+                          ) : (
+                            <AttachFileIcon />
+                          )}
                           <input
                             type="file"
                             ref={fileInputRef}
@@ -1457,76 +1492,122 @@ const Chat = ({ slug, children }) => {
                       {/* card stack */}
                       <div className="relative">
                         <div className="flex flex-col gap-2 h-[85vh] overflow-y-auto">
-                          {coachingArr?.map((v, idx) => (
-                            <div
-                              className={`border-l-4 border-solid relative ${
-                                idx % 2 === 0
-                                  ? "border-[#26AD35B2] bg-[linear-gradient(90deg,rgba(38,173,53,0.2)_0%,rgba(38,173,53,0)_63.5%)]"
-                                  : "border-[#E59E2CB2] bg-[linear-gradient(90deg,rgba(229,158,44,0.2)_0%,rgba(229,158,44,0)_63.5%)]"
-                              }`}
-                            >
-                              <div className="flex flex-col gap-2 p-4">
-                                <div className="relative flex items-center justify-start">
-                                  <div
-                                    className={`w-10 h-10 ${
-                                      idx % 2 === 0
-                                        ? "bg-[#26AD35]"
-                                        : "bg-[#E59E2C]"
-                                    } rounded-full`}
-                                  />
+                          {coachingData?.length
+                            ? coachingData.map((v, idx) => (
+                                <div
+                                  className={`border-l-4 border-solid relative ${
+                                    idx % 2 === 0
+                                      ? "border-[#26AD35B2] bg-[linear-gradient(90deg,rgba(38,173,53,0.2)_0%,rgba(38,173,53,0)_63.5%)]"
+                                      : "border-[#E59E2CB2] bg-[linear-gradient(90deg,rgba(229,158,44,0.2)_0%,rgba(229,158,44,0)_63.5%)]"
+                                  }`}
+                                >
+                                  <div className="flex flex-col gap-2 p-4">
+                                    <div className="relative flex items-center justify-start">
+                                      <div
+                                        className={`w-10 h-10 ${
+                                          idx % 2 === 0
+                                            ? "bg-[#26AD35]"
+                                            : "bg-[#E59E2C]"
+                                        } rounded-full`}
+                                      />
+                                      <p
+                                        class={`absolute left-1 rounded-[5px] ${
+                                          idx % 2 === 0
+                                            ? "bg-[linear-gradient(90deg,#26AD35_0%,#077A15_100%)]"
+                                            : "bg-[linear-gradient(90deg,#E59E2C_0%,#A36B12_100%)]"
+                                        } w-fit sora-regular text-sm text-white px-3 py-1 capitalize`}
+                                      >
+                                        Response Tips
+                                      </p>
+                                    </div>
+                                    <div className="w-full flex items-start gap-2">
+                                      <div className="w-16 hg-16 p-1 border border-solid border-white rounded-full">
+                                        <Image
+                                          src={personaExtra}
+                                          alt="personaExtra"
+                                          className="w-full h-full rounded-full"
+                                        />
+                                      </div>
+                                      <div className="flex flex-col">
+                                        <h1 className="text-white text-[20px] m-plus-rounded-1c-regular">
+                                          Here's your coaching feedback:
+                                        </h1>
+                                        <div
+                                          className="text-white text-[14divx] m-plus-rounded-1c-light cursor-pointer"
+                                          onClick={() => {
+                                            if (showCoachingData === "") {
+                                              setShowCoachingData(v?.id);
+                                            } else {
+                                              setShowCoachingData("");
+                                            }
+                                          }}
+                                          dangerouslySetInnerHTML={{
+                                            __html:
+                                              showCoachingData !== ""
+                                                ? v?.coaching_feedback
+                                                : v?.coaching_feedback.slice(
+                                                    0,
+                                                    80
+                                                  ) + "...",
+                                          }}
+                                        />
+                                      </div>
+                                    </div>
+                                    {coachingAccept.some(
+                                      (val) => val?.id === v?.id
+                                    ) ? null : (
+                                      <div className="w-full flex items-center justify-end gap-2">
+                                        <div
+                                          onClick={() =>
+                                            setCoachingAccept((pre) => [
+                                              ...pre,
+                                              { id: v?.id },
+                                            ])
+                                          }
+                                          class="bg-[linear-gradient(90deg,#26AD35_0%,#0C7618_100%)] flex items-center gap-1 px-2 pt-0.5 pb-1 rounded-full w-fit cursor-pointer"
+                                        >
+                                          <p className="text-white text-[12px]">
+                                            Check
+                                          </p>
+                                          <CheckCircleOutlineOutlinedIcon className="text-white !text-[17px]" />
+                                        </div>
+                                        <div
+                                          onClick={() => {
+                                            setCoachingData((prev) =>
+                                              prev.filter(
+                                                (item) => item.id !== v?.id
+                                              )
+                                            );
+                                          }}
+                                          class="bg-[linear-gradient(90deg,#CF2427_0%,#ED3B3E_100%)] flex items-center gap-1 px-2 pt-0.5 pb-1 rounded-full w-fit cursor-pointer"
+                                        >
+                                          <p className="text-white text-[12px]">
+                                            Ignore
+                                          </p>
+                                          <CheckCircleOutlineOutlinedIcon className="text-white !text-[17px]" />
+                                        </div>
+                                      </div>
+                                    )}
+                                  </div>
                                   <p
-                                    class={`absolute left-1 rounded-[5px] ${
-                                      idx % 2 === 0
-                                        ? "bg-[linear-gradient(90deg,#26AD35_0%,#077A15_100%)]"
-                                        : "bg-[linear-gradient(90deg,#E59E2C_0%,#A36B12_100%)]"
-                                    } w-fit sora-regular text-sm text-white px-3 py-1 capitalize`}
+                                    class={`absolute right-0 top-4 ${
+                                      coachingAccept.some(
+                                        (val) => val?.id === v?.id
+                                      )
+                                        ? "bg-[linear-gradient(90deg,rgba(38,173,53,0.8)_0%,rgba(38,173,53,0)_100%)]"
+                                        : "bg-[linear-gradient(90deg,rgba(207,36,39,0.8)_0%,rgba(207,36,39,0)_100%)]"
+                                    } w-fit sora-regular text-[12px] text-white px-2.5 py-1 capitalize`}
                                   >
-                                    Response Tips
+                                    Acknowledged
                                   </p>
                                 </div>
-                                <div className="w-full flex items-start gap-2">
-                                  <div className="w-16 hg-16 p-1 border border-solid border-white rounded-full">
-                                    <Image
-                                      src={personaExtra}
-                                      alt="personaExtra"
-                                      className="w-full h-full rounded-full"
-                                    />
-                                  </div>
-                                  <div className="flex flex-col">
-                                    <h1 className="text-white text-[20px] m-plus-rounded-1c-regular">
-                                      Understand the Context
-                                    </h1>
-                                    <p className="text-white text-[14px] m-plus-rounded-1c-light w-[80%]">
-                                      Lorem Ipsum is the simply dummy text of
-                                      t...
-                                    </p>
-                                  </div>
-                                </div>
-                                <div className="w-full flex items-center justify-end gap-2">
-                                  <div class="bg-[linear-gradient(90deg,#26AD35_0%,#0C7618_100%)] flex items-center gap-1 px-2 pt-0.5 pb-1 rounded-full w-fit cursor-pointer">
-                                    <p className="text-white text-[12px]">
-                                      Check
-                                    </p>
-                                    <CheckCircleOutlineOutlinedIcon className="text-white !text-[17px]" />
-                                  </div>
-                                  <div class="bg-[linear-gradient(90deg,#CF2427_0%,#ED3B3E_100%)] flex items-center gap-1 px-2 pt-0.5 pb-1 rounded-full w-fit cursor-pointer">
-                                    <p className="text-white text-[12px]">
-                                      Ignore
-                                    </p>
-                                    <CheckCircleOutlineOutlinedIcon className="text-white !text-[17px]" />
-                                  </div>
-                                </div>
-                              </div>
-                              <p class="absolute right-0 top-4 bg-[linear-gradient(90deg,rgba(207,36,39,0.8)_0%,rgba(207,36,39,0)_100%)] w-fit sora-regular text-[12px] text-white px-2.5 py-1 capitalize">
-                                Acknowledged
-                              </p>
-                            </div>
-                          ))}
+                              ))
+                            : null}
                           {/* <div class="z-10 absolute bottom-0 bg-[linear-gradient(0deg,#262D3E_0%,rgba(38,45,62,0)_100%)] w-[calc(100%_-_8px)] h-[20vh]"></div> */}
                         </div>
                       </div>
 
-                      <FormControlLabel
+                      {/* <FormControlLabel
                         defaultChecked
                         value="end"
                         control={
@@ -1579,7 +1660,7 @@ const Chat = ({ slug, children }) => {
                             ) : null}
                           </div>
                         ))}
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 ) : null}
@@ -1589,6 +1670,13 @@ const Chat = ({ slug, children }) => {
         </div>
       </div>
       <audio ref={audioRef} style={{ display: "none" }} />
+      <Modal open={isChatPosting}>
+        <Box className="h-screen w-full flex items-center justify-center">
+          <div className="w-full flex items-center justify-center">
+            <div class="h-20 w-20 rounded-full border-8 border-white border-t-[#FFE942] animate-spin"></div>
+          </div>
+        </Box>
+      </Modal>
     </div>
   );
 };

@@ -18,16 +18,15 @@ import { useEffect, useState } from "react";
 const Banner = () => {
   const dispatch = useDispatch();
   const router = useRouter();
-  const [user_id, setUser_id] = useState("");
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      let useerId = localStorage.getItem("user");
-      if (useerId) {
-        setUser_id(useerId);
-      }
+  const doTryRealSale = () => {
+    const userId = localStorage.getItem("user");
+    if (userId && userId !== "") {
+      router.push("/pricing");
+    } else {
+      dispatch(TryRealsalesValue(true));
     }
-  }, []);
+  };
 
   const bannerBottomCardRoot =
     "w-full flex gap-4 p-4 rounded-[20px] bg-[url(../../public/assets/images/banner/bannerBottomBg.png)] bg-cover bg-center bg-no-repeat";
@@ -79,13 +78,7 @@ const Banner = () => {
                 />
                 <div className="lg:flex hidden border-r-[2px] border-dashed border-[#000000] h-15" />
                 <CommonButton
-                  onClick={() => {
-                    if (user_id !== "") {
-                      router.push("/pricing");
-                    } else {
-                      dispatch(TryRealsalesValue(true));
-                    }
-                  }}
+                  onClick={() => doTryRealSale()}
                   className={`!border-[2px] !border-[#060606] !text-[#060606] !lg:px-5 !px-3 !lg:py-1 !py-0.5 !text-[15px] flex !items-center gap-2 h-fit lg:w-fit w-full`}
                   buttontext={"TRY REALSALES"}
                   icon={<ArrowRight width={19} height={13} />}
