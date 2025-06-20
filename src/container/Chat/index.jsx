@@ -384,8 +384,9 @@ const Chat = ({ slug, children }) => {
             }
           }
           setTranscript("");
-          setTriggerSenChat(true);
-
+          if (oneLineChatText?.length || chatMessages?.length) {
+            setTriggerSenChat(true);
+          }
           lastSpeechTimeRef.current = null;
         }
       }, 4000); // Check every second
@@ -584,38 +585,50 @@ const Chat = ({ slug, children }) => {
     }
 
     setIsChatPosting(true); // Start loading
-    try {
-      let data = await Post(`${chat_chat}/${session_id}`, {
-        user_input: addDocText?.summary
-          ? `${oneLineText} This is the sales document ${addDocText?.summary}`
-          : oneLineText,
-        // industry: personaData?.industry,
-        // manufacturing_model: personaData?.manufacturing_model,
-        // experience_level: personaData?.experience_level,
-        // role: personaData?.role,
-        // geography: personaData?.geography,
-        // plant_size_impact: personaData?.plant_size_impact,
-      });
+    if (oneLineText !== "") {
+      try {
+        let data = await Post(`${chat_chat}/${session_id}`, {
+          user_input: addDocText?.summary
+            ? `${oneLineText} This is the sales document ${addDocText?.summary}`
+            : oneLineText,
+          // industry: personaData?.industry,
+          // manufacturing_model: personaData?.manufacturing_model,
+          // experience_level: personaData?.experience_level,
+          // role: personaData?.role,
+          // geography: personaData?.geography,
+          // plant_size_impact: personaData?.plant_size_impact,
+        });
 
-      if (data?.response) {
-        setAddDocText({});
-        setIsMicClicked(false);
-        setTranscriptDummy("");
-        setTriggerSenChat(false);
-        setIsVolClicked(true);
-        setCoachingAround(true);
-        setChatMessages([]);
-        setOneLineChatText("");
+        if (data?.response) {
+          setAddDocText({});
+          setIsMicClicked(false);
+          setTranscriptDummy("");
+          setTriggerSenChat(false);
+          setIsVolClicked(true);
+          setCoachingAround(true);
+          setChatMessages([]);
+          setOneLineChatText("");
 
-        // Add the response to chat messages
-        const newResponse = { response: data.response };
-        setResChat((pre) => [...pre, newResponse]);
-        setResChatView((pre) => [newResponse, ...pre]);
+          // Add the response to chat messages
+          const newResponse = { response: data.response };
+          setResChat((pre) => [...pre, newResponse]);
+          setResChatView((pre) => [newResponse, ...pre]);
+        }
+      } catch (error) {
+        console.log(error, "_error_");
+      } finally {
+        setIsChatPosting(false); // End loading
       }
-    } catch (error) {
-      console.log(error, "_error_");
-    } finally {
-      setIsChatPosting(false); // End loading
+    } else {
+      setAddDocText({});
+      setIsMicClicked(false);
+      setTranscriptDummy("");
+      setTriggerSenChat(false);
+      setIsVolClicked(true);
+      setCoachingAround(true);
+      setChatMessages([]);
+      setOneLineChatText("");
+      setIsChatPosting(false);
     }
   };
 
@@ -1520,38 +1533,40 @@ const Chat = ({ slug, children }) => {
                                         Response Tips
                                       </p>
                                     </div>
-                                    <div className="w-full flex items-start gap-2">
-                                      <div className="w-16 hg-16 p-1 border border-solid border-white rounded-full">
-                                        <Image
-                                          src={personaExtra}
-                                          alt="personaExtra"
-                                          className="w-full h-full rounded-full"
-                                        />
+                                    <div className="w-full flex flex-col items-start gap-2">
+                                      <div className="w-full flex items-start gap-2">
+                                        <div className="w-16 hg-16 p-1 border border-solid border-white rounded-full">
+                                          <Image
+                                            src={personaExtra}
+                                            alt="personaExtra"
+                                            className="w-full h-full rounded-full"
+                                          />
+                                        </div>
+                                        <div className="flex flex-col w-[80%]">
+                                          <h1 className="text-white text-[20px] m-plus-rounded-1c-regular">
+                                            Here's your coaching feedback:
+                                          </h1>
+                                        </div>
                                       </div>
-                                      <div className="flex flex-col">
-                                        <h1 className="text-white text-[20px] m-plus-rounded-1c-regular">
-                                          Here's your coaching feedback:
-                                        </h1>
-                                        <div
-                                          className="text-white text-[14divx] m-plus-rounded-1c-light cursor-pointer"
-                                          onClick={() => {
-                                            if (showCoachingData === "") {
-                                              setShowCoachingData(v?.id);
-                                            } else {
-                                              setShowCoachingData("");
-                                            }
-                                          }}
-                                          dangerouslySetInnerHTML={{
-                                            __html:
-                                              showCoachingData !== ""
-                                                ? v?.coaching_feedback
-                                                : v?.coaching_feedback.slice(
-                                                    0,
-                                                    80
-                                                  ) + "...",
-                                          }}
-                                        />
-                                      </div>
+                                      <div
+                                        className="text-white text-[14divx] m-plus-rounded-1c-light cursor-pointer"
+                                        onClick={() => {
+                                          if (showCoachingData === "") {
+                                            setShowCoachingData(v?.id);
+                                          } else {
+                                            setShowCoachingData("");
+                                          }
+                                        }}
+                                        dangerouslySetInnerHTML={{
+                                          __html:
+                                            showCoachingData !== ""
+                                              ? v?.coaching_feedback
+                                              : v?.coaching_feedback.slice(
+                                                  0,
+                                                  80
+                                                ) + "...",
+                                        }}
+                                      />
                                     </div>
                                     {coachingAccept.some(
                                       (val) => val?.id === v?.id
