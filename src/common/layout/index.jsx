@@ -302,6 +302,20 @@ const Layout = ({ children }) => {
 
   console.log(children, "children");
 
+  // // Route restriction logic
+  // useEffect(() => {
+  //   if (typeof window !== "undefined") {
+  //     const allowedRoutes = ["/", "/faq", "/about"];
+  //     // For dynamic routes like /faq, /faq/ etc, check startsWith
+  //     const isAllowed = allowedRoutes.some((route) =>
+  //       router.pathname === route || router.asPath === route || router.asPath.startsWith(route + "/")
+  //     );
+  //     if (!isAllowed) {
+  //       router.replace("/");
+  //     }
+  //   }
+  // }, [router.pathname, router.asPath]);
+
   return (
     <div className="">
       {/* Conditional rendering of header and footer */}
