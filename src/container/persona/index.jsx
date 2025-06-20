@@ -175,7 +175,7 @@ const Persona = () => {
   const PersonaCard = ({ v }) => {
     return (
       <div
-        className={`group md:w-56 w-[12rem] h-72 rounded overflow-hidden relative cursor-pointer shadow-lg`}
+        className={`group w-[15rem] h-[17rem] rounded overflow-hidden relative cursor-pointer shadow-lg`}
         onClick={() => createSession({ data: v, id: v?.persona_id })}
       >
         <Image
@@ -185,7 +185,7 @@ const Persona = () => {
           height={108}
           className="w-full h-full"
         />
-        <div className="bg-[#ffffff] w-full h-[calc(100%_-_85%)] p-2 absolute bottom-0 z-10">
+        <div className="bg-[#ffffff] w-full h-[calc(100%_-_85%)] p-2 absolute bottom-0 z-10 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
           <p className="m-plus-rounded-1c-semibold text-lg text-[#1a1a1a] uppercase pb-1.5">
             {v?.name?.replace(/_/g, " ")}
           </p>
@@ -243,7 +243,7 @@ const Persona = () => {
             <RotateRightIcon className="animate-spin !text-5xl text-white mb-[20%]" />
           </div>
         )}
-        <div className="page-container mx-auto lg:p-8 p-4 container flex flex-col items-center lg:gap-8 gap-4">
+        <div className="page-container mx-auto lg:p-5 p-4 container flex flex-col items-center lg:gap-8 gap-4">
           <h1 className="sora-bold text-4xl">AI Personas</h1>
 
           {/* Filters */}
@@ -409,7 +409,7 @@ const Persona = () => {
               </Button>
             )}
           </div>
-          <div className="w-full flex flex-wrap items-center justify-self-start gap-4">
+          <div className="w-full flex flex-wrap items-center justify-self-start gap-2">
             {filteredPersonas?.length ? (
               filteredPersonas.map((v, i) => (
                 <PersonaCard v={v} key={v?.persona_id || i} />
