@@ -1168,10 +1168,10 @@ const Chat = ({ slug, children }) => {
                               )}
                               <div
                                 style={{ boxShadow: "0 0 10px 0 #FFE942" }}
-                                className={`w-32 h-32 rounded-full p-1 border border-solid z-10 absolute flex items-center justify-center ${
+                                className={`w-32 h-32 rounded-full p-1 border border-solid z-10 absolute flex items-center justify-center backdrop-blur-sm ${
                                   isChatPosting
                                     ? "bg-[#FFE94225] border-[#FFE942]"
-                                    : "bg-[#ffffff31] border-white"
+                                    : "bg-[#ffffff31] border-[#FFE942]"
                                 } ${!checked && "top-[10%]"}`}
                               >
                                 {isChatPosting ? (
