@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import lets_icons_back_2 from "../../../public/assets/icons/lets_icons_back_2.svg";
 import Image from "next/image";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
+import { AddSummary } from "../../redux/SummaryReducer";
 const ChatEndModal = () => {
   const dispatch = useDispatch();
   const router = useRouter();
@@ -71,8 +72,10 @@ const ChatEndModal = () => {
             <button
               className="flex-1 bg-[#FFDE59] text-black py-3 rounded-md flex items-center justify-center gap-2 shadow-md mb-2 cursor-pointer uppercase"
               onClick={() => {
-                dispatch(EndChatValue({ open: false, type: endChatValue?.type }));
-                dispatch(UploadYourDocValue(true))
+                dispatch(
+                  EndChatValue({ open: false, type: endChatValue?.type })
+                );
+                dispatch(UploadYourDocValue(true));
               }}
             >
               <Image src={lets_icons_back_2} alt="lets_icons_back_2" />
@@ -88,9 +91,10 @@ const ChatEndModal = () => {
                     type: endChatValue?.type,
                   })
                 );
-                // localStorage.removeItem("session_id")
-                localStorage.removeItem("persona_id")
-                router.push("/report")
+                localStorage.removeItem("summary");
+                dispatch(AddSummary({}));
+                localStorage.removeItem("persona_id");
+                router.push("/report");
               }}
             >
               quit session anyway

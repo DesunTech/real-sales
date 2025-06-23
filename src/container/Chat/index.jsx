@@ -42,6 +42,7 @@ import soundWave from "../../../public/assets/gifs/soundWave.gif";
 import soundWaveAi from "../../../public/assets/gifs/soundWaveAi.gif";
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
+import { AddSummary } from "../../redux/SummaryReducer";
 
 // Update the SpeakingIndicator component
 const SpeakingIndicator = ({
@@ -171,6 +172,7 @@ const Chat = ({ slug, children }) => {
   const router = useRouter();
 
   const user = useSelector((state) => state?.auth?.user);
+  const summary = useSelector((state) => state?.summary?.summary);
 
   const [checked, setChecked] = useState(false);
   const [openAnswer, setOpenAnswer] = useState(0);
@@ -207,11 +209,18 @@ const Chat = ({ slug, children }) => {
   const [showCoachingData, setShowCoachingData] = useState("");
   const [isUploading, setIsUploading] = useState(false);
   const [isChatPosting, setIsChatPosting] = useState(false);
+  const [upgrade, setUpgrade] = useState(true);
 
   console.log(coachingAccept, coachingData, "coachingAccept");
   useEffect(() => {
     setTour(true);
   }, []);
+
+  useEffect(() => {
+    setAddDocText(summary);
+  }, [summary?.summary]);
+
+  console.log(addDocText, "addDocText")
 
   // Add these new refs
   const isProcessingRef = useRef(false);
@@ -601,6 +610,8 @@ const Chat = ({ slug, children }) => {
 
         if (data?.response) {
           setAddDocText({});
+          localStorage.removeItem("summary");
+          dispatch(AddSummary({}));
           setIsMicClicked(false);
           setTranscriptDummy("");
           setTriggerSenChat(false);
@@ -621,6 +632,8 @@ const Chat = ({ slug, children }) => {
       }
     } else {
       setAddDocText({});
+      localStorage.removeItem("summary");
+      dispatch(AddSummary({}));
       setIsMicClicked(false);
       setTranscriptDummy("");
       setTriggerSenChat(false);
@@ -1017,28 +1030,32 @@ const Chat = ({ slug, children }) => {
                         </div>
                       </div>
 
-                      <div className="relative bg-[linear-gradient(180deg,rgba(17,24,43,0.3)_0%,rgba(255,255,255,0.09)_100%)] rounded-[10px] p-4 flex flex-col items-start gap-2">
-                        <div
-                          // onClick={props?.onClose}
-                          className="z-10 cursor-pointer bg-red-500 rounded-full h-6 w-6 flex items-center justify-center absolute -top-2.5 -right-1.5"
-                        >
-                          <CloseOutlinedIcon className="!text-[16px] text-white" />
+                      {upgrade ? (
+                        <div className="relative bg-[linear-gradient(180deg,rgba(17,24,43,0.3)_0%,rgba(255,255,255,0.09)_100%)] rounded-[10px] p-4 flex flex-col items-start gap-2">
+                          <div
+                            onClick={() => setUpgrade(false)}
+                            className="z-10 cursor-pointer bg-red-500 rounded-full h-6 w-6 flex items-center justify-center absolute -top-2.5 -right-1.5"
+                          >
+                            <CloseOutlinedIcon className="!text-[16px] text-white" />
+                          </div>
+                          <div>
+                            <p className="text-white m-plus-rounded-1c-medium text-lg">
+                              Upgrade
+                            </p>
+                            <p className="text-white m-plus-rounded-1c-semilight text-[22px]">
+                              Get Access upto 3 Personas
+                            </p>
+                          </div>
+                          <BookAdemo
+                            BookaDemo={`upgrade your plan`}
+                            link={`/pricing`}
+                            className={`!border-[#FFDE5A] !bg-[#060606] !text-[#FFDE5A] !px-5 !py-1 h-fit`}
+                            icon={<ArrowRight stroke={`#FFDE5A`} />}
+                          />
                         </div>
-                        <div>
-                          <p className="text-white m-plus-rounded-1c-medium text-lg">
-                            Upgrade
-                          </p>
-                          <p className="text-white m-plus-rounded-1c-semilight text-[22px]">
-                            Get Access upto 3 Personas
-                          </p>
-                        </div>
-                        <BookAdemo
-                          BookaDemo={`upgrade your plan`}
-                          link={`/pricing`}
-                          className={`!border-[#FFDE5A] !bg-[#060606] !text-[#FFDE5A] !px-5 !py-1 h-fit`}
-                          icon={<ArrowRight stroke={`#FFDE5A`} />}
-                        />
-                      </div>
+                      ) : (
+                        false
+                      )}
                     </div>
                     {/* top left */}
                     <div
@@ -1150,13 +1167,30 @@ const Chat = ({ slug, children }) => {
                                 />
                               )}
                               <div
-                                className={`w-32 h-32 rounded-full p-1 border border-solid border-white z-10 absolute {!checked && "top-[10%]"}`}
+                                style={{ boxShadow: "0 0 10px 0 #FFE942" }}
+                                className={`w-32 h-32 rounded-full p-1 border border-solid z-10 absolute flex items-center justify-center ${
+                                  isChatPosting
+                                    ? "bg-[#FFE94225] border-[#FFE942]"
+                                    : "bg-[#ffffff31] border-white"
+                                } ${!checked && "top-[10%]"}`}
                               >
-                                <Image
-                                  src={persona_plant}
-                                  alt="persona_plant"
-                                  className="w-full h-full rounded-full"
-                                />
+                                {isChatPosting ? (
+                                  <div className="w-full flex items-center justify-center">
+                                    <div class="h-20 w-20 rounded-full border-8 border-white border-t-[#FFE942] animate-spin"></div>
+                                  </div>
+                                ) : (
+                                  <Image
+                                    src={
+                                      personaData?.profile_pic
+                                        ? personaData?.profile_pic
+                                        : persona_plant
+                                    }
+                                    width={192}
+                                    height={108}
+                                    alt="persona_plant"
+                                    className="w-full h-full rounded-full"
+                                  />
+                                )}
                               </div>
                             </div>
 
@@ -1355,13 +1389,29 @@ const Chat = ({ slug, children }) => {
                           className="w-4 h-auto"
                         />
                       </div>
-                      <CustomTooltip title={"End Call"} placement="top" arrow>
+                      <CustomTooltip
+                        title={
+                          chatMessagesView?.length >= 5
+                            ? "End Call"
+                            : "Exchange at least 5 chat before ending"
+                        }
+                        placement="top"
+                        arrow
+                      >
                         <div
-                          className="w-10 h-10 bg-[#FE0000] rounded-full flex items-center justify-center cursor-pointer"
+                          className={`w-10 h-10 ${
+                            chatMessagesView?.length >= 5
+                              ? "bg-[#FE0000]"
+                              : "bg-[#ff6e6e]"
+                          } rounded-full flex items-center justify-center cursor-pointer`}
                           onClick={() => {
-                            dispatch(
-                              EndChatValue({ open: true, type: "audio" })
-                            );
+                            if (chatMessagesView?.length >= 5) {
+                              dispatch(
+                                EndChatValue({ open: true, type: "audio" })
+                              );
+                            } else {
+                              undefined;
+                            }
                           }}
                         >
                           <CallEndSharpIcon className="text-white" />
@@ -1549,7 +1599,7 @@ const Chat = ({ slug, children }) => {
                                         </div>
                                       </div>
                                       <div
-                                        className="text-white text-[14divx] m-plus-rounded-1c-light cursor-pointer"
+                                        className="text-white text-[14px] m-plus-rounded-1c-light cursor-pointer"
                                         onClick={() => {
                                           if (showCoachingData === "") {
                                             setShowCoachingData(v?.id);
@@ -1685,13 +1735,13 @@ const Chat = ({ slug, children }) => {
         </div>
       </div>
       <audio ref={audioRef} style={{ display: "none" }} />
-      <Modal open={isChatPosting}>
+      {/* <Modal open={isChatPosting}>
         <Box className="h-screen w-full flex items-center justify-center">
           <div className="w-full flex items-center justify-center">
             <div class="h-20 w-20 rounded-full border-8 border-white border-t-[#FFE942] animate-spin"></div>
           </div>
         </Box>
-      </Modal>
+      </Modal> */}
     </div>
   );
 };

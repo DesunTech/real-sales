@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CommonModal from "../commonModal";
 import Image from "next/image";
@@ -12,14 +12,24 @@ import persona_food_new from "../../../public/assets/images/RealSales-user-image
 import { InteractionValue } from "../../redux/OpenModal";
 import { apis } from "../../utils/apis";
 import { useApi } from "../../hooks/useApi";
+import { AddSummary } from "../../redux/SummaryReducer";
 
 const InteractionModal = ({ onNext }) => {
   const dispatch = useDispatch();
-  const { ai_personas, interaction_modes_by_name } = apis;
-  const { Get } = useApi();
+  const { ai_personas, interaction_modes_by_name, documents_upload } = apis;
+  const { Get, Post } = useApi();
   const open = useSelector((state) => state.openModal.interactionValue);
   const [choosePersona, setChoosePersona] = useState("");
   const [interactionModesData, setInteractionModesData] = useState({});
+  const [linkPersona, setLinkPersona] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+  const [addDocText, setAddDocText] = useState({});
+
+  const fileInputRef = useRef(null);
+
+  const handleClick = () => {
+    fileInputRef.current?.click();
+  };
 
   useEffect(() => {
     const GetAiMode = async () => {
@@ -39,6 +49,48 @@ const InteractionModal = ({ onNext }) => {
       GetAiMode();
     }
   }, [choosePersona]);
+
+  const handleFileChange = async (e) => {
+    const files = e.target.files;
+    const validExtensions = ["doc", "docx", "pdf"];
+
+    if (files && files.length > 0) {
+      const validFiles = Array.from(files).filter((file) => {
+        const extension = file.name.split(".").pop().toLowerCase();
+        return validExtensions.includes(extension);
+      });
+
+      if (validFiles.length > 0) {
+        try {
+          setIsUploading(true);
+          const formData = new FormData();
+          validFiles.forEach((file) => {
+            formData.append("file", file); // "files" is the field name; adjust if your backend expects a different name
+          });
+          console.log("Valid files:", formData);
+          let data = await Post(documents_upload, formData);
+          // Clear the file input after successful upload
+          if (data?.summary) {
+            setAddDocText(data);
+            localStorage.setItem("summary", JSON.stringify(data));
+            dispatch(AddSummary(data));
+            setLinkPersona(true);
+          }
+          if (fileInputRef.current) fileInputRef.current.value = "";
+        } catch (error) {
+          console.log(error, "_error_");
+          // Clear the file input on error as well
+          if (fileInputRef.current) fileInputRef.current.value = "";
+        } finally {
+          setIsUploading(false);
+        }
+      } else {
+        alert("Please upload only .doc, .docx, or .pdf files.");
+        // Clear the file input if invalid
+        if (fileInputRef.current) fileInputRef.current.value = "";
+      }
+    }
+  };
 
   console.log(open?.fromData, "_fromData__");
   return (
@@ -155,27 +207,33 @@ const InteractionModal = ({ onNext }) => {
                       <p className="lg:text-[16px] text-[13px] sora-regular text-[#060606] lg:w-[35%] w-full">
                         Upload&nbsp;Optional Documents:
                       </p>
-                      <Dropzone
-                        onDrop={(acceptedFiles) =>
-                          console.log(acceptedFiles, "acceptedFiles")
-                        }
-                      >
-                        {({ getRootProps, getInputProps }) => (
-                          <section
-                            className={`border-2 border-dashed rounded-[10px] lg:w-[75%] w-full h-full cursor-pointer lg:mb-0 mb-2`}
-                          >
-                            <div
-                              {...getRootProps()}
-                              className="h-full w-full flex items-center justify-center"
-                            >
-                              <input {...getInputProps()} />
-                              <p className="lg:text-[14px] text-[12px] m-plus-rounded-1c-regular text-[#060606CC] underline p-4">
-                                Upload or drag & drop your files
-                              </p>
-                            </div>
-                          </section>
-                        )}
-                      </Dropzone>
+                      {isUploading ? (
+                        <div className="w-full flex items-center justify-center">
+                          <div class="h-14 w-14 rounded-full border-4 border-gray-300 border-t-yellow-500 animate-spin"></div>
+                        </div>
+                      ) : addDocText?.filename ? (
+                        <div
+                          className={`flex items-center justify-center border-2 border-dashed rounded-[10px] lg:w-[75%] w-full h-full cursor-pointer lg:mb-0 mb-2`}
+                        >
+                          {addDocText?.filename}
+                        </div>
+                      ) : (
+                        <div
+                          className={`flex items-center justify-center border-2 border-dashed rounded-[10px] lg:w-[75%] w-full h-full cursor-pointer lg:mb-0 mb-2`}
+                          onClick={linkPersona ? undefined : handleClick}
+                        >
+                          <p className="lg:text-[14px] text-[12px] m-plus-rounded-1c-regular text-[#060606CC] underline p-4">
+                            Upload or drag & drop your files
+                          </p>
+                          <input
+                            type="file"
+                            ref={fileInputRef}
+                            className="hidden"
+                            accept=".doc,.docx,.pdf"
+                            onChange={handleFileChange}
+                          />
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -192,15 +250,21 @@ const InteractionModal = ({ onNext }) => {
           <CommonButton
             className={`!mt-8 !border-[2px] !border-[#060606] !text-[#060606] !font-[500] !px-6 !py-1] !text-[16px] !capitalize flex !items-center gap-2 w-fit h-fit`}
             icon={<ArrowRight stroke={`#060606`} width={19} height={13} />}
-            disabled={!interactionModesData?.mode_id ? true : false}
-            onClick={() =>
-              choosePersona === ""
-                ? undefined
-                : onNext({
+            disabled={
+              !interactionModesData?.mode_id ? true : linkPersona ? false : true
+            }
+            onClick={() => {
+              if (linkPersona) {
+                if (choosePersona === "") {
+                  undefined;
+                } else {
+                  onNext({
                     ...open?.fromData,
                     mode_id: interactionModesData?.mode_id,
-                  })
-            }
+                  });
+                }
+              }
+            }}
             buttontext={"Proceed"}
           />
         </div>
