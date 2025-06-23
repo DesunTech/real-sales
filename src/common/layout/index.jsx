@@ -26,6 +26,7 @@ import { AddAuth, AddUser } from "../../redux/AuthReducer";
 import { apis } from "../../utils/apis";
 import { Logout } from "@mui/icons-material";
 import NewPersonaTypeModal from "../modals/NewPersonaTypeModal";
+import { AddSummary } from "../../redux/SummaryReducer";
 
 /**
  * Layout component that wraps the main application content.
@@ -65,12 +66,12 @@ const Layout = ({ children }) => {
           dispatch(AddUser(data));
         }
         console.log(data, "__data___");
-      } catch (error) { }
+      } catch (error) {}
     };
 
     if (user?.user_id) {
       getUser();
-    } else if(userId){
+    } else if (userId) {
       getUser();
     }
   }, [user?.user_id]);
@@ -239,7 +240,7 @@ const Layout = ({ children }) => {
         dispatch(PersonaTypeValue(false));
         dispatch(SessionModesValue(true));
       }
-    } catch (error) { }
+    } catch (error) {}
   };
 
   /**
@@ -293,8 +294,12 @@ const Layout = ({ children }) => {
     if (!token) {
       if (window !== undefined) {
         let getToken = localStorage.getItem("token");
+        let getSummary = JSON.parse(localStorage.getItem("summary"));
         if (getToken) {
           dispatch(AddAuth(getToken));
+        }
+        if (getSummary?.summary) {
+          dispatch(AddSummary(getSummary));
         }
       }
     }
