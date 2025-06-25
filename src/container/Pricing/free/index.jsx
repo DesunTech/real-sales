@@ -36,7 +36,7 @@ const Free = () => {
 
   return (
     <div className="page-container mx-auto px-4 py-8 container">
-      <div className="p-16">
+      <div className="lg:p-16 p-8">
         <p className="lg:text-2xl text-[16px] text-center m-plus-rounded-1c-regular text-[#060606] w-full flex items-center justify-center gap-2 mb-12">
           Enjoy Our Free Plan - No Cost, Full Value!
         </p>
