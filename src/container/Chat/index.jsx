@@ -43,6 +43,7 @@ import soundWaveAi from "../../../public/assets/gifs/soundWaveAi.gif";
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import { AddSummary } from "../../redux/SummaryReducer";
+import { showToast } from "../../utils/toastConfig";
 
 // Update the SpeakingIndicator component
 const SpeakingIndicator = ({
@@ -220,7 +221,7 @@ const Chat = ({ slug, children }) => {
     setAddDocText(summary);
   }, [summary?.summary]);
 
-  console.log(addDocText, "addDocText")
+  console.log(addDocText, "addDocText");
 
   // Add these new refs
   const isProcessingRef = useRef(false);
@@ -756,6 +757,7 @@ const Chat = ({ slug, children }) => {
           // Clear the file input after successful upload
           if (data?.summary) {
             setAddDocText(data);
+            showToast.success("Document uploaded successfully");
           }
           if (fileInputRef.current) fileInputRef.current.value = "";
         } catch (error) {
@@ -778,15 +780,15 @@ const Chat = ({ slug, children }) => {
   };
 
   return (
-    <div className="p-4 flex justify-between flex-col">
+    <div className="lg:p-4 p-0 flex justify-between flex-col">
       <div
-        className={`w-auto rounded-[25px] bg-[url(../../public/assets/images/RealSales-backgrounds/bg-4.png)] bg-cover bg-center bg-blend-multiply overflow-hidden relative`}
+        className={`w-auto lg:rounded-[25px] rounded-0 bg-[url(../../public/assets/images/RealSales-backgrounds/bg-4.png)] bg-cover bg-center bg-blend-multiply overflow-hidden relative`}
       >
         {/* <div className="w-full flex flex-col gap-8 h-[calc(100vh_-_32px)] overflow-y-auto bg-[linear-gradient(180deg,rgba(6,6,6,0.9)_0%,rgba(17,24,43,0.9)_62.58%)] px-8 py-4"> */}
-        <div className="w-full flex flex-col gap-8 bg-[linear-gradient(180deg,rgba(6,6,6,0.9)_0%,rgba(17,24,43,0.9)_62.58%)] px-8 py-4">
+        <div className="w-full flex flex-col gap-8 bg-[linear-gradient(180deg,rgba(6,6,6,0.9)_0%,rgba(17,24,43,0.9)_62.58%)] lg:px-8 px-4 py-4">
           {/* header */}
-          <div className="flex items-center justify-between">
-            <div className="flex items-center w-[55%]">
+          <div className="flex lg:flex-row flex-col items-center gap-2 justify-between">
+            <div className="flex items-center lg:w-[55%] w-full">
               <div className="w-[40%]">
                 <div
                   onClick={() => {
@@ -813,7 +815,7 @@ const Chat = ({ slug, children }) => {
                 />
               </Link>
             </div>
-            <div className="flex items-center justify-end gap-2 w-[45%]">
+            <div className="flex items-center justify-end gap-2 lg:w-[45%] w-full">
               <div className="relative w-10 h-10 bg-[#FFFFFF1A] rounded-full flex items-center justify-center cursor-pointer">
                 <MailIcon className="text-white" />
                 <p className="flex items-center justify-center absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-[#CF2427] text-white text-[10px]">
@@ -855,9 +857,10 @@ const Chat = ({ slug, children }) => {
           ) : slug === "audio" || slug === "video" ? (
             <div>
               {/* header */}
-              <div className="flex flex-row gap-2">
-                <div className="w-[70%] flex flex-row gap-2">
-                  <div className="w-[40%]">
+              <div className="flex lg:flex-row flex-col-reverse gap-2">
+
+                <div className="lg:w-[70%] w-full flex flex-row gap-2">
+                  <div className="w-[40%] lg:flex hidden">
                     <FormControlLabel
                       value="end"
                       control={
@@ -883,19 +886,20 @@ const Chat = ({ slug, children }) => {
                       }}
                     />
                   </div>
-                  <div className="w-[60%]">
+                  <div className="w-full lg:w-[60%]">
                     <p className="sora-regular text-white text-base capitalize">
                       {slug}-Chat Session:
                     </p>
                     <div className="flex flex-col gap-0.25 w-fit">
-                      <p className="m-plus-rounded-1c-light text-white text-2xl">
+                      <p className="m-plus-rounded-1c-light text-white lg:text-2xl text-[18px]">
                         Your Session id:&nbsp;
                         <span className="text-[#FFDE5A]">{session_id}</span>
                       </p>
                     </div>
                   </div>
                 </div>
-                <div className="w-[30%]">
+
+                <div className="lg:w-[30%] w-full">
                   <FormControlLabel
                     defaultChecked
                     value="end"
@@ -921,7 +925,7 @@ const Chat = ({ slug, children }) => {
                       color: "#FFFFFF", // label text color
                     }}
                   />
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center lg:justify-start justify-between gap-2">
                     <p className="sora-semilight text-sm text-white">
                       Coaching mode:
                     </p>
@@ -935,18 +939,18 @@ const Chat = ({ slug, children }) => {
               </div>
 
               {/* body */}
-              <div className="flex flex-row gap-2">
+              <div className="flex lg:flex-row flex-col gap-2">
                 {/* left */}
                 <div
                   className={`relative ${
-                    checked ? "w-[70%]" : "w-full"
+                    checked ? "lg:w-[70%] w-full" : "w-full"
                   } mb-40 h-[calc(100vh_-_8rem)] flex flex-col justify-between gap-4`}
                 >
                   {/* top */}
-                  <div className="w-full flex flex-row items-start gap-2">
+                  <div className="w-full flex lg:flex-row flex-col items-start gap-2">
                     {/* top right */}
                     <div
-                      className={`${
+                      className={`lg:flex hidden ${
                         checked ? "w-[40%]" : "w-[28%]"
                       } flex flex-col gap-4`}
                     >
@@ -1060,7 +1064,7 @@ const Chat = ({ slug, children }) => {
                     {/* top left */}
                     <div
                       className={`${
-                        checked ? "w-[60%]" : "w-[72%]"
+                        checked ? "lg:w-[60%] w-full" : "lg:w-[72%] w-full"
                       } flex flex-col items-center gap-2`}
                     >
                       <hr className="border-[#FFFFFF33] w-full" />
@@ -1073,7 +1077,7 @@ const Chat = ({ slug, children }) => {
                         {slug === "audio" ? (
                           <div className="absolute inset-0 p-5 w-full h-full flex flex-col items-center">
                             {/* ai mic */}
-                            <div className="w-[90%] flex items-start gap-1.5 z-10">
+                            <div className="lg:w-[90%] w-full flex items-start gap-1.5 z-10">
                               <div className="flex items-center gap-1.5 -mt-2 relative">
                                 <button
                                   className={`w-10 h-10 ${
@@ -1125,7 +1129,7 @@ const Chat = ({ slug, children }) => {
                                 {chatMessagesView.map((message, index) => (
                                   <p
                                     key={index}
-                                    className="text-white text-[14px] sora-regular w-[80%] opacity-70"
+                                    className="text-white sm:text-base text-[13px] sora-regular w-[80%] opacity-70"
                                   >
                                     <span className="text-[#FFDE5A] sora-semibold">
                                       {message.isUser ? "You" : "AI"}
@@ -1134,7 +1138,7 @@ const Chat = ({ slug, children }) => {
                                   </p>
                                 ))}
                                 {isMicClicked && transcript && (
-                                  <p className="text-white text-[14px] sora-regular w-[80%] opacity-100">
+                                  <p className="text-white sm:text-base text-[13px] sora-regular w-[80%] opacity-100">
                                     <span className="text-[#FFDE5A] sora-semibold">
                                       You
                                     </span>
@@ -1150,33 +1154,33 @@ const Chat = ({ slug, children }) => {
                                   <Image
                                     src={soundWaveAi}
                                     alt="soundWaveAi"
-                                    className="w-[80%] h-auto absolute"
+                                    className="lg:w-[80%] w-full h-auto absolute lg:-top-[15%] top-[15%]"
                                   />
                                 ) : (
                                   <Image
                                     src={callVibration}
                                     alt="callVibration"
-                                    className="w-[80%] h-auto absolute"
+                                    className="lg:w-[80%] w-full h-auto absolute"
                                   />
                                 )
                               ) : (
                                 <Image
                                   src={callVibration}
                                   alt="callVibration"
-                                  className="w-[80%] h-auto absolute"
+                                  className="lg:w-[80%] w-full h-auto absolute"
                                 />
                               )}
                               <div
                                 style={{ boxShadow: "0 0 10px 0 #FFE942" }}
-                                className={`w-32 h-32 rounded-full p-1 border border-solid z-10 absolute flex items-center justify-center backdrop-blur-sm ${
+                                className={`sm:w-32 w-20 sm:h-32 h-20 rounded-full p-1 border border-solid z-10 absolute flex items-center justify-center backdrop-blur-sm ${
                                   isChatPosting
                                     ? "bg-[#FFE94225] border-[#FFE942]"
                                     : "bg-[#ffffff31] border-[#FFE942]"
-                                } ${!checked && "top-[10%]"}`}
+                                } ${!checked ? "lg:top-[10%] top-[30%]" : "lg:top-[10%] top-[30%]"}`}
                               >
                                 {isChatPosting ? (
                                   <div className="w-full flex items-center justify-center">
-                                    <div class="h-20 w-20 rounded-full border-8 border-white border-t-[#FFE942] animate-spin"></div>
+                                    <div class="h-12 w-12 rounded-full border-8 border-white border-t-[#FFE942] animate-spin"></div>
                                   </div>
                                 ) : (
                                   <Image
@@ -1195,10 +1199,10 @@ const Chat = ({ slug, children }) => {
                             </div>
 
                             {/* ai chat */}
-                            <div className="w-[90%] flex items-start gap-1.5 z-10">
+                            <div className="lg:w-[90%] w-full flex items-start gap-1.5 z-10">
                               <div className="flex items-center gap-1.5">
                                 <button
-                                  className={`w-10 h-10 flex-s 
+                                  className={`p-1.5 flex-s 
                                   ${
                                     isVolClicked
                                       ? "bg-[#26AD35] hover:bg-[#26AD35]"
@@ -1227,7 +1231,7 @@ const Chat = ({ slug, children }) => {
                                       <Image
                                         src={soundWaveAi}
                                         alt="soundWaveAi"
-                                        className="w-8 h-8"
+                                        className="lg:w-8 w-6 lg:h-8 h-6"
                                       />
                                     )
                                   : null}
@@ -1255,7 +1259,7 @@ const Chat = ({ slug, children }) => {
                                   ? resChatView.map((v, i) => (
                                       <p
                                         key={i}
-                                        className="pr-4 text-white text-base sora-regular"
+                                        className="pr-4 text-white sm:text-base text-[13px] sora-regular"
                                       >
                                         <span className="text-[#FFDE5A] sora-semibold">
                                           AI Client
@@ -1370,7 +1374,7 @@ const Chat = ({ slug, children }) => {
                   {/* bottom */}
                   <div
                     className={`fixed bottom-8 ${
-                      checked ? "w-[60%]" : "w-[90%]"
+                      checked ? "lg:w-[60%] w-[90%]" : "w-[90%]"
                     } flex flex-col items-start gap-2 z-20`}
                   >
                     <div>
@@ -1382,13 +1386,13 @@ const Chat = ({ slug, children }) => {
                       </p>
                     </div>
                     <div className="w-full flex items-center gap-2">
-                      <div className="w-10 h-10 bg-[#FFFFFF1A] rounded-full flex items-center justify-center cursor-pointer">
+                      {/* <div className="w-10 h-10 bg-[#FFFFFF1A] rounded-full flex items-center justify-center cursor-pointer">
                         <Image
                           src={menueIcon}
                           alt="menueIcon"
                           className="w-4 h-auto"
                         />
-                      </div>
+                      </div> */}
                       <CustomTooltip
                         title={
                           chatMessagesView?.length >= 5
@@ -1399,7 +1403,7 @@ const Chat = ({ slug, children }) => {
                         arrow
                       >
                         <div
-                          className={`w-10 h-10 ${
+                          className={`p-2 ${
                             chatMessagesView?.length >= 5
                               ? "bg-[#FE0000]"
                               : "bg-[#ff6e6e]"
@@ -1473,7 +1477,7 @@ const Chat = ({ slug, children }) => {
                               }
                             }
                           }}
-                          className={`flex items-center gap-2 !text-[#060606D9] bg-[#FFE942] hover:bg-[#ffdc42] !capitalize !py-1 !px-4 !rounded-full ${
+                          className={`flex items-center gap-2 !text-[#060606D9] bg-[#FFE942] hover:bg-[#ffdc42] !capitalize !py-1 !px-1 !rounded-full ${
                             isAiSpeaking
                               ? "cursor-not-allowed"
                               : "cursor-pointer"
@@ -1486,7 +1490,7 @@ const Chat = ({ slug, children }) => {
                         </div>
                       </div>
                       <div
-                        className={`w-10 h-10 relative ${
+                        className={`p-2 relative ${
                           isAutoMode ? "bg-[#26AD35]" : "bg-[#FFFFFF1A]"
                         } rounded-full flex items-center justify-center cursor-pointer`}
                         onClick={toggleAutoMode}
@@ -1497,7 +1501,7 @@ const Chat = ({ slug, children }) => {
                           } !text-[20px]`}
                         />
                         {tour && (
-                          <div className="left-[130%] absolute flex items-center">
+                          <div className="left-[130%] absolute lg:flex hidden items-center ">
                             <ArrowLeftIcon className="right-[80%] absolute text-green-500" />
                             <div className="shadow-md bg-green-500 text-white sora-regular text-sm px-2 rounded">
                               Start
@@ -1505,7 +1509,7 @@ const Chat = ({ slug, children }) => {
                           </div>
                         )}
                       </div>
-                      <div className="w-14 h-14 rounded-full p-1 border-2 border-solid border-white overflow-hidden">
+                      <div className="lg:flex hidden w-14 h-14 rounded-full p-1 border-2 border-solid border-white overflow-hidden">
                         <Image
                           src={userDummy}
                           alt="user-image"
@@ -1519,7 +1523,7 @@ const Chat = ({ slug, children }) => {
 
                 {/* right */}
                 {checked ? (
-                  <div className="w-[30%]">
+                  <div className="lg:w-[30%] w-full">
                     <div className="flex flex-col gap-2">
                       {/* card top */}
                       {/* <div className="border border-solid border-[#14558C4D] bg-[linear-gradient(90deg,rgba(20,85,140,0.3)_0%,rgba(20,85,140,0)_50%,rgba(20,85,140,0.3)_100%)] relative">
@@ -1554,7 +1558,7 @@ const Chat = ({ slug, children }) => {
                       </div> */}
                       {/* card stack */}
                       <div className="relative">
-                        <div className="flex flex-col gap-2 h-[85vh] overflow-y-auto">
+                        <div className={`flex flex-col gap-2 ${coachingData?.length ? "h-[85vh]" : ""} overflow-y-auto`}>
                           {coachingData?.length
                             ? coachingData.map((v, idx) => (
                                 <div

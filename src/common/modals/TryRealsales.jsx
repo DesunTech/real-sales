@@ -68,7 +68,7 @@ const TryRealsales = (props) => {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-
+console.log(width, "width___")
   const handleChange = (e) => {
     let { value, name } = e.target;
     setFromData((pre) => ({ ...pre, [name]: value }));
@@ -324,7 +324,7 @@ const TryRealsales = (props) => {
         setOpenLogin(false);
         removeImage();
       }}
-      width={width > 720 ? "60%" : "90%"}
+      width={"60%"}
     >
       {!openLogin ? (
         <div className="w-full flex flex-col items-center gap-4">
@@ -613,9 +613,9 @@ const TryRealsales = (props) => {
                   }
                 />
               </FormGroup>
-              <div className="flex items-center gap-4">
+              <div className="flex items-center lg:flex-row flex-col gap-4">
                 <CommonButton
-                  className={`w-full !border-0 !outline-0 !bg-[#FFDE5A] shadow-md !text-[#060606] text-[20px]`}
+                  className={`w-full !border-0 !outline-0 !bg-[#FFDE5A] shadow-md !text-[#060606] lg:text-[20px] text-base`}
                   buttontext={
                     loginLoading ? (
                       <LoopIcon className="animate-spin" />

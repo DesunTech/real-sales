@@ -228,6 +228,24 @@ const Persona = () => {
             <span className="p-0.5 mt-2 rounded-full bg-[#2d2d2d]" />
             {v?.geography?.replace(/_/g, " ")}
           </p>
+          {v?.persona_products?.length > 0 && (
+            <div className="mt-2">
+              <p className="font-medium m-plus-rounded-1c-bold text-[1.05rem] capitalize">
+                Products:
+              </p>
+              <div className="list-disc list-inside text-[13px]">
+                {v.persona_products.map((prod, idx) => (
+                  <p
+                    className="flex items-start gap-2 sora-medium md:text-[14px] text-[13px]"
+                    key={idx}
+                  >
+                    <span className="p-0.5 mt-2 rounded-full bg-[#2d2d2d]" />
+                    {capitalize(prod?.product?.name?.replace(/_/g, " "))}
+                  </p>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     );

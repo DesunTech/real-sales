@@ -13,6 +13,7 @@ import { InteractionValue } from "../../redux/OpenModal";
 import { apis } from "../../utils/apis";
 import { useApi } from "../../hooks/useApi";
 import { AddSummary } from "../../redux/SummaryReducer";
+import { showToast } from "../../utils/toastConfig";
 
 const InteractionModal = ({ onNext }) => {
   const dispatch = useDispatch();
@@ -71,6 +72,7 @@ const InteractionModal = ({ onNext }) => {
           let data = await Post(documents_upload, formData);
           // Clear the file input after successful upload
           if (data?.summary) {
+            showToast.success("Document uploaded successfully")
             setAddDocText(data);
             localStorage.setItem("summary", JSON.stringify(data));
             dispatch(AddSummary(data));
