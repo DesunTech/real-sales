@@ -18,6 +18,7 @@ import {
   Switch,
   Tooltip,
   tooltipClasses,
+  useMediaQuery,
 } from "@mui/material";
 import persona_plant from "../../../public/assets/images/RealSales-user-images/persona-plant.png";
 import AddCircleOutlineSharpIcon from "@mui/icons-material/AddCircleOutlineSharp";
@@ -211,6 +212,9 @@ const Chat = ({ slug, children }) => {
   const [isUploading, setIsUploading] = useState(false);
   const [isChatPosting, setIsChatPosting] = useState(false);
   const [upgrade, setUpgrade] = useState(true);
+  const [audioPrimed, setAudioPrimed] = useState(false);
+  const [showAudioPrompt, setShowAudioPrompt] = useState(false);
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
   console.log(coachingAccept, coachingData, "coachingAccept");
   useEffect(() => {
@@ -779,8 +783,45 @@ const Chat = ({ slug, children }) => {
     fileInputRef.current?.click();
   };
 
+  useEffect(() => {
+    if (isMobile && typeof window !== 'undefined') {
+      setShowAudioPrompt(true);
+    }
+  }, [isMobile]);
+
+  // Function to prime audio context
+  const handlePrimeAudio = async () => {
+    if (audioRef.current) {
+      // Create a silent audio blob
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const buffer = ctx.createBuffer(1, 1, 22050);
+      const source = ctx.createBufferSource();
+      source.buffer = buffer;
+      source.connect(ctx.destination);
+      source.start(0);
+      // Also try to play the audio element (in case browser prefers this)
+      try {
+        audioRef.current.src = '';
+        await audioRef.current.play();
+      } catch (e) {}
+      setAudioPrimed(true);
+      setShowAudioPrompt(false);
+    }
+  };
+
   return (
     <div className="lg:p-4 p-0 flex justify-between flex-col">
+      {/* Audio priming overlay for mobile */}
+      {showAudioPrompt && !audioPrimed && (
+        <div style={{position: 'fixed', zIndex: 9999, top: 0, left: 0, width: '100vw', height: '100vh', background: 'rgba(0,0,0,0.85)', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+          <button
+            style={{padding: '1.5rem 2.5rem', fontSize: '1.5rem', borderRadius: '1rem', background: '#FFE942', color: '#060606', border: 'none', fontWeight: 700, boxShadow: '0 2px 16px #0008', cursor: 'pointer'}}
+            onClick={handlePrimeAudio}
+          >
+            Tap to Enable Audio
+          </button>
+        </div>
+      )}
       <div
         className={`w-auto lg:rounded-[25px] rounded-0 bg-[url(../../public/assets/images/RealSales-backgrounds/bg-4.png)] bg-cover bg-center bg-blend-multiply overflow-hidden relative`}
       >
