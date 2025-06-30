@@ -68,7 +68,7 @@ const TryRealsales = (props) => {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-console.log(width, "width___")
+  console.log(width, "width___");
   const handleChange = (e) => {
     let { value, name } = e.target;
     setFromData((pre) => ({ ...pre, [name]: value }));
@@ -88,7 +88,7 @@ console.log(width, "width___")
     setImageError("");
 
     // Check file type
-    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+    const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
     if (!allowedTypes.includes(file.type)) {
       setImageError("Please upload a valid image file (JPG, PNG, or GIF)");
       return false;
@@ -109,7 +109,7 @@ console.log(width, "width___")
     if (!file) return;
 
     if (!validateImage(file)) {
-      event.target.value = ''; // Reset input
+      event.target.value = ""; // Reset input
       return;
     }
 
@@ -123,14 +123,18 @@ console.log(width, "width___")
       const maxDimension = 2000; // maximum width/height in pixels
 
       if (img.width < minDimension || img.height < minDimension) {
-        setImageError(`Image dimensions should be at least ${minDimension}x${minDimension} pixels`);
-        event.target.value = ''; // Reset input
+        setImageError(
+          `Image dimensions should be at least ${minDimension}x${minDimension} pixels`
+        );
+        event.target.value = ""; // Reset input
         return;
       }
 
       if (img.width > maxDimension || img.height > maxDimension) {
-        setImageError(`Image dimensions should not exceed ${maxDimension}x${maxDimension} pixels`);
-        event.target.value = ''; // Reset input
+        setImageError(
+          `Image dimensions should not exceed ${maxDimension}x${maxDimension} pixels`
+        );
+        event.target.value = ""; // Reset input
         return;
       }
 
@@ -145,7 +149,7 @@ console.log(width, "width___")
 
     img.onerror = () => {
       setImageError("Failed to load image. Please try another file.");
-      event.target.value = ''; // Reset input
+      event.target.value = ""; // Reset input
     };
   };
 
@@ -210,16 +214,22 @@ console.log(width, "width___")
     if (valid) {
       setSignupLoading(true);
       try {
-        const formData = new FormData();
-        Object.keys(fromData).forEach((key) => {
-          formData.append(key, fromData[key]);
-        });
-        if (profileImage) {
-          formData.append("profile_image", profileImage);
-        }
-        formData.append("phone_number", `${idc}${fromData?.phone_number}`);
+        // const formData = new FormData();
 
-        const data = await Post(signup, formData);
+        // Object.keys(fromData).forEach((key) => {
+        //   if (key !== "phone_number") {
+        //     formData.append(key, fromData[key]);
+        //   }
+        // });
+        // if (profileImage) {
+        //   formData.append("profile_image", profileImage);
+        // }
+        // formData.append("phone_number", `+${idc}${fromData?.phone_number}`);
+
+        const data = await Post(signup, {
+          ...fromData,
+          phone_number: `+${idc}${fromData?.phone_number}`,
+        });
         if (data?.token) {
           setFromDataErr(initialFormData);
           setFromData(initialFormData);
