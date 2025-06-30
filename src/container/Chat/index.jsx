@@ -299,7 +299,11 @@ const Chat = ({ slug, children }) => {
 
         recognition.onresult = (event) => {
           const current = event.resultIndex;
-          const transcript = event.results[current][0].transcript;
+          const transcript = event.results[current][0].transcript.trim();
+
+          // Ignore empty transcripts
+          if (!transcript) return;
+
           setTranscript(transcript);
           setTranscriptDummy(transcript);
           lastSpeechTimeRef.current = Date.now();
