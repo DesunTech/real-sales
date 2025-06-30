@@ -230,6 +230,7 @@ const Chat = ({ slug, children }) => {
   // Add these new refs
   const isProcessingRef = useRef(false);
   const lastProcessedTextRef = useRef("");
+  const lastAddedTranscriptRef = useRef("");
 
   const startCoaching = async (id) => {
     try {
@@ -309,6 +310,10 @@ const Chat = ({ slug, children }) => {
           lastSpeechTimeRef.current = Date.now();
 
           if (event.results[current].isFinal) {
+            // Prevent duplicate final transcripts
+            if (lastAddedTranscriptRef.current === transcript) return;
+            lastAddedTranscriptRef.current = transcript;
+
             setChatMessages((prev) => [
               ...prev,
               {
@@ -318,16 +323,14 @@ const Chat = ({ slug, children }) => {
               },
             ]);
 
-            if (event.results[current].isFinal) {
-              setChatMessagesView((prev) => [
-                {
-                  text: transcript,
-                  isUser: true,
-                  timestamp: new Date().toISOString(),
-                },
-                ...prev,
-              ]);
-            }
+            setChatMessagesView((prev) => [
+              {
+                text: transcript,
+                isUser: true,
+                timestamp: new Date().toISOString(),
+              },
+              ...prev,
+            ]);
             setTranscript("");
             // setTranscriptDummy("");
           }
