@@ -12,7 +12,11 @@ import {
   MenuItem,
   Select,
   Button,
+  IconButton,
+  Drawer,
 } from "@mui/material";
+import FilterListIcon from "@mui/icons-material/FilterList";
+import CloseIcon from "@mui/icons-material/Close";
 
 const Persona = () => {
   const dispatch = useDispatch();
@@ -35,6 +39,7 @@ const Persona = () => {
   const [plantSizeFilter, setPlantSizeFilter] = useState("");
   const [companySizeFilter, setCompanySizeFilter] = useState("");
   const [product, setProduct] = useState([]);
+  const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
 
   console.log(
     product.filter((v) => v?.industry_id === industryId).map((val) => val),
@@ -175,7 +180,7 @@ const Persona = () => {
   const PersonaCard = ({ v }) => {
     return (
       <div
-        className={`group w-[15rem] h-[17rem] rounded overflow-hidden relative cursor-pointer shadow-lg`}
+        className={`group sm:w-[15rem] w-[48.8%] sm:h-[17rem] h-[15rem] rounded overflow-hidden relative cursor-pointer shadow-lg`}
         onClick={() => createSession({ data: v, id: v?.persona_id })}
       >
         <Image
@@ -251,9 +256,182 @@ const Persona = () => {
     );
   };
 
+  const filterSection = (
+    <div className="w-full flex flex-wrap gap-4">
+      {/* Role */}
+      <FormControl variant="outlined" className="sm:w-[100px] w-full">
+        <InputLabel id="role-filter-label" className="!bg-white !px-2">
+          Role
+        </InputLabel>
+        <Select
+          labelId="role-filter-label"
+          value={roleFilter}
+          onChange={(e) => {
+            window.scrollTo(0, 0);
+            setRoleFilter(e.target.value);
+          }}
+          label="Role"
+        >
+          <MenuItem value="">All Roles</MenuItem>
+          {roles.map((role) => (
+            <MenuItem key={role} value={role}>
+              {capitalize(role?.replace(/_/g, " "))}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+
+      {/* Industries */}
+      <FormControl variant="outlined" className="sm:w-[120px] w-full">
+        <InputLabel id="industry-filter-label" className="!bg-white !px-2">
+          Industry
+        </InputLabel>
+        <Select
+          labelId="industry-filter-label"
+          value={industryFilter}
+          onChange={(e) => {
+            window.scrollTo(0, 0);
+            setIndustryFilter(e.target.value);
+          }}
+          label="Industry"
+        >
+          <MenuItem value="">All Industries</MenuItem>
+          {industries.map((ind) => (
+            <MenuItem
+              key={ind?.name}
+              value={ind?.name}
+              onClick={() => setIndustryId(ind?.id)}
+            >
+              {capitalize(ind?.name?.replace(/_/g, " "))}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+
+      {/* products */}
+      {products?.length ? (
+        <FormControl variant="outlined" className="sm:w-[130px] w-full">
+          <InputLabel id="plant-size-filter-label" className="!bg-white !px-2">
+            Products
+          </InputLabel>
+          <Select
+            labelId="plant-size-filter-label"
+            value={prods}
+            onChange={(e) => {
+              window.scrollTo(0, 0);
+              setProds(e.target.value);
+            }}
+            label="Products"
+          >
+            <MenuItem value="">All Products</MenuItem>
+            {products.map((prod) => (
+              <MenuItem key={prod} value={prod}>
+                {capitalize(prod?.replace(/_/g, " "))}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      ) : null}
+
+      {/* Plant size */}
+      <FormControl variant="outlined" className="sm:w-[130px] w-full">
+        <InputLabel id="plant-size-filter-label" className="!bg-white !px-2">
+          Plant Size
+        </InputLabel>
+        <Select
+          labelId="plant-size-filter-label"
+          value={plantSizeFilter}
+          onChange={(e) => {
+            window.scrollTo(0, 0);
+            setPlantSizeFilter(e.target.value);
+          }}
+          label="Plant Size"
+        >
+          <MenuItem value="">All Plant Sizes</MenuItem>
+          {plantSizes.map((size) => (
+            <MenuItem key={size} value={size}>
+              {capitalize(size?.replace(/_/g, " "))}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+
+      {/* company size */}
+      <FormControl variant="outlined" className="sm:w-[170px] w-full">
+        <InputLabel id="plant-size-filter-label" className="!bg-white !px-2">
+          Company Sizes
+        </InputLabel>
+        <Select
+          labelId="plant-size-filter-label"
+          value={companySizeFilter}
+          onChange={(e) => {
+            window.scrollTo(0, 0);
+            setCompanySizeFilter(e.target.value);
+          }}
+          label="Plant Size"
+        >
+          <MenuItem value="">All Company Sizes</MenuItem>
+          {companySize.map((size) => (
+            <MenuItem key={size} value={size}>
+              {capitalize(size?.replace(/_/g, " "))}&nbsp;
+              {size === "small"
+                ? "(1-500)"
+                : size === "medium"
+                ? "(501-5,000)"
+                : size === "large"
+                ? "(5,000+)"
+                : ""}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+
+      {/* Manufacturing */}
+      <FormControl variant="outlined" className="sm:w-[210px] w-full">
+        <InputLabel id="model-filter-label" className="!bg-white !px-2">
+          Manufacturing Model
+        </InputLabel>
+        <Select
+          labelId="model-filter-label"
+          value={modelFilter}
+          onChange={(e) => {
+            window.scrollTo(0, 0);
+            setModelFilter(e.target.value);
+          }}
+          label="Manufacturing Model"
+        >
+          <MenuItem value="">All Manufacturing Models</MenuItem>
+          {models.map((model) => (
+            <MenuItem key={model} value={model}>
+              {capitalize(model?.replace(/_/g, " "))}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+
+      {/* Clear Filter Button */}
+      {isAnyFilterActive() && (
+        <div className="sm:w-fit w-full flex justify-end">
+          <Button
+            variant="contained"
+            onClick={clearAllFilters}
+            sx={{
+              backgroundColor: "#fe0000",
+              "&:hover": {
+                backgroundColor: "#dd0000",
+              },
+            }}
+          >
+            Clear Filters
+          </Button>
+        </div>
+      )}
+    </div>
+  );
+
   return (
     <div
-      className={`bg-[url(../../public/assets/images/RealSales-backgrounds/bg-4.png)] bg-cover bg-center bg-no-repeat`}
+      className={`bg-[url(../../public/assets/images/RealSales-backgrounds/bg-4.png)] bg-cover bg-center bg-no-repeat relative`}
     >
       <div className="bg-[#ffffffcb] relative">
         {loading && (
@@ -262,171 +440,39 @@ const Persona = () => {
           </div>
         )}
         <div className="page-container mx-auto lg:p-5 p-4 container flex flex-col items-center lg:gap-8 gap-4">
-          <h1 className="sora-bold text-4xl">AI Personas</h1>
+          <h1 className="sora-bold text-4xl sm:py-4 py-8">AI Personas</h1>
 
           {/* Filters */}
-          <div className="w-full flex flex-wrap gap-4">
-            {/* Role */}
-            <FormControl variant="outlined" className="w-[100px]">
-              <InputLabel id="role-filter-label" className="!bg-white !px-2">
-                Role
-              </InputLabel>
-              <Select
-                labelId="role-filter-label"
-                value={roleFilter}
-                onChange={(e) => setRoleFilter(e.target.value)}
-                label="Role"
-              >
-                <MenuItem value="">All Roles</MenuItem>
-                {roles.map((role) => (
-                  <MenuItem key={role} value={role}>
-                    {capitalize(role?.replace(/_/g, " "))}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-
-            {/* Industries */}
-            <FormControl variant="outlined" className="w-[120px]">
-              <InputLabel
-                id="industry-filter-label"
-                className="!bg-white !px-2"
-              >
-                Industry
-              </InputLabel>
-              <Select
-                labelId="industry-filter-label"
-                value={industryFilter}
-                onChange={(e) => setIndustryFilter(e.target.value)}
-                label="Industry"
-              >
-                <MenuItem value="">All Industries</MenuItem>
-                {industries.map((ind) => (
-                  <MenuItem
-                    key={ind?.name}
-                    value={ind?.name}
-                    onClick={() => setIndustryId(ind?.id)}
-                  >
-                    {capitalize(ind?.name?.replace(/_/g, " "))}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-
-            {/* products */}
-            {products?.length ? (
-              <FormControl variant="outlined" className="w-[130px]">
-                <InputLabel
-                  id="plant-size-filter-label"
-                  className="!bg-white !px-2"
-                >
-                  Products
-                </InputLabel>
-                <Select
-                  labelId="plant-size-filter-label"
-                  value={prods}
-                  onChange={(e) => setProds(e.target.value)}
-                  label="Products"
-                >
-                  <MenuItem value="">All Products</MenuItem>
-                  {products.map((prod) => (
-                    <MenuItem key={prod} value={prod}>
-                      {capitalize(prod?.replace(/_/g, " "))}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            ) : null}
-
-            {/* Plant size */}
-            <FormControl variant="outlined" className="w-[130px]">
-              <InputLabel
-                id="plant-size-filter-label"
-                className="!bg-white !px-2"
-              >
-                Plant Size
-              </InputLabel>
-              <Select
-                labelId="plant-size-filter-label"
-                value={plantSizeFilter}
-                onChange={(e) => setPlantSizeFilter(e.target.value)}
-                label="Plant Size"
-              >
-                <MenuItem value="">All Plant Sizes</MenuItem>
-                {plantSizes.map((size) => (
-                  <MenuItem key={size} value={size}>
-                    {capitalize(size?.replace(/_/g, " "))}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-
-            {/* company size */}
-            <FormControl variant="outlined" className="w-[170px]">
-              <InputLabel
-                id="plant-size-filter-label"
-                className="!bg-white !px-2"
-              >
-                Company Sizes
-              </InputLabel>
-              <Select
-                labelId="plant-size-filter-label"
-                value={companySizeFilter}
-                onChange={(e) => setCompanySizeFilter(e.target.value)}
-                label="Plant Size"
-              >
-                <MenuItem value="">All Company Sizes</MenuItem>
-                {companySize.map((size) => (
-                  <MenuItem key={size} value={size}>
-                    {capitalize(size?.replace(/_/g, " "))}&nbsp;
-                    {size === "small"
-                      ? "(1-500)"
-                      : size === "medium"
-                      ? "(501-5,000)"
-                      : size === "large"
-                      ? "(5,000+)"
-                      : ""}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-
-            {/* Manufacturing */}
-            <FormControl variant="outlined" className="w-[210px]">
-              <InputLabel id="model-filter-label" className="!bg-white !px-2">
-                Manufacturing Model
-              </InputLabel>
-              <Select
-                labelId="model-filter-label"
-                value={modelFilter}
-                onChange={(e) => setModelFilter(e.target.value)}
-                label="Manufacturing Model"
-              >
-                <MenuItem value="">All Manufacturing Models</MenuItem>
-                {models.map((model) => (
-                  <MenuItem key={model} value={model}>
-                    {capitalize(model?.replace(/_/g, " "))}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-
-            {/* Clear Filter Button */}
-            {isAnyFilterActive() && (
-              <Button
-                variant="contained"
-                onClick={clearAllFilters}
-                sx={{
-                  backgroundColor: "#fe0000",
-                  "&:hover": {
-                    backgroundColor: "#dd0000",
-                  },
-                }}
-              >
-                Clear Filters
-              </Button>
-            )}
+          <div className="fixed right-0 top-[12%] z-20 shadow-md flex justify-end md:hidden bg-[#FFDE59] rounded-l-[6px] w-fit">
+            <IconButton onClick={() => setMobileFilterOpen(true)} className="">
+              <FilterListIcon className="!text-black" />
+              {/* <span className="ml-2">Filters</span> */}
+            </IconButton>
           </div>
+
+          {/* Desktop filters */}
+          <div className="w-full md:flex hidden">{filterSection}</div>
+
+          {/* Mobile Drawer */}
+          <Drawer
+            anchor="right"
+            open={mobileFilterOpen}
+            onClose={() => setMobileFilterOpen(false)}
+            PaperProps={{ style: { width: "80vw", maxWidth: 320 } }}
+          >
+            <div className="p-4">
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-lg font-bold">Filters</h2>
+                <IconButton onClick={() => setMobileFilterOpen(false)}>
+                  <span className="material-icons">
+                    <CloseIcon />
+                  </span>
+                </IconButton>
+              </div>
+              {filterSection}
+            </div>
+          </Drawer>
+
           <div className="w-full flex flex-wrap items-center justify-self-start gap-2">
             {filteredPersonas?.length ? (
               filteredPersonas.map((v, i) => (
