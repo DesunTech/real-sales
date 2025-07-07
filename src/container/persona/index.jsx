@@ -411,10 +411,24 @@ const Persona = () => {
 
       {/* Clear Filter Button */}
       {isAnyFilterActive() && (
-        <div className="sm:w-fit w-full flex justify-end">
+        <div className="flex gap-2 items-center justify-end">
+          <Button
+            variant="contained"
+            onClick={()=> setMobileFilterOpen(false)}
+            className="sm:!px-2 !px-2 sm:!hidden !flex !w-full sm:!text-base !text-sm sm:!text-white !text-black"
+            sx={{
+              backgroundColor: "#FFDE59",
+              "&:hover": {
+                backgroundColor: "#dd0000",
+              },
+            }}
+          >
+            Show&nbsp;Result
+          </Button>
           <Button
             variant="contained"
             onClick={clearAllFilters}
+            className="sm:!px-2 !px-4 sm:!w-fit !w-full sm:!text-base !text-sm"
             sx={{
               backgroundColor: "#fe0000",
               "&:hover": {
@@ -422,7 +436,7 @@ const Persona = () => {
               },
             }}
           >
-            Clear Filters
+            Clear&nbsp;Filters
           </Button>
         </div>
       )}
@@ -440,14 +454,18 @@ const Persona = () => {
           </div>
         )}
         <div className="page-container mx-auto lg:p-5 p-4 container flex flex-col items-center lg:gap-8 gap-4">
-          <h1 className="sora-bold text-4xl sm:py-4 py-8">AI Personas</h1>
+          <div className="sm:w-fit w-full flex items-center justify-between sm:py-4 py-8">
+            <h1 className="sora-bold text-4xl">AI Personas</h1>
 
-          {/* Filters */}
-          <div className="fixed right-0 top-[12%] z-20 shadow-md flex justify-end md:hidden bg-[#FFDE59] rounded-l-[6px] w-fit">
-            <IconButton onClick={() => setMobileFilterOpen(true)} className="">
-              <FilterListIcon className="!text-black" />
-              {/* <span className="ml-2">Filters</span> */}
-            </IconButton>
+            {/* Filters */}
+            <div className="shadow-md flex justify-end md:hidden bg-[#FFDE59] rounded-[6px] w-fit">
+              <IconButton
+                onClick={() => setMobileFilterOpen(true)}
+              >
+                <FilterListIcon className="!text-black" />
+                <span className="ml-2 text-base !text-black">Filters</span>
+              </IconButton>
+            </div>
           </div>
 
           {/* Desktop filters */}

@@ -214,7 +214,7 @@ const Chat = ({ slug, children }) => {
   const [upgrade, setUpgrade] = useState(true);
   const [audioPrimed, setAudioPrimed] = useState(false);
   const [showAudioPrompt, setShowAudioPrompt] = useState(false);
-  const isMobile = useMediaQuery('(max-width: 768px)');
+  const isMobile = useMediaQuery("(max-width: 768px)");
 
   console.log(coachingAccept, coachingData, "coachingAccept");
   useEffect(() => {
@@ -550,7 +550,7 @@ const Chat = ({ slug, children }) => {
         // Automatically start listening when speech ends
         if (!isMicClicked) {
           console.log("Starting microphone after speech ended");
-          toggleSpeechRecognition();
+          // toggleSpeechRecognition();
         }
       };
 
@@ -791,7 +791,7 @@ const Chat = ({ slug, children }) => {
   };
 
   useEffect(() => {
-    if (isMobile && typeof window !== 'undefined') {
+    if (isMobile && typeof window !== "undefined") {
       setShowAudioPrompt(true);
     }
   }, [isMobile]);
@@ -808,7 +808,7 @@ const Chat = ({ slug, children }) => {
       source.start(0);
       // Also try to play the audio element (in case browser prefers this)
       try {
-        audioRef.current.src = '';
+        audioRef.current.src = "";
         await audioRef.current.play();
       } catch (e) {}
       setAudioPrimed(true);
@@ -820,9 +820,32 @@ const Chat = ({ slug, children }) => {
     <div className="lg:p-4 p-0 flex justify-between flex-col">
       {/* Audio priming overlay for mobile */}
       {showAudioPrompt && !audioPrimed && (
-        <div style={{position: 'fixed', zIndex: 9999, top: 0, left: 0, width: '100vw', height: '100vh', background: 'rgba(0,0,0,0.85)', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+        <div
+          style={{
+            position: "fixed",
+            zIndex: 9999,
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            background: "rgba(0,0,0,0.85)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
           <button
-            style={{padding: '1.5rem 2.5rem', fontSize: '1.5rem', borderRadius: '1rem', background: '#FFE942', color: '#060606', border: 'none', fontWeight: 700, boxShadow: '0 2px 16px #0008', cursor: 'pointer'}}
+            style={{
+              padding: "1.5rem 2.5rem",
+              fontSize: "1.5rem",
+              borderRadius: "1rem",
+              background: "#FFE942",
+              color: "#060606",
+              border: "none",
+              fontWeight: 700,
+              boxShadow: "0 2px 16px #0008",
+              cursor: "pointer",
+            }}
             onClick={handlePrimeAudio}
           >
             Tap to Enable Audio
@@ -906,7 +929,6 @@ const Chat = ({ slug, children }) => {
             <div>
               {/* header */}
               <div className="flex lg:flex-row flex-col-reverse gap-2">
-
                 <div className="lg:w-[70%] w-full flex flex-row gap-2">
                   <div className="w-[40%] lg:flex hidden">
                     <FormControlLabel
@@ -1224,7 +1246,11 @@ const Chat = ({ slug, children }) => {
                                   isChatPosting
                                     ? "bg-[#FFE94225] border-[#FFE942]"
                                     : "bg-[#ffffff31] border-[#FFE942]"
-                                } ${!checked ? "lg:top-[10%] top-[30%]" : "lg:top-[10%] top-[30%]"}`}
+                                } ${
+                                  !checked
+                                    ? "lg:top-[10%] top-[30%]"
+                                    : "lg:top-[10%] top-[30%]"
+                                }`}
                               >
                                 {isChatPosting ? (
                                   <div className="w-full flex items-center justify-center">
@@ -1262,7 +1288,7 @@ const Chat = ({ slug, children }) => {
                                       setIsVolClicked(true);
                                     } else {
                                       setIsVolClicked(false);
-                                      setIsMicClicked(true);
+                                      // setIsMicClicked(true);
                                     }
                                   }}
                                 >
@@ -1606,7 +1632,11 @@ const Chat = ({ slug, children }) => {
                       </div> */}
                       {/* card stack */}
                       <div className="relative">
-                        <div className={`flex flex-col gap-2 ${coachingData?.length ? "h-[85vh]" : ""} overflow-y-auto`}>
+                        <div
+                          className={`flex flex-col gap-2 ${
+                            coachingData?.length ? "h-[85vh]" : ""
+                          } overflow-y-auto`}
+                        >
                           {coachingData?.length
                             ? coachingData.map((v, idx) => (
                                 <div
