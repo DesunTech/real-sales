@@ -550,6 +550,7 @@ const Chat = ({ slug, children }) => {
         // Automatically start listening when speech ends
         if (!isMicClicked) {
           console.log("Starting microphone after speech ended");
+          setIsVolClicked(false);
           // toggleSpeechRecognition();
         }
       };
