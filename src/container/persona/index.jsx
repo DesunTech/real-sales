@@ -180,7 +180,7 @@ const Persona = () => {
   const PersonaCard = ({ v }) => {
     return (
       <div
-        className={`group sm:w-[15rem] w-[48.8%] sm:h-[17rem] h-[15rem] rounded overflow-hidden relative cursor-pointer shadow-lg`}
+        className={`group sm:w-[15rem] w-[48.8%] sm:h-[17rem] h-[15rem] rounded-[20px] overflow-hidden relative cursor-pointer shadow-[0_0_6px_0_#7e6500]`}
         onClick={() => createSession({ data: v, id: v?.persona_id })}
       >
         <Image
@@ -190,16 +190,27 @@ const Persona = () => {
           height={108}
           className="w-full h-full"
         />
-        <div className="bg-[#ffffff] w-full h-[calc(100%_-_85%)] p-2 absolute bottom-0 z-10 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
+        {/* <div className="bg-[#ffffff] w-full h-[calc(100%_-_85%)] p-2 absolute bottom-0 z-10 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
           <p className="m-plus-rounded-1c-semibold text-lg text-[#1a1a1a] uppercase pb-1.5">
             {v?.name?.replace(/_/g, " ")}
           </p>
+        </div> */}
+        <div className="absolute left-0 bottom-0 group-hover:hidden flex flex-col items-start justify-end gap-2 p-4 w-full h-3/4 rounded-b-[20px] bg-[linear-gradient(16.26deg,#000000_18.18%,rgba(0,0,0,0)_81.35%)]">
+          <h1 className="text-[#FFDE5A] m-plus-rounded-1c-regular text-[20px]">
+            {capitalize(v?.ai_role?.name?.replace(/_/g, " "))}
+          </h1>
+          <div class="border-l-2 w-full border-solid border-[#FFDE5A80] bg-gradient-to-r from-[#FFDE5A00] to-[#FFDE5A26] px-2 py-1">
+            <p class="sora-regular text-white text-[14px]">
+              State:&nbsp;
+              <span class="sora-thin text-[12px]">{v?.geography?.replace(/_/g, " ")}</span>
+            </p>
+          </div>
         </div>
-        <div className="bg-[#ffffff] overflow-auto w-full h-[calc(100%_-_35%)] p-2 absolute top-[35%] transition-opacity duration-300 opacity-0 group-hover:opacity-100 -z-20 group-hover:z-20">
-          <p className="m-plus-rounded-1c-semibold text-lg text-[#1a1a1a] uppercase pb-1.5">
+        <div className="border-[#FFDE5A80] bg-gradient-to-t from-[#ffde5ae0] to-[#ffde5a9d] overflow-auto w-full h-[calc(100%_-_35%)] p-2 absolute top-[35%] transition-opacity duration-300 opacity-0 group-hover:opacity-100 -z-20 group-hover:z-20">
+          <p className="m-plus-rounded-1c-semibold text-lg text-[#000000] uppercase pb-1.5">
             {v?.name?.replace(/_/g, " ")}
           </p>
-          <p className="font-medium m-plus-rounded-1c-medium text-[1.05rem] capitalize">
+          <p className="font-medium m-plus-rounded-1c-bold text-[1.05rem] capitalize">
             Details:
           </p>
           <p className="flex items-start gap-2 sora-medium md:text-[14px] text-[13px]">
@@ -260,7 +271,7 @@ const Persona = () => {
     <div className="w-full flex flex-wrap gap-4">
       {/* Role */}
       <FormControl variant="outlined" className="sm:w-[100px] w-full">
-        <InputLabel id="role-filter-label" className="!bg-white !px-2">
+        <InputLabel id="role-filter-label" className="!bg-transparent !px-2">
           Role
         </InputLabel>
         <Select
@@ -271,6 +282,7 @@ const Persona = () => {
             setRoleFilter(e.target.value);
           }}
           label="Role"
+          className="bg-transparent"
         >
           <MenuItem value="">All Roles</MenuItem>
           {roles.map((role) => (
@@ -283,7 +295,10 @@ const Persona = () => {
 
       {/* Industries */}
       <FormControl variant="outlined" className="sm:w-[120px] w-full">
-        <InputLabel id="industry-filter-label" className="!bg-white !px-2">
+        <InputLabel
+          id="industry-filter-label"
+          className="!bg-transparent !px-2"
+        >
           Industry
         </InputLabel>
         <Select
@@ -311,7 +326,10 @@ const Persona = () => {
       {/* products */}
       {products?.length ? (
         <FormControl variant="outlined" className="sm:w-[130px] w-full">
-          <InputLabel id="plant-size-filter-label" className="!bg-white !px-2">
+          <InputLabel
+            id="plant-size-filter-label"
+            className="!bg-transparent !px-2"
+          >
             Products
           </InputLabel>
           <Select
@@ -335,7 +353,10 @@ const Persona = () => {
 
       {/* Plant size */}
       <FormControl variant="outlined" className="sm:w-[130px] w-full">
-        <InputLabel id="plant-size-filter-label" className="!bg-white !px-2">
+        <InputLabel
+          id="plant-size-filter-label"
+          className="!bg-transparent !px-2"
+        >
           Plant Size
         </InputLabel>
         <Select
@@ -358,7 +379,10 @@ const Persona = () => {
 
       {/* company size */}
       <FormControl variant="outlined" className="sm:w-[170px] w-full">
-        <InputLabel id="plant-size-filter-label" className="!bg-white !px-2">
+        <InputLabel
+          id="plant-size-filter-label"
+          className="!bg-transparent !px-2"
+        >
           Company Sizes
         </InputLabel>
         <Select
@@ -388,7 +412,7 @@ const Persona = () => {
 
       {/* Manufacturing */}
       <FormControl variant="outlined" className="sm:w-[210px] w-full">
-        <InputLabel id="model-filter-label" className="!bg-white !px-2">
+        <InputLabel id="model-filter-label" className="!bg-transparent !px-2">
           Manufacturing Model
         </InputLabel>
         <Select
@@ -414,7 +438,7 @@ const Persona = () => {
         <div className="flex gap-2 items-center justify-end">
           <Button
             variant="contained"
-            onClick={()=> setMobileFilterOpen(false)}
+            onClick={() => setMobileFilterOpen(false)}
             className="sm:!px-2 !px-2 sm:!hidden !flex !w-full sm:!text-base !text-sm sm:!text-white !text-black"
             sx={{
               backgroundColor: "#FFDE59",
@@ -445,9 +469,9 @@ const Persona = () => {
 
   return (
     <div
-      className={`bg-[url(../../public/assets/images/RealSales-backgrounds/bg-4.png)] bg-cover bg-center bg-no-repeat relative`}
+      className={`bg-[url(../../public/assets/images/RealSales-backgrounds/bg-15.png)] bg-center bg-repeat relative`}
     >
-      <div className="bg-[#ffffffcb] relative">
+      <div className="bg-[#ffffff8a] relative">
         {loading && (
           <div className="bg-black/80 absolute w-full h-full flex items-center justify-center z-100">
             <RotateRightIcon className="animate-spin !text-5xl text-white mb-[20%]" />
@@ -459,9 +483,7 @@ const Persona = () => {
 
             {/* Filters */}
             <div className="shadow-md flex justify-end md:hidden bg-[#FFDE59] rounded-[6px] w-fit">
-              <IconButton
-                onClick={() => setMobileFilterOpen(true)}
-              >
+              <IconButton onClick={() => setMobileFilterOpen(true)}>
                 <FilterListIcon className="!text-black" />
                 <span className="ml-2 text-base !text-black">Filters</span>
               </IconButton>
@@ -499,6 +521,20 @@ const Persona = () => {
             ) : (
               <p>No personas found.</p>
             )}
+            {/* {filteredPersonas?.length ? (
+              filteredPersonas.map((v, i) => (
+                <PersonaCard v={v} key={v?.persona_id || i} />
+              ))
+            ) : (
+              <p>No personas found.</p>
+            )}
+            {filteredPersonas?.length ? (
+              filteredPersonas.map((v, i) => (
+                <PersonaCard v={v} key={v?.persona_id || i} />
+              ))
+            ) : (
+              <p>No personas found.</p>
+            )} */}
           </div>
         </div>
       </div>
