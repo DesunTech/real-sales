@@ -26,7 +26,9 @@ const ChatEndModal = () => {
     <>
       <CommonModal
         open={endChatValue?.open}
-        onClose={() => dispatch(EndChatValue({ open: false, type: "" }))}
+        onClose={() =>
+          dispatch(EndChatValue({ open: false, type: "", chat: 0 }))
+        }
         width={width > 720 ? "50%" : "90%"}
       >
         <div className="flex flex-col gap-4 items-center">
@@ -52,15 +54,20 @@ const ChatEndModal = () => {
               &nbsp;Session now ?
             </h2>
 
-            <p className="sora-regular lg:text-lg text-base">
-              Before ending your session, Few things you need to Know !
-            </p>
+            {endChatValue?.chat >= 5 ? null : (
+              <>
+                <p className="sora-regular lg:text-lg text-base">
+                  Before ending your session, Few things you need to Know !
+                </p>
 
-            <p className="sora-regular lg:text-base text-sm">
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry's standard dummy text
-              ever.
-            </p>
+                <p className="sora-regular lg:text-base text-sm">
+                  You must exchange at least 5 messages before generating the
+                  report.
+                  <br />
+                  Are you sure you don't want to generate a report?
+                </p>
+              </>
+            )}
 
             <p className="sora-regular lg:text-lg text-base font-bold">
               <span className="sora-semibold">Thank you!</span>&nbsp;for your
@@ -73,7 +80,11 @@ const ChatEndModal = () => {
               className="flex-1 bg-[#FFDE59] text-black py-3 rounded-md flex items-center justify-center gap-2 shadow-md mb-2 cursor-pointer uppercase"
               onClick={() => {
                 dispatch(
-                  EndChatValue({ open: false, type: endChatValue?.type })
+                  EndChatValue({
+                    open: false,
+                    type: endChatValue?.type,
+                    chat: 0,
+                  })
                 );
                 dispatch(UploadYourDocValue(true));
               }}
@@ -89,12 +100,17 @@ const ChatEndModal = () => {
                   EndChatValue({
                     open: false,
                     type: endChatValue?.type,
+                    chat: 0,
                   })
                 );
                 localStorage.removeItem("summary");
                 dispatch(AddSummary({}));
                 localStorage.removeItem("persona_id");
-                router.push("/report");
+                if (endChatValue?.chat >= 5) {
+                  router.push("/report");
+                } else {
+                  router.push("/feedback");
+                }
               }}
             >
               quit session anyway

@@ -45,6 +45,7 @@ import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import { AddSummary } from "../../redux/SummaryReducer";
 import { showToast } from "../../utils/toastConfig";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 // Update the SpeakingIndicator component
 const SpeakingIndicator = ({
@@ -215,6 +216,7 @@ const Chat = ({ slug, children }) => {
   const [audioPrimed, setAudioPrimed] = useState(false);
   const [showAudioPrompt, setShowAudioPrompt] = useState(false);
   const isMobile = useMediaQuery("(max-width: 768px)");
+  const [fileError, setFileError] = useState("");
 
   console.log(coachingAccept, coachingData, "coachingAccept");
   useEffect(() => {
@@ -750,8 +752,17 @@ const Chat = ({ slug, children }) => {
   const handleFileChange = async (e) => {
     const files = e.target.files;
     const validExtensions = ["doc", "docx", "pdf"];
+    const MAX_FILE_SIZE = 6 * 1024 * 1024; // 6MB
 
     if (files && files.length > 0) {
+      // Check for file size before filtering extensions
+      const oversizeFile = Array.from(files).find((file) => file.size > MAX_FILE_SIZE);
+      if (oversizeFile) {
+        setFileError("File size cannot be larger than 6MB. Try again compressing the file");
+        if (fileInputRef.current) fileInputRef.current.value = "";
+        return;
+      }
+
       const validFiles = Array.from(files).filter((file) => {
         const extension = file.name.split(".").pop().toLowerCase();
         return validExtensions.includes(extension);
@@ -764,24 +775,22 @@ const Chat = ({ slug, children }) => {
           validFiles.forEach((file) => {
             formData.append("file", file); // "files" is the field name; adjust if your backend expects a different name
           });
-          console.log("Valid files:", formData);
           let data = await Post(documents_upload, formData);
           // Clear the file input after successful upload
           if (data?.summary) {
             setAddDocText(data);
+            setFileError("");
             showToast.success("Document uploaded successfully");
           }
           if (fileInputRef.current) fileInputRef.current.value = "";
         } catch (error) {
-          console.log(error, "_error_");
-          // Clear the file input on error as well
+          setFileError("Failed to upload document. Please try again.");
           if (fileInputRef.current) fileInputRef.current.value = "";
         } finally {
           setIsUploading(false);
         }
       } else {
-        alert("Please upload only .doc, .docx, or .pdf files.");
-        // Clear the file input if invalid
+        setFileError("Please upload only .doc, .docx, or .pdf files.");
         if (fileInputRef.current) fileInputRef.current.value = "";
       }
     }
@@ -868,7 +877,13 @@ const Chat = ({ slug, children }) => {
                       router.push("/");
                       localStorage.removeItem("session_id");
                     } else {
-                      dispatch(EndChatValue({ open: true, type: "audio" }));
+                      dispatch(
+                        EndChatValue({
+                          open: true,
+                          type: "audio",
+                          chat: chatMessagesView?.length,
+                        })
+                      );
                     }
                   }}
                   className="w-10 h-10 bg-[#FFFFFF1A] rounded-full flex items-center justify-center cursor-pointer"
@@ -1071,9 +1086,37 @@ const Chat = ({ slug, children }) => {
                             </div>
                           </div>
                           {addDocText?.filename ? (
-                            <p className="text-white m-plus-rounded-1c-medium text-base">
-                              {addDocText?.filename}
-                            </p>
+                            <div className="flex items-start gap-2">
+                              <p className="text-white m-plus-rounded-1c-medium text-base">
+                                {addDocText?.filename}
+                              </p>
+                              {/* <button
+                                className="ml-2 px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600 text-xs"
+                                onClick={() => {
+                                  setAddDocText({});
+                                  localStorage.removeItem("summary");
+                                  dispatch(AddSummary({}));
+                                }}
+                                disabled={isUploading}
+                                title="Remove document"
+                                type="button"
+                              > */}
+                              <CustomTooltip
+                                title={"Remove document"}
+                                placement="right"
+                                arrow
+                              >
+                                <DeleteIcon
+                                  className="cursor-pointer !text-xl !text-red-500 !hover:text-red-600"
+                                  onClick={() => {
+                                    setAddDocText({});
+                                    localStorage.removeItem("summary");
+                                    dispatch(AddSummary({}));
+                                  }}
+                                />
+                              </CustomTooltip>
+                              {/* </button> */}
+                            </div>
                           ) : isUploading ? (
                             <div className="w-full flex items-center justify-center">
                               <div class="h-8 w-8 rounded-full border-4 border-gray-300 border-t-yellow-500 animate-spin"></div>
@@ -1101,6 +1144,9 @@ const Chat = ({ slug, children }) => {
                                 disabled={!addDocText?.summary ? false : true}
                               />
                             </div>
+                          )}
+                          {fileError && (
+                            <div className="text-red-500 text-xs mt-1">{fileError}</div>
                           )}
                         </div>
                       </div>
@@ -1469,27 +1515,39 @@ const Chat = ({ slug, children }) => {
                         />
                       </div> */}
                       <CustomTooltip
-                        title={
-                          chatMessagesView?.length >= 5
-                            ? "End Call"
-                            : "Exchange at least 5 chat before ending"
-                        }
+                        // title={
+                        //   chatMessagesView?.length >= 5
+                        //     ? "End Call"
+                        //     : "Exchange at least 5 chat before ending"
+                        // }
+                        title={"End Call"}
                         placement="top"
                         arrow
                       >
-                        <div
-                          className={`p-2 ${
+                        {/* ${
                             chatMessagesView?.length >= 5
                               ? "bg-[#FE0000]"
                               : "bg-[#ff6e6e]"
-                          } rounded-full flex items-center justify-center cursor-pointer`}
+                          } */}
+                        <div
+                          className={`p-2 bg-[#FE0000] rounded-full flex items-center justify-center cursor-pointer`}
                           onClick={() => {
                             if (chatMessagesView?.length >= 5) {
                               dispatch(
-                                EndChatValue({ open: true, type: "audio" })
+                                EndChatValue({
+                                  open: true,
+                                  type: "audio",
+                                  chat: chatMessagesView?.length,
+                                })
                               );
                             } else {
-                              undefined;
+                              dispatch(
+                                EndChatValue({
+                                  open: true,
+                                  type: "audio",
+                                  chat: chatMessagesView?.length,
+                                })
+                              );
                             }
                           }}
                         >
