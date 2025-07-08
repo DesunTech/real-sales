@@ -14,6 +14,7 @@ import {
   Button,
   IconButton,
   Drawer,
+  useMediaQuery,
 } from "@mui/material";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import CloseIcon from "@mui/icons-material/Close";
@@ -40,6 +41,7 @@ const Persona = () => {
   const [companySizeFilter, setCompanySizeFilter] = useState("");
   const [product, setProduct] = useState([]);
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
+  const isMobile = useMediaQuery("(max-width: 768px)");
 
   console.log(
     product.filter((v) => v?.industry_id === industryId).map((val) => val),
@@ -178,10 +180,13 @@ const Persona = () => {
   };
 
   const PersonaCard = ({ v }) => {
+    const handleCardClick = () => createSession({ data: v, id: v?.persona_id });
     return (
       <div
         className={`group sm:w-[15rem] w-[48.8%] sm:h-[17rem] h-[15rem] rounded-[20px] overflow-hidden relative cursor-pointer shadow-[0_0_6px_0_#7e6500]`}
-        onClick={() => createSession({ data: v, id: v?.persona_id })}
+        {...(isMobile
+          ? { onClick: handleCardClick }
+          : { onDoubleClick: handleCardClick })}
       >
         <Image
           src={v?.profile_pic ? v?.profile_pic : dummy}
@@ -196,17 +201,16 @@ const Persona = () => {
           </p>
         </div> */}
         <div className="absolute left-0 bottom-0 group-hover:hidden flex flex-col items-start justify-end gap-2 p-4 w-full h-3/4 rounded-b-[20px] bg-[linear-gradient(16.26deg,#000000_18.18%,rgba(0,0,0,0)_81.35%)]">
-          <h1 className="text-[#FFDE5A] m-plus-rounded-1c-regular text-[20px]">
-            {capitalize(v?.ai_role?.name?.replace(/_/g, " "))}
+          <h1 className="text-[#FFDE5A] m-plus-rounded-1c-regular text-[20px] uppercase">
+          {v?.name?.replace(/_/g, " ")}
           </h1>
           <div class="border-l-2 w-full border-solid border-[#FFDE5A80] bg-gradient-to-r from-[#FFDE5A00] to-[#FFDE5A26] px-2 py-1">
-            <p class="sora-regular text-white text-[14px]">
-              State:&nbsp;
-              <span class="sora-thin text-[12px]">{v?.geography?.replace(/_/g, " ")}</span>
+            <p class="sora-regular text-white text-[14px] capitalize">
+            {capitalize(v?.ai_role?.name?.replace(/_/g, " "))}
             </p>
           </div>
         </div>
-        <div className="border-[#FFDE5A80] bg-gradient-to-t from-[#ffde5ae0] to-[#ffde5a9d] overflow-auto w-full h-[calc(100%_-_35%)] p-2 absolute top-[35%] transition-opacity duration-300 opacity-0 group-hover:opacity-100 -z-20 group-hover:z-20">
+        <div className="border-[#FFDE5A80] bg-gradient-to-t from-[#ffde5af5] to-[#ffde5aee] overflow-auto w-full h-[calc(100%_-_35%)] p-2 absolute top-[35%] transition-opacity duration-300 opacity-0 group-hover:opacity-100 -z-20 group-hover:z-20">
           <p className="m-plus-rounded-1c-semibold text-lg text-[#000000] uppercase pb-1.5">
             {v?.name?.replace(/_/g, " ")}
           </p>
