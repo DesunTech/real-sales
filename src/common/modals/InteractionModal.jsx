@@ -25,6 +25,7 @@ const InteractionModal = ({ onNext }) => {
   const [linkPersona, setLinkPersona] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [addDocText, setAddDocText] = useState({});
+  const [fileError, setFileError] = useState("");
 
   const fileInputRef = useRef(null);
 
@@ -54,8 +55,21 @@ const InteractionModal = ({ onNext }) => {
   const handleFileChange = async (e) => {
     const files = e.target.files;
     const validExtensions = ["doc", "docx", "pdf"];
+    const MAX_FILE_SIZE = 6 * 1024 * 1024; // 6MB
 
     if (files && files.length > 0) {
+      // Check for file size before filtering extensions
+      const oversizeFile = Array.from(files).find(
+        (file) => file.size > MAX_FILE_SIZE
+      );
+      if (oversizeFile) {
+        setFileError(
+          "File size cannot be larger than 6MB. Try again compressing the file"
+        );
+        if (fileInputRef.current) fileInputRef.current.value = "";
+        return;
+      }
+
       const validFiles = Array.from(files).filter((file) => {
         const extension = file.name.split(".").pop().toLowerCase();
         return validExtensions.includes(extension);
@@ -64,6 +78,7 @@ const InteractionModal = ({ onNext }) => {
       if (validFiles.length > 0) {
         try {
           setIsUploading(true);
+          setFileError("");
           const formData = new FormData();
           validFiles.forEach((file) => {
             formData.append("file", file); // "files" is the field name; adjust if your backend expects a different name
@@ -72,7 +87,7 @@ const InteractionModal = ({ onNext }) => {
           let data = await Post(documents_upload, formData);
           // Clear the file input after successful upload
           if (data?.summary) {
-            showToast.success("Document uploaded successfully")
+            showToast.success("Document uploaded successfully");
             setAddDocText(data);
             localStorage.setItem("summary", JSON.stringify(data));
             dispatch(AddSummary(data));
@@ -80,6 +95,7 @@ const InteractionModal = ({ onNext }) => {
           }
           if (fileInputRef.current) fileInputRef.current.value = "";
         } catch (error) {
+          setFileError("Failed to upload document. Please try again.");
           console.log(error, "_error_");
           // Clear the file input on error as well
           if (fileInputRef.current) fileInputRef.current.value = "";
@@ -87,7 +103,7 @@ const InteractionModal = ({ onNext }) => {
           setIsUploading(false);
         }
       } else {
-        alert("Please upload only .doc, .docx, or .pdf files.");
+        setFileError("Please upload only .doc, .docx, or .pdf files.");
         // Clear the file input if invalid
         if (fileInputRef.current) fileInputRef.current.value = "";
       }
@@ -205,35 +221,42 @@ const InteractionModal = ({ onNext }) => {
                         industry's ...
                       </p>
                     </div>
-                    <div className="lg:w-[60%] w-full flex items-center lg:flex-row flex-col lg:gap-4 gap-2">
-                      <p className="lg:text-[16px] text-[13px] sora-regular text-[#060606] lg:w-[35%] w-full">
-                        Upload&nbsp;Optional Documents:
-                      </p>
-                      {isUploading ? (
-                        <div className="w-full flex items-center justify-center">
-                          <div class="h-14 w-14 rounded-full border-4 border-gray-300 border-t-yellow-500 animate-spin"></div>
-                        </div>
-                      ) : addDocText?.filename ? (
-                        <div
-                          className={`flex items-center justify-center border-2 border-dashed rounded-[10px] lg:w-[75%] w-full h-full cursor-pointer lg:mb-0 mb-2`}
-                        >
-                          {addDocText?.filename}
-                        </div>
-                      ) : (
-                        <div
-                          className={`flex items-center justify-center border-2 border-dashed rounded-[10px] lg:w-[75%] w-full h-full cursor-pointer lg:mb-0 mb-2`}
-                          onClick={linkPersona ? undefined : handleClick}
-                        >
-                          <p className="lg:text-[14px] text-[12px] m-plus-rounded-1c-regular text-[#060606CC] underline p-4">
-                            Upload or drag & drop your files
-                          </p>
-                          <input
-                            type="file"
-                            ref={fileInputRef}
-                            className="hidden"
-                            accept=".doc,.docx,.pdf"
-                            onChange={handleFileChange}
-                          />
+                    <div className="lg:w-[60%] w-full flex flex-col items-end gap-2">
+                      <div className="w-full h-24 flex items-center lg:flex-row flex-col lg:gap-4 gap-2">
+                        <p className="lg:text-[16px] text-[13px] sora-regular text-[#060606] lg:w-[35%] w-full">
+                          Upload&nbsp;Optional Documents:
+                        </p>
+                        {isUploading ? (
+                          <div className="w-full flex items-center justify-center">
+                            <div class="h-14 w-14 rounded-full border-4 border-gray-300 border-t-yellow-500 animate-spin"></div>
+                          </div>
+                        ) : addDocText?.filename ? (
+                          <div
+                            className={`flex items-center justify-center border-2 border-dashed rounded-[10px] lg:w-[75%] w-full h-full cursor-pointer lg:mb-0 mb-2`}
+                          >
+                            {addDocText?.filename}
+                          </div>
+                        ) : (
+                          <div
+                            className={`flex items-center justify-center border-2 border-dashed rounded-[10px] lg:w-[75%] w-full h-full cursor-pointer lg:mb-0 mb-2`}
+                            onClick={linkPersona ? undefined : handleClick}
+                          >
+                            <p className="lg:text-[14px] text-[12px] m-plus-rounded-1c-regular text-[#060606CC] underline p-4">
+                              Upload or drag & drop your files
+                            </p>
+                            <input
+                              type="file"
+                              ref={fileInputRef}
+                              className="hidden"
+                              accept=".doc,.docx,.pdf"
+                              onChange={handleFileChange}
+                            />
+                          </div>
+                        )}
+                      </div>
+                      {fileError && (
+                        <div className="text-red-500 text-xs mt-1">
+                          {fileError}
                         </div>
                       )}
                     </div>
