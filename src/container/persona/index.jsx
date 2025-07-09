@@ -210,7 +210,7 @@ const Persona = () => {
             </p>
           </div>
         </div>
-        <div className="border-[#FFDE5A80] bg-gradient-to-t from-[#ffde5af5] to-[#ffde5aee] overflow-auto w-full h-[calc(100%_-_35%)] p-2 absolute top-[35%] transition-opacity duration-300 opacity-0 group-hover:opacity-100 -z-20 group-hover:z-20">
+        <div className="border-[#FFDE5A80] bg-gradient-to-t from-[#ffde5af5] to-[#ffde5aee] overflow-auto w-full h-[calc(100%_-_35%)] p-2 absolute top-[35%] transition-opacity duration-300 opacity-0 -z-20 sm:group-active:opacity-100 group-hover:opacity-100  sm:group-active:z-20 group-hover:z-20">
           <p className="m-plus-rounded-1c-semibold text-lg text-[#000000] uppercase pb-1.5">
             {v?.name?.replace(/_/g, " ")}
           </p>
