@@ -55,7 +55,7 @@ const InteractionModal = ({ onNext }) => {
   const handleFileChange = async (e) => {
     const files = e.target.files;
     const validExtensions = ["doc", "docx", "pdf"];
-    const MAX_FILE_SIZE = 6 * 1024 * 1024; // 6MB
+    const MAX_FILE_SIZE = 1 * 1024 * 1024; // 6MB
 
     if (files && files.length > 0) {
       // Check for file size before filtering extensions
