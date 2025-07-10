@@ -185,8 +185,8 @@ const Persona = () => {
       <div
         className={`group sm:w-[15rem] w-[48.8%] sm:h-[17rem] h-[15rem] rounded-[20px] overflow-hidden relative cursor-pointer shadow-[0_0_6px_0_#7e6500]`}
         {...(isMobile
-          ? { onClick: handleCardClick }
-          : { onDoubleClick: handleCardClick })}
+          ? { onDoubleClick: handleCardClick }
+          : { onClick: handleCardClick })}
       >
         <Image
           src={v?.profile_pic ? v?.profile_pic : dummy}
@@ -202,15 +202,15 @@ const Persona = () => {
         </div> */}
         <div className="absolute left-0 bottom-0 group-hover:hidden flex flex-col items-start justify-end gap-2 p-4 w-full h-3/4 rounded-b-[20px] bg-[linear-gradient(16.26deg,#000000_18.18%,rgba(0,0,0,0)_81.35%)]">
           <h1 className="text-[#FFDE5A] m-plus-rounded-1c-regular text-[20px] uppercase">
-          {v?.name?.replace(/_/g, " ")}
+            {v?.name?.replace(/_/g, " ")}
           </h1>
           <div class="border-l-2 w-full border-solid border-[#FFDE5A80] bg-gradient-to-r from-[#FFDE5A00] to-[#FFDE5A26] px-2 py-1">
             <p class="sora-regular text-white text-[14px] capitalize">
-            {capitalize(v?.ai_role?.name?.replace(/_/g, " "))}
+              {capitalize(v?.ai_role?.name?.replace(/_/g, " "))}
             </p>
           </div>
         </div>
-        <div className="border-[#FFDE5A80] bg-gradient-to-t from-[#ffde5af5] to-[#ffde5aee] overflow-auto w-full h-[calc(100%_-_35%)] p-2 absolute top-[35%] transition-opacity duration-300 opacity-0 group-hover:opacity-100 -z-20 group-hover:z-20">
+        <div className="border-[#FFDE5A80] bg-gradient-to-t from-[#ffde5af5] to-[#ffde5aee] overflow-auto w-full h-[calc(100%_-_35%)] p-2 absolute top-[35%] transition-opacity duration-300 opacity-0 -z-20 sm:group-active:opacity-100 group-hover:opacity-100  sm:group-active:z-20 group-hover:z-20">
           <p className="m-plus-rounded-1c-semibold text-lg text-[#000000] uppercase pb-1.5">
             {v?.name?.replace(/_/g, " ")}
           </p>
@@ -239,10 +239,10 @@ const Persona = () => {
             {v?.company_size_new?.name === "small"
               ? "(1-500)"
               : v?.company_size_new?.name === "medium"
-              ? "(501-5,000)"
-              : v?.company_size_new?.name === "large"
-              ? "(5,000+)"
-              : ""}
+                ? "(501-5,000)"
+                : v?.company_size_new?.name === "large"
+                  ? "(5,000+)"
+                  : ""}
           </p>
           <p className="flex items-start gap-2 sora-medium md:text-[14px] text-[13px]">
             <span className="p-0.5 mt-2 rounded-full bg-[#2d2d2d]" />
@@ -405,10 +405,10 @@ const Persona = () => {
               {size === "small"
                 ? "(1-500)"
                 : size === "medium"
-                ? "(501-5,000)"
-                : size === "large"
-                ? "(5,000+)"
-                : ""}
+                  ? "(501-5,000)"
+                  : size === "large"
+                    ? "(5,000+)"
+                    : ""}
             </MenuItem>
           ))}
         </Select>

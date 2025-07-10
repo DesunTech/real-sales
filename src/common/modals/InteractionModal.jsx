@@ -55,7 +55,7 @@ const InteractionModal = ({ onNext }) => {
   const handleFileChange = async (e) => {
     const files = e.target.files;
     const validExtensions = ["doc", "docx", "pdf"];
-    const MAX_FILE_SIZE = 6 * 1024 * 1024; // 6MB
+    const MAX_FILE_SIZE = 1 * 1024 * 1024; // 1MB
 
     if (files && files.length > 0) {
       // Check for file size before filtering extensions
@@ -64,7 +64,7 @@ const InteractionModal = ({ onNext }) => {
       );
       if (oversizeFile) {
         setFileError(
-          "File size cannot be larger than 6MB. Try again compressing the file"
+          "File size cannot be larger than 1MB. Try again compressing the file"
         );
         if (fileInputRef.current) fileInputRef.current.value = "";
         return;
