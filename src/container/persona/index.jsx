@@ -187,7 +187,7 @@ const Persona = () => {
     return (
       <div className="relative group sm:w-[15rem] w-[48.8%] sm:h-[17rem] h-[15rem] rounded-[20px] overflow-hidden cursor-pointer shadow-[0_0_6px_0_#7e6500]">
         <div
-          className="w-fit h-fit bg-[#ffde5a] p-1 rounded-xl rounded-tr-[18px] z-50 absolute top-1 right-1 sm:hidden flex"
+          className="w-fit h-fit bg-[#ffde5a] p-1 rounded-xl rounded-tr-[18px] z-20 absolute top-1 right-1 sm:hidden flex"
           onClick={() => {
             if (phId === v?.persona_id) {
               setPhId("");
