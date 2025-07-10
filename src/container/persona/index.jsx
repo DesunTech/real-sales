@@ -18,6 +18,8 @@ import {
 } from "@mui/material";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import CloseIcon from "@mui/icons-material/Close";
+import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
 const Persona = () => {
   const dispatch = useDispatch();
@@ -41,6 +43,7 @@ const Persona = () => {
   const [companySizeFilter, setCompanySizeFilter] = useState("");
   const [product, setProduct] = useState([]);
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
+  const [phId, setPhId] = useState("");
   const isMobile = useMediaQuery("(max-width: 768px)");
 
   console.log(
@@ -182,90 +185,115 @@ const Persona = () => {
   const PersonaCard = ({ v }) => {
     const handleCardClick = () => createSession({ data: v, id: v?.persona_id });
     return (
-      <div
-        className={`group sm:w-[15rem] w-[48.8%] sm:h-[17rem] h-[15rem] rounded-[20px] overflow-hidden relative cursor-pointer shadow-[0_0_6px_0_#7e6500]`}
-        {...(isMobile
-          ? { onDoubleClick: handleCardClick }
-          : { onClick: handleCardClick })}
-      >
-        <Image
-          src={v?.profile_pic ? v?.profile_pic : dummy}
-          alt="persona"
-          width={192}
-          height={108}
-          className="w-full h-full"
-        />
-        {/* <div className="bg-[#ffffff] w-full h-[calc(100%_-_85%)] p-2 absolute bottom-0 z-10 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
+      <div className="relative group sm:w-[15rem] w-[48.8%] sm:h-[17rem] h-[15rem] rounded-[20px] overflow-hidden cursor-pointer shadow-[0_0_6px_0_#7e6500]">
+        <div
+          className="w-fit h-fit bg-[#ffde5a] p-1 rounded-xl rounded-tr-[18px] z-50 absolute top-1 right-1 sm:hidden flex"
+          onClick={() => {
+            if (phId === v?.persona_id) {
+              setPhId("");
+            } else {
+              setPhId(v?.persona_id);
+            }
+          }}
+        >
+          {phId === v?.persona_id ? (
+            <VisibilityOffIcon />
+          ) : (
+            <RemoveRedEyeIcon />
+          )}
+        </div>
+        <div
+          className={`relative w-full h-full`}
+          onClick={handleCardClick}
+          // {...(isMobile
+          //   ? { onDoubleClick: handleCardClick }
+          //   : { onClick: handleCardClick })}
+        >
+          <Image
+            src={v?.profile_pic ? v?.profile_pic : dummy}
+            alt="persona"
+            width={192}
+            height={108}
+            className="w-full h-full"
+          />
+          {/* <div className="bg-[#ffffff] w-full h-[calc(100%_-_85%)] p-2 absolute bottom-0 z-10 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
           <p className="m-plus-rounded-1c-semibold text-lg text-[#1a1a1a] uppercase pb-1.5">
             {v?.name?.replace(/_/g, " ")}
           </p>
         </div> */}
-        <div className="absolute left-0 bottom-0 group-hover:hidden flex flex-col items-start justify-end gap-2 p-4 w-full h-3/4 rounded-b-[20px] bg-[linear-gradient(16.26deg,#000000_18.18%,rgba(0,0,0,0)_81.35%)]">
-          <h1 className="text-[#FFDE5A] m-plus-rounded-1c-regular text-[20px] uppercase">
-            {v?.name?.replace(/_/g, " ")}
-          </h1>
-          <div class="border-l-2 w-full border-solid border-[#FFDE5A80] bg-gradient-to-r from-[#FFDE5A00] to-[#FFDE5A26] px-2 py-1">
-            <p class="sora-regular text-white text-[14px] capitalize">
+          <div className="absolute left-0 bottom-0 group-hover:hidden flex flex-col items-start justify-end gap-2 p-4 w-full h-3/4 rounded-b-[20px] bg-[linear-gradient(16.26deg,#000000_18.18%,rgba(0,0,0,0)_81.35%)]">
+            <h1 className="text-[#FFDE5A] m-plus-rounded-1c-regular text-[20px] uppercase">
+              {v?.name?.replace(/_/g, " ")}
+            </h1>
+            <div class="border-l-2 w-full border-solid border-[#FFDE5A80] bg-gradient-to-r from-[#FFDE5A00] to-[#FFDE5A26] px-2 py-1">
+              <p class="sora-regular text-white text-[14px] capitalize">
+                {capitalize(v?.ai_role?.name?.replace(/_/g, " "))}
+              </p>
+            </div>
+          </div>
+          <div
+            className={`border-[#FFDE5A80] bg-gradient-to-t from-[#ffde5af5] to-[#ffde5aee] overflow-auto w-full h-[calc(100%_-_35%)] p-2 absolute top-[35%] transition-opacity duration-300 opacity-0 -z-20 ${
+              phId === v?.persona_id
+                ? "opacity-100 z-20"
+                : "group-hover:opacity-100 group-hover:z-20"
+            }`}
+          >
+            <p className="m-plus-rounded-1c-semibold text-lg text-[#000000] uppercase pb-1.5">
+              {v?.name?.replace(/_/g, " ")}
+            </p>
+            <p className="font-medium m-plus-rounded-1c-bold text-[1.05rem] capitalize">
+              Details:
+            </p>
+            <p className="flex items-start gap-2 sora-medium md:text-[14px] text-[13px]">
+              <span className="p-0.5 mt-2 rounded-full bg-[#2d2d2d]" />
               {capitalize(v?.ai_role?.name?.replace(/_/g, " "))}
             </p>
-          </div>
-        </div>
-        <div className="border-[#FFDE5A80] bg-gradient-to-t from-[#ffde5af5] to-[#ffde5aee] overflow-auto w-full h-[calc(100%_-_35%)] p-2 absolute top-[35%] transition-opacity duration-300 opacity-0 -z-20 sm:group-active:opacity-100 group-hover:opacity-100  sm:group-active:z-20 group-hover:z-20">
-          <p className="m-plus-rounded-1c-semibold text-lg text-[#000000] uppercase pb-1.5">
-            {v?.name?.replace(/_/g, " ")}
-          </p>
-          <p className="font-medium m-plus-rounded-1c-bold text-[1.05rem] capitalize">
-            Details:
-          </p>
-          <p className="flex items-start gap-2 sora-medium md:text-[14px] text-[13px]">
-            <span className="p-0.5 mt-2 rounded-full bg-[#2d2d2d]" />
-            {capitalize(v?.ai_role?.name?.replace(/_/g, " "))}
-          </p>
-          <p className="flex items-start gap-2 sora-medium md:text-[14px] text-[13px]">
-            <span className="p-0.5 mt-2 rounded-full bg-[#2d2d2d]" />
-            {capitalize(v?.industry?.name?.replace(/_/g, " "))}
-          </p>
-          <p className="flex items-start gap-2 sora-medium md:text-[14px] text-[13px]">
-            <span className="p-0.5 mt-2 rounded-full bg-[#2d2d2d]" />
-            {capitalize(v?.manufacturing_model?.name?.replace(/_/g, " "))}
-          </p>
-          <p className="flex items-start gap-2 sora-medium md:text-[14px] text-[13px]">
-            <span className="p-0.5 mt-2 rounded-full bg-[#2d2d2d]" />
-            {capitalize(v?.plant_size_impact?.name?.replace(/_/g, " "))}
-          </p>
-          <p className="flex items-start gap-2 sora-medium md:text-[14px] text-[13px]">
-            <span className="p-0.5 mt-2 rounded-full bg-[#2d2d2d]" />
-            {capitalize(v?.company_size_new?.name?.replace(/_/g, " "))}&nbsp;
-            {v?.company_size_new?.name === "small"
-              ? "(1-500)"
-              : v?.company_size_new?.name === "medium"
+            <p className="flex items-start gap-2 sora-medium md:text-[14px] text-[13px]">
+              <span className="p-0.5 mt-2 rounded-full bg-[#2d2d2d]" />
+              {capitalize(v?.industry?.name?.replace(/_/g, " "))}
+            </p>
+            <p className="flex items-start gap-2 sora-medium md:text-[14px] text-[13px]">
+              <span className="p-0.5 mt-2 rounded-full bg-[#2d2d2d]" />
+              {capitalize(v?.manufacturing_model?.name?.replace(/_/g, " "))}
+            </p>
+            <p className="flex items-start gap-2 sora-medium md:text-[14px] text-[13px]">
+              <span className="p-0.5 mt-2 rounded-full bg-[#2d2d2d]" />
+              {capitalize(v?.plant_size_impact?.name?.replace(/_/g, " "))}
+            </p>
+            <p className="flex items-start gap-2 sora-medium md:text-[14px] text-[13px]">
+              <span className="p-0.5 mt-2 rounded-full bg-[#2d2d2d]" />
+              {capitalize(v?.company_size_new?.name?.replace(/_/g, " "))}&nbsp;
+              {v?.company_size_new?.name === "small"
+                ? "(1-500)"
+                : v?.company_size_new?.name === "medium"
                 ? "(501-5,000)"
                 : v?.company_size_new?.name === "large"
-                  ? "(5,000+)"
-                  : ""}
-          </p>
-          <p className="flex items-start gap-2 sora-medium md:text-[14px] text-[13px]">
-            <span className="p-0.5 mt-2 rounded-full bg-[#2d2d2d]" />
-            {v?.geography?.replace(/_/g, " ")}
-          </p>
-          {v?.persona_products?.length > 0 && (
-            <div className="mt-2">
-              <p className="font-medium m-plus-rounded-1c-bold text-[1.05rem] capitalize">
-                Products:
-              </p>
-              <div className="list-disc list-inside text-[13px]">
-                {v.persona_products.map((prod, idx) => (
-                  <p
-                    className="flex items-start gap-2 sora-medium md:text-[14px] text-[13px]"
-                    key={idx}
-                  >
-                    <span className="p-0.5 mt-2 rounded-full bg-[#2d2d2d]" />
-                    {capitalize(prod?.product?.name?.replace(/_/g, " "))}
-                  </p>
-                ))}
+                ? "(5,000+)"
+                : ""}
+            </p>
+            <p className="flex items-start gap-2 sora-medium md:text-[14px] text-[13px]">
+              <span className="p-0.5 mt-2 rounded-full bg-[#2d2d2d]" />
+              {v?.geography?.replace(/_/g, " ")}
+            </p>
+            {v?.persona_products?.length > 0 && (
+              <div className="mt-2">
+                <p className="font-medium m-plus-rounded-1c-bold text-[1.05rem] capitalize">
+                  Products:
+                </p>
+                <div className="list-disc list-inside text-[13px]">
+                  {v.persona_products.map((prod, idx) => (
+                    <p
+                      className="flex items-start gap-2 sora-medium md:text-[14px] text-[13px]"
+                      key={idx}
+                    >
+                      <span className="p-0.5 mt-2 rounded-full bg-[#2d2d2d]" />
+                      {capitalize(prod?.product?.name?.replace(/_/g, " "))}
+                    </p>
+                  ))}
+                </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </div>
     );
@@ -405,10 +433,10 @@ const Persona = () => {
               {size === "small"
                 ? "(1-500)"
                 : size === "medium"
-                  ? "(501-5,000)"
-                  : size === "large"
-                    ? "(5,000+)"
-                    : ""}
+                ? "(501-5,000)"
+                : size === "large"
+                ? "(5,000+)"
+                : ""}
             </MenuItem>
           ))}
         </Select>
