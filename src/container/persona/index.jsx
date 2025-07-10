@@ -18,8 +18,8 @@ import {
 } from "@mui/material";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import CloseIcon from "@mui/icons-material/Close";
-import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
-import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import InfoOutlineIcon from '@mui/icons-material/InfoOutline';
+import InfoIcon from '@mui/icons-material/Info';
 
 const Persona = () => {
   const dispatch = useDispatch();
@@ -197,9 +197,9 @@ const Persona = () => {
           }}
         >
           {phId === v?.persona_id ? (
-            <VisibilityOffIcon />
+            <InfoIcon className="!fill-gray-800/80" />
           ) : (
-            <RemoveRedEyeIcon />
+            <InfoOutlineIcon className="!fill-gray-800"/>
           )}
         </div>
         <div
