@@ -395,9 +395,9 @@ const Chat = ({ slug, children }) => {
       silenceCheckInterval = setInterval(() => {
         if (
           lastSpeechTimeRef.current &&
-          Date.now() - lastSpeechTimeRef.current >= 4000
+          Date.now() - lastSpeechTimeRef.current >= 15000
         ) {
-          // If no speech detected for 6 seconds
+          // If no speech detected for 15 seconds
           isSilenceTimeoutRef.current = true;
           if (recognitionRef.current) {
             try {
@@ -412,7 +412,7 @@ const Chat = ({ slug, children }) => {
           }
           lastSpeechTimeRef.current = null;
         }
-      }, 4000); // Check every second
+      }, 15000); // Check every second
     }
 
     return () => {
@@ -512,30 +512,20 @@ const Chat = ({ slug, children }) => {
       const audioUrl = URL.createObjectURL(audioBlob);
 
       if (audioRef.current) {
-        // Clean up previous object URL if any
-        if (audioRef.current.src && audioRef.current.src.startsWith('blob:')) {
-          try {
-            URL.revokeObjectURL(audioRef.current.src);
-          } catch (e) {
-            console.warn('Failed to revoke object URL:', e);
-          }
-        }
         audioRef.current.src = audioUrl;
-        audioRef.current.muted = false;
-        audioRef.current.playsInline = true;
         try {
           setIsAiThinking(false);
           setIsAiSpeaking(true);
           await audioRef.current.play();
           setIsSpeaking(true);
-          console.log('Audio playback started');
+          console.log("Audio playback started");
         } catch (playError) {
-          console.error('Error playing audio:', playError);
+          console.error("Error playing audio:", playError);
           setIsSpeaking(false);
           setIsAiSpeaking(false);
         }
       } else {
-        console.error('Audio element not found');
+        console.error("Audio element not found");
         setIsAiThinking(false);
       }
     } catch (error) {
@@ -553,42 +543,26 @@ const Chat = ({ slug, children }) => {
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.onended = () => {
-        console.log('Audio playback ended');
+        console.log("Audio playback ended");
         setIsSpeaking(false);
         setIsAiSpeaking(false);
-        // Clean up the object URL after playback
-        if (audioRef.current.src && audioRef.current.src.startsWith('blob:')) {
-          try {
-            URL.revokeObjectURL(audioRef.current.src);
-            audioRef.current.src = '';
-          } catch (e) {
-            console.warn('Failed to revoke object URL:', e);
-          }
-        }
         // Clear the last processed text when audio ends
-        lastProcessedTextRef.current = '';
+        lastProcessedTextRef.current = "";
+
         // Automatically start listening when speech ends
         if (!isMicClicked) {
-          console.log('Starting microphone after speech ended');
+          console.log("Starting microphone after speech ended");
           setIsVolClicked(false);
           // toggleSpeechRecognition();
         }
       };
+
       audioRef.current.onerror = (error) => {
-        console.error('Audio playback error:', error);
+        console.error("Audio playback error:", error);
         setIsSpeaking(false);
         setIsAiSpeaking(false);
-        // Clean up the object URL on error
-        if (audioRef.current.src && audioRef.current.src.startsWith('blob:')) {
-          try {
-            URL.revokeObjectURL(audioRef.current.src);
-            audioRef.current.src = '';
-          } catch (e) {
-            console.warn('Failed to revoke object URL:', e);
-          }
-        }
         // Clear the last processed text on error
-        lastProcessedTextRef.current = '';
+        lastProcessedTextRef.current = "";
       };
     }
   }, []);
@@ -836,24 +810,19 @@ const Chat = ({ slug, children }) => {
   const handlePrimeAudio = async () => {
     if (audioRef.current) {
       // Create a silent audio blob
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const buffer = ctx.createBuffer(1, 1, 22050);
+      const source = ctx.createBufferSource();
+      source.buffer = buffer;
+      source.connect(ctx.destination);
+      source.start(0);
+      // Also try to play the audio element (in case browser prefers this)
       try {
-        const ctx = new (window.AudioContext || window.webkitAudioContext)();
-        const buffer = ctx.createBuffer(1, 1, 22050);
-        const source = ctx.createBufferSource();
-        source.buffer = buffer;
-        source.connect(ctx.destination);
-        source.start(0);
-        // Also try to play the audio element (in case browser prefers this)
-        audioRef.current.muted = false;
-        audioRef.current.playsInline = true;
-        audioRef.current.src = '';
-        await audioRef.current.play().catch(() => {});
-        setAudioPrimed(true);
-        setShowAudioPrompt(false);
-        ctx.close();
-      } catch (e) {
-        console.error('Audio priming failed:', e);
-      }
+        audioRef.current.src = "";
+        await audioRef.current.play();
+      } catch (e) {}
+      setAudioPrimed(true);
+      setShowAudioPrompt(false);
     }
   };
 
@@ -1906,7 +1875,7 @@ const Chat = ({ slug, children }) => {
           ) : null}
         </div>
       </div>
-      <audio ref={audioRef} style={{ display: "none" }} playsInline muted={false} />
+      <audio ref={audioRef} style={{ display: "none" }} />
       {/* <Modal open={isChatPosting}>
         <Box className="h-screen w-full flex items-center justify-center">
           <div className="w-full flex items-center justify-center">
