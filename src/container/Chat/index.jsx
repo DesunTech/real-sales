@@ -46,6 +46,7 @@ import AttachFileIcon from "@mui/icons-material/AttachFile";
 import { AddSummary } from "../../redux/SummaryReducer";
 import { showToast } from "../../utils/toastConfig";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { PDFDocument } from "pdf-lib";
 
 // Update the SpeakingIndicator component
 const SpeakingIndicator = ({
@@ -752,22 +753,26 @@ const Chat = ({ slug, children }) => {
   const handleFileChange = async (e) => {
     const files = e.target.files;
     const validExtensions = ["doc", "docx", "pdf"];
-    const MAX_FILE_SIZE = 10 * 1024 * 1024; // 1MB
+    const MAX_FILE_SIZE = 1 * 1024 * 1024; // 1MB
 
     if (files && files.length > 0) {
-      // Check for file size before filtering extensions
-      const oversizeFile = Array.from(files).find((file) => file.size > MAX_FILE_SIZE);
-      if (oversizeFile) {
-        setFileError("File size cannot be larger than 10MB. Try again compressing the file");
-        if (fileInputRef.current) fileInputRef.current.value = "";
-        return;
-      }
-
-      const validFiles = Array.from(files).filter((file) => {
+      let validFiles = Array.from(files).filter((file) => {
         const extension = file.name.split(".").pop().toLowerCase();
         return validExtensions.includes(extension);
       });
 
+      // Check for oversize DOC/DOCX
+      const oversizeDoc = Array.from(files).find((file) => {
+        const ext = file.name.split(".").pop().toLowerCase();
+        return (ext === "doc" || ext === "docx") && file.size > MAX_FILE_SIZE;
+      });
+      if (oversizeDoc) {
+        setFileError("DOC/DOCX files over 1MB cannot be uploaded. Please compress your file before uploading.");
+        if (fileInputRef.current) fileInputRef.current.value = "";
+        return;
+      }
+
+      // Normal upload for valid files (PDFs of any size, DOC/DOCX under 1MB)
       if (validFiles.length > 0) {
         try {
           setIsUploading(true);
