@@ -21,6 +21,7 @@
     "elevenlabs": "^1.59.0",
     "elevenlabs-node": "^2.0.3",
     "next": "15.2.4",
+    "pdf-lib": "^1.17.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-dropzone": "^14.3.8",
