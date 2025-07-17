@@ -18,6 +18,8 @@ const ChatPage = () => {
   //   }
   // }, [useAuth?.auth]);
 
+  if (!slug) return null; // or a loading spinner
+
   return (
     <>
       <Chat slug={slug?.length ? slug[0] : null}>
