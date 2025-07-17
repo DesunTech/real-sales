@@ -65,7 +65,17 @@ const Header = (props) => {
                   About
                 </Link>
               </div>
-              <div className="relative">
+              <div>
+                <Link
+                  href="/industries"
+                  className={`text-white leading-1 hover:underline ${
+                    router?.pathname === "/industries" ? `underline` : ``
+                  }`}
+                >
+                  Industries
+                </Link>
+              </div>
+              {/* <div className="relative">
                 <ClickAwayListener onClickAway={() => setOpenIndustry(false)}>
                   <Link
                     href="#"
@@ -104,7 +114,7 @@ const Header = (props) => {
                     </div>
                   </Link>
                 ) : null}
-              </div>
+              </div> */}
               <div>
                 <Link
                   href="/faq"
