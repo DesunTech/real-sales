@@ -1,6 +1,7 @@
 import Image from "next/image";
 import attachment7 from "../../../public/assets/images/banner/attachment7.png";
 import bannerImg from "../../../public/assets/images/banner/BANNER-IMG.png";
+import bannerImg2 from "../../../public/assets/images/banner/BANNER-IMG2.png";
 import bannersub_img from ".././../../public/assets/images/banner/bannersub-img.png";
 import BookAdemo from "../../common/bookAdemo";
 import AddIcCallIcon from "@mui/icons-material/AddIcCall";
@@ -42,29 +43,31 @@ const Banner = () => {
         {/* top section */}
         <div className="py-8 bg-[url(../../public/assets/images/RealSales-backgrounds/bg-3.png)] bg-cover bg-center bg-no-repeat">
           <div className="page-container mx-auto px-4 container flex lg:flex-row flex-col-reverse items-center justify-between gap-8">
-            <div className="lg:w-1/2 w-full flex flex-col lg:items-start items-center justify-between gap-4">
+            <div className="lg:w-1/2 w-full h-[-webkit-fill-available] flex flex-col lg:items-start items-center justify-evenly gap-4">
               <div
                 data-aos="fade-right"
                 className="flex flex-col lg:gap-4 gap-2 w-full"
               >
-                <p className="text-[16px] text-[#060606] sora-regular">
+                {/* <p className="text-[16px] text-[#060606] sora-regular">
                   RealSales accelerate
                   <br />
                   your sales team performance
-                </p>
+                </p> */}
                 <h1 className="lg:text-4xl text-2xl text-[#060606E5] m-plus-rounded-1c-regular">
-                  Welcome to
+                  {/* Welcome to */}
+                  {/* with */}
+                  Supercharge<br />your Sales Team with
                   <br />
                   <span className="lg:text-[180%] text-[130%] m-plus-rounded-1c-medium capitalize">
                     Realsales AI
                   </span>
                 </h1>
-                <hr className="border-[#06060640] mr-[8%] lg:mb-1 mb-0 lg:mt-2 mt-0" />
+                {/* <hr className="border-[#06060640] mr-[8%] lg:mb-1 mb-0 lg:mt-2 mt-0" />
                 <p className="lg:text-[40px] text-[20px] text-[#060606E5] m-plus-rounded-1c-regular">
                   Supercharging your sales
                   <br />
                   teams with AI-Driven Selling
-                </p>
+                </p> */}
               </div>
 
               <div
@@ -86,7 +89,7 @@ const Banner = () => {
               </div>
             </div>
             <div data-aos="fade-down" className="lg:w-[45%] w-full">
-              <Image src={bannerImg} alt="bannerImg" />
+              <Image src={bannerImg2} alt="bannerImg" />
             </div>
           </div>
         </div>

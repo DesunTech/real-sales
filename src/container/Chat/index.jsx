@@ -13,6 +13,7 @@ import {
   Box,
   FormControlLabel,
   Modal,
+  Popover,
   Radio,
   styled,
   Switch,
@@ -47,6 +48,9 @@ import { AddSummary } from "../../redux/SummaryReducer";
 import { showToast } from "../../utils/toastConfig";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { PDFDocument } from "pdf-lib";
+import { useLogout } from "../../hooks/useLogout";
+import { AddAuth, AddUser } from "../../redux/AuthReducer";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 // Update the SpeakingIndicator component
 const SpeakingIndicator = ({
@@ -175,8 +179,14 @@ const Chat = ({ slug, children }) => {
   const dispatch = useDispatch();
   const router = useRouter();
 
+  const token = useSelector((state) => state.auth.auth);
   const user = useSelector((state) => state?.auth?.user);
   const summary = useSelector((state) => state?.summary?.summary);
+
+  let capitalize = (str) => {
+    if (!str) return "";
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  };
 
   const [checked, setChecked] = useState(false);
   const [openAnswer, setOpenAnswer] = useState(0);
@@ -218,6 +228,30 @@ const Chat = ({ slug, children }) => {
   const [showAudioPrompt, setShowAudioPrompt] = useState(false);
   const isMobile = useMediaQuery("(max-width: 768px)");
   const [fileError, setFileError] = useState("");
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [personaDetails, setPersonaDetails] = useState(null);
+
+  const handleClickPopOver = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClosePopOver = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const popOverid = open ? "simple-popover" : undefined;
+
+  const handleClickPopOverPersona = (event) => {
+    setPersonaDetails(event.currentTarget);
+  };
+
+  const handleClosePopOverPersona = () => {
+    setPersonaDetails(null);
+  };
+
+  const openpersonaDetails = Boolean(personaDetails);
+  const idPersona = openpersonaDetails ? "simple-popper" : undefined;
 
   console.log(coachingAccept, coachingData, "coachingAccept");
   useEffect(() => {
@@ -710,15 +744,13 @@ const Chat = ({ slug, children }) => {
 
   useEffect(() => {
     if (session_id) {
-      if (checked) {
-        if (coachingAround) {
-          startCoaching(session_id);
-        }
+      if (coachingAround) {
+        startCoaching(session_id);
       } else {
         console.log("dont coach");
       }
     }
-  }, [session_id, checked, coachingMessage, coachingAround]);
+  }, [session_id, coachingMessage, coachingAround]);
 
   const coachingArr = [{}, {}, {}];
   const qnaArr = [
@@ -767,7 +799,9 @@ const Chat = ({ slug, children }) => {
         return (ext === "doc" || ext === "docx") && file.size > MAX_FILE_SIZE;
       });
       if (oversizeDoc) {
-        setFileError("DOC/DOCX files over 1MB cannot be uploaded. Please compress your file before uploading.");
+        setFileError(
+          "DOC/DOCX files over 1MB cannot be uploaded. Please compress your file before uploading."
+        );
         if (fileInputRef.current) fileInputRef.current.value = "";
         return;
       }
@@ -908,16 +942,19 @@ const Chat = ({ slug, children }) => {
               </Link>
             </div>
             <div className="flex items-center justify-end gap-2 lg:w-[45%] w-full">
-              <div className="relative w-10 h-10 bg-[#FFFFFF1A] rounded-full flex items-center justify-center cursor-pointer">
+              {/* <div className="relative w-10 h-10 bg-[#FFFFFF1A] rounded-full flex items-center justify-center cursor-pointer">
                 <MailIcon className="text-white" />
                 <p className="flex items-center justify-center absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-[#CF2427] text-white text-[10px]">
                   {99}
                 </p>
-              </div>
-              <div className="relative w-10 h-10 bg-[#FFFFFF1A] rounded-full flex items-center justify-center cursor-pointer">
+              </div> */}
+              <div
+                onClick={() => setChecked(true)}
+                className="relative w-10 h-10 bg-[#FFFFFF1A] rounded-full flex items-center justify-center cursor-pointer"
+              >
                 <NotificationsIcon className="text-white" />
                 <p className="flex items-center justify-center absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-[#CF2427] text-white text-[10px]">
-                  {4}
+                  {coachingData?.length}
                 </p>
               </div>
               <div className="flex items-center gap-2 pl-4">
@@ -931,13 +968,45 @@ const Chat = ({ slug, children }) => {
                 </div>
                 <div className="flex items-center gap-1">
                   <div className="w-14 h-14 rounded-full p-1 border-2 border-solid border-white overflow-hidden">
-                    <Image
+                    {/* <Image
                       src={userDummy}
                       alt="user-image"
                       className="w-full h-full rounded-full"
-                    />
+                    /> */}
+                    <p className="w-full h-full rounded-full flex items-center justify-center text-2xl bg-[#FFDE5A] sora-medium uppercase">
+                      {user?.first_name[0]}
+                    </p>
                   </div>
-                  <ArrowDropDownIcon className="text-white !text-4xl" />
+                  <ArrowDropDownIcon
+                    onClick={handleClickPopOver}
+                    className="text-white !text-4xl cursor-pointer"
+                  />
+                  <Popover
+                    id={popOverid}
+                    open={open}
+                    anchorEl={anchorEl}
+                    onClose={handleClosePopOver}
+                    anchorOrigin={{
+                      vertical: "bottom",
+                      horizontal: "left",
+                    }}
+                  >
+                    <div className="px-4 py-3 min-w-40">
+                      {token !== "" && (
+                        <div
+                          onClick={() => {
+                            useLogout({ final: router.push("/") });
+                            dispatch(AddAuth(""));
+                            dispatch(AddUser({}));
+                          }}
+                          className="cursor-pointer text-red-500"
+                        >
+                          <LogoutIcon className="text-red-500" />
+                          &nbsp;Logout
+                        </div>
+                      )}
+                    </div>
+                  </Popover>
                 </div>
               </div>
             </div>
@@ -1046,7 +1115,10 @@ const Chat = ({ slug, children }) => {
                       } flex flex-col gap-4`}
                     >
                       <div className="bg-[linear-gradient(180deg,rgba(17,24,43,0.3)_0%,rgba(255,255,255,0.09)_100%)] rounded-[10px] p-4 flex items-center gap-4">
-                        <div className="relative w-[125px] h-[160px] overflow-hidden cursor-pointer rounded-[10px]">
+                        <div
+                          onClick={handleClickPopOverPersona}
+                          className="relative w-[125px] h-[160px] overflow-hidden cursor-pointer rounded-[10px]"
+                        >
                           <Image
                             src={
                               personaData?.profile_pic
@@ -1069,6 +1141,103 @@ const Chat = ({ slug, children }) => {
                             </div>
                           </div>
                         </div>
+                        <Popover
+                          id={idPersona}
+                          open={openpersonaDetails}
+                          anchorEl={personaDetails}
+                          onClose={handleClosePopOverPersona}
+                          anchorOrigin={{
+                            vertical: "top",
+                            horizontal: "left",
+                          }}
+                        >
+                          <div className="p-4">
+                            <p className="m-plus-rounded-1c-semibold text-lg text-[#000000] uppercase pb-1.5">
+                              {personaData?.name?.replace(/_/g, " ")}
+                            </p>
+                            <p className="font-medium m-plus-rounded-1c-bold text-[1.05rem] capitalize">
+                              Details:
+                            </p>
+                            <p className="flex items-start gap-2 sora-medium md:text-[14px] text-[13px]">
+                              <span className="p-0.5 mt-2 rounded-full bg-[#2d2d2d]" />
+                              {capitalize(
+                                personaData?.ai_role?.name?.replace(/_/g, " ")
+                              )}
+                            </p>
+                            <p className="flex items-start gap-2 sora-medium md:text-[14px] text-[13px]">
+                              <span className="p-0.5 mt-2 rounded-full bg-[#2d2d2d]" />
+                              {capitalize(
+                                personaData?.industry?.name?.replace(/_/g, " ")
+                              )}
+                            </p>
+                            <p className="flex items-start gap-2 sora-medium md:text-[14px] text-[13px]">
+                              <span className="p-0.5 mt-2 rounded-full bg-[#2d2d2d]" />
+                              {capitalize(
+                                personaData?.manufacturing_model?.name?.replace(
+                                  /_/g,
+                                  " "
+                                )
+                              )}
+                            </p>
+                            <p className="flex items-start gap-2 sora-medium md:text-[14px] text-[13px]">
+                              <span className="p-0.5 mt-2 rounded-full bg-[#2d2d2d]" />
+                              {capitalize(
+                                personaData?.plant_size_impact?.name?.replace(
+                                  /_/g,
+                                  " "
+                                )
+                              )}
+                            </p>
+                            <p className="flex items-start gap-2 sora-medium md:text-[14px] text-[13px]">
+                              <span className="p-0.5 mt-2 rounded-full bg-[#2d2d2d]" />
+                              {capitalize(
+                                personaData?.company_size_new?.name?.replace(
+                                  /_/g,
+                                  " "
+                                )
+                              )}
+                              &nbsp;
+                              {personaData?.company_size_new?.name === "small"
+                                ? "(1-500)"
+                                : personaData?.company_size_new?.name ===
+                                  "medium"
+                                ? "(501-5,000)"
+                                : personaData?.company_size_new?.name ===
+                                  "large"
+                                ? "(5,000+)"
+                                : ""}
+                            </p>
+                            <p className="flex items-start gap-2 sora-medium md:text-[14px] text-[13px]">
+                              <span className="p-0.5 mt-2 rounded-full bg-[#2d2d2d]" />
+                              {personaData?.geography?.replace(/_/g, " ")}
+                            </p>
+                            {personaData?.persona_products?.length > 0 && (
+                              <div className="mt-2">
+                                <p className="font-medium m-plus-rounded-1c-bold text-[1.05rem] capitalize">
+                                  Products:
+                                </p>
+                                <div className="list-disc list-inside text-[13px]">
+                                  {personaData?.persona_products.map(
+                                    (prod, idx) => (
+                                      <p
+                                        className="flex items-start gap-2 sora-medium md:text-[14px] text-[13px]"
+                                        key={idx}
+                                      >
+                                        <span className="p-0.5 mt-2 rounded-full bg-[#2d2d2d]" />
+                                        {capitalize(
+                                          prod?.product?.name?.replace(
+                                            /_/g,
+                                            " "
+                                          )
+                                        )}
+                                      </p>
+                                    )
+                                  )}
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        </Popover>
                         <div className="flex flex-col items-start gap-1 h-full">
                           <p className="text-white sora-semilight text-[14px]">
                             Active plan:
@@ -1151,7 +1320,9 @@ const Chat = ({ slug, children }) => {
                             </div>
                           )}
                           {fileError && (
-                            <div className="text-red-500 text-xs mt-1">{fileError}</div>
+                            <div className="text-red-500 text-xs mt-1">
+                              {fileError}
+                            </div>
                           )}
                         </div>
                       </div>
