@@ -18,7 +18,8 @@ const IndustriesPage = () => {
     return (
       summary
         .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
-        .replace(/\\n/g, "<span>")
+        .replace(/\\n/g, " <span>")
+        .replace(/'/g, "")
         .replace(/\n\n\*/g, "<ul><li>")
         .replace(/\n\n/g, "</li><li>")
         .replace(/\n/g, "<br/>")
@@ -55,9 +56,9 @@ const IndustriesPage = () => {
                 {v?.name?.replace(/_/g, " ")}
               </h2>
               <p
-                className="m-plus-rounded-1c-regular text-base"
+                className="m-plus-rounded-1c-regular text-base leading-8"
                 dangerouslySetInnerHTML={{
-                  __html: formatSummary(v?.details),
+                  __html: formatSummary(`${v?.details}.`),
                 }}
               />
             </div>
