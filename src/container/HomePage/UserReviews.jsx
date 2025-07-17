@@ -70,11 +70,11 @@ const UserReviews = () => {
   return (
     <div className="home-bg">
       <div className="page-container mx-auto container px-4 py-8 flex flex-col gap-4 items-center">
-        <Highlighter highlight={"User Reviews"} />
+        {/* <Highlighter highlight={"User Reviews"} />
         <p className="text-[30px] text-[#060606E5] m-plus-rounded-1c-regular text-center">
           User Reviews & Ratings
-        </p>
-        <h1 className="lg:text-7xl text-2xl text-[#060606E5] m-plus-rounded-1c-regular">
+        </p> */}
+        <h1 className="py-6 lg:text-7xl text-2xl text-[#060606E5] m-plus-rounded-1c-regular">
           Our Testimonials
         </h1>
         <div className="absolute lg:right-[30%] mt-[10%]">

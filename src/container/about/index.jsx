@@ -3,6 +3,7 @@ import Banner from "./Banner";
 import QuickSearch from "./QuickSearch";
 import Highlighter from "../../common/highlighter";
 import MeetPerfectPersona from "./MeetPerfectPersona";
+import HowItWorks from "../HomePage/HowItWorks";
 
 const About = () => {
   return (
@@ -19,6 +20,7 @@ const About = () => {
       </div>
       <QuickSearch />
       <MeetPerfectPersona />
+      <HowItWorks />
     </>
   );
 };

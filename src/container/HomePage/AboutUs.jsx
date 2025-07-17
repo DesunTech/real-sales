@@ -21,7 +21,7 @@ const AboutUs = () => {
         <div className="z-10 page-container mx-auto container px-4 flex justify-between items-center lg:gap-4 gap-8 lg:flex-row flex-col-reverse py-12">
           <div data-aos="fade-right" className="lg:w-1/2 w-full">
             <div className="flex flex-col lg:items-start items-center gap-5">
-              <Highlighter />
+              {/* <Highlighter /> */}
               <div className="flex items-center gap-4">
                 <div className="lg:flex hidden items-center gap-4">
                   <hr className="w-16 border border-white" />
@@ -39,15 +39,15 @@ const AboutUs = () => {
               </div>
               <p className="text-[35px] text-[#ffffff] m-plus-rounded-1c-regular">
                 No more Generic AI
-                <br />
-                Train faster with
+                {/* <br />
+                Train faster with */}
               </p>
               <h1 className="lg:text-[65px] text-3xl text-[#ffffff] m-plus-rounded-1c-regular">
-                Real Buyer Personas
+                Real Buyer Persona for Real Sales
               </h1>
               <p className="text-[15px] text-[#ffffff] sora-regular w-[90%]">
                 Unlike generic Al models, our platform is powered by Al personas
-                modeled after{" "}
+                modeled after
                 <span className="sora-semibold">
                   real industry decision-makers
                 </span>
@@ -57,7 +57,10 @@ const AboutUs = () => {
               </p>
             </div>
           </div>
-          <div data-aos="fade-up" className="lg:w-1/2 w-full flex lg:justify-end justify-center">
+          <div
+            data-aos="fade-up"
+            className="lg:w-1/2 w-full flex lg:justify-end justify-center"
+          >
             <Image src={aiGirl} alt="aiGirl" className="w-[70%] h-full" />
           </div>
         </div>
@@ -75,7 +78,7 @@ const AboutUs = () => {
         <div className="z-10 page-container mx-auto container px-4 flex justify-between items-center lg:gap-4 gap-8 lg:flex-row-reverse flex-col-reverse py-12">
           <div data-aos="fade-left" className="lg:w-1/2 w-full">
             <div className="flex flex-col lg:items-end items-center gap-5">
-              <Highlighter />
+              {/* <Highlighter /> */}
               <div className="flex items-center gap-4">
                 <div className="lg:flex hidden items-center gap-4">
                   <hr className="w-16 border border-white" />
@@ -92,12 +95,18 @@ const AboutUs = () => {
                 />
               </div>
               <p className="text-[35px] text-[#ffffff] m-plus-rounded-1c-regular">
-              <span className="m-plus-rounded-1c-extrabold">RealSales</span>&nbsp;turns
+                {/* <span className="m-plus-rounded-1c-extrabold">RealSales</span>&nbsp;turns
                 <br />
-                sales teams into
+                sales teams into */}
+                Accelerate your
+                <br />
+                Company Growth
               </p>
-              <h1 className="lg:text-[65px] text-3xl text-[#ffffff] m-plus-rounded-1c-regular">
-                Top Performers
+              <h1 className="lg:text-[65px] lg:text-right text-left text-3xl text-[#ffffff] m-plus-rounded-1c-regular">
+                {/* Top Performers */}
+                Transform your Sales Team into
+                <br />
+                Top Performer
               </h1>
               <p className="text-[15px] text-[#ffffff] lg:text-end items-start sora-regular w-[90%]">
                 Our Al-powered interactive platform helps sales teams to
@@ -107,18 +116,21 @@ const AboutUs = () => {
                 <span className="sora-semibold">
                   Developing real sales skills in real- world scenarios...
                 </span>
-                <br />
+                {/* <br />
                 <br />
                 <span className="sora-semibold">
                   We accelerate your company sales growth
                 </span>
                 &nbsp;by helping your reps to become productive faster,
                 generating more opportunities per account and improving win
-                rates.
+                rates. */}
               </p>
             </div>
           </div>
-          <div data-aos="fade-up" className="lg:w-1/2 w-full flex lg:justify-start justify-center">
+          <div
+            data-aos="fade-up"
+            className="lg:w-1/2 w-full flex lg:justify-start justify-center"
+          >
             <Image src={aiPen} alt="aiPen" className="w-[70%] h-full" />
           </div>
         </div>
@@ -136,7 +148,7 @@ const AboutUs = () => {
         <div className="z-10 page-container mx-auto container px-4 flex justify-between items-center lg:gap-4 gap-8 lg:flex-row flex-col-reverse py-12">
           <div data-aos="fade-right" className="lg:w-1/2 w-full">
             <div className="flex lg:items-start items-center flex-col gap-5">
-              <Highlighter />
+              {/* <Highlighter /> */}
               <div className="flex items-center gap-4">
                 <div className="lg:flex hidden items-center gap-4">
                   <hr className="w-16 border border-white" />
@@ -153,7 +165,8 @@ const AboutUs = () => {
                 />
               </div>
               <p className="text-[32px] text-[#ffffff] m-plus-rounded-1c-regular lg:text-left text-center">
-                <span className="m-plus-rounded-1c-extrabold">RealSales</span>&nbsp;is the answer to
+                <span className="m-plus-rounded-1c-extrabold">RealSales</span>
+                &nbsp;is the answer to
                 <br />
                 Common problem is Sales team Impacting
               </p>
@@ -163,16 +176,16 @@ const AboutUs = () => {
               <div className="flex flex-col gap-5">
                 <div className="flex flex-col gap-2 py-3 px-4 border-l border-solid border-[#14558CB2] bg-[linear-gradient(90deg,rgba(20,85,140,0.3)_0%,rgba(20,85,140,0)_63.5%)]">
                   <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-full flex items-center justify-center bg-[#14558C] sora-semibold text-white text-[16px]">
+                    {/* <div className="w-8 h-8 rounded-full flex items-center justify-center bg-[#14558C] sora-semibold text-white text-[16px]">
                       1
-                    </div>
-                    <p className="text-[16px] text-[#ffffff] sora-regular w-[95%]">
+                    </div> */}
+                    <p className="text-[16px] text-[#ffffff] sora-thin w-[95%]">
                       Transactional selling instead of Solution Selling.
                     </p>
                   </div>
-                  <div className="flex items-center gap-2 ml-10">
+                  <div className="flex items-center gap-2 ml-5">
                     <RightPointer />
-                    <p className="text-[13px] text-[#ffffff] sora-thin w-[95%]">
+                    <p className="text-[13px] text-[#ffffff] sora-regular w-[95%]">
                       Pushing products rather than solving problems. Poor
                       cross-selling.
                     </p>
@@ -181,16 +194,16 @@ const AboutUs = () => {
 
                 <div className="flex flex-col gap-2 py-3 px-4 border-l border-solid border-[#14558CB2] bg-[linear-gradient(90deg,rgba(20,85,140,0.3)_0%,rgba(20,85,140,0)_63.5%)]">
                   <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-full flex items-center justify-center bg-[#14558C] sora-semibold text-white text-[16px]">
+                    {/* <div className="w-8 h-8 rounded-full flex items-center justify-center bg-[#14558C] sora-semibold text-white text-[16px]">
                       2
-                    </div>
-                    <p className="text-[16px] text-[#ffffff] sora-regular w-[95%]">
+                    </div> */}
+                    <p className="text-[16px] text-[#ffffff] sora-thin w-[95%]">
                       Lack of Understanding of real customer pain points
                     </p>
                   </div>
-                  <div className="flex items-center gap-2 ml-10">
+                  <div className="flex items-center gap-2 ml-5">
                     <RightPointer />
-                    <p className="text-[13px] text-[#ffffff] sora-thin w-[95%]">
+                    <p className="text-[13px] text-[#ffffff] sora-regular w-[95%]">
                       Failing to ask the right questions and identify customer
                       needs.
                     </p>
@@ -199,16 +212,16 @@ const AboutUs = () => {
 
                 <div className="flex flex-col gap-2 py-3 px-4 border-l border-solid border-[#14558CB2] bg-[linear-gradient(90deg,rgba(20,85,140,0.3)_0%,rgba(20,85,140,0)_63.5%)]">
                   <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-full flex items-center justify-center bg-[#14558C] sora-semibold text-white text-[16px]">
+                    {/* <div className="w-8 h-8 rounded-full flex items-center justify-center bg-[#14558C] sora-semibold text-white text-[16px]">
                       3
-                    </div>
-                    <p className="text-[16px] text-[#ffffff] sora-regular w-[95%]">
+                    </div> */}
+                    <p className="text-[16px] text-[#ffffff] sora-thin w-[95%]">
                       Failure to connect the right product to the right need.
                     </p>
                   </div>
-                  <div className="flex items-center gap-2 ml-10">
+                  <div className="flex items-center gap-2 ml-5">
                     <RightPointer />
-                    <p className="text-[13px] text-[#ffffff] sora-thin w-[95%]">
+                    <p className="text-[13px] text-[#ffffff] sora-regular w-[95%]">
                       Inability of Navigating complex portfolio and propose
                       appropriate product.
                     </p>
@@ -217,7 +230,10 @@ const AboutUs = () => {
               </div>
             </div>
           </div>
-          <div data-aos="fade-up" className="lg:w-1/2 w-full flex lg:justify-end justify-center">
+          <div
+            data-aos="fade-up"
+            className="lg:w-1/2 w-full flex lg:justify-end justify-center"
+          >
             <Image
               src={calculating}
               alt="calculating"
