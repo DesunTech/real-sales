@@ -974,7 +974,7 @@ const Chat = ({ slug, children }) => {
                       className="w-full h-full rounded-full"
                     /> */}
                     <p className="w-full h-full rounded-full flex items-center justify-center text-2xl bg-[#FFDE5A] sora-medium uppercase">
-                      {user?.first_name[0]}
+                      {user?.first_name ? user?.first_name[0] : null}
                     </p>
                   </div>
                   <ArrowDropDownIcon
