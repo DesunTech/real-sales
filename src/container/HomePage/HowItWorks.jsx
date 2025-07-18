@@ -17,7 +17,7 @@ import lets_icons_done_ring_round from "../../../public/assets/icons/lets-icons_
 import material_symbols_light_order_approve_outline_sharp from "../../../public/assets/icons/material-symbols-light_order-approve-outline-sharp.svg";
 import ph_note_light from "../../../public/assets/icons/ph_note-light.svg";
 
-const HowItWorks = () => {
+const HowItWorks = (props) => {
   const HowItWorksArr = [
     {
       id: 1,
@@ -63,18 +63,22 @@ const HowItWorks = () => {
           <h1 className="lg:text-7xl text-2xl text-[#060606E5] m-plus-rounded-1c-regular">
             How It Works
           </h1>
-          <div className="flex flex-wrap items-center justify-center">
-            {HowItWorksArr.map((v, i) => (
-              <Pollygon
-                key={i}
-                id={v?.id}
-                icon={v?.icon}
-                label={v?.label}
-                document={v?.document}
-              />
-            ))}
-          </div>
-          <hr className="border-[#06060626] w-[70%]" />
+          {props?.offPollygon ? null : (
+            <>
+              <div className="flex flex-wrap items-center justify-center">
+                {HowItWorksArr.map((v, i) => (
+                  <Pollygon
+                    key={i}
+                    id={v?.id}
+                    icon={v?.icon}
+                    label={v?.label}
+                    document={v?.document}
+                  />
+                ))}
+              </div>
+              <hr className={`border-[#06060626] w-[70%]`} />
+            </>
+          )}
           <div className="lg:flex hidden flex-col items-center gap-4">
             <div className="flex items-center gap-4">
               <StepCard
