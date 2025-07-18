@@ -231,6 +231,8 @@ const Chat = ({ slug, children }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [personaDetails, setPersonaDetails] = useState(null);
 
+  console.log(personaData, "personaData");
+
   const handleClickPopOver = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -507,8 +509,9 @@ const Chat = ({ slug, children }) => {
       // Add delay between requests to prevent rate limiting
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
+      // `https://api.elevenlabs.io/v1/text-to-speech/21m00Tcm4TlvDq8ikWAM`,
       const response = await fetch(
-        "https://api.elevenlabs.io/v1/text-to-speech/21m00Tcm4TlvDq8ikWAM",
+        `https://api.elevenlabs.io/v1/text-to-speech/${personaData?.voice_id}`,
         {
           method: "POST",
           headers: {
