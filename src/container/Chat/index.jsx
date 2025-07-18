@@ -10,6 +10,9 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import SendMessage from "../../../public/assets/icons/sendMessage";
 import CallEndSharpIcon from "@mui/icons-material/CallEndSharp";
 import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
   Box,
   FormControlLabel,
   Modal,
@@ -19,6 +22,7 @@ import {
   Switch,
   Tooltip,
   tooltipClasses,
+  Typography,
   useMediaQuery,
 } from "@mui/material";
 import persona_plant from "../../../public/assets/images/RealSales-user-images/persona-plant.png";
@@ -51,6 +55,9 @@ import { PDFDocument } from "pdf-lib";
 import { useLogout } from "../../hooks/useLogout";
 import { AddAuth, AddUser } from "../../redux/AuthReducer";
 import LogoutIcon from "@mui/icons-material/Logout";
+import RemoveRedEyeOutlinedIcon from "@mui/icons-material/RemoveRedEyeOutlined";
+import CommonModal from "../../common/commonModal";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 // Update the SpeakingIndicator component
 const SpeakingIndicator = ({
@@ -217,6 +224,7 @@ const Chat = ({ slug, children }) => {
   const [oneLineChatText, setOneLineChatText] = useState("");
   const [coachingMessage, setCoachingMessage] = useState("");
   const [addDocText, setAddDocText] = useState({});
+  const [addDocTextAll, setAddDocTextAll] = useState([]);
   const [coachingAround, setCoachingAround] = useState(false);
   const [coachingData, setCoachingData] = useState([]);
   const [coachingAccept, setCoachingAccept] = useState([]);
@@ -230,8 +238,38 @@ const Chat = ({ slug, children }) => {
   const [fileError, setFileError] = useState("");
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [personaDetails, setPersonaDetails] = useState(null);
+  const [viewDoc, setViewDoc] = useState(false);
+  const [width, setWidth] = useState(1366);
+
+  useEffect(() => {
+    const handleResize = () => setWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  useEffect(() => {
+    if (addDocText?.summary) {
+      setAddDocTextAll((pre) => [
+        ...pre,
+        { filename: addDocText?.filename, summary: addDocText?.summary },
+      ]);
+    }
+  }, [addDocText]);
+
+  useEffect(() => {
+    if (addDocTextAll?.length) {
+      localStorage.setItem("addDocTextAll", JSON.stringify(addDocTextAll));
+    } else {
+      let data = localStorage.getItem("addDocTextAll");
+      let parseData = JSON.parse(data);
+      if (data) {
+        setAddDocTextAll(parseData);
+      }
+    }
+  }, [addDocTextAll]);
 
   console.log(personaData, "personaData");
+  console.log(addDocTextAll, "addDocTextAll");
 
   const handleClickPopOver = (event) => {
     setAnchorEl(event.currentTarget);
@@ -1262,12 +1300,14 @@ const Chat = ({ slug, children }) => {
                               </span>
                             </div>
                           </div>
-                          {addDocText?.filename ? (
-                            <div className="flex items-start gap-2">
-                              <p className="text-white m-plus-rounded-1c-medium text-base">
-                                {addDocText?.filename}
-                              </p>
-                              {/* <button
+                          <div className="flex items-start gap-2">
+                            <div className="flex flex-col items-start gap-1 h-full">
+                              {addDocText?.filename ? (
+                                <div className="flex items-start gap-2">
+                                  <p className="text-white m-plus-rounded-1c-medium text-base">
+                                    {addDocText?.filename}
+                                  </p>
+                                  {/* <button
                                 className="ml-2 px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600 text-xs"
                                 onClick={() => {
                                   setAddDocText({});
@@ -1278,55 +1318,71 @@ const Chat = ({ slug, children }) => {
                                 title="Remove document"
                                 type="button"
                               > */}
-                              <CustomTooltip
-                                title={"Remove document"}
-                                placement="right"
-                                arrow
-                              >
-                                <DeleteIcon
-                                  className="cursor-pointer !text-xl !text-red-500 !hover:text-red-600"
-                                  onClick={() => {
-                                    setAddDocText({});
-                                    localStorage.removeItem("summary");
-                                    dispatch(AddSummary({}));
-                                  }}
-                                />
-                              </CustomTooltip>
-                              {/* </button> */}
-                            </div>
-                          ) : isUploading ? (
-                            <div className="w-full flex items-center justify-center">
-                              <div class="h-8 w-8 rounded-full border-4 border-gray-300 border-t-yellow-500 animate-spin"></div>
-                            </div>
-                          ) : (
-                            <div
-                              className={`flex items-center gap-1 ${
-                                isAiSpeaking
-                                  ? "cursor-not-allowed"
-                                  : "cursor-pointer"
-                              }`}
-                              onClick={isAiSpeaking ? undefined : handleClick}
-                            >
-                              <p className="text-white m-plus-rounded-1c-medium underline text-lg">
-                                Upload&nbsp;Files
-                              </p>
-                              <AddCircleOutlineSharpIcon className="text-white" />
+                                  <RemoveRedEyeOutlinedIcon
+                                    onClick={() => setViewDoc(true)}
+                                    className="text-white cursor-pointer"
+                                  />
+                                  <CustomTooltip
+                                    title={"Remove document"}
+                                    placement="right"
+                                    arrow
+                                  >
+                                    <DeleteIcon
+                                      className="cursor-pointer !text-xl !text-red-500 !hover:text-red-600"
+                                      onClick={() => {
+                                        setAddDocText({});
+                                        localStorage.removeItem("summary");
+                                        dispatch(AddSummary({}));
+                                      }}
+                                    />
+                                  </CustomTooltip>
+                                  {/* </button> */}
+                                </div>
+                              ) : isUploading ? (
+                                <div className="w-full flex items-center justify-center">
+                                  <div class="h-8 w-8 rounded-full border-4 border-gray-300 border-t-yellow-500 animate-spin"></div>
+                                </div>
+                              ) : (
+                                <div
+                                  className={`flex items-center gap-1 ${
+                                    isAiSpeaking
+                                      ? "cursor-not-allowed"
+                                      : "cursor-pointer"
+                                  }`}
+                                  onClick={
+                                    isAiSpeaking ? undefined : handleClick
+                                  }
+                                >
+                                  <p className="text-white m-plus-rounded-1c-medium underline text-lg">
+                                    Upload&nbsp;Files
+                                  </p>
+                                  <AddCircleOutlineSharpIcon className="text-white" />
 
-                              <input
-                                type="file"
-                                ref={fileInputRef}
-                                className="hidden"
-                                accept=".doc,.docx,.pdf"
-                                onChange={handleFileChange}
-                                disabled={!addDocText?.summary ? false : true}
+                                  <input
+                                    type="file"
+                                    ref={fileInputRef}
+                                    className="hidden"
+                                    accept=".doc,.docx,.pdf"
+                                    onChange={handleFileChange}
+                                    disabled={
+                                      !addDocText?.summary ? false : true
+                                    }
+                                  />
+                                </div>
+                              )}
+                              {fileError && (
+                                <div className="text-red-500 text-xs mt-1">
+                                  {fileError}
+                                </div>
+                              )}
+                            </div>
+                            {addDocText?.filename ? null : (
+                              <RemoveRedEyeOutlinedIcon
+                                onClick={() => setViewDoc(true)}
+                                className="text-white mt-0.5 cursor-pointer"
                               />
-                            </div>
-                          )}
-                          {fileError && (
-                            <div className="text-red-500 text-xs mt-1">
-                              {fileError}
-                            </div>
-                          )}
+                            )}
+                          </div>
                         </div>
                       </div>
 
@@ -2062,6 +2118,38 @@ const Chat = ({ slug, children }) => {
           </div>
         </Box>
       </Modal> */}
+      <CommonModal
+        width={width > 720 ? "80%" : "90%"}
+        open={viewDoc}
+        onClose={() => setViewDoc(false)}
+      >
+        <div>
+          <h1 className="w-full text-center text-2xl sora-medium mb-4">
+            Used Files
+          </h1>
+          {addDocTextAll?.length
+            ? addDocTextAll.map((v, i) => (
+                <Accordion key={i} className="border border-solid border-black mb-1">
+                  <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls="panel1-content"
+                    id="panel1-header"
+                  >
+                    <Typography
+                      component="span"
+                      className="text-lg m-plus-rounded-1c-medium"
+                    >
+                      {v?.filename}
+                    </Typography>
+                  </AccordionSummary>
+                  <AccordionDetails className="text-base m-plus-rounded-1c-regular">
+                    {v?.summary}
+                  </AccordionDetails>
+                </Accordion>
+              ))
+            : null}
+        </div>
+      </CommonModal>
     </div>
   );
 };
