@@ -41,17 +41,17 @@ const RatingContainer = () => {
   const ChatHistoryArr = [
     {
       chat1: "Good Morning ! How ar",
-      chat2: "Lorem Ipsum is the simply dummy text of t ...",
+      chat2: "Lorem Ipsum is the simply dummy text of t",
       rating: 5,
     },
     {
       chat1: "Hello.. ! Nice to hear you",
-      chat2: "Lorem Ipsum is the simply dummy text of t ...",
+      chat2: "Lorem Ipsum is the simply dummy text of t",
       rating: 5,
     },
     {
       chat1: "Congrats, you receive th",
-      chat2: "Lorem Ipsum is the simply dummy text of t ...",
+      chat2: "Lorem Ipsum is the simply dummy text of t",
       rating: 5,
     },
   ];
@@ -239,6 +239,7 @@ const RatingContainer = () => {
                       <div className="bg-white w-2.5 h-2.5 rotate-45" />
                       <Rating
                         size="small"
+                        readOnly={true}
                         value={v?.rating}
                         precision={0.5}
                         emptyIcon={
@@ -251,7 +252,7 @@ const RatingContainer = () => {
                     </div>
                     <div className="flex items-start gap-2">
                       <Image src={solar_pen_bold} alt="solar_pen_bold" />
-                      <p className="sora-semilight text-white text-[14px]">
+                      <p className="sora-semilight text-white text-[14px] truncate w-[85%]">
                         {v?.chat2}
                       </p>
                     </div>
