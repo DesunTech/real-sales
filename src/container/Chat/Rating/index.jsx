@@ -17,7 +17,9 @@ import { apis } from "../../../utils/apis";
 import { useApi } from "../../../hooks/useApi";
 
 const RatingContainer = () => {
-  const [rating, setRating] = useState(3.5);
+  const [rating, setRating] = useState(0);
+  const { Get } = useApi();
+  const { feedback } = apis;
 
   const handleRatingChange = (newValue) => {
     setRating(newValue);
@@ -58,6 +60,23 @@ const RatingContainer = () => {
     { title: "User confidence was good, but a slightly slower pace." },
     { title: "My Customer provided solid product knowledge today." },
   ];
+
+  useEffect(() => {
+    let user_id = localStorage.getItem("user");
+    const getFeedBack = async () => {
+      let data = await Get(`${feedback}user/${user_id}`);
+      if (data?.feedback_id) {
+        setRating(data?.rating);
+      }
+      try {
+      } catch (error) {
+        console.log(error, "_error_");
+      }
+    };
+    if (user_id) {
+      getFeedBack();
+    }
+  }, []);
 
   return (
     <div className="w-full flex lg:flex-row flex-col items-start justify-center gap-8 px-[8%]">
@@ -111,6 +130,7 @@ const RatingContainer = () => {
           <Rating
             size="large"
             name="half-rating"
+            readOnly={true}
             onChange={(e, newValue) => handleRatingChange(newValue)}
             value={rating}
             precision={0.5}
@@ -119,7 +139,9 @@ const RatingContainer = () => {
           <div className="flex items-center gap-4">
             <Image src={angry} alt="angry" className="w-10 h-10" />
             <Slider
+              className="!text-[#63E5FFB2]"
               value={rating}
+              disabled={true}
               onChange={(e, newValue) => handleRatingChange(newValue)}
               valueLabelDisplay="auto"
               step={0.5}

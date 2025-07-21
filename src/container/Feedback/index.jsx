@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from "react";
 import Highlighter from "../../common/highlighter";
 import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp";
-import { Button } from "@mui/material";
+import { Button, Rating } from "@mui/material";
 import { useRouter } from "next/router";
+import { useApi } from "../../hooks/useApi";
+import { apis } from "../../utils/apis";
 
 const Feedback = () => {
   const router = useRouter();
+  const { Post } = useApi();
+  const { feedback } = apis;
 
   const [feedBackArr, setFeedBackArr] = useState([
     { title: "Overall call quality is Poor.", action: false },
@@ -13,16 +17,35 @@ const Feedback = () => {
     { title: "The client have no Follow-up.", action: false },
     { title: "AI Chatbot Misleading the user behavior.", action: false },
   ]);
-
+  const [selecetedComment, setSelecetedComment] = useState("");
+  const [rating, setRating] = useState(1);
 
   const checkAction = (index) => {
     setFeedBackArr((prevArr) =>
       prevArr.map((item, i) =>
-        i === index ? { ...item, action: !item.action } : item
+        i === index ? { ...item, action: true } : { ...item, action: false }
       )
     );
+    setSelecetedComment(feedBackArr[index].title);
   };
 
+  const submitFeedback = async () => {
+    let session_id = localStorage.getItem("session_id");
+    let user_id = localStorage.getItem("user");
+    try {
+      let data = await Post(feedback, {
+        rating: rating,
+        comment: selecetedComment,
+        user_id: user_id,
+        session_id: session_id,
+      });
+      if (data?.comment) {
+        router.push("/chat/rating");
+      }
+    } catch (error) {
+      console.log(error, "_error_");
+    }
+  };
 
   return (
     <div className="bg-[url(../../public/assets/images/RealSales-backgrounds/bg-2.png)] bg-cover bg-center bg-no-repeat">
@@ -48,6 +71,16 @@ const Feedback = () => {
               </div>
               <p className="lg:text-[16px] text-[14px] text-[#060606] text-center sora-regular">{`Report to your Session: [If any]`}</p>
             </div>
+            <div className="w-full flex items-center justify-center">
+              <Rating
+                size="large"
+                name="half-rating"
+                onChange={(e, newValue) => setRating(newValue)}
+                value={rating}
+                precision={0.5}
+                sx={{ gap: 2 }}
+              />
+            </div>
             <div className="flex flex-col gap-2">
               {feedBackArr.map((v, i) => (
                 <div
@@ -71,8 +104,11 @@ const Feedback = () => {
               ))}
               <div className="flex items-center gap-2">
                 <Button
-                  className="!w-full shadow-[0px_4px_4px_0px_#00000040] !text-white !bg-[#CF2427] uppercase"
-                  onClick={() => router.push("/chat/rating")}
+                  className={`!w-full shadow-[0px_4px_4px_0px_#00000040] !text-white ${
+                    !selecetedComment ? `!bg-[#563d3e]` : `!bg-[#CF2427]`
+                  } uppercase`}
+                  onClick={() => submitFeedback()}
+                  disabled={!selecetedComment}
                 >
                   SUBMIT FEEDBACK
                 </Button>

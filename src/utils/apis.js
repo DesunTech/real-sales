@@ -23,4 +23,5 @@ export const apis = {
   performance_reports: "/v1/performance-reports/",
   coaching: "/v1/ai-coaching/feedback/",
   documents_upload: "/v1/documents/upload",
+  feedback: "/v1/feedback/",
 };

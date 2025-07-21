@@ -971,8 +971,8 @@ const Chat = ({ slug, children }) => {
                   <ArrowBackIcon className="text-white" />
                 </div>
               </div>
-              <Link
-                href={slug === "rating" ? "/" : "#"}
+              <div
+                // href={slug === "rating" ? "/" : "#"}
                 className="w-[60%] flex items-center justify-end"
               >
                 <Image
@@ -980,7 +980,7 @@ const Chat = ({ slug, children }) => {
                   alt="whiteLogoNoBackground"
                   className="h-10 w-auto"
                 />
-              </Link>
+              </div>
             </div>
             <div className="flex items-center justify-end gap-2 lg:w-[45%] w-full">
               {/* <div className="relative w-10 h-10 bg-[#FFFFFF1A] rounded-full flex items-center justify-center cursor-pointer">
