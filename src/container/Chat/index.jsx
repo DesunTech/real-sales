@@ -241,6 +241,7 @@ const Chat = ({ slug, children }) => {
   const [viewDoc, setViewDoc] = useState(false);
   const [width, setWidth] = useState(1366);
   const isRecognitionRunning = useRef(false); // Prevent multiple recognitions
+  const recentTranscriptsRef = useRef([]); // Keep last 5 transcripts
 
   useEffect(() => {
     const handleResize = () => setWidth(window.innerWidth);
@@ -389,7 +390,19 @@ const Chat = ({ slug, children }) => {
           lastSpeechTimeRef.current = Date.now();
 
           if (event.results[current].isFinal) {
-            // Prevent duplicate final transcripts
+            // Prevent duplicate or overlapping transcripts (Android fix)
+            const isDuplicate = recentTranscriptsRef.current.some(
+              (t) => t === transcript || transcript.includes(t) || t.includes(transcript)
+            );
+            if (isDuplicate) return;
+
+            // Add to history (keep only last 5)
+            recentTranscriptsRef.current = [
+              ...recentTranscriptsRef.current.slice(-4),
+              transcript,
+            ];
+
+            // Prevent duplicate final transcripts (legacy check)
             if (lastAddedTranscriptRef.current === transcript) return;
             lastAddedTranscriptRef.current = transcript;
 
