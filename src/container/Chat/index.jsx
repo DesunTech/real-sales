@@ -240,6 +240,7 @@ const Chat = ({ slug, children }) => {
   const [personaDetails, setPersonaDetails] = useState(null);
   const [viewDoc, setViewDoc] = useState(false);
   const [width, setWidth] = useState(1366);
+  const isRecognitionRunning = useRef(false); // Prevent multiple recognitions
 
   useEffect(() => {
     const handleResize = () => setWidth(window.innerWidth);
@@ -373,6 +374,7 @@ const Chat = ({ slug, children }) => {
           console.log("Speech recognition started");
           isSilenceTimeoutRef.current = false;
           lastSpeechTimeRef.current = Date.now();
+          isRecognitionRunning.current = true;
         };
 
         recognition.onresult = (event) => {
@@ -425,7 +427,9 @@ const Chat = ({ slug, children }) => {
 
         recognition.onend = () => {
           console.log("Speech recognition ended");
-          if (isMicClicked && !isSilenceTimeoutRef.current) {
+          isRecognitionRunning.current = false;
+          // Only auto-restart on desktop, not mobile
+          if (isMicClicked && !isSilenceTimeoutRef.current && !isMobile) {
             try {
               recognition.start();
             } catch (error) {
@@ -500,15 +504,17 @@ const Chat = ({ slug, children }) => {
   const toggleSpeechRecognition = () => {
     if (recognitionRef.current) {
       try {
-        if (!isMicClicked) {
+        if (!isMicClicked && !isRecognitionRunning.current) {
           isSilenceTimeoutRef.current = false;
           lastSpeechTimeRef.current = Date.now();
           recognitionRef.current.start();
+          isRecognitionRunning.current = true;
           setIsMicClicked(true);
         } else {
           isSilenceTimeoutRef.current = true;
           lastSpeechTimeRef.current = null;
           recognitionRef.current.stop();
+          isRecognitionRunning.current = false;
           setIsMicClicked(false);
           setTranscript("");
           setTranscriptDummy("");
@@ -521,6 +527,7 @@ const Chat = ({ slug, children }) => {
       } catch (error) {
         console.error("Error toggling speech recognition:", error);
         setIsMicClicked(false);
+        isRecognitionRunning.current = false;
         lastSpeechTimeRef.current = null;
       }
     } else {
