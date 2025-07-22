@@ -513,6 +513,10 @@ const Chat = ({ slug, children }) => {
           setTranscript("");
           setTranscriptDummy("");
           setChatMessages([]);
+          // Call senChat if there is input after mic is turned off
+          if (oneLineChatText?.length || chatMessages?.length) {
+            senChat();
+          }
         }
       } catch (error) {
         console.error("Error toggling speech recognition:", error);
