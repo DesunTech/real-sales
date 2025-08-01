@@ -125,6 +125,19 @@ const Header = (props) => {
                   FAQ
                 </Link>
               </div>
+              {token !== "" ? (
+                <div>
+                  <Link
+                    href={`https://realsales-dashboard.vercel.app/profile?token=${token}`}
+                    // target="_blank"
+                    className={`text-white leading-1 hover:underline ${
+                      router?.pathname === `/dashboard` ? `underline` : ``
+                    }`}
+                  >
+                    Dashboard
+                  </Link>
+                </div>
+              ) : null}
             </ul>
           </div>
           {/* Call to Action Buttons */}
@@ -197,6 +210,16 @@ const Header = (props) => {
                     FAQ
                   </Link>
                 </li>
+                {token !== "" ? (
+                  <li className="py-2 border-b text-white">
+                    <Link
+                      href="/dashboard"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      Dashboard
+                    </Link>
+                  </li>
+                ) : null}
                 <li className="py-4 flex flex-col gap-4">
                   {token !== "" && (
                     <div
