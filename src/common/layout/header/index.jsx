@@ -129,7 +129,7 @@ const Header = (props) => {
                 <div>
                   <Link
                     href={`https://realsales-dashboard.vercel.app/profile?token=${token}`}
-                    target="_blank"
+                    // target="_blank"
                     className={`text-white leading-1 hover:underline ${
                       router?.pathname === `/dashboard` ? `underline` : ``
                     }`}
