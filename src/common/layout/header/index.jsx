@@ -15,11 +15,33 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import { useLogout } from "../../../hooks/useLogout";
 import { AddAuth, AddUser } from "../../../redux/AuthReducer";
 import { ClickAwayListener } from "@mui/material";
+import { useApi } from "../../../hooks/useApi";
+import { apis } from "../../../utils/apis";
 
 const Header = (props) => {
   const router = useRouter();
   const dispatch = useDispatch();
   const token = useSelector((state) => state.auth.auth);
+  const { Get } = useApi();
+  const { auth_me } = apis;
+
+  let [user, setUser] = useState({});
+
+  useEffect(() => {
+    const GetUser = async () => {
+      try {
+        let data = await Get(auth_me);
+        if (data?.role) {
+          setUser(data);
+        }
+      } catch (error) {
+        console.log(error, "error");
+      }
+    };
+    GetUser();
+  }, [token]);
+
+  console.log(user?.role?.name, "__user__");
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openIndustry, setOpenIndustry] = useState(false);
@@ -127,15 +149,27 @@ const Header = (props) => {
               </div>
               {token !== "" ? (
                 <div>
-                  <Link
-                    href={`https://realsales-dashboard.vercel.app/profile?token=${token}`}
-                    // target="_blank"
-                    className={`text-white leading-1 hover:underline ${
-                      router?.pathname === `/dashboard` ? `underline` : ``
-                    }`}
-                  >
-                    Dashboard
-                  </Link>
+                  {user?.role?.name === "super_admin" ? (
+                    <Link
+                      href={`https://realsales-admin.vercel.app?token=${token}`}
+                      // target="_blank"
+                      className={`text-white leading-1 hover:underline ${
+                        router?.pathname === `/dashboard` ? `underline` : ``
+                      }`}
+                    >
+                      Dashboard
+                    </Link>
+                  ) : (
+                    <Link
+                      href={`https://realsales-dashboard.vercel.app/profile?token=${token}`}
+                      // target="_blank"
+                      className={`text-white leading-1 hover:underline ${
+                        router?.pathname === `/dashboard` ? `underline` : ``
+                      }`}
+                    >
+                      Dashboard
+                    </Link>
+                  )}
                 </div>
               ) : null}
             </ul>
