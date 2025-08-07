@@ -9,7 +9,7 @@ import persona_plant from "../../../../public/assets/images/RealSales-user-image
 import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined";
 import DemoMeeting from "../../modals/DemoMeeting";
 import { useDispatch, useSelector } from "react-redux";
-import { DemoMeetingValue } from "../../../redux/OpenModal";
+import { DemoMeetingValue, TryRealsalesValue } from "../../../redux/OpenModal";
 import TryRealsales from "../../modals/TryRealsales";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useLogout } from "../../../hooks/useLogout";
@@ -176,7 +176,7 @@ const Header = (props) => {
           </div>
           {/* Call to Action Buttons */}
           <div className="header-btn hidden md:flex items-center space-x-4">
-            {token !== "" && (
+            {token !== "" ? (
               <div
                 onClick={() => {
                   useLogout({ final: router.push("/") });
@@ -187,6 +187,15 @@ const Header = (props) => {
               >
                 <LogoutIcon className="text-white" />
                 &nbsp;Logout
+              </div>
+            ) : (
+              <div
+                onClick={() => {
+                  dispatch(TryRealsalesValue(true));
+                }}
+                className="border border-solid border-white rounded p-0.5 px-4 cursor-pointer text-white"
+              >
+                Signin&nbsp;/&nbsp;Signup
               </div>
             )}
             <BookAdemo
@@ -255,7 +264,7 @@ const Header = (props) => {
                   </li>
                 ) : null}
                 <li className="py-4 flex flex-col gap-4">
-                  {token !== "" && (
+                  {token !== "" ? (
                     <div
                       onClick={() => {
                         useLogout({ final: router.push("/") });
@@ -266,6 +275,15 @@ const Header = (props) => {
                     >
                       <LogoutIcon className="text-white" />
                       &nbsp;Logout
+                    </div>
+                  ) : (
+                    <div
+                      onClick={() => {
+                        dispatch(TryRealsalesValue(true));
+                      }}
+                      className="border border-solid border-white rounded p-0.5 px-4 cursor-pointer text-white"
+                    >
+                      Signin&nbsp;/&nbsp;Signup
                     </div>
                   )}
                   <BookAdemo
