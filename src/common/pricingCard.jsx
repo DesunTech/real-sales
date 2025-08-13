@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Highlighter from "./highlighter";
 import blackLogo from "../../public/assets/images/RealSales-official-logo/For Web/png/Black logo - no background.png";
@@ -9,6 +9,53 @@ import BookAdemo from "./bookAdemo";
 import ArrowRight from "../../public/assets/icons/arrowRight";
 import PricingCardBg from "./pricingCardBg";
 const PricingCard = (props) => {
+  const [features, setFeatures] = useState();
+  let featuresData = [
+    {
+      title: "advanced scenarios",
+      allow:
+        props?.cardValue?.subscription?.features?.advanced_scenarios?.enabled,
+    },
+    {
+      title: "basic ai chat",
+      allow: props?.cardValue?.subscription?.features?.basic_ai_chat?.enabled,
+    },
+    {
+      title: "basic analytics",
+      allow: props?.cardValue?.subscription?.features?.basic_analytics?.enabled,
+    },
+    {
+      title: "custom branding",
+      allow: props?.cardValue?.subscription?.features?.custom_branding?.enabled,
+    },
+    {
+      title: "email support",
+      allow: props?.cardValue?.subscription?.features?.email_support?.enabled,
+    },
+    {
+      title: "priority support",
+      allow:
+        props?.cardValue?.subscription?.features?.priority_support?.enabled,
+    },
+    {
+      title: "standard scenarios",
+      allow:
+        props?.cardValue?.subscription?.features?.standard_scenarios?.enabled,
+    },
+    {
+      title: "team dashboard",
+      allow: props?.cardValue?.subscription?.features?.team_dashboard?.enabled,
+    },
+  ];
+
+  useEffect(() => {
+    if (props?.cardValue?.features?.length) {
+      setFeatures(props?.cardValue?.features);
+    } else {
+      setFeatures(featuresData);
+    }
+  }, [props?.cardValue?.features]);
+
   return (
     <PricingCardBg key={props?.key} crdExtraCls={`${props?.crdExtraCls}`}>
       <div>
@@ -22,7 +69,8 @@ const PricingCard = (props) => {
           <div className="flex items-center gap-2">
             <Image src={pricingIcon} alt="pricingIcon" />
             <p className="m-plus-rounded-1c-semilight text-5xl leading-0 text-[#060606]">
-              {props?.cardValue?.name}
+              {props?.cardValue?.subscription?.plan_type || props?.cardValue?.name}
+
             </p>
           </div>
           <p className="sora-light text-[#06060699]">
@@ -42,13 +90,16 @@ const PricingCard = (props) => {
         {props?.hidePricing ? null : (
           <div>
             <p className="m-plus-rounded-1c-regular text-[#060606aa] text-[34px]">
-              {props?.cardValue?.price1}&nbsp;
-              <span className="text-[48%]">{`(1 session)`}</span>
+              {props?.yearly
+                ? props?.cardValue?.subscription?.yearly_price
+                : props?.cardValue?.subscription?.monthly_price}
+              &nbsp;
+              <span className="text-[48%]">{`(${props?.cardValue?.subscription?.max_session_duration} session)`}</span>
             </p>
-            <p className="m-plus-rounded-1c-regular text-[#060606aa] text-[34px]">
+            {/* <p className="m-plus-rounded-1c-regular text-[#060606aa] text-[34px]">
               {props?.cardValue?.price2}&nbsp;
               <span className="text-[48%]">{`(2 session)`}</span>
-            </p>
+            </p> */}
           </div>
         )}
         <div className="flex items-center gap-0.5">
@@ -59,8 +110,8 @@ const PricingCard = (props) => {
           <div className="border border-transparent [border-image-source:linear-gradient(90deg,rgba(6,6,6,0)_0%,#060606_100%)] [border-image-slice:1] w-full rotate-180" />
         </div>
         <div className="flex flex-col gap-4">
-          {props?.cardValue?.features?.length
-            ? props?.cardValue?.features.map((v, i) => (
+          {features?.length
+            ? features.map((v, i) => (
                 <div key={i} className="flex items-start gap-2">
                   <Image
                     src={v?.allow ? greenBgTick : redBgCross}

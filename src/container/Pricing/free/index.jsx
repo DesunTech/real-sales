@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PricingCard from "../../../common/pricingCard";
 import { useDispatch } from "react-redux";
 import { SessionModesValue } from "../../../redux/OpenModal";
 import MeetPerfectPersona from "../../about/MeetPerfectPersona";
 
-const Free = () => {
+const Free = ({ subscription }) => {
   const dispatch = useDispatch();
+  const [freeSubscriptions, setFreeSubscriptions] = useState([]);
   const freePricing = [
     {
       name: "Starter",
@@ -34,14 +35,26 @@ const Free = () => {
     },
   ];
 
+  useEffect(() => {
+    if (Array.isArray(subscription)) {
+      const onlyFree = subscription.filter(
+        (v) => v?.subscription?.plan_type === "free"
+      );
+      if (onlyFree?.length) setFreeSubscriptions(onlyFree);
+      else setFreeSubscriptions([]);
+    } else {
+      setFreeSubscriptions([]);
+    }
+  }, [subscription]);
+
   return (
     <div className="page-container mx-auto px-4 py-8 container">
       <div className="lg:p-16 p-8">
         <p className="lg:text-2xl text-[16px] text-center m-plus-rounded-1c-regular text-[#060606] w-full flex items-center justify-center gap-2 mb-12">
           Enjoy Our Free Plan - No Cost, Full Value!
         </p>
-        {freePricing?.length
-          ? freePricing?.map((v, i) => (
+        {(freeSubscriptions?.length ? freeSubscriptions : freePricing)?.length
+          ? (freeSubscriptions?.length ? freeSubscriptions : freePricing)?.map((v, i) => (
               <PricingCard
                 key={i}
                 hidePricing={true}
