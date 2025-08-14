@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Highlighter from "../../common/highlighter";
 import Link from "next/link";
 import ArrowRight from "../../../public/assets/icons/arrowRight";
 import { Switch } from "@mui/material";
 import PricingCard from "../../common/pricingCard";
 
-const Pricing = () => {
+const Pricing = (props) => {
   const [checked, setChecked] = useState(false);
 
   const pricingArr = [
@@ -101,6 +101,28 @@ const Pricing = () => {
     },
   ];
 
+  const [subscriptions, setSubscriptions] = useState([]);
+
+  useEffect(() => {
+    if (props?.subscription?.length) {
+      let data = props?.subscription
+        .filter((v) => v?.plan_type !== "free")
+        .map((i) => i);
+      if (data?.length) {
+        // if (!checked) {
+        //   let notFreeData = data
+        //     .filter((val) => val?.subscription?.billing_cycle === "monthly")
+        //     .map((i) => i);
+        //   setSubscriptions([...notFreeData]);
+        // } else {
+        //   setSubscriptions([]);
+        // }
+        setSubscriptions([...data]);
+      }
+    }
+  }, [props?.subscription?.length, checked]);
+  console.log(subscriptions, "subscription___");
+
   return (
     <div className="page-container mx-auto px-4 py-8 container flex flex-col items-center lg:gap-4 gap-8">
       <Highlighter highlight={`Our Pricing`} />
@@ -144,18 +166,21 @@ const Pricing = () => {
         </div>
       </div>
       <div className="w-full pl-[2%] flex flex-col gap-8">
-        <div className="flex lg:flex-row flex-col gap-8">
-          {pricingArr?.length
-            ? pricingArr?.map((v, i) => (
+        <div className="flex lg:flex-row flex-col flex-wrap gap-8">
+          {subscriptions?.length
+            ? subscriptions?.map((v, i) => (
+              <div className="lg:w-[31%] w-full">
                 <PricingCard
                   key={i}
                   footerCls={`bg-none`}
+                  yearly={checked}
                   // ExtPricing={true}
                   headingCls={`lg:flex-row flex-col`}
                   cardValue={v}
                   link={`/payment-details`}
                   // crdExtraCls={`flex lg:flex-col md:flex-row flex-col item-center justify-between`}
-                />
+                  />
+                  </div>
               ))
             : null}
         </div>

@@ -24,5 +24,6 @@ export const apis = {
   coaching: "/v1/ai-coaching/feedback/",
   documents_upload: "/v1/documents/upload",
   feedback: "/v1/feedback/",
-  auth_me: "/v1/auth/me"
+  auth_me: "/v1/auth/me",
+  subscription: "/v1/subscriptions/",
 };
