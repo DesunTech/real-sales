@@ -25,5 +25,5 @@ export const apis = {
   documents_upload: "/v1/documents/upload",
   feedback: "/v1/feedback/",
   auth_me: "/v1/auth/me",
-  user_subscriptions: "/v1/user-subscriptions/",
+  subscription: "/v1/subscriptions/",
 };

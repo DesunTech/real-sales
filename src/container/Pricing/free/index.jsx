@@ -38,7 +38,7 @@ const Free = ({ subscription }) => {
   useEffect(() => {
     if (Array.isArray(subscription)) {
       const onlyFree = subscription.filter(
-        (v) => v?.subscription?.plan_type === "free"
+        (v) => v?.plan_type === "free"
       );
       if (onlyFree?.length) setFreeSubscriptions(onlyFree);
       else setFreeSubscriptions([]);

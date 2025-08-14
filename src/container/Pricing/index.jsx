@@ -106,7 +106,7 @@ const Pricing = (props) => {
   useEffect(() => {
     if (props?.subscription?.length) {
       let data = props?.subscription
-        .filter((v) => v?.subscription?.plan_type !== "free")
+        .filter((v) => v?.plan_type !== "free")
         .map((i) => i);
       if (data?.length) {
         // if (!checked) {
@@ -166,9 +166,10 @@ const Pricing = (props) => {
         </div>
       </div>
       <div className="w-full pl-[2%] flex flex-col gap-8">
-        <div className="flex lg:flex-row flex-col gap-8">
+        <div className="flex lg:flex-row flex-col flex-wrap gap-8">
           {subscriptions?.length
             ? subscriptions?.map((v, i) => (
+              <div className="lg:w-[31%] w-full">
                 <PricingCard
                   key={i}
                   footerCls={`bg-none`}
@@ -178,7 +179,8 @@ const Pricing = (props) => {
                   cardValue={v}
                   link={`/payment-details`}
                   // crdExtraCls={`flex lg:flex-col md:flex-row flex-col item-center justify-between`}
-                />
+                  />
+                  </div>
               ))
             : null}
         </div>

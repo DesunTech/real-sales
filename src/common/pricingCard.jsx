@@ -14,37 +14,37 @@ const PricingCard = (props) => {
     {
       title: "advanced scenarios",
       allow:
-        props?.cardValue?.subscription?.features?.advanced_scenarios?.enabled,
+        props?.cardValue?.features?.advanced_scenarios?.enabled,
     },
     {
       title: "basic ai chat",
-      allow: props?.cardValue?.subscription?.features?.basic_ai_chat?.enabled,
+      allow: props?.cardValue?.features?.basic_ai_chat?.enabled,
     },
     {
       title: "basic analytics",
-      allow: props?.cardValue?.subscription?.features?.basic_analytics?.enabled,
+      allow: props?.cardValue?.features?.basic_analytics?.enabled,
     },
     {
       title: "custom branding",
-      allow: props?.cardValue?.subscription?.features?.custom_branding?.enabled,
+      allow: props?.cardValue?.features?.custom_branding?.enabled,
     },
     {
       title: "email support",
-      allow: props?.cardValue?.subscription?.features?.email_support?.enabled,
+      allow: props?.cardValue?.features?.email_support?.enabled,
     },
     {
       title: "priority support",
       allow:
-        props?.cardValue?.subscription?.features?.priority_support?.enabled,
+        props?.cardValue?.features?.priority_support?.enabled,
     },
     {
       title: "standard scenarios",
       allow:
-        props?.cardValue?.subscription?.features?.standard_scenarios?.enabled,
+        props?.cardValue?.features?.standard_scenarios?.enabled,
     },
     {
       title: "team dashboard",
-      allow: props?.cardValue?.subscription?.features?.team_dashboard?.enabled,
+      allow: props?.cardValue?.features?.team_dashboard?.enabled,
     },
   ];
 
@@ -69,7 +69,7 @@ const PricingCard = (props) => {
           <div className="flex items-center gap-2">
             <Image src={pricingIcon} alt="pricingIcon" />
             <p className="m-plus-rounded-1c-semilight text-5xl leading-0 text-[#060606]">
-              {props?.cardValue?.subscription?.plan_type || props?.cardValue?.name}
+              {props?.cardValue?.plan_type || props?.cardValue?.name}
 
             </p>
           </div>
@@ -91,10 +91,10 @@ const PricingCard = (props) => {
           <div>
             <p className="m-plus-rounded-1c-regular text-[#060606aa] text-[34px]">
               {props?.yearly
-                ? props?.cardValue?.subscription?.yearly_price
-                : props?.cardValue?.subscription?.monthly_price}
+                ? props?.cardValue?.yearly_price
+                : props?.cardValue?.monthly_price}
               &nbsp;
-              <span className="text-[48%]">{`(${props?.cardValue?.subscription?.max_session_duration} session)`}</span>
+              <span className="text-[48%]">{`(${props?.cardValue?.credits_per_month} session)`}</span>
             </p>
             {/* <p className="m-plus-rounded-1c-regular text-[#060606aa] text-[34px]">
               {props?.cardValue?.price2}&nbsp;

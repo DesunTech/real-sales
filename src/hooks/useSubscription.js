@@ -4,7 +4,7 @@ import { apis } from "../utils/apis";
 
 export const useSubscription = () => {
   const { Get } = useApi();
-  const { user_subscriptions } = apis;
+  const { subscription } = apis;
 
   const [subscriptions, setSubscriptions] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -14,7 +14,7 @@ export const useSubscription = () => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await Get(`${user_subscriptions}all`);
+      const response = await Get(`${subscription}`);
       const items = Array.isArray(response)
         ? response
         : Array.isArray(response?.data)
@@ -30,7 +30,7 @@ export const useSubscription = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [Get, user_subscriptions]);
+  }, [Get, subscription]);
 
   return { getSubscription, subscriptions, isLoading, error, setSubscriptions };
 };
