@@ -197,12 +197,12 @@ const Index = () => {
             </thead>
             <tbody>
               {scoreRows.map((row) =>
-                row?.value ? (
+                row?.value ? row?.value === 0 ? (
                   <tr key={row?.label} className="border-t border-gray-200">
                     <td className="px-4 py-2">{row?.label}</td>
                     <td className="px-4 py-2">{row?.value}</td>
                   </tr>
-                ) : null
+                ) : null: null
               )}
             </tbody>
           </table>
