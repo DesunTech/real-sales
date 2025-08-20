@@ -54,30 +54,31 @@ const Index = () => {
         // { label: "Cross Selling", value: reportData?.cross_selling },
         // { label: "Sales Closing", value: reportData?.sales_closing },
       ];
-      if (reportData?.qualifying_lead) {
-        setScoreRows([
-          ...newScoreRows,
-          { label: "Qualifying Lead", value: reportData?.qualifying_lead },
-        ]);
-      } else {
-        setScoreRows(newScoreRows);
-      }
-      if (reportData?.cross_selling) {
-        setScoreRows([
-          ...newScoreRows,
-          { label: "Cross Selling", value: reportData?.cross_selling },
-        ]);
-      } else {
-        setScoreRows(newScoreRows);
-      }
-      if (reportData?.sales_closing) {
-        setScoreRows([
-          ...newScoreRows,
-          { label: "Sales Closing", value: reportData?.sales_closing },
-        ]);
-      } else {
-        setScoreRows(newScoreRows);
-      }
+      // if (reportData?.qualifying_lead) {
+      //   setScoreRows([
+      //     ...newScoreRows,
+      //     { label: "Qualifying Lead", value: reportData?.qualifying_lead },
+      //   ]);
+      // } else {
+      //   setScoreRows(newScoreRows);
+      // }
+      // if (reportData?.cross_selling) {
+      //   setScoreRows([
+      //     ...newScoreRows,
+      //     { label: "Cross Selling", value: reportData?.cross_selling },
+      //   ]);
+      // } else {
+      //   setScoreRows(newScoreRows);
+      // }
+      // if (reportData?.sales_closing) {
+      //   setScoreRows([
+      //     ...newScoreRows,
+      //     { label: "Sales Closing", value: reportData?.sales_closing },
+      //   ]);
+      // } else {
+      //   setScoreRows(newScoreRows);
+      // }
+      setScoreRows(newScoreRows);
       //  [
       //   { label: "Overall Score", value: reportData?.overall_score },
       //   { label: "Qualifying Lead", value: reportData?.qualifying_lead },
@@ -224,6 +225,26 @@ const Index = () => {
                   <td className="px-4 py-2">{row?.value}</td>
                 </tr>
               ))}
+              {reportData?.qualifying_lead ? (
+                <tr className="border-t border-gray-200">
+                  <td className="px-4 py-2">Qualifying Lead</td>
+                  <td className="px-4 py-2">{reportData?.qualifying_lead}</td>
+                </tr>
+              ) : null}
+
+              {reportData?.cross_selling ? (
+                <tr className="border-t border-gray-200">
+                  <td className="px-4 py-2">Cross Selling</td>
+                  <td className="px-4 py-2">{reportData?.cross_selling}</td>
+                </tr>
+              ) : null}
+
+              {reportData?.sales_closing ? (
+                <tr className="border-t border-gray-200">
+                  <td className="px-4 py-2">Sales Closing</td>
+                  <td className="px-4 py-2">{reportData?.sales_closing}</td>
+                </tr>
+              ) : null}
             </tbody>
           </table>
           <table className="w-1/3 mb-6 border border-gray-300 bg-opacity-80">
