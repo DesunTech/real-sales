@@ -13,6 +13,9 @@ function formatSummary(summary) {
       .replace(/\n\n\*/g, "<ul><li>")
       .replace(/\n\n/g, "</li><li>")
       .replace(/\n/g, "<br/>")
+      .replace(/\nn/g, "<br/>")
+      .replace(/\\n/g, "<br/>")
+      .replace(/\\nn/g, "<br/>")
       .replace(/<li>/g, '<li style="margin-bottom:12px;">')
       .replace(/<ul><li>/, "<ul><li>") + "</li></ul>"
   );
@@ -27,24 +30,30 @@ const Index = () => {
   const [reportData, setReportData] = useState({});
   const [scoreRows, setScoreRows] = useState([]);
   const [crossSolutionRows, setCrossSolutionRows] = useState([]);
-
+  console.log(reportData, "reportData");
   useEffect(() => {
     if (reportData?.coaching_summary) {
       console.log(reportData, "reportData");
       const newScoreRows = [
-        { "Overall Score": reportData?.overall_score },
-        { "Qualifying Lead": reportData?.qualifying_lead },
-        { "Relationship Building": reportData?.relationship_building },
-        { "Communication Excellence": reportData?.communication_excellence },
-        { "Needs Discovery": reportData?.needs_discovery },
-        { "Solution Matching": reportData?.solution_matching },
+        { label: "Overall Score", value: reportData?.overall_score },
+        { label: "Qualifying Lead", value: reportData?.qualifying_lead },
         {
-          "Objection Handling & Value Selling":
-            reportData?.objection_handling_and_value_selling,
+          label: "Relationship Building",
+          value: reportData?.relationship_building,
         },
-        { Negotiation: reportData?.negotiation },
-        { "Cross Selling": reportData?.cross_selling },
-        { "Sales Closing": reportData?.sales_closing },
+        {
+          label: "Communication Excellence",
+          value: reportData?.communication_excellence,
+        },
+        { label: "Needs Discovery", value: reportData?.needs_discovery },
+        { label: "Solution Matching", value: reportData?.solution_matching },
+        {
+          label: "Objection Handling & Value Selling",
+          value: reportData?.objection_handling_and_value_selling,
+        },
+        { label: "Negotiation", value: reportData?.negotiation },
+        { label: "Cross Selling", value: reportData?.cross_selling },
+        { label: "Sales Closing", value: reportData?.sales_closing },
       ];
       //  [
       //   { label: "Overall Score", value: reportData?.overall_score },
