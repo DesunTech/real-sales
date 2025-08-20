@@ -54,14 +54,29 @@ const Index = () => {
         // { label: "Cross Selling", value: reportData?.cross_selling },
         // { label: "Sales Closing", value: reportData?.sales_closing },
       ];
-      if(reportData?.qualifying_lead){
-        setScoreRows([...newScoreRows, { label: "Qualifying Lead", value: reportData?.qualifying_lead }]);
+      if (reportData?.qualifying_lead) {
+        setScoreRows([
+          ...newScoreRows,
+          { label: "Qualifying Lead", value: reportData?.qualifying_lead },
+        ]);
+      } else {
+        setScoreRows(newScoreRows);
       }
-      if(reportData?.cross_selling){
-        setScoreRows([...newScoreRows, { label: "Cross Selling", value: reportData?.cross_selling }]);
+      if (reportData?.cross_selling) {
+        setScoreRows([
+          ...newScoreRows,
+          { label: "Cross Selling", value: reportData?.cross_selling },
+        ]);
+      } else {
+        setScoreRows(newScoreRows);
       }
-      if(reportData?.sales_closing){
-        setScoreRows([...newScoreRows, { label: "Sales Closing", value: reportData?.sales_closing }]);
+      if (reportData?.sales_closing) {
+        setScoreRows([
+          ...newScoreRows,
+          { label: "Sales Closing", value: reportData?.sales_closing },
+        ]);
+      } else {
+        setScoreRows(newScoreRows);
       }
       //  [
       //   { label: "Overall Score", value: reportData?.overall_score },
