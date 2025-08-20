@@ -13,6 +13,9 @@ function formatSummary(summary) {
       .replace(/\n\n\*/g, "<ul><li>")
       .replace(/\n\n/g, "</li><li>")
       .replace(/\n/g, "<br/>")
+      .replace(/\nn/g, "<br/>")
+      .replace(/\\n/g, "<br/>")
+      .replace(/\\nn/g, "<br/>")
       .replace(/<li>/g, '<li style="margin-bottom:12px;">')
       .replace(/<ul><li>/, "<ul><li>") + "</li></ul>"
   );
