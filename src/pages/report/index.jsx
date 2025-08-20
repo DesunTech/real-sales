@@ -36,7 +36,6 @@ const Index = () => {
       console.log(reportData, "reportData");
       const newScoreRows = [
         { label: "Overall Score", value: reportData?.overall_score },
-        { label: "Qualifying Lead", value: reportData?.qualifying_lead },
         {
           label: "Relationship Building",
           value: reportData?.relationship_building,
@@ -52,9 +51,18 @@ const Index = () => {
           value: reportData?.objection_handling_and_value_selling,
         },
         { label: "Negotiation", value: reportData?.negotiation },
-        { label: "Cross Selling", value: reportData?.cross_selling },
-        { label: "Sales Closing", value: reportData?.sales_closing },
+        // { label: "Cross Selling", value: reportData?.cross_selling },
+        // { label: "Sales Closing", value: reportData?.sales_closing },
       ];
+      if(reportData?.qualifying_lead){
+        setScoreRows([...newScoreRows, { label: "Qualifying Lead", value: reportData?.qualifying_lead }]);
+      }
+      if(reportData?.cross_selling){
+        setScoreRows([...newScoreRows, { label: "Cross Selling", value: reportData?.cross_selling }]);
+      }
+      if(reportData?.sales_closing){
+        setScoreRows([...newScoreRows, { label: "Sales Closing", value: reportData?.sales_closing }]);
+      }
       //  [
       //   { label: "Overall Score", value: reportData?.overall_score },
       //   { label: "Qualifying Lead", value: reportData?.qualifying_lead },
@@ -69,7 +77,6 @@ const Index = () => {
       //   { label: "Sale Closing", value: reportData?.sale_closing },
       //   { label: "Discovery", value: reportData?.discovery },
       // ];
-      setScoreRows(newScoreRows);
 
       // const newCrossSolutionRows = [
       //   { label: "Cross Selling", value: reportData?.cross_selling },
@@ -196,14 +203,12 @@ const Index = () => {
               </tr>
             </thead>
             <tbody>
-              {scoreRows.map((row) =>
-                row?.value ? row?.value === 0 ? (
-                  <tr key={row?.label} className="border-t border-gray-200">
-                    <td className="px-4 py-2">{row?.label}</td>
-                    <td className="px-4 py-2">{row?.value}</td>
-                  </tr>
-                ) : null: null
-              )}
+              {scoreRows.map((row) => (
+                <tr key={row?.label} className="border-t border-gray-200">
+                  <td className="px-4 py-2">{row?.label}</td>
+                  <td className="px-4 py-2">{row?.value}</td>
+                </tr>
+              ))}
             </tbody>
           </table>
           <table className="w-1/3 mb-6 border border-gray-300 bg-opacity-80">
