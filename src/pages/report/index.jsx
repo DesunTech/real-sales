@@ -225,21 +225,21 @@ const Index = () => {
                   <td className="px-4 py-2">{row?.value}</td>
                 </tr>
               ))}
-              {reportData?.qualifying_lead ? (
+              {reportData?.qualifying_lead !== undefined && reportData?.qualifying_lead !== null ? (
                 <tr className="border-t border-gray-200">
                   <td className="px-4 py-2">Qualifying Lead</td>
                   <td className="px-4 py-2">{reportData?.qualifying_lead}</td>
                 </tr>
               ) : null}
 
-              {reportData?.cross_selling ? (
+              {reportData?.cross_selling !== undefined && reportData?.cross_selling !== null ? (
                 <tr className="border-t border-gray-200">
                   <td className="px-4 py-2">Cross Selling</td>
                   <td className="px-4 py-2">{reportData?.cross_selling}</td>
                 </tr>
               ) : null}
 
-              {reportData?.sales_closing ? (
+              {reportData?.sales_closing !== undefined && reportData?.sales_closing !== null ? (
                 <tr className="border-t border-gray-200">
                   <td className="px-4 py-2">Sales Closing</td>
                   <td className="px-4 py-2">{reportData?.sales_closing}</td>
