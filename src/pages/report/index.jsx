@@ -196,20 +196,22 @@ const Index = () => {
               </tr>
             </thead>
             <tbody>
-              {scoreRows.map((row) => (
-                <tr key={row.label} className="border-t border-gray-200">
-                  <td className="px-4 py-2">{row.label}</td>
-                  <td className="px-4 py-2">{row.value}</td>
-                </tr>
-              ))}
+              {scoreRows.map((row) =>
+                row?.value === 0 ? null : row?.value === "" ? null : (
+                  <tr key={row?.label} className="border-t border-gray-200">
+                    <td className="px-4 py-2">{row?.label}</td>
+                    <td className="px-4 py-2">{row?.value}</td>
+                  </tr>
+                )
+              )}
             </tbody>
           </table>
           <table className="w-1/3 mb-6 border border-gray-300 bg-opacity-80">
             <tbody>
-              {crossSolutionRows.map((row) => (
+              {crossSolutionRows?.map((row) => (
                 <tr key={row.label} className="border-t border-gray-200">
-                  <td className="px-4 py-2">{row.label}</td>
-                  <td className="px-4 py-2">{row.value}</td>
+                  <td className="px-4 py-2">{row?.label}</td>
+                  <td className="px-4 py-2">{row?.value}</td>
                 </tr>
               ))}
             </tbody>
