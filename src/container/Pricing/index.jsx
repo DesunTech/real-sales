@@ -4,6 +4,17 @@ import Link from "next/link";
 import ArrowRight from "../../../public/assets/icons/arrowRight";
 import { Switch } from "@mui/material";
 import PricingCard from "../../common/pricingCard";
+import {
+  EmbeddedCheckout,
+  EmbeddedCheckoutProvider,
+} from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+import axios from "axios";
+import CommonModal from "../../common/commonModal";
+
+const stripePromise = loadStripe(
+  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || ""
+);
 
 const Pricing = (props) => {
   const [checked, setChecked] = useState(false);
@@ -102,6 +113,8 @@ const Pricing = (props) => {
   ];
 
   const [subscriptions, setSubscriptions] = useState([]);
+  const [clientSecret, setClientSecret] = useState(null);
+  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
 
   useEffect(() => {
     if (props?.subscription?.length) {
@@ -122,6 +135,60 @@ const Pricing = (props) => {
     }
   }, [props?.subscription?.length, checked]);
   console.log(subscriptions, "subscription___");
+
+  const parsePriceToCents = (priceStr) => {
+    if (!priceStr || typeof priceStr !== "string") return null;
+    const numeric = priceStr.replace(/[^0-9.]/g, "");
+    if (!numeric) return null;
+    const amount = Math.round(parseFloat(numeric) * 100);
+    return Number.isFinite(amount) ? amount : null;
+  };
+
+  const handleChoosePlan = async (plan) => {
+    try {
+      const displayPrice = checked ? plan?.yearly_price : plan?.monthly_price;
+      const unitAmount = parsePriceToCents(displayPrice) ?? 9900;
+      const productName = plan?.plan_type || plan?.name || "RealSales Plan";
+
+      const { data } = await axios.post("/api/stripe/create-checkout-session", {
+        mode: "payment",
+        ui_mode: "embedded",
+        line_items: [
+          {
+            price_data: {
+              currency: "usd",
+              product_data: { name: productName },
+              unit_amount: unitAmount,
+            },
+            quantity: 1,
+          },
+        ],
+        metadata: {
+          plan: productName,
+          billing_cycle: checked ? "yearly" : "monthly",
+        },
+        return_url: `${window.location.origin}/thankyou?session_id={CHECKOUT_SESSION_ID}`,
+      });
+
+      if (data?.client_secret) {
+        setClientSecret(data.client_secret);
+        setIsCheckoutOpen(true);
+        return;
+      }
+
+      if (data?.url) {
+        window.location.href = data.url;
+      }
+    } catch (err) {
+      const serverMsg = err?.response?.data || err?.message;
+      console.error("Failed to create embedded checkout session", serverMsg);
+      alert(
+        typeof serverMsg === "string"
+          ? serverMsg
+          : serverMsg?.error || "Failed to create checkout session"
+      );
+    }
+  };
 
   return (
     <div className="page-container mx-auto px-4 py-8 container flex flex-col items-center lg:gap-4 gap-8">
@@ -166,21 +233,43 @@ const Pricing = (props) => {
         </div>
       </div>
       <div className="w-full pl-[2%] flex flex-col gap-8">
+        {clientSecret ? (
+          <CommonModal
+            open={isCheckoutOpen}
+            onClose={() => {
+              setIsCheckoutOpen(false);
+              setClientSecret(null);
+            }}
+            width={900}
+          >
+            <div id="embedded-checkout" className="w-full">
+              <div className="bg-white rounded-[10px]">
+                <EmbeddedCheckoutProvider
+                  stripe={stripePromise}
+                  options={{ clientSecret }}
+                >
+                  <EmbeddedCheckout />
+                </EmbeddedCheckoutProvider>
+              </div>
+            </div>
+          </CommonModal>
+        ) : null}
         <div className="flex lg:flex-row flex-col flex-wrap gap-8">
           {subscriptions?.length
             ? subscriptions?.map((v, i) => (
-              <div className="lg:w-[31%] w-full">
-                <PricingCard
-                  key={i}
-                  footerCls={`bg-none`}
-                  yearly={checked}
-                  // ExtPricing={true}
-                  headingCls={`lg:flex-row flex-col`}
-                  cardValue={v}
-                  link={`/payment-details`}
-                  // crdExtraCls={`flex lg:flex-col md:flex-row flex-col item-center justify-between`}
+                <div className="lg:w-[31%] w-full">
+                  <PricingCard
+                    key={i}
+                    footerCls={`bg-none`}
+                    yearly={checked}
+                    // ExtPricing={true}
+                    headingCls={`lg:flex-row flex-col`}
+                    cardValue={v}
+                    link={`#`}
+                    onClick={() => handleChoosePlan(v)}
+                    // crdExtraCls={`flex lg:flex-col md:flex-row flex-col item-center justify-between`}
                   />
-                  </div>
+                </div>
               ))
             : null}
         </div>

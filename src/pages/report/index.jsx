@@ -32,28 +32,57 @@ const Index = () => {
     if (reportData?.coaching_summary) {
       console.log(reportData, "reportData");
       const newScoreRows = [
-        { label: "Overall Score", value: reportData?.overall_score },
-        { label: "Engagement Level", value: reportData?.engagement_level },
+        { "Overall Score": reportData?.overall_score },
+        { "Qualifying Lead": reportData?.qualifying_lead },
+        { "Relationship Building": reportData?.relationship_building },
+        { "Communication Excellence": reportData?.communication_excellence },
+        { "Needs Discovery": reportData?.needs_discovery },
+        { "Solution Matching": reportData?.solution_matching },
         {
-          label: "Communication Level",
-          value: reportData?.communication_level,
+          "Objection Handling & Value Selling":
+            reportData?.objection_handling_and_value_selling,
         },
-        { label: "Objection Handling", value: reportData?.objection_handling },
-        { label: "Adaptability", value: reportData?.adaptability },
-        { label: "Persuasiveness", value: reportData?.persuasiveness },
-        { label: "Create Interest", value: reportData?.create_interest },
-        { label: "Sale Closing", value: reportData?.sale_closing },
-        { label: "Discovery", value: reportData?.discovery },
+        { Negotiation: reportData?.negotiation },
+        { "Cross Selling": reportData?.cross_selling },
+        { "Sales Closing": reportData?.sales_closing },
       ];
+      //  [
+      //   { label: "Overall Score", value: reportData?.overall_score },
+      //   { label: "Qualifying Lead", value: reportData?.qualifying_lead },
+      //   {
+      //     label: "Communication Level",
+      //     value: reportData?.communication_level,
+      //   },
+      //   { label: "Objection Handling", value: reportData?.objection_handling },
+      //   { label: "Adaptability", value: reportData?.adaptability },
+      //   { label: "Persuasiveness", value: reportData?.persuasiveness },
+      //   { label: "Create Interest", value: reportData?.create_interest },
+      //   { label: "Sale Closing", value: reportData?.sale_closing },
+      //   { label: "Discovery", value: reportData?.discovery },
+      // ];
       setScoreRows(newScoreRows);
 
-      const newCrossSolutionRows = [
-        { label: "Cross Selling", value: reportData?.cross_selling },
-        { label: "Solution Fit", value: reportData?.solution_fit },
-      ];
-      setCrossSolutionRows(newCrossSolutionRows);
+      // const newCrossSolutionRows = [
+      //   { label: "Cross Selling", value: reportData?.cross_selling },
+      //   { label: "Solution Fit", value: reportData?.solution_fit },
+      // ];
+      // setCrossSolutionRows(newCrossSolutionRows);
     }
   }, [reportData?.coaching_summary]);
+
+  //   data = [
+  //     ['Category', 'Score'],
+  //     ['Overall Score', str(report_data.overall_score)],
+  //     ['Qualifying Lead', str(report_data.qualifying_lead)],
+  //     ['Relationship Building', str(report_data.relationship_building)],
+  //     ['Communication Excellence', str(report_data.communication_excellence)],
+  //     ['Needs Discovery', str(report_data.needs_discovery)],
+  //     ['Solution Matching', str(report_data.solution_matching)],
+  //     ['Objection Handling & Value Selling', str(report_data.objection_handling_and_value_selling)],
+  //     ['Negotiation', str(report_data.negotiation)],
+  //     ['Cross Selling', str(report_data.cross_selling)],
+  //     ['Sales Closing', str(report_data.sales_closing)]
+  // ]
 
   useEffect(() => {
     let sessionId = "";
