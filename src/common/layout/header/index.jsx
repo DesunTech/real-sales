@@ -33,12 +33,16 @@ const Header = (props) => {
         let data = await Get(auth_me);
         if (data?.role) {
           setUser(data);
+        } else {
+          localStorage.removeItem("token");
         }
       } catch (error) {
         console.log(error, "error");
       }
     };
-    GetUser();
+    if (token) {
+      GetUser();
+    }
   }, [token]);
 
   console.log(user?.role?.name, "__user__");
