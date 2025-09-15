@@ -26,4 +26,5 @@ export const apis = {
   feedback: "/v1/feedback/",
   auth_me: "/v1/auth/me",
   subscription: "/v1/subscriptions/",
+  payments: "/v1/payments/",
 };

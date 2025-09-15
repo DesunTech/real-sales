@@ -1,4 +1,5 @@
 import Stripe from "stripe";
+import axios from "axios";
 
 export const config = {
 	api: {
@@ -9,6 +10,42 @@ export const config = {
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "", {
 	apiVersion: "2024-06-20",
 });
+
+// Function to update payment record
+const updatePaymentRecord = async (session) => {
+	try {
+		const paymentData = {
+			subscription_id: session.metadata?.subscription_id || "temp_subscription_id",
+			user_id: session.metadata?.user_id || "temp_user_id",
+			amount: session.amount_total || 0,
+			currency: session.currency || "usd",
+			payment_status: "completed",
+			payment_method: "stripe",
+			provider: "stripe",
+			external_payment_id: session.id,
+			payment_date: new Date().toISOString(),
+			receipt_url: session.receipt_url || "",
+			failure_reason: ""
+		};
+
+		console.log("Updating payment record:", paymentData);
+
+		const response = await axios.post(
+			`${process.env.NEXT_PUBLIC_API_URL}/v1/payments/`,
+			paymentData,
+			{
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			}
+		);
+
+		return response.data;
+	} catch (error) {
+		console.error("Failed to update payment record:", error);
+		return null;
+	}
+};
 
 async function buffer(readable) {
 	const chunks = [];
@@ -49,9 +86,12 @@ export default async function handler(req, res) {
 		switch (event.type) {
 			case "checkout.session.completed": {
 				// Fulfill the purchase... e.g., grant access, store in DB, etc.
+				await updatePaymentRecord(event.data.object);
 				break;
 			}
 			case "payment_intent.succeeded": {
+				// Handle successful payment intent
+				console.log("Payment intent succeeded:", event.data.object.id);
 				break;
 			}
 			default: {

@@ -11,6 +11,9 @@ import {
 import { loadStripe } from "@stripe/stripe-js";
 import axios from "axios";
 import CommonModal from "../../common/commonModal";
+import { useSelector } from "react-redux";
+import ThankYou from "../thankyou";
+import { useRouter } from "next/router";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || ""
@@ -18,6 +21,9 @@ const stripePromise = loadStripe(
 
 const Pricing = (props) => {
   const [checked, setChecked] = useState(false);
+  const user = useSelector((state) => state?.auth?.user);
+  const token = useSelector((state) => state?.auth?.auth);
+  const router = useRouter();
 
   const pricingArr = [
     {
@@ -115,6 +121,8 @@ const Pricing = (props) => {
   const [subscriptions, setSubscriptions] = useState([]);
   const [clientSecret, setClientSecret] = useState(null);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
+  const [showThankYou, setShowThankYou] = useState(false);
+  const [paymentSuccess, setPaymentSuccess] = useState(false);
 
   useEffect(() => {
     if (props?.subscription?.length) {
@@ -136,6 +144,14 @@ const Pricing = (props) => {
   }, [props?.subscription?.length, checked]);
   console.log(subscriptions, "subscription___");
 
+  // Define completion handler for embedded checkout
+  const handleCheckoutComplete = () => {
+    setIsCheckoutOpen(false);
+    setClientSecret(null);
+    setPaymentSuccess(true);
+    setShowThankYou(true);
+  };
+
   const parsePriceToCents = (priceStr) => {
     if (!priceStr || typeof priceStr !== "string") return null;
     const numeric = priceStr.replace(/[^0-9.]/g, "");
@@ -149,6 +165,10 @@ const Pricing = (props) => {
       const displayPrice = checked ? plan?.yearly_price : plan?.monthly_price;
       const unitAmount = parsePriceToCents(displayPrice) ?? 9900;
       const productName = plan?.plan_type || plan?.name || "RealSales Plan";
+
+      // Get user ID from Redux state or localStorage
+      const userId = user?.user_id || localStorage.getItem("user");
+      const userToken = token || localStorage.getItem("token");
 
       const { data } = await axios.post("/api/stripe/create-checkout-session", {
         mode: "payment",
@@ -166,8 +186,10 @@ const Pricing = (props) => {
         metadata: {
           plan: productName,
           billing_cycle: checked ? "yearly" : "monthly",
+          user_id: userId,
+          subscription_id: plan?.id || "temp_subscription_id",
+          token: userToken,
         },
-        return_url: `${window.location.origin}/thankyou?session_id={CHECKOUT_SESSION_ID}`,
       });
 
       if (data?.client_secret) {
@@ -177,6 +199,7 @@ const Pricing = (props) => {
       }
 
       if (data?.url) {
+        // For hosted checkout, redirect to Stripe
         window.location.href = data.url;
       }
     } catch (err) {
@@ -246,7 +269,10 @@ const Pricing = (props) => {
               <div className="bg-white rounded-[10px]">
                 <EmbeddedCheckoutProvider
                   stripe={stripePromise}
-                  options={{ clientSecret }}
+                  options={{ 
+                    clientSecret,
+                    onComplete: handleCheckoutComplete
+                  }}
                 >
                   <EmbeddedCheckout />
                 </EmbeddedCheckoutProvider>
@@ -254,6 +280,23 @@ const Pricing = (props) => {
             </div>
           </CommonModal>
         ) : null}
+        
+        {showThankYou && (
+          <CommonModal
+            open={showThankYou}
+            onClose={() => {
+              setShowThankYou(false);
+              setPaymentSuccess(false);
+              // Optionally redirect to home page
+              router.push("/");
+            }}
+            width={1200}
+          >
+            <div className="w-full">
+              <ThankYou />
+            </div>
+          </CommonModal>
+        )}
         <div className="flex lg:flex-row flex-col flex-wrap gap-8">
           {subscriptions?.length
             ? subscriptions?.map((v, i) => (

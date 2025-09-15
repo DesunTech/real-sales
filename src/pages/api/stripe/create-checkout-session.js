@@ -1,8 +1,45 @@
 import Stripe from "stripe";
+import axios from "axios";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "", {
 	apiVersion: "2024-06-20",
 });
+
+// Function to create payment record
+const createPaymentRecord = async (session, metadata) => {
+	try {
+		const paymentData = {
+			subscription_id: metadata?.subscription_id || "temp_subscription_id",
+			user_id: metadata?.user_id || "temp_user_id",
+			amount: session.amount_total || 0,
+			currency: session.currency || "usd",
+			payment_status: "pending",
+			payment_method: "stripe",
+			provider: "stripe",
+			external_payment_id: session.id,
+			payment_date: new Date().toISOString(),
+			receipt_url: session.receipt_url || "",
+			failure_reason: ""
+		};
+
+		const response = await axios.post(
+			`${process.env.NEXT_PUBLIC_API_URL}/v1/payments/`,
+			paymentData,
+			{
+				headers: {
+					'Content-Type': 'application/json',
+					'Authorization': `Bearer ${metadata?.token || ''}`
+				}
+			}
+		);
+
+		return response.data;
+	} catch (error) {
+		console.error("Failed to create payment record:", error);
+		// Don't throw error to avoid breaking the checkout flow
+		return null;
+	}
+};
 
 export default async function handler(req, res) {
 	if (req.method !== "POST") {
@@ -70,6 +107,9 @@ export default async function handler(req, res) {
 		const session = await stripe.checkout.sessions.create(
 			ui_mode === "embedded" ? embeddedParams : hostedParams
 		);
+
+		// Create payment record before returning success response
+		await createPaymentRecord(session, metadata);
 
 		if (ui_mode === "embedded") {
 			return res.status(200).json({ client_secret: session.client_secret });
