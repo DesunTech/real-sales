@@ -6,22 +6,20 @@ const personas = [
     description:
       "Simulate real industry challenges—selling automation, consumables, or equipment.",
     image:
-      "https://images.pexels.com/photos/10358182/pexels-photo-10358182.jpeg",
-    // from “Person touching a plant” :contentReference[oaicite:2]{index=2}
+      "/images/plant_manager.png",
   },
   {
     title: "Engineers",
     description:
       "Overcome industry-specific objections and improve negotiation skills.",
     image:
-      "https://images.pexels.com/photos/29698116/pexels-photo-29698116.jpeg",
+       "/images/engineer.png",
   },
   {
     title: "Maintenance Leader",
     description: "Shift from transactional selling to solution-based selling.",
     image:
-      "https://images.pexels.com/photos/31869843/pexels-photo-31869843.jpeg",
-    // using “Engineer Working on Laptop in Workshop Setting” as placeholder :contentReference[oaicite:4]{index=4}
+      "/images/maintainanace.png",
   },
 ];
 
@@ -30,11 +28,10 @@ const FoodEquipments = () => {
     <div className="page-container mx-auto px-4 py-8 container flex flex-col gap-16 w-full h-full">
       {/* Heading */}
       <div className="w-full flex flex-col items-center justify-center text-center sm:py-4 py-8">
-  <h1 className="sora-bold text-3xl sm:text-4xl max-w-4xl">
-    Industry-Specific AI Personas built on Real Customers
-  </h1>
-</div>
-
+        <h1 className="sora-bold text-3xl sm:text-4xl max-w-4xl">
+          Industry-Specific AI Personas built on Real Customers
+        </h1>
+      </div>
 
       {/* Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
