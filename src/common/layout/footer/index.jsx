@@ -87,7 +87,7 @@ const Footer = () => {
       <div className="bg-[url(../../public/assets/images/RealSales-backgrounds/bg-6.png)] bg-cover bg-center bg-no-repeat">
         <div className="w-full h-full bg-[#060606E5]">
           <div className="page-container mx-auto container px-4 py-10 flex lg:flex-row flex-col lg:gap-[5%] gap-8 items-start">
-            <div className="lg:w-[30%] w-full flex flex-col items-start gap-4">
+            <div className="lg:w-[100%] w-full flex flex-col items-start gap-4">
               <Image
                 src={whiteLogoNoBackground}
                 alt="whiteLogoNoBackground"
@@ -100,20 +100,23 @@ const Footer = () => {
                 improvement through realistic simulations and live interactions 
                 with real-word buyer personas.​
               </p>
-              <CommonButton
-                onClick={() => dispatch(DemoMeetingValue(true))}
-                className={`!border-[2px] !border-[#FFDE5A] !text-[#FFDE5A] !px-5 !py-1 !text-[15px] flex !items-center gap-2 h-fit`}
-                buttontext={
-                  <p className="m-plus-rounded-1c-light">Book a Demo</p>
-                }
-                icon={<ArrowRight stroke={`#FFDE5A`} width={19} height={13} />}
-              />
-              <button
-                onClick={() => window.open('mailto:contact@real-sales.com', '_blank')}
-                className="bg-[#FFDE5A] text-[#060606] px-7.5 py-1 text-[18px] m-plus-rounded-1c-bold border-2 border-[#FFDE5A] rounded flex items-center justify-center gap-2 h-fit hover:bg-[#FFE942] transition-colors duration-200"
-              >
-                CONTACT US
-              </button>
+              <div className="flex flex-row items-center gap-4">
+  <CommonButton
+    onClick={() => dispatch(DemoMeetingValue(true))}
+    className={`!border-[2px] !border-[#FFDE5A] !text-[#FFDE5A] !px-5 !py-1 !text-[15px] flex !items-center gap-2 h-fit`}
+    buttontext={
+      <p className="m-plus-rounded-1c-light">Book a Demo</p>
+    }
+    icon={<ArrowRight stroke={`#FFDE5A`} width={19} height={13} />}
+  />
+  <button
+    onClick={() => window.open('mailto:contact@real-sales.com', '_blank')}
+    className="bg-[#FFDE5A] text-[#060606] px-7.5 py-1 text-[18px] m-plus-rounded-1c-bold border-2 border-[#FFDE5A] rounded flex items-center justify-center gap-2 h-fit hover:bg-[#FFE942] transition-colors duration-200"
+  >
+    CONTACT US
+  </button>
+</div>
+
             </div>
             <div className="lg:w-[65%] w-full">
               {/* <div className="flex items-start justify-between flex-wrap lg:gap-4 gap-8 px-4 pb-6">
@@ -131,7 +134,7 @@ const Footer = () => {
                 />
                </div> */}
                 {/* <hr className="border-[#FFFFFF99] w-full" /> */}
-                <div className="flex items-start justify-start px-4 pt-6 flex-wrap lg:gap-15 gap-10">
+                <div className="flex items-start justify-start px-4 pt-10 flex-wrap lg:gap-30 gap-10">
                 <FooterLinks
                   heading={LinksArr[3]?.heading}
                   linkArr={LinksArr[3]?.links}
@@ -226,6 +229,7 @@ const Footer = () => {
           </p>
         </div>
       </div>
+      
     </div>
   );
 };
