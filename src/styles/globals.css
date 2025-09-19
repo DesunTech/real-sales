@@ -332,3 +332,7 @@ input::-webkit-inner-spin-button {
   text-underline-offset: 4px;
   text-decoration-thickness: 2px;
 }
+
+.group:hover .group-hover-bg-yellow-opacity {
+  background-color: rgba(255, 222, 90, 0.3);
+}

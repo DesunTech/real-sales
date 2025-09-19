@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ['fra.cloud.appwrite.io'],
+    domains: ['fra.cloud.appwrite.io', 'images.pexels.com',''], // ✅ Add Pexels here
   },
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
