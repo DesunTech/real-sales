@@ -6,13 +6,13 @@ import Image from "next/image";
 const items = [
   {
     title: "New Sales Director Lacks Team Visibility",
-    image: "https://images.pexels.com/photos/3912948/pexels-photo-3912948.jpeg",
+    image: "/images/sales-Director.png",
     description:
       "RealSales provides objective skill assessment in 1.5 months vs 6+ months of manual observation. Delivers 4.5 months faster team optimization with data-driven coaching plans.",
   },
  {
   title: "Sales Team Missing Cross-Selling Opportunities",
-  image: "https://images.pexels.com/photos/3182812/pexels-photo-3182812.jpeg", // Different image URL
+  image: "/images/missed.png",
   description:
     "RealSales trains reps to identify 3× more opportunities per customer interaction. Increases annual revenue per rep from $1.08M to $3.24M (3× revenue growth).",
 }
@@ -20,26 +20,26 @@ const items = [
 
   {
     title: "Marketing Needs Value Proposition Validation",
-    image: "https://images.pexels.com/photos/1679645/pexels-photo-1679645.jpeg",
+    image: "/images/marketing.png",
     description:
       "RealSales tests new messaging in 6 weeks vs 8 months traditional approach. Saves $44,275 vs $86,000 traditional cost and delivers 5.5 months faster market launch.",
   },
   {
     title: "Remote Team Lacks Consistent Coaching",
-    image: "https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg",
+    image: "/images/remote.png",
     description:
       "RealSales provides standardized coaching across distributed locations with organizational visibility at every level. Delivers time and cost savings through reduced travel and coordination overhead.",
   },
   {
     title: "New Hire Struggles with Complex Portfolio",
     image:
-      "https://images.pexels.com/photos/10996739/pexels-photo-10996739.jpeg",
+      "/images/struggles.png",
     description:
       "RealSales accelerates onboarding from 6-8 months to 2-3 months productivity. Increases new hire Year 1 revenue from $380K to $1.805M (4.7× revenue growth).",
   },
   {
     title: "High Pipeline Volume with Poor Conversion",
-    image: "https://images.pexels.com/photos/3861958/pexels-photo-3861958.jpeg",
+    image: "",
     description:
       "RealSales diagnoses qualification vs closing gaps to enable targeted coaching. Improves conversion rates from 18% to 26% and generates 8× better pipeline conversion.",
   },
