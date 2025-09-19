@@ -49,13 +49,13 @@ const Footer = () => {
       ],
     },
     {
-      heading: "Contact Us",
+      // heading: "Contact Us",
       links: [
-        { name: "Privacy Policy", link: "/privacy-policy" },
-        { name: "Terms & Conditions", link: "/terms-conditions" },
+        // { name: "Privacy Policy", link: "/privacy-policy" },
+        // { name: "Terms & Conditions", link: "/terms-conditions" },
         { name: "FAQ's", link: "/faq" },
-        { name: "Contact Us", link: "/contact-us" },
-        { name: "Register", link: "/register" },
+        // { name: "Contact Us", link: "/contact-us" },
+        // { name: "Register", link: "/register" },
       ],
     },
   ];
@@ -94,9 +94,11 @@ const Footer = () => {
                 className="h-10 w-auto"
               />
               <p className="text-white m-plus-rounded-1c-regular text-[14px]">
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry. Lorem Ipsum has been the industry's standard dummy
-                text ever since the 1500s.
+                RealSales is an AI-powered Sales Accelerator Platform that gives 
+                sales teams and managers real-time visibility into sales capability 
+                and team maturity—enabling continuous, on-the-job coaching and performance 
+                improvement through realistic simulations and live interactions 
+                with real-word buyer personas.​
               </p>
               <CommonButton
                 onClick={() => dispatch(DemoMeetingValue(true))}
@@ -106,9 +108,15 @@ const Footer = () => {
                 }
                 icon={<ArrowRight stroke={`#FFDE5A`} width={19} height={13} />}
               />
+              <button
+                onClick={() => window.open('mailto:contact@real-sales.com', '_blank')}
+                className="bg-[#FFDE5A] text-[#060606] px-7.5 py-1 text-[18px] m-plus-rounded-1c-bold border-2 border-[#FFDE5A] rounded flex items-center justify-center gap-2 h-fit hover:bg-[#FFE942] transition-colors duration-200"
+              >
+                CONTACT US
+              </button>
             </div>
             <div className="lg:w-[65%] w-full">
-              <div className="flex items-start justify-between flex-wrap lg:gap-4 gap-8 px-4 pb-6">
+              {/* <div className="flex items-start justify-between flex-wrap lg:gap-4 gap-8 px-4 pb-6">
                 <FooterLinks
                   heading={LinksArr[0]?.heading}
                   linkArr={LinksArr[0]?.links}
@@ -121,18 +129,18 @@ const Footer = () => {
                   heading={LinksArr[2]?.heading}
                   linkArr={LinksArr[2]?.links}
                 />
-              </div>
-              <hr className="border-[#FFFFFF99] w-full" />
-              <div className="flex items-start justify-between px-4 pt-6 flex-wrap lg:gap-4 gap-8">
+               </div> */}
+                {/* <hr className="border-[#FFFFFF99] w-full" /> */}
+                <div className="flex items-start justify-start px-4 pt-6 flex-wrap lg:gap-15 gap-10">
                 <FooterLinks
                   heading={LinksArr[3]?.heading}
                   linkArr={LinksArr[3]?.links}
                 />
-                <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-4 -mt-0.5">
                   <h1 className="text-white m-plus-rounded-1c-medium text-[15px]">
-                    Address info.
+                    {/* Address info. */}
                   </h1>
-                  <Link
+                  {/* <Link
                     href={`https://maps.app.goo.gl/CiWCu9wTthRDfeex5`}
                     target="_blank"
                     className="flex items-center gap-2 text-white group hover:text-[#FFE942]"
@@ -154,20 +162,20 @@ const Footer = () => {
                       <br />
                       <span className="text-[110%]">+123 1234567890</span>
                     </p>
-                  </Link>
+                  </Link> */}
                   <Link
-                    href={`mailto:abc.dummyai@gmail.com`}
+                    href={`mailto:contact@real-sales.com​`}
                     className="flex items-center gap-2 text-white group hover:text-[#FFE942]"
                   >
                     <EmailIcon />
                     <p className="text-[11px] sora-regular">
                       Email:
                       <br />
-                      <span className="text-[110%]">abc.dummyai@gmail.com</span>
+                      <span className="text-[110%]">contact@real-sales.com​</span>
                     </p>
                   </Link>
                 </div>
-                <div className="h-full flex md:flex-col flex-row items-end justify-between gap-15">
+                {/* <div className="h-full flex md:flex-col flex-row items-end justify-between gap-15">
                   <div className="flex flex-col items-center gap-4">
                     <h1 className="text-white m-plus-rounded-1c-medium text-[15px]">
                       Follow Us on:
@@ -202,18 +210,18 @@ const Footer = () => {
                   >
                     <ArrowBackIosIcon className="rotate-90" />
                   </div>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div className="main-header sticky top-0 z-50 bg-[#FFE942] lg:py-4 py-2 flex items-center justify-center">
+      <div className="main-header sticky top-0 z-50 bg-[#FFDE5A] lg:py-4 py-2 flex items-center justify-center">
         <div className="flex items-center lg:flex-row flex-col lg:gap-1 gap-0">
           <Image src={copyright} alt="copyright" />
           <p className="text-center sora-regular text-[#060606] lg:text-[16px] text-[12px]">
             Copyright 2025 -&nbsp;
-            <span className="sora-semibold">RealSales.com.</span>&nbsp;All
+            <span className="sora-semibold">Real-Sales.com.</span>&nbsp;All
             Rights Reserved
           </p>
         </div>

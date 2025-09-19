@@ -75,7 +75,7 @@ const Header = (props) => {
                 <Link
                   href="/"
                   className={`text-white leading-1 hover:underline ${
-                    router?.pathname === "/" ? `underline` : ``
+                    router?.pathname === "/" ? `nav-underline-yellow` : ``
                   }`}
                 >
                   Home
@@ -85,7 +85,7 @@ const Header = (props) => {
                 <Link
                   href="/about"
                   className={`text-white leading-1 hover:underline ${
-                    router?.pathname === "/about" ? `underline` : ``
+                    router?.pathname === "/about" ? `nav-underline-yellow` : ``
                   }`}
                 >
                   About
@@ -95,7 +95,7 @@ const Header = (props) => {
                 <Link
                   href="/industries"
                   className={`text-white leading-1 hover:underline ${
-                    router?.pathname === "/industries" ? `underline` : ``
+                    router?.pathname === "/industries" ? `nav-underline-yellow` : ``
                   }`}
                 >
                   Industries
@@ -145,7 +145,7 @@ const Header = (props) => {
                 <Link
                   href="/faq"
                   className={`text-white leading-1 hover:underline ${
-                    router?.pathname === "/faq" ? `underline` : ``
+                    router?.pathname === "/faq" ? `nav-underline-yellow` : ``
                   }`}
                 >
                   FAQ
@@ -158,7 +158,7 @@ const Header = (props) => {
                       href={`https://realsales-admin.vercel.app?token=${token}`}
                       // target="_blank"
                       className={`text-white leading-1 hover:underline ${
-                        router?.pathname === `/dashboard` ? `underline` : ``
+                        router?.pathname === `/dashboard` ? `nav-underline-yellow` : ``
                       }`}
                     >
                       Dashboard
@@ -168,7 +168,7 @@ const Header = (props) => {
                       href={`https://realsales-dashboard.vercel.app/overview?token=${token}`}
                       // target="_blank"
                       className={`text-white leading-1 hover:underline ${
-                        router?.pathname === `/dashboard` ? `underline` : ``
+                        router?.pathname === `/dashboard` ? `nav-underline-yellow` : ``
                       }`}
                     >
                       Dashboard
