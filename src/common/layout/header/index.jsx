@@ -26,6 +26,7 @@ const Header = (props) => {
   const { auth_me } = apis;
 
   let [user, setUser] = useState({});
+  const [industriesSubmenuOpen, setIndustriesSubmenuOpen] = useState(false);
 
   useEffect(() => {
     const GetUser = async () => {
@@ -288,10 +289,50 @@ const Header = (props) => {
                   </Link>
                 </li>
                 <li className="py-2 border-b text-white">
-                  <Link href="#" onClick={() => setMobileMenuOpen(false)}>
-                    Industries
-                  </Link>
+                  <div
+                    onClick={() =>
+                      setIndustriesSubmenuOpen(!industriesSubmenuOpen)
+                    }
+                    className="flex justify-between items-center cursor-pointer select-none"
+                  >
+                    Case Study & Industries
+                    <span
+                      className={`transition-transform duration-300 ${
+                        industriesSubmenuOpen ? "rotate-180" : "rotate-0"
+                      }`}
+                    >
+                      ▼
+                    </span>
+                  </div>
+
+                  {/* Smooth slide-down submenu */}
+                  <div
+                    className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                      industriesSubmenuOpen ? "max-h-40 mt-2" : "max-h-0"
+                    }`}
+                  >
+                    <ul className="flex flex-col gap-2 ml-4">
+                      <li>
+                        <Link
+                          href="/industries/food-equipments"
+                          onClick={() => {
+                            setMobileMenuOpen(false);
+                            setIndustriesSubmenuOpen(false);
+                          }}
+                          className="text-white hover:text-yellow-400 transition-colors"
+                        >
+                          Food & Beverage Equipment
+                        </Link>
+                      </li>
+                      <li>
+                        <div className="text-gray-400 italic cursor-not-allowed">
+                          Healthcare - coming soon
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
                 </li>
+
                 <li className="py-2 border-b text-white">
                   <Link href="/faq" onClick={() => setMobileMenuOpen(false)}>
                     FAQ
