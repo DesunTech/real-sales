@@ -86,14 +86,22 @@ const CardGrid = () => {
           <div className="absolute inset-0 bg-transparent transition duration-500 pointer-events-none group-hover:bg-[#FFDE5A] group-hover:bg-opacity-90 z-10"></div>
 
           {/* Title */}
-          <div
-            className="absolute top-4 left-1/2 transform -translate-x-1/2
-             text-black font-semibold text-lg md:text-xl z-20 text-center
-             max-w-[80%] md:max-w-[70%] px-2 md:px-6
-             whitespace-normal break-words"
-          >
-            {item.title}
-          </div>
+<div
+  className="absolute top-4 inset-x-0
+    text-black font-semibold text-lg md:text-xl z-20 text-center
+    px-2 md:px-5
+    max-w-[90%] md:max-w-[85%]
+    mx-auto
+    whitespace-normal break-words"
+>
+  {item.title}
+</div>
+
+
+
+
+
+
 
           {/* Description (on hover) */}
           <div className="absolute bottom-0 left-0 right-0 px-20 py-8 text-black opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500 z-20 text-center mb-15">

@@ -91,48 +91,51 @@ const Header = (props) => {
                   About
                 </Link>
               </div>
-           <div className="relative">
-  {/* Container that keeps dropdown open on hover */}
-  <div className="group inline-block relative">
-    {/* Main Link */}
-    <Link
-      href="/industries"
-      className={`text-white leading-1 border-b-2 border-transparent hover:border-yellow-400 transition-all duration-300 ${
-        router?.pathname === "/industries" ? `nav-underline-yellow` : ``
-      }`}
-    >
-      Case Study & Industries
-    </Link>
+              <div className="relative">
+                {/* Container that keeps dropdown open on hover */}
+                <div className="group inline-block relative">
+                  {/* Main Link */}
+                  <Link
+                    href="#"
+                    onClick={(e) => e.preventDefault()} // prevents navigation
+                    className={`text-white leading-1 border-b-2 border-transparent hover:border-yellow-400 transition-all duration-300 ${
+                      router?.pathname === "/industries"
+                        ? `nav-underline-yellow`
+                        : ``
+                    }`}
+                  >
+                    Case Study & Industries
+                  </Link>
 
-    {/* Dropdown Menu */}
-    <div
-      className="absolute left-0 top-full mt-2 w-48 bg-[#060606] rounded shadow-lg opacity-0 invisible 
+                  {/* Dropdown Menu */}
+                  <div
+                    className="absolute left-0 top-full mt-2 w-48 bg-[#060606] rounded shadow-lg opacity-0 invisible 
                  group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50"
-      style={{ transitionDelay: '0.15s' }} // keeps dropdown visible a little longer
-    >
-      <Link
-        href="/industries/food-equipments"
-        className="block px-4 py-2 text-white hover:bg-[#FFDE5A] hover:text-[#060606] transition-colors duration-200"
-      >
-        Food & Beverage Equipment
-      </Link>
-     <Link
-  href="/industries/industry2"
-  className="block px-4 py-2 text-white hover:bg-[#FFDE5A] hover:text-[#060606] transition-colors duration-200 cursor-not-allowed"
->
-  Healthcare - <span className="text-gray-400 italic">coming soon</span>
-</Link>
+                    style={{ transitionDelay: "0.15s" }} // keeps dropdown visible a little longer
+                  >
+                    <Link
+                      href="/industries/food-equipments"
+                      className="block px-4 py-2 text-white hover:bg-[#FFDE5A] hover:text-[#060606] transition-colors duration-200"
+                    >
+                      Food & Beverage Equipment
+                    </Link>
+                    <Link
+                      href="/industries/industry2"
+                      className="block px-4 py-2 text-white hover:bg-[#FFDE5A] hover:text-[#060606] transition-colors duration-200 cursor-not-allowed"
+                    >
+                      Healthcare -{" "}
+                      <span className="text-gray-400 italic">coming soon</span>
+                    </Link>
 
-      {/* <Link
+                    {/* <Link
         href="/industries/industry3"
         className="block px-4 py-2 text-white hover:bg-[#FFDE5A] hover:text-[#060606] transition-colors duration-200"
       >
         Industry 3
       </Link> */}
-    </div>
-  </div>
-</div>
-
+                  </div>
+                </div>
+              </div>
 
               {/* <div className="relative">
                 <ClickAwayListener onClickAway={() => setOpenIndustry(false)}>

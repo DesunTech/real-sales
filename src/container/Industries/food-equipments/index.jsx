@@ -19,7 +19,7 @@ const personas = [
     title: "Maintenance Leader",
     description: "Shift from transactional selling to solution-based selling.",
     image:
-      "/images/maintainanace.png",
+      "/images/maintainance.png",
   },
 ];
 
