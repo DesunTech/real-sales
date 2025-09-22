@@ -13,6 +13,7 @@ import {
   ShortlistedPersonaValue,
   TryRealsalesValue,
 } from "../../redux/OpenModal";
+import ArrowRight from "../../../public/assets/icons/arrowRight";
 
 const MeetPerfectPersona = () => {
   const router = useRouter();
@@ -52,32 +53,30 @@ const MeetPerfectPersona = () => {
       <h1 className="lg:text-6xl text-3xl text-center text-[#060606] m-plus-rounded-1c-regular lg:w-[60%] w-full">
         We're here to give you a pixel-perfect Choice
       </h1>
-      <div className="mt-10 flex justify-center">
-        <button
-          className="bg-[#FFDE5A] text-black font-semibold px-6 py-3 rounded-xl shadow-md hover:shadow-lg hover:brightness-95 transition-all duration-300"
-          onClick={() => {
-            if (token !== "") {
-              dispatch(PersonaTypeValue(true));
-              dispatch(InteractionValue({ open: true, fromData: "" }));
-            } else if (persona_id !== "") {
-              dispatch(
-                InteractionValue({
-                  open: true,
-                  fromData: {
-                    user_id: user_id,
-                    persona_id: persona_id,
-                  },
-                })
-              );
-            } else if (persona_id !== "" && session_id !== "") {
-              dispatch(ShortlistedPersonaValue(true));
-            } else {
-              dispatch(TryRealsalesValue(true));
-            }
-          }}
-        >
-          Select Persona
-        </button>
+      <div
+        className="flex items-center gap-2 text-[#060606] bg-[#FFE942] m-plus-rounded-1c-medium capitalize py-2.5 px-4 rounded-full cursor-pointer mt-10 mb-10"
+        onClick={() => {
+          if (token !== "") {
+            dispatch(InteractionValue({ open: true, fromData: "" }));
+          } else if (persona_id !== "") {
+            dispatch(
+              InteractionValue({
+                open: true,
+                fromData: {
+                  user_id: user_id,
+                  persona_id: persona_id,
+                },
+              })
+            );
+          } else if (persona_id !== "" && session_id !== "") {
+            dispatch(ShortlistedPersonaValue(true));
+          } else {
+            dispatch(TryRealsalesValue(true));
+          }
+        }}
+      >
+        Select Persona
+         <ArrowRight width={19} height={13} />
       </div>
 
       {/* <div className="w-full flex flex-col items-start gap-2">

@@ -209,13 +209,14 @@ const Persona = () => {
           //   ? { onDoubleClick: handleCardClick }
           //   : { onClick: handleCardClick })}
         >
-          <Image
-            src={v?.profile_pic ? v?.profile_pic : dummy}
-            alt="persona"
-            width={192}
-            height={108}
-            className="w-full h-full"
-          />
+       <Image
+  src={v?.profile_pic ? v?.profile_pic : dummy}
+  alt="persona"
+  width={192}
+  height={108}
+  className="w-full h-full object-cover object-center"
+/>
+
           {/* <div className="bg-[#ffffff] w-full h-[calc(100%_-_85%)] p-2 absolute bottom-0 z-10 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
           <p className="m-plus-rounded-1c-semibold text-lg text-[#1a1a1a] uppercase pb-1.5">
             {v?.name?.replace(/_/g, " ")}
