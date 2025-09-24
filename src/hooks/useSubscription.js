@@ -4,9 +4,10 @@ import { apis } from "../utils/apis";
 
 export const useSubscription = () => {
   const { Get } = useApi();
-  const { subscription } = apis;
+  const { subscription, get_user_subscription } = apis;
 
   const [subscriptions, setSubscriptions] = useState([]);
+  const [userSubscription, setUserSubscription] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -32,5 +33,32 @@ export const useSubscription = () => {
     }
   }, [Get, subscription]);
 
-  return { getSubscription, subscriptions, isLoading, error, setSubscriptions };
+  const getUserSubscription = useCallback(async () => {
+    // Prevent multiple simultaneous calls
+    if (isLoading) return userSubscription;
+    
+    setIsLoading(true);
+    setError(null);
+    try {
+      const response = await Get(get_user_subscription);
+      setUserSubscription(response);
+      return response;
+    } catch (err) {
+      setError(err);
+      return null;
+    } finally {
+      setIsLoading(false);
+    }
+  }, [Get, get_user_subscription, isLoading, userSubscription]);
+
+  return { 
+    getSubscription, 
+    getUserSubscription,
+    subscriptions, 
+    userSubscription,
+    isLoading, 
+    error, 
+    setSubscriptions,
+    setUserSubscription
+  };
 };

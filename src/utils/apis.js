@@ -26,4 +26,11 @@ export const apis = {
   feedback: "/v1/feedback/",
   auth_me: "/v1/auth/me",
   subscription: "/v1/subscriptions/",
+  // Payment APIs
+  create_payment_intent: "/v1/payments/create-payment-intent",
+  get_payment_status: "/v1/payments/payment-intent",
+  get_user_payments: "/v1/payments/by-user",
+  get_user_subscription: "/v1/user-subscriptions/my-subscription",
+  // User subscription APIs
+  user_subscriptions: "/v1/user-subscriptions/",
 };

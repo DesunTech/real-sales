@@ -39,11 +39,16 @@ const Get = async (url) => {
   try {
     const data = await axiosInstance.get(url);
     if (data?.data) {
-      showToast.success(data?.data?.message);
+      // Only show success toast if there's a message
+      if (data?.data?.message) {
+        showToast.success(data?.data?.message);
+      }
       return data?.data;
     }
   } catch (error) {
-    showToast.error(error?.response?.data?.detail);
+    const errorMessage = error?.response?.data?.detail || error?.message || 'Request failed';
+    showToast.error(errorMessage);
+    throw error; // Re-throw to allow calling code to handle
   }
 };
 
@@ -57,11 +62,16 @@ const Post = async (url, meta) => {
   try {
     const data = await axiosInstance.post(url, meta);
     if (data?.data) {
-      showToast.success(data?.data?.message);
+      // Only show success toast if there's a message
+      if (data?.data?.message) {
+        showToast.success(data?.data?.message);
+      }
       return data?.data;
     }
   } catch (error) {
-    showToast.error(error?.response?.data?.detail);
+    const errorMessage = error?.response?.data?.detail || error?.message || 'Request failed';
+    showToast.error(errorMessage);
+    throw error; // Re-throw to allow calling code to handle
   }
 };
 
@@ -75,11 +85,16 @@ const Put = async (url, meta) => {
   try {
     const data = await axiosInstance.put(url, meta);
     if (data?.data) {
-      showToast.success(data?.data?.message);
+      // Only show success toast if there's a message
+      if (data?.data?.message) {
+        showToast.success(data?.data?.message);
+      }
       return data?.data;
     }
   } catch (error) {
-    showToast.error(error?.response?.data?.detail);
+    const errorMessage = error?.response?.data?.detail || error?.message || 'Request failed';
+    showToast.error(errorMessage);
+    throw error; // Re-throw to allow calling code to handle
   }
 };
 
@@ -93,11 +108,16 @@ const Delete = async (url, meta) => {
   try {
     const data = await axiosInstance.delete(url, meta);
     if (data?.data) {
-      showToast.success(data?.data?.message);
+      // Only show success toast if there's a message
+      if (data?.data?.message) {
+        showToast.success(data?.data?.message);
+      }
       return data?.data;
     }
   } catch (error) {
-    showToast.error(error?.response?.data?.detail);
+    const errorMessage = error?.response?.data?.detail || error?.message || 'Request failed';
+    showToast.error(errorMessage);
+    throw error; // Re-throw to allow calling code to handle
   }
 };
 
