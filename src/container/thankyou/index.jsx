@@ -9,14 +9,12 @@ import lets_icons_back_3 from "../../../public/assets/icons/lets_icons_back_3.sv
 import CommonButton from "../../common/commonButton";
 import { useDispatch, useSelector } from "react-redux";
 import { SessionModesValue } from "../../redux/OpenModal";
-import { useSubscription } from "../../hooks/useSubscription";
-import { usePayment } from "../../hooks/usePayment";
+import { useSubscriptionSilent } from "../../hooks/useSubscriptionSilent";
 import PaymentStatus from "../../common/PaymentStatus";
 
 const ThankYou = () => {
   const dispatch = useDispatch();
-  const { getUserSubscription, userSubscription } = useSubscription();
-  const { Get } = usePayment();
+  const { getUserSubscriptionSilent, getPaymentDataSilent, userSubscription } = useSubscriptionSilent();
   const user = useSelector((state) => state?.auth?.user);
   const [paymentIntentId, setPaymentIntentId] = useState(null);
   const [paymentStatus, setPaymentStatus] = useState('processing');
@@ -29,12 +27,36 @@ const ThankYou = () => {
   const [isOrderDetailsOpen, setIsOrderDetailsOpen] = useState(false);
   const [isOrderInfoOpen, setIsOrderInfoOpen] = useState(false);
 
-  // Function to fetch latest payment data
+  // Function to refresh user subscription with retry logic
+  const refreshUserSubscriptionWithRetry = async (retryCount = 0) => {
+    const maxRetries = 5; // Increased retries
+    const retryDelay = 3000; // Increased delay to 3 seconds
+
+    try {
+      await getUserSubscriptionSilent();
+      console.log('Subscription successfully loaded in ThankYou component');
+    } catch (err) {
+      console.log(`Subscription not ready yet (attempt ${retryCount + 1}/${maxRetries + 1})`);
+      
+      if (retryCount < maxRetries) {
+        // Retry after delay
+        setTimeout(() => {
+          refreshUserSubscriptionWithRetry(retryCount + 1);
+        }, retryDelay);
+      } else {
+        console.error('Failed to refresh subscription after retries:', err);
+        // Don't set error state during payment processing
+      }
+    }
+  };
+
+  // Function to fetch latest payment data silently
   const fetchLatestPayment = async () => {
     try {
       const userId = localStorage.getItem('userId');
       if (userId) {
-        const response = await Get(`/v1/payments/by-user/${userId}`);
+        // Use silent API call to avoid showing errors during payment processing
+        const response = await getPaymentDataSilent(userId);
         if (response && response.length > 0) {
           // Get the latest payment
           const latestPayment = response[response.length - 1];
@@ -45,7 +67,7 @@ const ThankYou = () => {
       return true; // Success
     } catch (error) {
       console.error('Failed to fetch payment data:', error);
-      setDataLoadError('Failed to load payment data');
+      // Don't set error state during payment processing, just log it
       return false; // Error
     }
   };
@@ -66,10 +88,13 @@ const ThankYou = () => {
       setDataLoadError(null);
       setLoadingStartTime(Date.now());
       
+      // Wait longer for backend processing before fetching data
+      await new Promise(resolve => setTimeout(resolve, 5000));
+      
       try {
-        // Load both data sources in parallel
+        // Load both data sources in parallel with retry logic for subscription
         const [subscriptionResult, paymentResult] = await Promise.allSettled([
-          getUserSubscription(),
+          refreshUserSubscriptionWithRetry(),
           fetchLatestPayment()
         ]);
         
@@ -77,14 +102,14 @@ const ThankYou = () => {
         const subscriptionSuccess = subscriptionResult.status === 'fulfilled';
         const paymentSuccess = paymentResult.status === 'fulfilled';
         
-        if (!subscriptionSuccess) {
-          console.error('Failed to load subscription:', subscriptionResult.reason);
-          setDataLoadError('Failed to load subscription data');
-        }
-        
-        if (!paymentSuccess) {
-          console.error('Failed to load payment:', paymentResult.reason);
-          setDataLoadError('Failed to load payment data');
+        // Only set error if both fail, otherwise continue with partial data
+        if (!subscriptionSuccess && !paymentSuccess) {
+          console.error('Failed to load both subscription and payment data');
+          setDataLoadError('Failed to load payment and subscription data');
+        } else if (!subscriptionSuccess) {
+          console.log('Subscription not ready yet, but payment data loaded successfully');
+        } else if (!paymentSuccess) {
+          console.log('Payment data not ready yet, but subscription loaded successfully');
         }
         
         // Ensure loading shows for at least 10 seconds
@@ -132,8 +157,10 @@ const ThankYou = () => {
 
   const handlePaymentSuccess = () => {
     setPaymentStatus('success');
-    // Refresh subscription data
-    getUserSubscription();
+    // Wait for backend processing before refreshing subscription data
+    setTimeout(() => {
+      refreshUserSubscriptionWithRetry();
+    }, 3000); // Wait 3 seconds for backend processing
   };
 
   const handlePaymentError = (error) => {

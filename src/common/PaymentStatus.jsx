@@ -1,18 +1,43 @@
 import React, { useState, useEffect } from 'react';
 import { usePayment } from '../hooks/usePayment';
-import { useSubscription } from '../hooks/useSubscription';
+import { useSubscriptionSilent } from '../hooks/useSubscriptionSilent';
 
 const PaymentStatus = ({ paymentIntentId, onSuccess, onError }) => {
   const { getPaymentStatus } = usePayment();
-  const { getUserSubscription } = useSubscription();
+  const { getUserSubscriptionSilent } = useSubscriptionSilent();
   const [status, setStatus] = useState('processing');
   const [error, setError] = useState(null);
+
+  // Function to refresh user subscription with retry logic
+  const refreshUserSubscriptionWithRetry = async (retryCount = 0) => {
+    const maxRetries = 5; // Increased retries
+    const retryDelay = 3000; // Increased delay to 3 seconds
+
+    try {
+      await getUserSubscriptionSilent();
+      console.log('Subscription successfully loaded');
+    } catch (err) {
+      console.log(`Subscription not ready yet (attempt ${retryCount + 1}/${maxRetries + 1})`);
+      
+      if (retryCount < maxRetries && isMounted) {
+        // Retry after delay
+        setTimeout(() => {
+          if (isMounted) {
+            refreshUserSubscriptionWithRetry(retryCount + 1);
+          }
+        }, retryDelay);
+      } else {
+        console.error('Failed to refresh subscription after retries:', err);
+        // Don't show error to user during payment processing
+      }
+    }
+  };
 
   useEffect(() => {
     if (!paymentIntentId) return;
 
     let pollCount = 0;
-    const maxPolls = 3; // Increased to 3 polls (15 seconds total)
+    const maxPolls = 2; // Reduced to 2 polls (10 seconds total)
     let timeoutId = null;
     let isMounted = true; // Track if component is still mounted
 
@@ -23,15 +48,20 @@ const PaymentStatus = ({ paymentIntentId, onSuccess, onError }) => {
       try {
         const response = await getPaymentStatus(paymentIntentId);
         
-        if (response && response.status === 'succeeded') {
+        if (response.status === 'succeeded') {
           setStatus('success');
-          // Refresh user subscription only once
+          // Always wait a bit for backend processing before fetching subscription
           if (isMounted) {
-            await getUserSubscription();
-            onSuccess && onSuccess(response);
+            // Wait 3 seconds for backend to process subscription
+            setTimeout(async () => {
+              if (isMounted) {
+                await refreshUserSubscriptionWithRetry();
+                onSuccess && onSuccess(response);
+              }
+            }, 3000);
           }
           return; // Stop polling immediately
-        } else if (response && response.status === 'failed') {
+        } else if (response.status === 'failed') {
           setStatus('failed');
           setError('Payment failed');
           if (isMounted) {
@@ -45,27 +75,19 @@ const PaymentStatus = ({ paymentIntentId, onSuccess, onError }) => {
         } else if (isMounted) {
           // Max polls reached, show timeout
           setStatus('timeout');
-          setError('Payment status check timed out. Please check your subscription status.');
+          setError('Payment status check timed out');
           onError && onError('Payment status check timed out');
         }
       } catch (err) {
-        console.error('Payment status check error:', err);
         if (isMounted) {
-          // If it's a network error or API error, try again
-          if (pollCount < maxPolls) {
-            pollCount++;
-            timeoutId = setTimeout(checkPaymentStatus, 5000);
-          } else {
-            setStatus('error');
-            setError('Unable to verify payment status. Please check your subscription.');
-            onError && onError(err.message);
-          }
+          setStatus('error');
+          setError(err.message);
+          onError && onError(err.message);
         }
       }
     };
 
-    // Start checking after a short delay to allow webhook processing
-    timeoutId = setTimeout(checkPaymentStatus, 2000);
+    checkPaymentStatus();
 
     // Cleanup function to clear timeout and stop polling
     return () => {
@@ -74,7 +96,7 @@ const PaymentStatus = ({ paymentIntentId, onSuccess, onError }) => {
         clearTimeout(timeoutId);
       }
     };
-  }, [paymentIntentId, getPaymentStatus, getUserSubscription, onSuccess, onError]);
+  }, [paymentIntentId, getPaymentStatus, getUserSubscriptionSilent, onSuccess, onError]);
 
   if (status === 'processing') {
     return (
@@ -84,7 +106,6 @@ const PaymentStatus = ({ paymentIntentId, onSuccess, onError }) => {
         </div>
         <h2 className="text-2xl font-semibold mb-2">Processing Payment...</h2>
         <p className="text-gray-600">Please wait while we confirm your payment and activate your subscription.</p>
-        <p className="text-sm text-gray-500 mt-2">This may take a few moments...</p>
       </div>
     );
   }
