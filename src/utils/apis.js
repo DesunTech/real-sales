@@ -5,7 +5,7 @@ export const apis = {
   logout: "/v1/auth/logout",
   auth: "/v1/auth",
   ai_personas: "/v1/ai-personas/",
-  google: "/v1/google",
+  google: "/v1/auth/google",
   interaction_modes_by_name: "/v1/interaction-modes/by-name",
   sessions: "/v1/sessions/",
   chat_chat: "/v1/ai-persona-chat/chat",
