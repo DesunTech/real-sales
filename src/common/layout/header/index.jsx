@@ -180,6 +180,16 @@ const Header = (props) => {
               </div> */}
               <div>
                 <Link
+                  href="/pricing"
+                  className={`text-white leading-1 border-b-2 border-transparent hover:border-yellow-400 transition-all duration-300 ${
+                    router?.pathname === "/pricing" ? `nav-underline-yellow` : ``
+                  }`}
+                >
+                  Pricing
+                </Link>
+              </div>
+              <div>
+                <Link
                   href="/faq"
                   className={`text-white leading-1 border-b-2 border-transparent hover:border-yellow-400 transition-all duration-300 ${
                     router?.pathname === "/faq" ? `nav-underline-yellow` : ``
@@ -333,6 +343,11 @@ const Header = (props) => {
                   </div>
                 </li>
 
+                <li className="py-2 border-b text-white">
+                  <Link href="/pricing" onClick={() => setMobileMenuOpen(false)}>
+                    Pricing
+                  </Link>
+                </li>
                 <li className="py-2 border-b text-white">
                   <Link href="/faq" onClick={() => setMobileMenuOpen(false)}>
                     FAQ

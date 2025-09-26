@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import whiteLogoNoBackground from "../../../public/assets/images/RealSales-official-logo/For Web/png/White logo - no background.png";
-import userDummy from "../../../public/assets/images/RealSales-user-images/user-3.png";
 import menueIcon from "../../../public/assets/icons/menueIcon.svg";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import MailIcon from "@mui/icons-material/Mail";
@@ -1902,11 +1901,9 @@ const Chat = ({ slug, children }) => {
                         )}
                       </div>
                       <div className="lg:flex hidden w-14 h-14 rounded-full p-1 border-2 border-solid border-white overflow-hidden">
-                        <Image
-                          src={userDummy}
-                          alt="user-image"
-                          className="w-full h-full rounded-full"
-                        />
+                        <div className="w-full h-full rounded-full flex items-center justify-center text-2xl bg-[#FFDE5A] sora-medium uppercase">
+                          {user?.first_name ? user?.first_name[0] : "U"}
+                        </div>
                       </div>
                     </div>
                   </div>
