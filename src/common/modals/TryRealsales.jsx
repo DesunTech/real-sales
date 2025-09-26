@@ -39,11 +39,13 @@ const TryRealsales = (props) => {
     // idc: "",
     // couponCode: "",
     password: "",
+    general: "",
   };
   const initialLoginFormData = {
     email: "",
     password: "",
     remember_me: true,
+    general: "",
   };
 
   const dispatch = useDispatch();
@@ -309,13 +311,63 @@ const TryRealsales = (props) => {
     try {
       let data = await Post(google, { id_token: credential });
       if (data?.token) {
+        // Store user data in localStorage
+        localStorage.setItem("user", data?.user?.user_id);
+        localStorage.setItem("token", data?.token);
+        
+        // Dispatch to Redux store
+        dispatch(AddAuth(data?.token));
+        dispatch(AddUser(data?.user));
+        
+        // Clear any errors
+        setFromDataErr(initialFormData);
+        setLoginFromDataErr(initialLoginFormData);
+        
+        // Close modal and redirect
         dispatch(TryRealsalesValue(false));
         router.push("/pricing/free-trial");
       } else {
-        console.log("Login failed", data);
+        // Show error in the appropriate form
+        if (openLogin) {
+          setLoginFromDataErr((prev) => ({
+            ...prev,
+            general: "Google login failed. Please try again.",
+          }));
+        } else {
+          setFromDataErr((prev) => ({
+            ...prev,
+            general: "Google signup failed. Please try again.",
+          }));
+        }
       }
     } catch (error) {
       console.log(error, "_error_");
+      // Show error in the appropriate form
+      if (openLogin) {
+        setLoginFromDataErr((prev) => ({
+          ...prev,
+          general: "Google login failed. Please try again.",
+        }));
+      } else {
+        setFromDataErr((prev) => ({
+          ...prev,
+          general: "Google signup failed. Please try again.",
+        }));
+      }
+    }
+  };
+
+  const handleGoogleLoginError = () => {
+    if (openLogin) {
+      setLoginFromDataErr((prev) => ({
+        ...prev,
+        general: "Google login was cancelled or failed. Please try again.",
+      }));
+    } else {
+      setFromDataErr((prev) => ({
+        ...prev,
+        general: "Google signup was cancelled or failed. Please try again.",
+      }));
     }
   };
 
@@ -324,6 +376,11 @@ const TryRealsales = (props) => {
   const tryRealsalesValue = useSelector(
     (state) => state.openModal.tryRealsalesValue
   );
+
+  // Debug: Check if Google Client ID is loaded
+  console.log("Google Client ID:", process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID);
+  console.log("Site URL:", process.env.NEXT_PUBLIC_SITE_URL);
+  console.log("Current URL:", typeof window !== 'undefined' ? window.location.origin : 'Server side');
 
   return (
     <CommonModal
@@ -336,8 +393,9 @@ const TryRealsales = (props) => {
       }}
       width={"60%"}
     >
-      {!openLogin ? (
-        <div className="w-full flex flex-col items-center gap-4">
+      <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}>
+        {!openLogin ? (
+          <div className="w-full flex flex-col items-center gap-4">
           <div className="flex flex-col items-center lg:w-[80%] w-full gap-2">
             <h1 className="lg:text-4xl text-2xl text-[#060606E5] m-plus-rounded-1c-regular text-center">
               <span className="m-plus-rounded-1c-medium">Register</span>
@@ -522,23 +580,41 @@ const TryRealsales = (props) => {
               </div>
             </div>
           </div>
-          <CommonButton
-            className={`w-full !border-0 !outline-0 !bg-[#FFDE5A] shadow-md !text-[#060606] text-[20px]`}
-            buttontext={
-              signupLoading ? (
-                <LoopIcon className="animate-spin" />
-              ) : (
-                "START session"
-              )
-            }
-            onClick={() => submitTryRealsales()}
-            disabled={signupLoading}
-            icon={
-              !signupLoading && (
-                <DoneOutlinedIcon className="text-[#060606] !font-normal !text-[20px]" />
-              )
-            }
-          />
+          {/* Error message display for signup */}
+          {fromDataErr?.general && (
+            <div className="w-full p-3 bg-red-100 border border-red-400 text-red-700 rounded">
+              {fromDataErr.general}
+            </div>
+          )}
+
+          <div className="flex items-center lg:flex-row flex-col gap-4">
+            <CommonButton
+              className={`w-full !border-0 !outline-0 !bg-[#FFDE5A] shadow-md !text-[#060606] text-[20px]`}
+              buttontext={
+                signupLoading ? (
+                  <LoopIcon className="animate-spin" />
+                ) : (
+                  "START session"
+                )
+              }
+              onClick={() => submitTryRealsales()}
+              disabled={signupLoading}
+              icon={
+                !signupLoading && (
+                  <DoneOutlinedIcon className="text-[#060606] !font-normal !text-[20px]" />
+                )
+              }
+            />
+            <GoogleLogin
+              onSuccess={handleGoogleLoginSuccess}
+              onError={handleGoogleLoginError}
+              useOneTap={false}
+              theme="outline"
+              size="large"
+              text="signup_with"
+              shape="rectangular"
+            />
+          </div>
           <div className="flex items-center">
             You have already signed up. Please go to the&nbsp;
             <div
@@ -558,9 +634,7 @@ const TryRealsales = (props) => {
           </div>
         </div>
       ) : (
-        <>
-          <GoogleOAuthProvider clientId="YOUR_GOOGLE_CLIENT_ID">
-            <div className="w-full flex flex-col gap-4">
+        <div className="w-full flex flex-col gap-4">
               <div className="w-full flex items-center justify-center">
                 <div className="flex flex-col justify-center items-center lg:w-[80%] w-full gap-2">
                   <h1 className="lg:text-4xl text-2xl text-[#060606E5] m-plus-rounded-1c-regular text-center">
@@ -623,6 +697,13 @@ const TryRealsales = (props) => {
                   }
                 />
               </FormGroup>
+              {/* Error message display */}
+              {loginfromDataErr?.general && (
+                <div className="w-full p-3 bg-red-100 border border-red-400 text-red-700 rounded">
+                  {loginfromDataErr.general}
+                </div>
+              )}
+              
               <div className="flex items-center lg:flex-row flex-col gap-4">
                 <CommonButton
                   className={`w-full !border-0 !outline-0 !bg-[#FFDE5A] shadow-md !text-[#060606] lg:text-[20px] text-base`}
@@ -643,13 +724,17 @@ const TryRealsales = (props) => {
                 />
                 <GoogleLogin
                   onSuccess={handleGoogleLoginSuccess}
-                  onError={() => console.log("Login Failed")}
+                  onError={handleGoogleLoginError}
+                  useOneTap={false}
+                  theme="outline"
+                  size="large"
+                  text="signin_with"
+                  shape="rectangular"
                 />
               </div>
             </div>
-          </GoogleOAuthProvider>
-        </>
-      )}
+        )}
+      </GoogleOAuthProvider>
     </CommonModal>
   );
 };
