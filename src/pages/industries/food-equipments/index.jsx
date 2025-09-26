@@ -5,7 +5,7 @@ import CardGrid from '../../../container/Industries/food-equipments/cardSection'
 const index = () => {
   return (
      <div
-      className={`bg-[url(../../public/assets/images/RealSales-backgrounds/bg-15.png)] bg-center bg-repeat relative`}
+      className={`relative`}
     >
         <FoodEquipments/>
         <CardGrid/>

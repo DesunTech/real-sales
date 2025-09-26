@@ -35,7 +35,7 @@ const FaqPage = () => {
       <div className="w-full h-full bg_image">
         <div className="bg-[#06060666] py-16 flex flex-col items-center justify-center">
           <h1 className="lg:text-[65px] text-4xl text-[#ffffff] m-plus-rounded-1c-regular">
-            Do You Have Questions?
+          Frequently Asked Questions
           </h1>
           <h3 className="lg:text-[24px] text-lg text-[#ffffff] sora-regular">
             We have answers (Well, most of this times!)
@@ -45,9 +45,9 @@ const FaqPage = () => {
       <div className="bg-[url(../../public/assets/images/RealSales-backgrounds/bg-4.png)] bg-cover bg-center bg-no-repeat">
         <div className="bg-[#ffffffcb]">
           <div className="page-container mx-auto lg:p-16 p-8 container flex flex-col items-center lg:gap-10 gap-5">
-            <h1 className="lg:text-[40px] text-3xl text-[#2d2d2d] m-plus-rounded-1c-semibold capitalize text-center">
+            {/* <h1 className="lg:text-[40px] text-3xl text-[#2d2d2d] m-plus-rounded-1c-semibold capitalize text-center">
               Frequently asked question
-            </h1>
+            </h1> */}
             <div data-aos="zoom-in" className="w-full flex flex-col items-center gap-4">
               {faqArr?.length
                 ? faqArr.map((v, i) => (
@@ -58,7 +58,10 @@ const FaqPage = () => {
                       } px-4 py-2 rounded-[6px] shadow-lg border border-solid border-[#00000010] bg-[url(../../public/assets/images/RealSales-backgrounds/bg-1.png)] bg-cover bg-center bg-no-repeat`}
                     >
                       <div className="w-full flex items-center justify-between text-[#2d2d2d]">
-                        <p className="m-plus-rounded-1c-semibold lg:text-[18px] text-[16px]">
+                        <p 
+                          className="m-plus-rounded-1c-semibold lg:text-[18px] text-[16px] cursor-pointer flex-1 pr-4"
+                          onClick={() => doHandelClick(i)}
+                        >
                           {i + 1}.&nbsp;{v?.question}
                         </p>
                         <div

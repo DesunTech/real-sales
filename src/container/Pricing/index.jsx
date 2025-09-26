@@ -99,7 +99,7 @@ const PaymentForm = ({ clientSecret, onSuccess, onError, amount, billingCycle })
   );
 };
 
-const Pricing = (props) => {
+const Pricing = ({ subscription = [] }) => {
   const [checked, setChecked] = useState(false);
   const { createPaymentIntent, getUserSubscription } = usePayment();
   const { Get } = useApi();
@@ -205,23 +205,14 @@ const Pricing = (props) => {
   const [paymentBillingCycle, setPaymentBillingCycle] = useState('');
   const [selectedPlan, setSelectedPlan] = useState(null);
 
-  // Load subscriptions from backend
+  // Load subscriptions from props
   useEffect(() => {
-    const loadSubscriptions = async () => {
-      try {
-        const response = await Get(apis.subscription);
-        if (response && Array.isArray(response)) {
-          // Load all subscriptions except free ones
-          const allPlans = response.filter(sub => sub.plan_type !== "free");
-          setAllSubscriptions(allPlans);
-        }
-      } catch (error) {
-        console.error("Failed to load subscriptions:", error);
-      }
-    };
-    
-    loadSubscriptions();
-  }, []);
+    if (subscription && Array.isArray(subscription)) {
+      // Load all subscriptions except free ones
+      const allPlans = subscription.filter(sub => sub.plan_type !== "free");
+      setAllSubscriptions(allPlans);
+    }
+  }, [subscription]);
 
   // Filter subscriptions based on toggle state
   useEffect(() => {
@@ -240,6 +231,18 @@ const Pricing = (props) => {
   }, [checked, allSubscriptions]);
 
   console.log(subscriptions, "subscription___");
+
+  // Show loader if no subscription data is available yet
+  if (!subscription || subscription.length === 0) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="flex flex-col items-center space-y-4">
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-[#FFDE5A]"></div>
+          <p className="text-gray-600 sora-regular text-lg">Loading pricing plans...</p>
+        </div>
+      </div>
+    );
+  }
 
   const parsePriceToCents = (priceStr) => {
     if (!priceStr || typeof priceStr !== "string") return null;
