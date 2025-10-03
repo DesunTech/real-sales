@@ -54,6 +54,7 @@ const Footer = () => {
         // { name: "Privacy Policy", link: "/privacy-policy" },
         // { name: "Terms & Conditions", link: "/terms-conditions" },
         { name: "FAQ's", link: "/faq" },
+        { name: "Pricing", link: "/pricing" },
         // { name: "Contact Us", link: "/contact-us" },
         // { name: "Register", link: "/register" },
       ],
