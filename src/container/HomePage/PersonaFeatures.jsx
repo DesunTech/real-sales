@@ -48,10 +48,10 @@ const PersonaFeatures = () => {
     <div className="bg-[url(../../public/assets/images/RealSales-backgrounds/bg-3.png)] bg-cover bg-center bg-no-repeat">
       <div className="page-container mx-auto container px-4 flex justify-between">
         <div className="flex flex-col items-center gap-4 w-full py-12">
-          <Highlighter highlight={"Persona Features"} />
-          <p className="text-[30px] text-center text-[#060606E5] m-plus-rounded-1c-regular">
+          {/* <Highlighter highlight={"Persona Features"} /> */}
+          {/* <p className="text-[30px] text-center text-[#060606E5] m-plus-rounded-1c-regular">
             Sales approach with data-driven insights
-          </p>
+          </p> */}
           <h1 className="lg:text-7xl text-2xl text-[#060606E5] m-plus-rounded-1c-regular text-center">
             Our Platform Features
           </h1>
@@ -106,7 +106,7 @@ const PersonaFeatures = () => {
                   {val?.about}
                 </p>
                 <div className="border-l-2 border-solid border-[#060606B2] bg-gradient-to-r from-[rgba(255,222,90,0.3)] to-[rgba(255,222,90,0)] to-64% py-2 px-3">
-                  <p className="text-[11px] text-[#060606] sora-regular">
+                  <p className="text-[15px] text-[#060606] sora-regular">
                     {val?.content}
                   </p>
                 </div>

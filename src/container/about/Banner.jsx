@@ -1,11 +1,12 @@
 import Image from "next/image";
-import aboutBanner from "../../../public/assets/images/banner/about-banner.png";
+// import logo from "../../../public/assets/images/RealSales-abstracts/realsales-logo.png";
 
 const Banner = () => {
   return (
     <div className="relative h-full bg-[url(../../public/assets/images/RealSales-backgrounds/bg-3.png)] bg-cover bg-center bg-no-repeat">
       <div className="page-container mx-auto px-4 py-8 container flex flex-col gap-16 w-full h-full">
         <div className="flex lg:flex-row flex-col items-center justify-between gap-8">
+          {/* LEFT SIDE CONTENT */}
           <div data-aos="fade-right" className="lg:w-[50%] w-full">
             <div className="flex flex-col items-start gap-4">
               <h1 className="lg:text-4xl text-2xl text-[#060606] m-plus-rounded-1c-regular">
@@ -32,21 +33,75 @@ const Banner = () => {
               </div>
             </div>
           </div>
-          <div
-            data-aos="fade-left"
-            className="lg:w-[50%] w-full flex items-center justify-center"
-          >
-            <Image
-              src={aboutBanner}
-              alt="aboutBanner"
-              width={1920}
-              height={1080}
-              className="w-full h-full"
-            />
-          </div>
+
+          {/* RIGHT SIDE CONTENT (CARDS UI) */}
+        <div
+  data-aos="fade-left"
+  className="lg:w-[50%] w-full flex flex-col items-center justify-center gap-6 lg:pl-18"
+>
+  {/* LOGO */}
+  <div className="flex flex-col items-center gap-2">
+    {/* <Image src={logo} alt="RealSales Logo" width={60} height={60} /> */}
+    <h1 className="text-2xl font-bold text-[#060606]">RealSales</h1>
+  </div>
+
+  {/* 2x2 GRID CARDS */}
+  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
+    <div className="bg-gray-200/20 shadow-lg rounded-lg p-6 text-center">
+      <h2 className="font-semibold text-[#060606]">
+        Industry-Specific AI Personas
+      </h2>
+      <p className="text-sm text-[#060606] mt-2">
+        Competitors use generic AI role-play; we train AI personas on
+        real buyer behavior per industry.
+      </p>
+    </div>
+    <div className="bg-gray-200/20 shadow-lg rounded-lg p-6 text-center">
+      <h2 className="font-semibold text-[#060606]">
+        Focus on Cross-Selling & Upselling
+      </h2>
+      <p className="text-sm text-[#060606] mt-2">
+        Most tools train on basic sales, but RealSales helps reps
+        handle complex portfolios and …
+      </p>
+    </div>
+    <div className="bg-gray-200/20 shadow-lg rounded-lg p-6 text-center">
+      <h2 className="font-semibold text-[#060606]">
+        Real-World Prospecting, Not Just Coaching
+      </h2>
+      <p className="text-sm text-[#060606] mt-2">
+        Competitors refine scripts; we simulate real prospecting,
+        sales, and closing with industry data.
+      </p>
+    </div>
+    <div className="bg-gray-200/20 shadow-lg rounded-lg p-6 text-center">
+      <h2 className="font-semibold text-[#060606]">
+        AI-Adaptive Learning for Each Rep
+      </h2>
+      <p className="text-sm text-[#060606] mt-2">
+        Our platform adapts to each rep’s skills, ensuring growth
+        through real-world objections.
+      </p>
+    </div>
+  </div>
+
+  {/* BOTTOM FULL-WIDTH CARD */}
+  <div className="bg-gray-200/20 shadow-lg rounded-lg p-6 text-center w-full">
+    <h2 className="font-bold text-[#060606]">
+      More Than Training – A Revenue Acceleration Tool
+    </h2>
+    <p className="text-sm text-[#060606] mt-2">
+      While competitors emphasize "training," we accelerate sales
+      maturity – helping companies onboard reps faster, increase
+      opportunity identification, and improve closing rates.
+    </p>
+  </div>
+</div>
+
         </div>
       </div>
     </div>
   );
 };
+
 export default Banner;

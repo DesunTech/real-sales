@@ -58,174 +58,95 @@ const HowItWorks = (props) => {
   ];
   return (
     <div className=" w-full h-full">
-      <div className="bg-[url(../../public/assets/images/RealSales-backgrounds/bg-10.png)] bg-cover bg-center bg-no-repeat pt-8">
-        <div className="page-container mx-auto container px-4 flex flex-col gap-8 items-center">
-          <h1 className="lg:text-7xl text-2xl text-[#060606E5] m-plus-rounded-1c-regular">
-            How It Works
-          </h1>
-          {props?.offPollygon ? null : (
-            <>
-              <div className="flex flex-wrap items-center justify-center">
-                {HowItWorksArr.map((v, i) => (
-                  <Pollygon
-                    key={i}
-                    id={v?.id}
-                    icon={v?.icon}
-                    label={v?.label}
-                    document={v?.document}
-                  />
-                ))}
-              </div>
-              <hr className={`border-[#06060626] w-[70%]`} />
-            </>
-          )}
-          <div className="lg:flex hidden flex-col items-center gap-4">
-            <div className="flex items-center gap-4">
-              <StepCard
-                steps={`1`}
-                heading={`Select an AI`}
-                title={`Buyer Personas`}
-                description={`Choose from a variety of customizable Al buyer personas that represent your target customers, each with unique needs, pain points, and decision- making processes.`}
-              />
-              <Image src={rightRoundArrow} alt="rightRoundArrow" />
-              <StepCard
-                steps={`2`}
-                heading={`Engaged in Real-time`}
-                title={`AI Powered Sales`}
-                description={`Participate in realistic sales dialogues with the Al personas, practicing your communication, value selling and ability in identifying needs.`}
-              />
-              <Image src={rightRoundArrow} alt="rightRoundArrow" />
-              <StepCard
-                steps={`3`}
-                heading={`Handle Objections &`}
-                title={`Complex Sales`}
-                description={`Participate in realistic sales dialogues with the Al personas, practicing your communication, value selling and ability in identifying needs.`}
-              />
-            </div>
-            <div className="flex items-center gap-4">
-              <StepCard
-                steps={`6`}
-                heading={`Receiving and track`}
-                title={`Performance`}
-                description={`Monitoring usage, performance, sales capability and accelerate development of top performer.(As a solo user or for your team as manager)`}
-              />
-              <Image src={leftRoundArrow} alt="leftRoundArrow" />
-              <StepCard
-                steps={`5`}
-                heading={`Integrate Co.  Product`}
-                title={`Knowledges`}
-                description={`Leverage the Al's understanding of your company's
-products, services and case studies to validate value
-selling and cross-selling approach.`}
-              />
-              <Image src={leftRoundArrow} alt="leftRoundArrow" />
-              <StepCard
-                steps={`4`}
-                heading={`Receive Instant Feed`}
-                title={`Communication`}
-                description={`Get immediate feedback and coaching from the All
-system, highlighting. areas for improvement in your sales approach and overall effectiveness.`}
-              />
-            </div>
-          </div>
-          <div className="lg:hidden md:flex hidden items-center gap-4 flex-wrap">
-            <StepCard
-              width={"48%"}
-              steps={`1`}
-              heading={`Select an AI`}
-              title={`Buyer Personas`}
-              description={`Choose from a variety of customizable Al buyer personas that represent your target customers, each with unique needs, pain points, and decision- making processes.`}
-            />
-            <StepCard
-              width={"48%"}
-              steps={`2`}
-              heading={`Engaged in Real-time`}
-              title={`AI Powered Sales`}
-              description={`Participate in realistic sales dialogues with the Al personas, practicing your communication, value selling and ability in identifying needs.`}
-            />
-            <StepCard
-              width={"48%"}
-              steps={`3`}
-              heading={`Handle Objections &`}
-              title={`Complex Sales`}
-              description={`Participate in realistic sales dialogues with the Al personas, practicing your communication, value selling and ability in identifying needs.`}
-            />
-            <StepCard
-              width={"48%"}
-              steps={`4`}
-              heading={`Receiving and track`}
-              title={`Performance`}
-              description={`Monitoring usage, performance, sales capability and accelerate development of top performer.(As a solo user or for your team as manager)`}
-            />
-            <StepCard
-              width={"48%"}
-              steps={`5`}
-              heading={`Integrate Co.  Product`}
-              title={`Knowledges`}
-              description={`Leverage the Al's understanding of your company's
-products, services and case studies to validate value
-selling and cross-selling approach.`}
-            />
-            <StepCard
-              width={"48%"}
-              steps={`6`}
-              heading={`Receive Instant Feed`}
-              title={`Communication`}
-              description={`Get immediate feedback and coaching from the All
-system, highlighting. areas for improvement in your sales approach and overall effectiveness.`}
-            />
-          </div>
-          <div className="md:hidden flex items-center gap-4 flex-wrap">
-            <StepCard
-              width={"100%"}
-              steps={`1`}
-              heading={`Select an AI`}
-              title={`Buyer Personas`}
-              description={`Choose from a variety of customizable Al buyer personas that represent your target customers, each with unique needs, pain points, and decision- making processes.`}
-            />
-            <StepCard
-              width={"100%"}
-              steps={`2`}
-              heading={`Engaged in Real-time`}
-              title={`AI Powered Sales`}
-              description={`Participate in realistic sales dialogues with the Al personas, practicing your communication, value selling and ability in identifying needs.`}
-            />
-            <StepCard
-              width={"100%"}
-              steps={`3`}
-              heading={`Handle Objections &`}
-              title={`Complex Sales`}
-              description={`Participate in realistic sales dialogues with the Al personas, practicing your communication, value selling and ability in identifying needs.`}
-            />
-            <StepCard
-              width={"100%"}
-              steps={`6`}
-              heading={`Receiving and track`}
-              title={`Performance`}
-              description={`Monitoring usage, performance, sales capability and accelerate development of top performer.(As a solo user or for your team as manager)`}
-            />
-            <StepCard
-              width={"100%"}
-              steps={`5`}
-              heading={`Integrate Co.  Product`}
-              title={`Knowledges`}
-              description={`Leverage the Al's understanding of your company's
-products, services and case studies to validate value
-selling and cross-selling approach.`}
-            />
-            <StepCard
-              width={"100%"}
-              steps={`4`}
-              heading={`Receive Instant Feed`}
-              title={`Communication`}
-              description={`Get immediate feedback and coaching from the All
-system, highlighting. areas for improvement in your sales approach and overall effectiveness.`}
-            />
-          </div>
-          <hr className="border-[#06060626] w-full page-container mx-auto container px-4" />
-        </div>
+   <div className="bg-[url(../../public/assets/images/RealSales-backgrounds/bg-10.png)] bg-cover bg-center bg-no-repeat py-20">
+  <div className="page-container mx-auto container px-4 flex flex-col gap-16 items-center">
+    
+    {/* Section Heading */}
+    <h1 className="lg:text-6xl md:text-5xl text-3xl font-bold text-[#060606E5] text-center m-plus-rounded-1c-regular">
+      How It Works
+    </h1>
+
+    {/* Desktop View */}
+    <div className="lg:flex hidden flex-col items-center gap-2">
+      <div className="flex items-center gap-12">
+        <StepCard
+          steps={`1`}
+          heading={`Select the Scenario`}
+          description={`Choose from a variety of AI buyer personas that represent your target customers, each with unique needs, pain points and decision-making process. Pick the preferred sales scenario among (prospecting, discovery or closing).`}
+          className="min-h-[460px] p-10 text-xl leading-relaxed w-[340px]"
+        />
+        <Image src={rightRoundArrow} alt="rightRoundArrow" className="w-14 h-14" />
+        <StepCard
+          steps={`2`}
+          heading={`Handle Objections & Sales`}
+          description={`Participate in realistic sales dialogue within the chosen scenario, practicing your communication style, value selling techniques and ability to identify needs. Receive coaching report to highlight areas of improvements and overall effectiveness.`}
+          className="min-h-[460px] p-10 text-xl leading-relaxed w-[340px]"
+        />
+        <Image src={rightRoundArrow} alt="rightRoundArrow" className="w-14 h-14" />
+        <StepCard
+          steps={`3`}
+          heading={`Access & Track Performance`}
+          description={`Access RealSales dashboard and monitor usage, performance and sales capabilities development, either for yourself as sales rep or for your team as sales manager.`}
+          className="min-h-[460px] p-10 text-xl leading-relaxed w-[340px]"
+        />
       </div>
-      <div className="bg-[url(../../public/assets/images/RealSales-backgrounds/bg-3.png)] bg-cover bg-center bg-no-repeat">
+    </div>
+
+    {/* Tablet View */}
+    <div className="lg:hidden md:flex hidden items-start gap-8 flex-wrap">
+      <StepCard
+        width={"48%"}
+        steps={`1`}
+        heading={`Select the Scenario`}
+        description={`Choose from a variety of AI buyer personas that represent your target customers, each with unique needs, pain points and decision-making process. Pick the preferred sales scenario among (prospecting, discovery or closing).`}
+        className="min-h-[420px] p-8 text-lg leading-relaxed"
+      />
+      <StepCard
+        width={"48%"}
+        steps={`2`}
+        heading={`Handle Objections & Sales`}
+        description={`Participate in realistic sales dialogue within the chosen scenario, practicing your communication style, value selling techniques and ability to identify needs. Receive coaching report to highlight areas of improvements and overall effectiveness.`}
+        className="min-h-[420px] p-8 text-lg leading-relaxed"
+      />
+      <StepCard
+        width={"100%"}
+        steps={`3`}
+        heading={`Access & Track Performance`}
+        description={`Access RealSales dashboard and monitor usage, performance and sales capabilities development, either for yourself as sales rep or for your team as sales manager.`}
+        className="min-h-[420px] p-8 text-lg leading-relaxed"
+      />
+    </div>
+
+    {/* Mobile View */}
+    <div className="md:hidden flex flex-col items-center gap-8 w-full">
+      <StepCard
+        width={"100%"}
+        steps={`1`}
+        heading={`Select the Scenario`}
+        description={`Choose from a variety of AI buyer personas that represent your target customers, each with unique needs, pain points and decision-making process. Pick the preferred sales scenario among (prospecting, discovery or closing).`}
+        className="min-h-[400px] p-6 text-base leading-relaxed"
+      />
+      <StepCard
+        width={"100%"}
+        steps={`2`}
+        heading={`Handle Objections & Sales`}
+        description={`Participate in realistic sales dialogue within the chosen scenario, practicing your communication style, value selling techniques and ability to identify needs. Receive coaching report to highlight areas of improvements and overall effectiveness.`}
+        className="min-h-[400px] p-6 text-base leading-relaxed"
+      />
+      <StepCard
+        width={"100%"}
+        steps={`3`}
+        heading={`Access & Track Performance`}
+        description={`Access RealSales dashboard and monitor usage, performance and sales capabilities development, either for yourself as sales rep or for your team as sales manager.`}
+        className="min-h-[400px] p-6 text-base leading-relaxed"
+      />
+    </div>
+
+    <hr className="border-[#06060626] w-full" />
+  </div>
+</div>
+
+      {/* <div className="bg-[url(../../public/assets/images/RealSales-backgrounds/bg-3.png)] bg-cover bg-center bg-no-repeat">
         <div className="page-container mx-auto container px-4 py-8 flex flex-col gap-5">
           <h1 className="text-[28px] text-[#060606] m-plus-rounded-1c-regular text-center">
             At Glance: How we Different from our Competitors Landscapes
@@ -347,7 +268,7 @@ system, highlighting. areas for improvement in your sales approach and overall e
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

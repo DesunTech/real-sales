@@ -14,9 +14,9 @@ const HomePage = () => {
       {/* <About /> */} {/* working on this component */}
       <AboutUs />
       <PersonaFeatures />
-      <QuickSearch />
+      {/* <QuickSearch /> */}
       <UserReviews />
-      <HowItWorks />
+      {/* <HowItWorks /> */}
     </>
   );
 };

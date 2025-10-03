@@ -3,16 +3,27 @@ import Highlighter from "./highlighter";
 
 const StepCard = (props) => {
   return (
-    <div data-aos="zoom-in" className={`${props?.width ? `w-[${props?.width}]` : `w-[33.33%]`} h-full`}>
-      <Highlighter
-        highlight={`Step ${props?.steps}`}
-      />
-      <h1 className="text-[22px] text-[#060606E5] m-plus-rounded-1c-regular">
+    <div
+      data-aos="zoom-in"
+      className={`${
+        props?.width ? `w-[${props?.width}]` : `w-[33.33%]`
+      } h-full flex flex-col gap-4`}
+    >
+      {/* Step Label */}
+      <Highlighter highlight={`Step ${props?.steps}`} />
+
+      {/* Heading */}
+      <h1 className="text-[26px] font-semibold text-[#060606E5] m-plus-rounded-1c-regular whitespace-nowrap">
         {props?.heading}
-        <br />
-        <span className="text-[120%]">{props?.title}</span>
+        {props?.title && (
+          <span className="block text-[20px] text-[#333] mt-1">
+            {props?.title}
+          </span>
+        )}
       </h1>
-      <p className="h-auto text-[12px] shadow-[0px_5px_10px_0px_#0000001A] p-4 rounded-[5px] border border-solid border-[#CCCCCC] bg-[linear-gradient(180deg,rgba(255,255,255,0.85)_18.18%,rgba(227,227,227,0.85)_50%)]">
+
+      {/* Description */}
+      <p className="text-[16px] leading-relaxed shadow-[0px_5px_12px_0px_#0000001A] p-6 rounded-[10px] border border-solid border-[#CCCCCC] bg-[linear-gradient(180deg,rgba(255,255,255,0.95)_10%,rgba(227,227,227,0.9)_90%)] h-[250px] flex items-start">
         {props?.description}
       </p>
     </div>
