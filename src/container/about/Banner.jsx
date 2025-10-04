@@ -1,5 +1,5 @@
 import Image from "next/image";
-// import logo from "../../../public/assets/images/RealSales-abstracts/realsales-logo.png";
+import logo from "../../../public/images/realsales.png";
 
 const Banner = () => {
   return (
@@ -10,27 +10,27 @@ const Banner = () => {
           <div data-aos="fade-right" className="lg:w-[50%] w-full">
             <div className="flex flex-col items-start gap-4">
               <h1 className="lg:text-4xl text-2xl text-[#060606] m-plus-rounded-1c-regular">
-                What
+                About
                 <br />
-                <span className="lg:text-[200%] text-[150%]">WE DO?</span>
+                <span className="lg:text-[200%] text-[150%]">RealSales</span>
               </h1>
-              <p className="text-[16px] text-[#060606] sora-regular">
+              {/* <p className="text-[16px] text-[#060606] sora-regular">
                 RealSales is an industry-focuses
                 <br />
                 Sales Accelerator platform
-              </p>
+              </p> */}
               <p className="lg:text-[34px] text-[20px] text-[#060606] m-plus-rounded-1c-regular">
                 "We accelerate sales teams performance by leading them beyond
                 traditional and costly training approach."
               </p>
-              <div className="border-l-4 border-[#060606B2] bg-[linear-gradient(90deg,#FFF5CD_0%,rgba(255,222,90,0)_63.5%)] py-4 px-6">
+              {/* <div className="border-l-4 border-[#060606B2] bg-[linear-gradient(90deg,#FFF5CD_0%,rgba(255,222,90,0)_63.5%)] py-4 px-6">
                 <h2 className="lg:text-[15px] text-[12px] text-[#060606] sora-semibold">
                   Our Al-powered interactive platform helps sales teams to go
                   beyond the pitch and master the art of connection,
                   cross-selling, and deal- closing. Developing real sales skills
                   in real- world scenarios...
                 </h2>
-              </div>
+              </div> */}
             </div>
           </div>
 
@@ -40,10 +40,11 @@ const Banner = () => {
   className="lg:w-[50%] w-full flex flex-col items-center justify-center gap-6 lg:pl-18"
 >
   {/* LOGO */}
-  <div className="flex flex-col items-center gap-2">
-    {/* <Image src={logo} alt="RealSales Logo" width={60} height={60} /> */}
-    <h1 className="text-2xl font-bold text-[#060606]">RealSales</h1>
-  </div>
+ <div className="flex flex-row items-center gap-2">
+  <Image src={logo} alt="RealSales Logo" width={60} height={60} />
+  <h1 className="text-2xl font-bold text-[#060606]">RealSales</h1>
+</div>
+
 
   {/* 2x2 GRID CARDS */}
   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">

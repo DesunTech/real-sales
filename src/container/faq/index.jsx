@@ -37,9 +37,9 @@ const FaqPage = () => {
           <h1 className="lg:text-[65px] text-4xl text-[#ffffff] m-plus-rounded-1c-regular">
           Frequently Asked Questions
           </h1>
-          <h3 className="lg:text-[24px] text-lg text-[#ffffff] sora-regular">
+          {/* <h3 className="lg:text-[24px] text-lg text-[#ffffff] sora-regular">
             We have answers (Well, most of this times!)
-          </h3>
+          </h3> */}
         </div>
       </div>
       <div className="bg-[url(../../public/assets/images/RealSales-backgrounds/bg-4.png)] bg-cover bg-center bg-no-repeat">

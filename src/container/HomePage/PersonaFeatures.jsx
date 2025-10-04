@@ -2,6 +2,7 @@ import React from "react";
 import Highlighter from "../../common/highlighter";
 import cil_audio from "../../../public/assets/icons/cil_audio.svg";
 import mdi_video from "../../../public/assets/icons/mdi_video.svg";
+import Persona from "../../../public/assets/icons/avatar.svg";
 import Image from "next/image";
 import clarity_block_line from "../../../public/assets/icons/aisalesPersonaFeatures/clarity_block-line.svg";
 import basil_eye_outline from "../../../public/assets/icons/aisalesPersonaFeatures/basil_eye-outline.svg";
@@ -19,7 +20,7 @@ const PersonaFeatures = () => {
         "Video avatars that create real-time, immersive sales scenarios for reps to turn training into real-world practice.",
     },
     {
-      icon: basil_eye_outline,
+      icon: Persona,
       heading_p1: "Real AI-Driven",
       heading_p2: "Buyer Personas",
       about: "Accelerator solutions of RealSales",
@@ -27,7 +28,8 @@ const PersonaFeatures = () => {
         "Al-powered buyer personas built from real industry experts that mimic real customer interactions, allowing sales reps to ....",
     },
     {
-      icon: mdi_hard_hat,
+      // icon: mdi_hard_hat,
+      icon: basil_eye_outline,
       heading_p1: "AI",
       heading_p2: "Sales Coaching",
       about: "Accelerator solutions of RealSales",
@@ -102,9 +104,9 @@ const PersonaFeatures = () => {
                   <br />
                   <span className="text-[130%]">{val?.heading_p2}</span>
                 </h1>
-                <p className="text-[15px] text-[#060606] sora-regular">
+                {/* <p className="text-[15px] text-[#060606] sora-regular">
                   {val?.about}
-                </p>
+                </p> */}
                 <div className="border-l-2 border-solid border-[#060606B2] bg-gradient-to-r from-[rgba(255,222,90,0.3)] to-[rgba(255,222,90,0)] to-64% py-2 px-3">
                   <p className="text-[15px] text-[#060606] sora-regular">
                     {val?.content}

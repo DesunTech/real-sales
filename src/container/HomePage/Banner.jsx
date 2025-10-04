@@ -43,37 +43,25 @@ const Banner = () => {
       <div className="flex flex-col w-full h-full">
         {/* top section */}
         <div className="py-8 bg-[url(../../public/assets/images/RealSales-backgrounds/bg-3.png)] bg-cover bg-center bg-no-repeat">
-          <div className="page-container mx-auto px-4 container flex lg:flex-row flex-col-reverse items-center justify-between gap-8">
-            <div className="lg:w-1/2 w-full h-[-webkit-fill-available] flex flex-col lg:items-start items-center justify-evenly gap-4">
+          <div className="page-container mx-auto px-4 container flex lg:flex-row flex-col-reverse items-center justify-center gap-8">
+            {/* LEFT SIDE (Text Section) */}
+            <div className="lg:w-1/2 w-full flex flex-col lg:items-start items-center justify-center gap-6">
               <div
                 data-aos="fade-right"
                 className="flex flex-col lg:gap-4 gap-2 w-full"
               >
-                {/* <p className="text-[16px] text-[#060606] sora-regular">
-                  RealSales accelerate
-                  <br />
-                  your sales team performance
-                </p> */}
-                <h1 className="lg:text-4xl text-2xl text-[#060606E5] m-plus-rounded-1c-regular">
-                  {/* Welcome to */}
-                  {/* with */}
+                <h1 className="lg:text-4xl text-2xl text-[#060606E5] m-plus-rounded-1c-regular text-center lg:text-left">
                   Supercharge your Sales Team with
                   <br />
                   <span className="lg:text-[180%] text-[130%] m-plus-rounded-1c-medium capitalize">
                     Realsales AI
                   </span>
                 </h1>
-                {/* <hr className="border-[#06060640] mr-[8%] lg:mb-1 mb-0 lg:mt-2 mt-0" />
-                <p className="lg:text-[40px] text-[20px] text-[#060606E5] m-plus-rounded-1c-regular">
-                  Supercharging your sales
-                  <br />
-                  teams with AI-Driven Selling
-                </p> */}
               </div>
 
               <div
                 data-aos="fade-left"
-                className="flex md:flex-row flex-col items-center gap-4 w-full"
+                className="flex md:flex-row flex-col items-center gap-4 w-full justify-center lg:justify-start"
               >
                 <BookAdemo
                   onClick={() => dispatch(DemoMeetingValue(true))}
@@ -89,8 +77,17 @@ const Banner = () => {
                 />
               </div>
             </div>
-            <div data-aos="fade-down" className="lg:w-[45%] w-full">
-              <Image src={aboutBanner} alt="bannerImg" />
+
+            {/* RIGHT SIDE (Image Section) */}
+            <div
+              data-aos="fade-down"
+              className="lg:w-[45%] w-full flex justify-center items-center"
+            >
+              <Image
+                src={aboutBanner}
+                alt="bannerImg"
+                className="w-full h-auto object-contain"
+              />
             </div>
           </div>
         </div>
@@ -211,68 +208,73 @@ const Banner = () => {
             </div>
           </div>
         </div> */}
-         <section className="relative bg-[url('../../public/assets/images/RealSales-backgrounds/bg-3o.png')] bg-cover bg-center bg-no-repeat py-20">
-      <div className="container mx-auto px-6 flex flex-col items-center">
-        
-        {/* Heading */}
-        <div
-          data-aos="fade-up"
-          data-aos-delay="200"
-          className="text-center max-w-3xl mb-16"
-        >
-          <h2 className="text-4xl lg:text-5xl font-bold text-[#060606] leading-snug">
-            Beyond Traditional{" "}
-            <span className="text-[#060606] underline decoration-[#FFE66D] underline-offset-8">
-              Sales Training
-            </span>
-          </h2>
-          <p className="mt-6 text-lg text-[#060606CC] sora-regular">
-            <span className="font-bold">RealSales</span> is an industry-tailored
-            solution for sales organizations that want to improve performance and
-            increase revenue.
-          </p>
-        </div>
+        <section className="relative bg-[url('../../public/assets/images/RealSales-backgrounds/bg-3o.png')] bg-cover bg-center bg-no-repeat py-20">
+          <div className="container mx-auto px-6 flex flex-col items-center">
+            {/* Heading */}
+            <div
+              data-aos="fade-up"
+              data-aos-delay="200"
+              className="text-center max-w-3xl mb-16"
+            >
+              <h2 className="text-4xl lg:text-5xl font-bold text-[#060606] leading-snug">
+                Beyond Traditional{" "}
+                <span className="text-[#060606] underline decoration-[#FFE66D] underline-offset-8">
+                  Sales Training
+                </span>
+              </h2>
+              <p className="mt-6 text-lg text-[#060606CC] sora-regular">
+                <span className="font-bold">RealSales</span> is an
+                industry-tailored solution for sales organizations that want to
+                improve performance and increase revenue.
+              </p>
+            </div>
 
-        {/* Content */}
-        <div className="grid lg:grid-cols-2 gap-16 w-full max-w-6xl">
-          {/* For Sales Managers */}
-          <div data-aos="fade-right" className="flex flex-col gap-6">
-            <h3 className="text-2xl font-bold text-[#060606] relative inline-block">
-              <span className="bg-[#FFE66D] px-3 py-1 rounded-md">
-                RealSales for Sales Managers
-              </span>
-            </h3>
-            <ul className="space-y-4 text-[#060606] text-lg leading-relaxed">
-              <li>✔️ Assess Team Capabilities & Identify development areas</li>
-              <li>✔️ Accelerate new reps onboarding</li>
-              <li>
-                ✔️ Improve team performance (win-rate, cross-selling,
-                value-selling)
-              </li>
-              <li>✔️ Track progress with access to performance dashboard</li>
-            </ul>
-          </div>
+            {/* Content */}
+            <div className="grid lg:grid-cols-2 gap-16 w-full max-w-6xl">
+              {/* For Sales Managers */}
+              <div data-aos="fade-right" className="flex flex-col gap-6">
+                <h3 className="text-2xl font-bold text-[#060606] relative inline-block">
+                  <span className="bg-[#FFE66D] px-3 py-1 rounded-md">
+                    RealSales for Sales Managers
+                  </span>
+                </h3>
+                <ul className="space-y-4 text-[#060606] text-lg leading-relaxed">
+                  <li>
+                    ✔️ Assess Team Capabilities & Identify development areas
+                  </li>
+                  <li>✔️ Accelerate new reps onboarding</li>
+                  <li>
+                    ✔️ Improve team performance (win-rate, cross-selling,
+                    value-selling)
+                  </li>
+                  <li>
+                    ✔️ Track progress with access to performance dashboard
+                  </li>
+                </ul>
+              </div>
 
-          {/* For Sales Reps */}
-          <div data-aos="fade-left" className="flex flex-col gap-6">
-            <h3 className="text-2xl font-bold text-[#060606] relative inline-block">
-              <span className="bg-[#FFE66D] px-3 py-1 rounded-md">
-                RealSales for Sales Reps
-              </span>
-            </h3>
-            <ul className="space-y-4 text-[#060606] text-lg leading-relaxed">
-              <li>✔️ Improve sales skills in real-world scenarios</li>
-              <li>✔️ Access live sales coaching</li>
-              <li>
-                ✔️ Go beyond sales pitch by mastering cross-selling &
-                deal-closing
-              </li>
-              <li>✔️ Track progress with a personal performance dashboard</li>
-            </ul>
+              {/* For Sales Reps */}
+              <div data-aos="fade-left" className="flex flex-col gap-6">
+                <h3 className="text-2xl font-bold text-[#060606] relative inline-block">
+                  <span className="bg-[#FFE66D] px-3 py-1 rounded-md">
+                    RealSales for Sales Reps
+                  </span>
+                </h3>
+                <ul className="space-y-4 text-[#060606] text-lg leading-relaxed">
+                  <li>✔️ Improve sales skills in real-world scenarios</li>
+                  <li>✔️ Access live sales coaching</li>
+                  <li>
+                    ✔️ Go beyond sales pitch by mastering cross-selling &
+                    deal-closing
+                  </li>
+                  <li>
+                    ✔️ Track progress with a personal performance dashboard
+                  </li>
+                </ul>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-    </section>
+        </section>
       </div>
     </div>
   );
