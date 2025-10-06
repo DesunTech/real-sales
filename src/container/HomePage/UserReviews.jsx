@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+"use client";
+
+import React, { useState, useEffect } from "react";
 import Highlighter from "../../common/highlighter";
 import Image from "next/image";
 import { Rating } from "@mui/material";
@@ -15,7 +17,7 @@ import persona_plant from "../../../public/assets/images/RealSales-user-images/p
 const UserReviews = () => {
   const [value, setValue] = useState(0);
 
-  const eviewsArr = [
+  const reviewsArr = [
     {
       image: user_3,
       name: "User 1",
@@ -60,27 +62,26 @@ const UserReviews = () => {
     },
   ];
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setValue((prev) => (prev === reviewsArr.length - 1 ? 0 : prev + 1));
+    }, 10000);
+
+    return () => clearInterval(interval);
+  }, [reviewsArr.length]);
+
   return (
     <div className="home-bg py-16 w-full">
       <div className="page-container mx-auto container px-4 flex flex-col gap-8 items-center w-full">
-        
         {/* Desktop layout */}
         <div className="hidden sm:flex w-full min-h-[70vh] relative items-center justify-center">
-          {/* Left Arrow */}
-          <button
-            onClick={() => setValue((prev) => (prev === 0 ? eviewsArr.length - 1 : prev - 1))}
-            className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-[#FFDE5A] shadow-md p-3 rounded-full hover:bg-yellow-400 transition z-20 flex items-center justify-center"
-          >
-            <ArrowRight className="rotate-180" stroke="#060606" width={20} height={20} />
-          </button>
-
-          {/* Review Card */}
-          {eviewsArr
-            .filter((_, i) => i === value)
-            .map((val, idx) => (
+          <div className="w-full h-full flex items-center justify-center relative">
+            {reviewsArr.map((val, idx) => (
               <div
                 key={idx}
-                className="rounded-[20px] bg-white shadow-[10px_10px_30px_0px_#0000004D] p-10 lg:w-[60%] md:w-[70%] sm:w-[80%] flex flex-col items-center gap-6 text-center"
+                className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-[20px] bg-white shadow-[10px_10px_30px_0px_#0000004D] p-10 lg:w-[60%] md:w-[70%] sm:w-[80%] flex flex-col items-center gap-6 text-center transition-opacity duration-700 ease-in-out ${
+                  idx === value ? "opacity-100 z-10" : "opacity-0 z-0"
+                }`}
               >
                 <div className="flex flex-col items-center gap-2">
                   <Highlighter highlight="Reviews" className="!rounded-full" />
@@ -92,10 +93,6 @@ const UserReviews = () => {
                     emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="medium" />}
                   />
                 </div>
-                {/* <h1 className="m-plus-rounded-1c-light text-[#060606] text-[20px]">
-                  Valuable Reviews of our{" "}
-                  <span className="m-plus-rounded-1c-regular text-[25px]">{val?.name}</span>
-                </h1> */}
                 <div className="flex items-start justify-center gap-4 mt-3 text-left w-full">
                   <Image
                     src={invertedComa}
@@ -108,10 +105,17 @@ const UserReviews = () => {
                 </div>
               </div>
             ))}
+          </div>
 
-          {/* Right Arrow */}
+          {/* Left/Right Arrows */}
           <button
-            onClick={() => setValue((prev) => (prev === eviewsArr.length - 1 ? 0 : prev + 1))}
+            onClick={() => setValue((prev) => (prev === 0 ? reviewsArr.length - 1 : prev - 1))}
+            className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-[#FFDE5A] shadow-md p-3 rounded-full hover:bg-yellow-400 transition z-20 flex items-center justify-center"
+          >
+            <ArrowRight className="rotate-180" stroke="#060606" width={20} height={20} />
+          </button>
+          <button
+            onClick={() => setValue((prev) => (prev === reviewsArr.length - 1 ? 0 : prev + 1))}
             className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-[#FFDE5A] shadow-md p-3 rounded-full hover:bg-yellow-400 transition z-20 flex items-center justify-center"
           >
             <ArrowRight stroke="#060606" width={20} height={20} />
@@ -120,43 +124,43 @@ const UserReviews = () => {
 
         {/* Mobile layout */}
         <div className="flex flex-col items-center sm:hidden w-full gap-6">
-          {eviewsArr
-            .filter((_, i) => i === value)
-            .map((val, idx) => (
-              <div
-                key={idx}
-                className="rounded-[20px] bg-white shadow-[6px_6px_20px_0px_#0000002D] p-6 w-full flex flex-col items-center gap-3 text-center"
-              >
-                <div className="flex flex-col items-center gap-1">
-                  <Highlighter highlight="Reviews" className="!rounded-full" />
-                  <Rating
-                    name="text-feedback"
-                    value={val?.rating || 5}
-                    readOnly
-                    precision={0.5}
-                    emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="small" />}
-                  />
-                </div>
-                <h1 className="m-plus-rounded-1c-light text-[#060606] text-[18px]">
-                  Valuable Reviews of our{" "}
-                  <span className="m-plus-rounded-1c-regular text-[20px]">{val?.name}</span>
-                </h1>
-                <p className="m-plus-rounded-1c-regular text-[#060606] text-[14px] leading-relaxed mt-2 text-left w-full">
-                  {val?.review}
-                </p>
+          {reviewsArr.map((val, idx) => (
+            <div
+              key={idx}
+              className={`rounded-[20px] bg-white shadow-[6px_6px_20px_0px_#0000002D] p-6 w-full flex flex-col items-center gap-3 text-center transition-opacity duration-700 ease-in-out ${
+                idx === value ? "opacity-100 block" : "opacity-0 hidden"
+              }`}
+            >
+              <div className="flex flex-col items-center gap-1">
+                <Highlighter highlight="Reviews" className="!rounded-full" />
+                <Rating
+                  name="text-feedback"
+                  value={val?.rating || 5}
+                  readOnly
+                  precision={0.5}
+                  emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="small" />}
+                />
               </div>
-            ))}
+              <h1 className="m-plus-rounded-1c-light text-[#060606] text-[18px]">
+                Valuable Reviews of our{" "}
+                <span className="m-plus-rounded-1c-regular text-[20px]">{val?.name}</span>
+              </h1>
+              <p className="m-plus-rounded-1c-regular text-[#060606] text-[14px] leading-relaxed mt-2 text-left w-full">
+                {val?.review}
+              </p>
+            </div>
+          ))}
 
           {/* Arrows below for mobile */}
           <div className="flex items-center justify-center gap-6 mt-2">
             <button
-              onClick={() => setValue((prev) => (prev === 0 ? eviewsArr.length - 1 : prev - 1))}
+              onClick={() => setValue((prev) => (prev === 0 ? reviewsArr.length - 1 : prev - 1))}
               className="bg-[#FFDE5A] shadow-md p-3 rounded-full hover:bg-yellow-400 transition"
             >
               <ArrowRight className="rotate-180" stroke="#060606" width={18} height={18} />
             </button>
             <button
-              onClick={() => setValue((prev) => (prev === eviewsArr.length - 1 ? 0 : prev + 1))}
+              onClick={() => setValue((prev) => (prev === reviewsArr.length - 1 ? 0 : prev + 1))}
               className="bg-[#FFDE5A] shadow-md p-3 rounded-full hover:bg-yellow-400 transition"
             >
               <ArrowRight stroke="#060606" width={18} height={18} />

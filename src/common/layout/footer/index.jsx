@@ -95,41 +95,44 @@ const Footer = () => {
                 className="h-10 w-auto"
               />
               <p className="text-white m-plus-rounded-1c-regular text-[14px]">
-                RealSales is an AI-powered Sales Accelerator Platform that gives 
-                sales teams and managers real-time visibility into sales capability 
-                and team maturity—enabling continuous, on-the-job coaching and performance 
-                improvement through realistic simulations and live interactions 
-                with real-word buyer personas.​
+                RealSales is an AI-powered Sales Accelerator Platform that gives
+                sales teams and managers real-time visibility into sales
+                capability and team maturity—enabling continuous, on-the-job
+                coaching and performance improvement through realistic
+                simulations and live interactions with real-word buyer
+                personas.​
               </p>
-       <div className="flex flex-row items-center gap-4 flex-wrap">
-  <CommonButton
-    onClick={() => dispatch(DemoMeetingValue(true))}
-    className={`!border-[2px] !border-[#FFDE5A] !text-[#FFDE5A] 
+              <div className="flex flex-row items-center gap-4 flex-wrap">
+                <CommonButton
+                  onClick={() => dispatch(DemoMeetingValue(true))}
+                  className={`!border-[2px] !border-[#FFDE5A] !text-[#FFDE5A] 
       !px-4 sm:!px-5 
       !py-1 
       !text-[13px] sm:!text-[15px] 
       flex !items-center gap-2 h-fit whitespace-nowrap`}
-    buttontext={
-      <p className="m-plus-rounded-1c-light">Book a Demo</p>
-    }
-    icon={<ArrowRight stroke={`#FFDE5A`} width={18} height={12} />}
-  />
+                  buttontext={
+                    <p className="m-plus-rounded-1c-light">Book a Demo</p>
+                  }
+                  icon={
+                    <ArrowRight stroke={`#FFDE5A`} width={18} height={12} />
+                  }
+                />
 
-  <button
-    onClick={() => window.open("mailto:contact@real-sales.com", "_blank")}
-    className="bg-[#FFDE5A] text-[#060606] 
+                <button
+                  onClick={() =>
+                    window.open("mailto:contact@real-sales.com", "_blank")
+                  }
+                  className="bg-[#FFDE5A] text-[#060606] 
       px-5 sm:px-7.5 
       py-1 
       text-[15px] sm:text-[18px] 
       m-plus-rounded-1c-bold border-2 border-[#FFDE5A] rounded 
       flex items-center justify-center gap-2 h-fit 
       hover:bg-[#FFE942] transition-colors duration-200 whitespace-nowrap"
-  >
-    CONTACT US
-  </button>
-</div>
-
-
+                >
+                  CONTACT US
+                </button>
+              </div>
             </div>
             <div className="lg:w-[65%] w-full">
               {/* <div className="flex items-start justify-between flex-wrap lg:gap-4 gap-8 px-4 pb-6">
@@ -146,8 +149,8 @@ const Footer = () => {
                   linkArr={LinksArr[2]?.links}
                 />
                </div> */}
-                {/* <hr className="border-[#FFFFFF99] w-full" /> */}
-                <div className="flex items-start justify-start px-4 pt-10 flex-wrap lg:gap-30 gap-10">
+              {/* <hr className="border-[#FFFFFF99] w-full" /> */}
+              <div className="flex items-start justify-start px-4 pt-10 flex-wrap lg:gap-30 gap-10">
                 <FooterLinks
                   heading={LinksArr[3]?.heading}
                   linkArr={LinksArr[3]?.links}
@@ -187,7 +190,9 @@ const Footer = () => {
                     <p className="text-[11px] sora-regular">
                       Email:
                       <br />
-                      <span className="text-[110%]">contact@real-sales.com​</span>
+                      <span className="text-[110%]">
+                        contact@real-sales.com​
+                      </span>
                     </p>
                   </Link>
                 </div>
@@ -232,17 +237,18 @@ const Footer = () => {
           </div>
         </div>
       </div>
-      <div className="main-header sticky top-0 z-50 bg-[#FFDE5A] lg:py-4 py-2 flex items-center justify-center">
-        <div className="flex items-center lg:flex-row flex-col lg:gap-1 gap-0">
-          <Image src={copyright} alt="copyright" />
-          <p className="text-center sora-regular text-[#060606] lg:text-[16px] text-[12px]">
+      <div className="main-header sticky top-0 z-50 bg-[#FFDE5A] lg:py-4 py-2 flex justify-center">
+        <div className="flex items-center gap-2 lg:gap-1">
+          <span className="text-[#060606] lg:text-[20px] text-[16px] relative -top-[2px]">
+            &copy;
+          </span>
+          <span className="text-[#060606] lg:text-[16px] text-[12px] sora-regular">
             Copyright 2025 -&nbsp;
             <span className="sora-semibold">Real-Sales.com.</span>&nbsp;All
             Rights Reserved
-          </p>
+          </span>
         </div>
       </div>
-      
     </div>
   );
 };

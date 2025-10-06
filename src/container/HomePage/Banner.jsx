@@ -233,11 +233,12 @@ const Banner = () => {
             <div className="grid lg:grid-cols-2 gap-16 w-full max-w-6xl">
               {/* For Sales Managers */}
               <div data-aos="fade-right" className="flex flex-col gap-6">
-                <h3 className="text-2xl font-bold text-[#060606] relative inline-block">
-                  <span className="bg-[#FFE66D] px-3 py-1 rounded-md">
+                <h3 className="text-2xl font-bold text-[#060606] relative inline-flex items-center">
+                  <span className="bg-[#FFE66D] px-3 py-1.5 rounded-md leading-none align-middle">
                     RealSales for Sales Managers
                   </span>
                 </h3>
+
                 <ul className="space-y-4 text-[#060606] text-lg leading-relaxed">
                   <li>
                     ✔️ Assess Team Capabilities & Identify development areas

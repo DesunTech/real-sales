@@ -31,74 +31,76 @@ const FaqPage = () => {
   ];
 
   return (
-    <div className="relative">
-      <div className="w-full h-full bg_image">
-        <div className="bg-[#06060666] py-16 flex flex-col items-center justify-center">
-          <h1 className="lg:text-[65px] text-4xl text-[#ffffff] m-plus-rounded-1c-regular">
+ <div className="relative">
+  {/* Background Section */}
+  <div className="w-full h-full bg_image">
+    <div className="bg-[#06060666] py-16 flex flex-col items-center justify-center">
+      <div className="page-container mx-auto container px-4 text-center">
+        <h1 className="lg:text-[65px] text-4xl text-[#ffffff] m-plus-rounded-1c-regular">
           Frequently Asked Questions
-          </h1>
-          {/* <h3 className="lg:text-[24px] text-lg text-[#ffffff] sora-regular">
-            We have answers (Well, most of this times!)
-          </h3> */}
-        </div>
+        </h1>
+        {/* <h3 className="lg:text-[24px] text-lg text-[#ffffff] sora-regular">
+          We have answers (Well, most of the time!)
+        </h3> */}
       </div>
-      <div className="bg-[url(../../public/assets/images/RealSales-backgrounds/bg-4.png)] bg-cover bg-center bg-no-repeat">
-        <div className="bg-[#ffffffcb]">
-          <div className="page-container mx-auto lg:p-16 p-8 container flex flex-col items-center lg:gap-10 gap-5">
-            {/* <h1 className="lg:text-[40px] text-3xl text-[#2d2d2d] m-plus-rounded-1c-semibold capitalize text-center">
-              Frequently asked question
-            </h1> */}
-            <div data-aos="zoom-in" className="w-full flex flex-col items-center gap-4">
-              {faqArr?.length
-                ? faqArr.map((v, i) => (
-                    <div
-                      key={i}
-                      className={`w-full h-fit flex flex-col items-start overflow-hidden ${
-                        openQuestion === i ? "gap-2" : ""
-                      } px-4 py-2 rounded-[6px] shadow-lg border border-solid border-[#00000010] bg-[url(../../public/assets/images/RealSales-backgrounds/bg-1.png)] bg-cover bg-center bg-no-repeat`}
+    </div>
+  </div>
+
+  {/* FAQ Section */}
+  <div className="bg-[url(../../public/assets/images/RealSales-backgrounds/bg-4.png)] bg-cover bg-center bg-no-repeat">
+    <div className="bg-[#ffffffcb]">
+      <div className="page-container mx-auto lg:p-16 p-8 container flex flex-col items-center lg:gap-10 gap-5">
+        <div data-aos="zoom-in" className="w-full flex flex-col items-center gap-4">
+          {faqArr?.length
+            ? faqArr.map((v, i) => (
+                <div
+                  key={i}
+                  className={`w-full h-fit flex flex-col items-start overflow-hidden ${
+                    openQuestion === i ? "gap-2" : ""
+                  } px-4 py-2 rounded-[6px] shadow-lg border border-solid border-[#00000010] bg-[url(../../public/assets/images/RealSales-backgrounds/bg-1.png)] bg-cover bg-center bg-no-repeat`}
+                >
+                  <div className="w-full flex items-center justify-between text-[#2d2d2d]">
+                    <p
+                      className="m-plus-rounded-1c-semibold lg:text-[18px] text-[16px] cursor-pointer flex-1 pr-4"
+                      onClick={() => doHandelClick(i)}
                     >
-                      <div className="w-full flex items-center justify-between text-[#2d2d2d]">
-                        <p 
-                          className="m-plus-rounded-1c-semibold lg:text-[18px] text-[16px] cursor-pointer flex-1 pr-4"
-                          onClick={() => doHandelClick(i)}
-                        >
-                          {i + 1}.&nbsp;{v?.question}
-                        </p>
-                        <div
-                          className={`h-7 w-7 flex items-center justify-center shadow-[0_0_4px_0_rgba(99,99,99,0.37)] rounded-full border border-solid border-[#00000010] cursor-pointer ${
-                            openQuestion === i ? `rotate-180` : `rotate-0`
-                          } duration-300`}
-                          onClick={() => doHandelClick(i)}
-                        >
-                          <ArrowDropDownIcon />
-                        </div>
-                      </div>
-                      <div
-                        className={`transition-all duration-300 ${
-                          openQuestion === i
-                            ? "max-h-40"
-                            : "max-h-0 overflow-hidden"
-                        }`}
-                      >
-                        {openQuestion === i ? (
-                          <p className="lg:text-[15px] text-[13px] sora-regular text-[#2d2d2dce]">
-                            {v?.answer}
-                          </p>
-                        ) : null}
-                      </div>
+                      {i + 1}.&nbsp;{v?.question}
+                    </p>
+                    <div
+                      className={`h-7 w-7 flex items-center justify-center shadow-[0_0_4px_0_rgba(99,99,99,0.37)] rounded-full border border-solid border-[#00000010] cursor-pointer ${
+                        openQuestion === i ? `rotate-180` : `rotate-0`
+                      } duration-300`}
+                      onClick={() => doHandelClick(i)}
+                    >
+                      <ArrowDropDownIcon />
                     </div>
-                  ))
-                : null}
-            </div>
-            <div className="mt-8 text-center">
-              <p className="lg:text-[18px] text-[16px] text-[#2d2d2d] sora-regular">
-                For more information or to schedule a demo, contact our sales team.
-              </p>
-            </div>
-          </div>
+                  </div>
+                  <div
+                    className={`transition-all duration-300 ${
+                      openQuestion === i ? "max-h-40" : "max-h-0 overflow-hidden"
+                    }`}
+                  >
+                    {openQuestion === i ? (
+                      <p className="lg:text-[15px] text-[13px] sora-regular text-[#2d2d2dce]">
+                        {v?.answer}
+                      </p>
+                    ) : null}
+                  </div>
+                </div>
+              ))
+            : null}
+        </div>
+
+        <div className="mt-8 text-center">
+          <p className="lg:text-[18px] text-[16px] text-[#2d2d2d] sora-regular">
+            For more information or to schedule a demo, contact our sales team.
+          </p>
         </div>
       </div>
     </div>
+  </div>
+</div>
+
   );
 };
 
