@@ -48,7 +48,7 @@ const MeetPerfectPersona = () => {
       className="page-container mx-auto px-4 py-8 container flex items-center justify-center flex-col lg:gap-4 gap-2"
     >
       <p className="lg:text-2xl text-[16px] text-center sora-light text-[#060606] w-full">
-        Want to meet with Perfect Persona?
+        Start your Session
       </p>
       <h1 className="lg:text-6xl text-3xl text-center text-[#060606] m-plus-rounded-1c-regular lg:w-[60%] w-full">
         We're here to give you a pixel-perfect Choice

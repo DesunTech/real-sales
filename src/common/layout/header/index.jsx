@@ -178,7 +178,7 @@ const Header = (props) => {
                   </Link>
                 ) : null}
               </div> */}
-              <div>
+              {/* <div>
                 <Link
                   href="/pricing"
                   className={`text-white leading-1 border-b-2 border-transparent hover:border-yellow-400 transition-all duration-300 ${
@@ -187,7 +187,7 @@ const Header = (props) => {
                 >
                   Pricing
                 </Link>
-              </div>
+              </div> */}
               <div>
                 <Link
                   href="/faq"
@@ -343,11 +343,11 @@ const Header = (props) => {
                   </div>
                 </li>
 
-                <li className="py-2 border-b text-white">
+                {/* <li className="py-2 border-b text-white">
                   <Link href="/pricing" onClick={() => setMobileMenuOpen(false)}>
                     Pricing
                   </Link>
-                </li>
+                </li> */}
                 <li className="py-2 border-b text-white">
                   <Link href="/faq" onClick={() => setMobileMenuOpen(false)}>
                     FAQ
