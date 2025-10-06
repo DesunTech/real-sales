@@ -103,7 +103,7 @@ const PricingCard = (props) => {
                 <>
                   ${props?.yearly ? props?.cardValue?.yearly_price : props?.cardValue?.monthly_price}
                   &nbsp;
-                  <span className="text-[48%]">{`(${props?.cardValue?.credits_per_month} session)`}</span>
+                  <span className="text-[48%]">{`(${props?.cardValue?.credits_per_month} Credits)`}</span>
                 </>
               )}
             </p>
