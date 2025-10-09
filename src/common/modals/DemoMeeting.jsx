@@ -13,6 +13,7 @@ import CommonButton from "../commonButton";
 import DoneOutlinedIcon from "@mui/icons-material/DoneOutlined";
 import axios from "axios";
 import { useApi } from "../../hooks/useApi";
+import CountryCodeSelector from "../CountryCodeSelector";
 
 const DemoMeeting = (props) => {
   const { Post } = useApi();
@@ -192,23 +193,12 @@ const DemoMeeting = (props) => {
               </div>
 
               <div className="flex gap-2">
-                <FormControl
-                  variant="standard"
-                  className="w-[15%]"
+                <CountryCodeSelector
+                  value={idc}
+                  onChange={setIdc}
+                  label="Country Code"
                   color="#000000"
-                >
-                  <InputLabel id=""></InputLabel>
-                  <Select
-                    value={idc}
-                    onChange={(e) => setIdc(e.target.value)}
-                    label="idc"
-                    color="#000000"
-                  >
-                    <MenuItem value={91}>+91</MenuItem>
-                    <MenuItem value={92}>+92</MenuItem>
-                    <MenuItem value={93}>+93</MenuItem>
-                  </Select>
-                </FormControl>
+                />
                 <TextField
                   type="number"
                   label="Your phone number"
