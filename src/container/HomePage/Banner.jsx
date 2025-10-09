@@ -54,7 +54,7 @@ const Banner = () => {
                   Supercharge your Sales Team with
                   <br />
                   <span className="lg:text-[180%] text-[130%] m-plus-rounded-1c-medium capitalize">
-                    Realsales AI
+                    RealSales AI
                   </span>
                 </h1>
               </div>

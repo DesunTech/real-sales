@@ -27,6 +27,7 @@ import { showToast } from "../../utils/toastConfig";
 import LoopIcon from "@mui/icons-material/Loop";
 import { AddAuth, AddUser } from "../../redux/AuthReducer";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import CountryCodeSelector from "../CountryCodeSelector";
 
 const TryRealsales = (props) => {
   const { Post } = useApi();
@@ -507,23 +508,12 @@ const TryRealsales = (props) => {
                   required
                 />
                 <div className="flex gap-2 w-full">
-                  <FormControl
-                    variant="standard"
-                    className="w-[15%]"
+                  <CountryCodeSelector
+                    value={idc}
+                    onChange={setIdc}
+                    label="Country Code"
                     color="#000000"
-                  >
-                    <InputLabel id=""></InputLabel>
-                    <Select
-                      value={idc}
-                      onChange={(e) => setIdc(e.target.value)}
-                      label="idc"
-                      color="#000000"
-                    >
-                      <MenuItem value={91}>+91</MenuItem>
-                      <MenuItem value={92}>+92</MenuItem>
-                      <MenuItem value={93}>+93</MenuItem>
-                    </Select>
-                  </FormControl>
+                  />
                   <TextField
                     type="number"
                     label="Your phone number"
