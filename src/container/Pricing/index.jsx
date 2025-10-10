@@ -471,7 +471,7 @@ const Pricing = ({ subscription = [] }) => {
           </div>
         </div>
         
-        {pricingArr2?.length
+        {/* {pricingArr2?.length
           ? pricingArr2?.map((v, i) => (
               <PricingCard
                 key={i}
@@ -485,7 +485,7 @@ const Pricing = ({ subscription = [] }) => {
                 link={`/payment-details`}
               />
             ))
-          : null}
+          : null} */}
       </div>
     </div>
   );

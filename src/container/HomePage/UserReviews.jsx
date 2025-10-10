@@ -22,44 +22,44 @@ const UserReviews = () => {
       image: user_3,
       name: "User 1",
       review:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries but also the leap into electronic typesetting, remaining essentially unchanged.",
+        "As sales manager at a B2C company,  using RealSales I was finally able to identify and address my team gaps. In our case CRM alone was not enough to explain the difference in performance among our sales reps. Ultimately we have been improving our conversion rate.",
       rating: 5,
-    },
-    {
-      image: persona_plant_new,
-      name: "User 2",
-      review:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, and more recently with desktop publishing software like Aldus PageMaker.",
-      rating: 4.5,
-    },
-    {
-      image: persona_extra,
-      name: "User 3",
-      review:
-        "Lorem Ipsum is simply dummy text that has been the industry’s standard since the 1500s. It was popularized with the release of Letraset sheets containing Lorem Ipsum passages.",
-      rating: 5,
-    },
-    {
-      image: persona_food_new,
-      name: "User 4",
-      review:
-        "Lorem Ipsum is simply dummy text used in the printing industry. It has been used for centuries and is still widely used as placeholder text today.",
-      rating: 4.5,
-    },
-    {
-      image: user_2,
-      name: "User 5",
-      review:
-        "Lorem Ipsum is standard dummy text that has stood the test of time. It was originally taken from classical Latin literature from 45 BC.",
-      rating: 5,
-    },
-    {
-      image: persona_plant,
-      name: "User 6",
-      review:
-        "Lorem Ipsum continues to be the industry standard for dummy text, used by designers, typesetters, and developers alike.",
-      rating: 4.5,
-    },
+    }
+    // {
+    //   image: persona_plant_new,
+    //   name: "User 2",
+    //   review:
+    //     "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, and more recently with desktop publishing software like Aldus PageMaker.",
+    //   rating: 4.5,
+    // },
+    // {
+    //   image: persona_extra,
+    //   name: "User 3",
+    //   review:
+    //     "Lorem Ipsum is simply dummy text that has been the industry’s standard since the 1500s. It was popularized with the release of Letraset sheets containing Lorem Ipsum passages.",
+    //   rating: 5,
+    // },
+    // {
+    //   image: persona_food_new,
+    //   name: "User 4",
+    //   review:
+    //     "Lorem Ipsum is simply dummy text used in the printing industry. It has been used for centuries and is still widely used as placeholder text today.",
+    //   rating: 4.5,
+    // },
+    // {
+    //   image: user_2,
+    //   name: "User 5",
+    //   review:
+    //     "Lorem Ipsum is standard dummy text that has stood the test of time. It was originally taken from classical Latin literature from 45 BC.",
+    //   rating: 5,
+    // },
+    // {
+    //   image: persona_plant,
+    //   name: "User 6",
+    //   review:
+    //     "Lorem Ipsum continues to be the industry standard for dummy text, used by designers, typesetters, and developers alike.",
+    //   rating: 4.5,
+    // },
   ];
 
   useEffect(() => {

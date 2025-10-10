@@ -48,13 +48,13 @@ const MeetPerfectPersona = () => {
       className="page-container mx-auto px-4 py-8 container flex items-center justify-center flex-col lg:gap-4 gap-2"
     >
       <p className="lg:text-2xl text-[16px] text-center sora-light text-[#060606] w-full">
-        Start your Session
+        Start your session
       </p>
-      <h1 className="lg:text-6xl text-3xl text-center text-[#060606] m-plus-rounded-1c-regular lg:w-[60%] w-full">
+      {/* <h1 className="lg:text-6xl text-3xl text-center text-[#060606] m-plus-rounded-1c-regular lg:w-[60%] w-full">
         We're here to give you a pixel-perfect Choice
-      </h1>
+      </h1> */}
       <div
-        className="flex items-center gap-2 text-[#060606] bg-[#FFE942] m-plus-rounded-1c-medium capitalize py-2.5 px-4 rounded-full cursor-pointer mt-10 mb-10"
+        className="flex items-center gap-2 text-[#060606] bg-[#FFE942] m-plus-rounded-1c-medium capitalize py-2.5 px-18 rounded-full cursor-pointer mt-10 mb-10"
         onClick={() => {
           if (token !== "") {
             dispatch(InteractionValue({ open: true, fromData: "" }));
@@ -75,7 +75,7 @@ const MeetPerfectPersona = () => {
           }
         }}
       >
-        Select Persona
+        START
          <ArrowRight width={19} height={13} />
       </div>
 
