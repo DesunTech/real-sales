@@ -138,9 +138,9 @@ const AboutUs = () => {
           Common problems impacting Sales Team Performance
         </p>
 
-        <h1 className="lg:text-[65px] text-3xl text-white m-plus-rounded-1c-regular">
+        {/* <h1 className="lg:text-[65px] text-3xl text-white m-plus-rounded-1c-regular">
           Performance
-        </h1>
+        </h1> */}
 
         <div className="flex flex-col gap-5 w-full lg:w-[95%]">
           {[

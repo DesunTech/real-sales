@@ -5,40 +5,40 @@ import Image from "next/image";
 
 const items = [
   {
-    title: "New Sales Director Lacks Team Visibility",
+    title: "NEW SALES DIRECTOR QUESTIONING TEAM PERFORMANCE",
     image: "/images/cd-img.png",
     description:
-      "RealSales provides objective skill assessment in 1.5 months vs 6+ months of manual observation. Delivers 4.5 months faster team optimization with data-driven coaching plans.",
+      "RealSales provides objective skill assessment in much shorter time (est. 1,5 months) than time consuming team shadowing (6+ months). We allow sales manager to optimize team performance faster with data-driven coaching plans.",
   },
   {
-    title: "Sales Team Missing Cross-Selling Opportunities",
+    title: "SALES TEAM MISSING CROSS-SELLING OPPORTUNITIES",
     image: "/images/cd-img.png",
     description:
-      "RealSales trains reps to identify 3× more opportunities per customer interaction. Increases annual revenue per rep from $1.08M to $3.24M (3× revenue growth).",
+      "RealSales trains reps to improve their cross-selling capabilities and to identify more opportunities per customer interaction. In one of our case simulation, the use of RealSales increased annual revenue per rep 3X.",
   },
   {
-    title: "Marketing Needs Value Proposition Validation",
+    title: "VALIDATING NEW VALUE PROPOSITION",
     image: "/images/cd-img.png",
     description:
-      "RealSales tests new messaging in 6 weeks vs 8 months traditional approach. Saves $44,275 vs $86,000 traditional cost and delivers 5.5 months faster market launch.",
+      "RealSales helps your team testing new messaging in a fraction of the time required using more traditional approach. Based on our case analysis, it saves $44,275 vs $86,000 traditional cost and delivers 5.5 months faster market launch.",
   },
   {
-    title: "Remote Team Lacks Consistent Coaching",
+    title: "REMOTE TEAM LACKING CONSISTENT COACHING",
     image: "/images/cd-img.png",
     description:
-      "RealSales provides standardized coaching across distributed locations with organizational visibility at every level. Delivers time and cost savings through reduced travel and coordination overhead.",
+      "RealSales provides standardized coaching for remote sales team providing a new level of visibility for Team managers. Adopting RealSales delivers time and cost savings through reduced travel and coordination overhead.",
   },
   {
-    title: "New Hire Struggles with Complex Portfolio",
+    title: "NEW HIRE NAVIGATING COMPLEX PORTFOLIO",
     image: "/images/cd-img.png",
     description:
-      "RealSales accelerates onboarding from 6-8 months to 2-3 months productivity. Increases new hire Year 1 revenue from $380K to $1.805M (4.7× revenue growth).",
+      "RealSales accelerates onboarding speed cutting in half the time required to a new hire to understand and navigate company portfolio. Based on our case analysis, adoption of RealSales increased Year1 revenue for a new hire from $380k to $1.8M (4.7x revenue growth)..",
   },
   {
-    title: "High Pipeline Volume with Poor Conversion",
+    title: "POOR SALES CONVERSION RATE",
     image: "/images/cd-img.png",
     description:
-      "RealSales diagnoses qualification vs closing gaps to enable targeted coaching. Improves conversion rates from 18% to 26% and generates 8× better pipeline conversion.",
+      "RealSales helps identifying issues and causes of poor conversion rates and focus on dedicated coaching solutions. Based on our case analysis, it improves conversion rates from 18% to 26% and generates 8× better pipeline conversion.",
   },
 ];
 

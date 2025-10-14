@@ -25,7 +25,7 @@ const PersonaFeatures = () => {
       heading_p2: "Buyer Personas",
       about: "Accelerator solutions of RealSales",
       content:
-        "Al-powered buyer personas built from real industry experts that mimic real customer interactions, allowing sales reps to ....",
+        "Al-powered buyer personas built from real industry experts that mimic real customer interactions.",
     },
     {
       // icon: mdi_hard_hat,
@@ -34,7 +34,7 @@ const PersonaFeatures = () => {
       heading_p2: "Sales Coaching",
       about: "Accelerator solutions of RealSales",
       content:
-        "Al-powered coaches that provide guidance to sales reps on handling objections, closing deals, and ....",
+        "Al-powered coaches that provide guidance to sales reps on handling objections, closing deals.",
     },
     {
       icon: mdi_target,
@@ -42,7 +42,7 @@ const PersonaFeatures = () => {
       heading_p2: "Performance",
       about: "Accelerator solutions of RealSales",
       content:
-        "Instant feedback and analytics that help sales reps track their progress, identify areas for improvement, & continuously....",
+        "Instant feedback and analytics that help sales reps track their progress, identify areas for improvement.",
     },
   ];
 
