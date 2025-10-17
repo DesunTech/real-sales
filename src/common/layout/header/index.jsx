@@ -17,12 +17,14 @@ import { AddAuth, AddUser } from "../../../redux/AuthReducer";
 import { ClickAwayListener } from "@mui/material";
 import { useApi } from "../../../hooks/useApi";
 import { apis } from "../../../utils/apis";
+import { useCalendly } from "../../../common/CalendlyWidget";
 
 const Header = (props) => {
   const router = useRouter();
   const dispatch = useDispatch();
   const token = useSelector((state) => state.auth.auth);
   const { Get } = useApi();
+  const { openCalendlyPopup } = useCalendly();
   const { auth_me } = apis;
 
   let [user, setUser] = useState({});
@@ -254,8 +256,8 @@ const Header = (props) => {
               </div>
             )}
             <BookAdemo
-              className={`!text-[14px]`}
-              onClick={() => dispatch(DemoMeetingValue(true))}
+              className={`!text-[14px] !bg-[#FFDE5A] !text-[#060606] !border-white hover:!bg-[#FFDE5A] hover:-translate-y-0.5 transition-transform duration-200`}
+              onClick={openCalendlyPopup}
               icon={<AddIcCallIcon style={{ fontSize: "16px" }} />}
             />
           </div>
@@ -388,7 +390,8 @@ const Header = (props) => {
                   )}
                   <BookAdemo
                     link={`#`}
-                    onClick={() => dispatch(DemoMeetingValue(true))}
+                    onClick={openCalendlyPopup}
+                    className={`!bg-[#FFDE5A] !text-[#060606] !border-white hover:!bg-[#FFDE5A] hover:-translate-y-0.5 transition-transform duration-200`}
                     icon={<AddIcCallIcon style={{ fontSize: "16px" }} />}
                   />
                 </li>
