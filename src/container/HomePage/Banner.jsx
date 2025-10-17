@@ -64,7 +64,6 @@ const Banner = () => {
                 className="flex md:flex-row flex-col items-center gap-4 w-full justify-center lg:justify-start"
               >
                 <BookAdemo
-                  onClick={() => dispatch(DemoMeetingValue(true))}
                   className={`!border-[#FFDE5A] !bg-[#060606] !text-[#FFDE5A] !px-5 !py-1 h-fit lg:w-fit w-full`}
                   icon={<AddIcCallIcon style={{ fontSize: "16px" }} />}
                 />

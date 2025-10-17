@@ -14,9 +14,11 @@ import copyright from "../../../../public/assets/icons/copyright.svg";
 import { DemoMeetingValue } from "../../../redux/OpenModal";
 import { useDispatch } from "react-redux";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import { useCalendly } from "../../../common/CalendlyWidget";
 
 const Footer = () => {
   const dispatch = useDispatch();
+  const { openCalendlyPopup } = useCalendly();
 
   const LinksArr = [
     {
@@ -104,7 +106,7 @@ const Footer = () => {
               </p>
               <div className="flex flex-row items-center gap-4 flex-wrap">
                 <CommonButton
-                  onClick={() => dispatch(DemoMeetingValue(true))}
+                  onClick={openCalendlyPopup}
                   className={`!border-[2px] !border-[#FFDE5A] !text-[#FFDE5A] 
       !px-4 sm:!px-5 
       !py-1 
