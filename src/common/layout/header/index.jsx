@@ -204,7 +204,7 @@ const Header = (props) => {
                 <div>
                   {user?.role?.name === "super_admin" ? (
                     <Link
-                      href={`https://realsales-admin.vercel.app?token=${token}`}
+                      href={`https://admin.real-sales.com?token=${token}`}
                       // target="_blank"
                       className={`text-white leading-1 hover:underline ${
                         router?.pathname === `/dashboard`
@@ -216,7 +216,7 @@ const Header = (props) => {
                     </Link>
                   ) : (
                     <Link
-                      href={`https://realsales-dashboard.vercel.app/overview?token=${token}`}
+                      href={`https://dashboard.real-sales.com/overview?token=${token}`}
                       // target="_blank"
                       className={`text-white leading-1 hover:underline ${
                         router?.pathname === `/dashboard`
