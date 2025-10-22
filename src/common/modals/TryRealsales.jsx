@@ -28,6 +28,7 @@ import LoopIcon from "@mui/icons-material/Loop";
 import { AddAuth, AddUser } from "../../redux/AuthReducer";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import CountryCodeSelector from "../CountryCodeSelector";
+import ForgotPasswordModal from "./ForgotPasswordModal";
 
 const TryRealsales = (props) => {
   const { Post } = useApi();
@@ -65,6 +66,8 @@ const TryRealsales = (props) => {
   const [profileImage, setProfileImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [imageError, setImageError] = useState("");
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
+
 
   useEffect(() => {
     const handleResize = () => setWidth(window.innerWidth);
@@ -665,28 +668,37 @@ const TryRealsales = (props) => {
                 helperText={loginfromDataErr?.password}
                 required
               />
-              <FormGroup>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      color="success"
-                      onChange={(e) => {
-                        setLoginfromData((pre) => ({
-                          ...pre,
-                          remember_me: e.target.checked,
-                        }));
-                        console.log(e.target.checked, "tatarget_checked");
-                      }}
-                      checked={loginfromData?.remember_me}
-                    />
-                  }
-                  label={
-                    <p className="text-base m-plus-rounded-1c-regular text-[#000000de]">
-                      Remember me
-                    </p>
-                  }
-                />
-              </FormGroup>
+              <div className="flex justify-between items-center">
+                <FormGroup>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        color="success"
+                        onChange={(e) => {
+                          setLoginfromData((pre) => ({
+                            ...pre,
+                            remember_me: e.target.checked,
+                          }));
+                          console.log(e.target.checked, "tatarget_checked");
+                        }}
+                        checked={loginfromData?.remember_me}
+                      />
+                    }
+                    label={
+                      <p className="text-base m-plus-rounded-1c-regular text-[#000000de]">
+                        Remember me
+                      </p>
+                    }
+                  />
+                </FormGroup>
+                <button
+                  type="button"
+                  onClick={() => setShowForgotPassword(true)}
+                  className="text-sm text-[#060606] hover:text-[#060606E5] underline m-plus-rounded-1c-regular"
+                >
+                  Forgot Password?
+                </button>
+              </div>
               {/* Error message display */}
               {loginfromDataErr?.general && (
                 <div className="w-full p-3 bg-red-100 border border-red-400 text-red-700 rounded">
@@ -725,6 +737,12 @@ const TryRealsales = (props) => {
             </div>
         )}
       </GoogleOAuthProvider>
+      
+      {/* Forgot Password Modal */}
+      <ForgotPasswordModal
+        isOpen={showForgotPassword}
+        onClose={() => setShowForgotPassword(false)}
+      />
     </CommonModal>
   );
 };
