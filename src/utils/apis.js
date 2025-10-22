@@ -33,4 +33,9 @@ export const apis = {
   get_user_subscription: "/v1/user-subscriptions/my-subscription",
   // User subscription APIs
   user_subscriptions: "/v1/user-subscriptions/",
+  // Password reset APIs
+  password_reset_request: "/v1/auth/password-reset/request",
+  verify_otp: "/v1/auth/verify-otp",
+  password_reset_confirm: "/v1/auth/password-reset/confirm",
+  password_reset_final: "/v1/auth/password-reset/final",
 };
