@@ -226,8 +226,11 @@ const ForgotPasswordModal = ({ isOpen, onClose }) => {
       setLoading(true);
       const response = await customPost(password_reset_final, {
         email,
+        otp_code: otpCode,
         new_password: newPassword
       });
+      
+      console.log("handlePasswordSubmit: Response received", response);
       
       if (response.success) {
         if (response.data?.message) {
@@ -240,6 +243,7 @@ const ForgotPasswordModal = ({ isOpen, onClose }) => {
         console.error("Password reset confirm error:", error);
         console.error("Error response:", error.response);
         console.error("Error response data:", error.response?.data);
+        console.error("Error response status:", error.response?.status);
         
         // Handle specific error cases
         let errorMessage = "Failed to reset password. Please try again.";
@@ -249,11 +253,18 @@ const ForgotPasswordModal = ({ isOpen, onClose }) => {
           console.log("Error detail:", detail);
           if (detail === "OTP verification required") {
             errorMessage = "Please verify your OTP first before setting a new password.";
+          } else if (detail === "Invalid OTP code") {
+            errorMessage = "The OTP code has expired or is invalid. Please start the process again.";
           } else {
             errorMessage = detail || errorMessage;
           }
         } else if (error.response?.status === 404) {
-          errorMessage = "User not found. Please check your email address.";
+          errorMessage = "Password reset endpoint not found. Please contact support.";
+        } else if (error.response?.status === 422) {
+          const detail = error.response?.data?.detail;
+          if (detail) {
+            errorMessage = detail;
+          }
         }
         
         showToast.error(errorMessage);
