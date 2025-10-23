@@ -19,6 +19,7 @@ import { usePayment } from "../../hooks/usePayment";
 import { useApi } from "../../hooks/useApi";
 import { apis } from "../../utils/apis";
 import { showToast } from "../../utils/toastConfig";
+import { useCalendly } from "../../common/CalendlyWidget";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || "pk_test_51RvIUt2fIsOm1r9oISb8MIWW7N30UDtMBJQnBykpeFZUWXrytUD4rDR2qfZX6dYMBZKnhE8r2r3uXimAA0g5PWo300chQJiNrw"
@@ -103,6 +104,7 @@ const Pricing = ({ subscription = [] }) => {
   const [checked, setChecked] = useState(false);
   const { createPaymentIntent, getUserSubscription } = usePayment();
   const { Get } = useApi();
+  const { openCalendlyPopup } = useCalendly();
 
   const pricingArr = [
     {
@@ -466,7 +468,7 @@ const Pricing = ({ subscription = [] }) => {
                 }
               }}
               link={`#`}
-              onClick={() => window.location.href = '/payment-details'}
+              onClick={openCalendlyPopup}
             />
           </div>
         </div>
