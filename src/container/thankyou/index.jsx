@@ -1,19 +1,16 @@
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
 import Highlighter from "../../common/highlighter";
 import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp";
 import pdfIcon from "../../../public/assets/icons/pdfIcon.svg";
 import Image from "next/image";
 import ArrowRight from "../../../public/assets/icons/arrowRight";
-import BookAdemo from "../../common/bookAdemo";
 import lets_icons_back_3 from "../../../public/assets/icons/lets_icons_back_3.svg";
-import CommonButton from "../../common/commonButton";
-import { useDispatch, useSelector } from "react-redux";
-import { SessionModesValue } from "../../redux/OpenModal";
+import { useSelector } from "react-redux";
 import { useSubscriptionSilent } from "../../hooks/useSubscriptionSilent";
 import PaymentStatus from "../../common/PaymentStatus";
 
 const ThankYou = () => {
-  const dispatch = useDispatch();
   const { getUserSubscriptionSilent, getPaymentDataSilent, userSubscription } = useSubscriptionSilent();
   const user = useSelector((state) => state?.auth?.user);
   const [paymentIntentId, setPaymentIntentId] = useState(null);
@@ -465,23 +462,23 @@ const ThankYou = () => {
                     </p>
                   </div> */}
                   <div className="w-full flex md:flex-row flex-col items-center gap-2 md:px-8 px-4 py-1.5">
-                    <BookAdemo
-                      link={`/`}
-                      BookaDemo={"Back to home"}
-                      icon={
-                        <Image
-                          src={lets_icons_back_3}
-                          alt="lets_icons_back_3"
-                        />
-                      }
-                      className={`!border-[#FFDE5A] !bg-[#060606] !text-[#FFDE5A] !flex-row-reverse !text-[14px] !px-5 !py-2 h-fit w-full`}
-                    />
-                    <CommonButton
-                      onClick={() => dispatch(SessionModesValue(true))}
+                    <Link
+                      href="/"
+                      className={`uppercase border-b-[2px] border-dolid flex items-center justify-center gap-2 px-10 py-1 rounded border-white bg-[#000000] text-[#060606] hover:bg-[#FFDE5A] m-plus-rounded-1c-regular !border-[#FFDE5A] !bg-[#060606] !text-[#FFDE5A] !flex-row-reverse !text-[14px] !px-5 !py-2 h-fit w-full`}
+                    >
+                      Back to home
+                      <Image
+                        src={lets_icons_back_3}
+                        alt="lets_icons_back_3"
+                      />
+                    </Link>
+                    <Link
+                      href="/about#custom"
                       className={`!border-[2px] !border-[#060606] !text-[#060606] !text-[14px] !px-5 !py-1.5 flex !items-center gap-2 h-fit w-full`}
-                      buttontext={"jump to session"}
-                      icon={<ArrowRight width={19} height={13} />}
-                    />
+                    >
+                      JUMP TO SESSION
+                      <ArrowRight width={19} height={13} />
+                    </Link>
                   </div>
                 </div>
                 </div>
